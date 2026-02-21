@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 const EXP_LEVELS = [
-  { value: "beginner", label: "Beginner", icon: "🌱", desc: "New to custom keyboards" },
-  { value: "intermediate", label: "Intermediate", icon: "🔧", desc: "Built 1-2 keyboards before" },
-  { value: "expert", label: "Expert", icon: "⚡", desc: "Experienced builder" },
+  { value: "beginner", label: "Beginner", desc: "New to custom keyboards" },
+  { value: "intermediate", label: "Intermediate", desc: "Built 1-2 keyboards before" },
+  { value: "expert", label: "Expert", desc: "Experienced builder" },
 ] as const;
 
 const SOUNDS = [
@@ -27,6 +27,8 @@ const BUDGETS = [
   { value: { min: 300, max: 500 }, label: "$300 - $500" },
   { value: { min: 500, max: 1000 }, label: "$500+" },
 ] as const;
+
+const STEP_LABELS = ["Experience", "Sound", "Budget"];
 
 export function OnboardingModal() {
   const { isSignedIn } = useUser();
@@ -54,25 +56,47 @@ export function OnboardingModal() {
   if (!shouldShow) return null;
 
   return (
-    <Modal isOpen={true} onClose={() => setDismissed(true)} title="Welcome to Switchy!" size="md">
+    <Modal isOpen={true} onClose={() => setDismissed(true)} title="Welcome to Switchy" size="md">
+      {/* Step indicators */}
+      <div className="flex items-center gap-2 mb-6">
+        {STEP_LABELS.map((label, i) => (
+          <div key={label} className="flex-1">
+            <div className={cn(
+              "h-1 rounded-full transition-colors duration-200",
+              i <= step ? "bg-accent" : "bg-bg-elevated"
+            )} />
+            <p className={cn(
+              "text-[10px] mt-1.5 text-center font-medium",
+              i === step ? "text-accent" : "text-text-muted"
+            )}>{label}</p>
+          </div>
+        ))}
+      </div>
+
       {step === 0 && (
         <div>
-          <p className="text-sm text-text-muted mb-4">What&apos;s your experience level with custom keyboards?</p>
+          <p className="text-sm text-text-secondary mb-4">What&apos;s your experience level with custom keyboards?</p>
           <div className="space-y-2">
             {EXP_LEVELS.map((level) => (
               <button
                 key={level.value}
                 onClick={() => setExperienceLevel(level.value)}
                 className={cn(
-                  "w-full p-4 rounded-xl border text-left transition-all flex items-center gap-3",
+                  "w-full p-4 rounded-xl border text-left transition-[border-color,background-color] duration-200 flex items-center gap-3",
                   experienceLevel === level.value
-                    ? "border-accent bg-accent/10"
-                    : "border-border-subtle hover:border-accent/30"
+                    ? "border-accent bg-accent-dim"
+                    : "border-border-subtle bg-bg-surface hover:border-border-accent",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                 )}
               >
-                <span className="text-2xl">{level.icon}</span>
+                <div className={cn(
+                  "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0",
+                  experienceLevel === level.value ? "border-accent" : "border-text-muted/30"
+                )}>
+                  {experienceLevel === level.value && <div className="w-2.5 h-2.5 rounded-full bg-accent" />}
+                </div>
                 <div>
-                  <p className="font-medium text-text-primary">{level.label}</p>
+                  <p className="font-medium text-text-primary text-sm">{level.label}</p>
                   <p className="text-xs text-text-muted">{level.desc}</p>
                 </div>
               </button>
@@ -83,21 +107,22 @@ export function OnboardingModal() {
 
       {step === 1 && (
         <div>
-          <p className="text-sm text-text-muted mb-4">What sound do you like?</p>
+          <p className="text-sm text-text-secondary mb-4">What sound do you like?</p>
           <div className="grid grid-cols-2 gap-2">
             {SOUNDS.map((s) => (
               <button
                 key={s.value}
                 onClick={() => setPreferredSound(s.value)}
                 className={cn(
-                  "p-4 rounded-xl border text-left transition-all",
+                  "p-4 rounded-xl border text-left transition-[border-color,background-color] duration-200",
                   preferredSound === s.value
-                    ? "border-accent bg-accent/10"
-                    : "border-border-subtle hover:border-accent/30"
+                    ? "border-accent bg-accent-dim"
+                    : "border-border-subtle bg-bg-surface hover:border-border-accent",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                 )}
               >
-                <p className="font-medium text-text-primary">{s.label}</p>
-                <p className="text-xs text-text-muted">{s.desc}</p>
+                <p className="font-medium text-text-primary text-sm">{s.label}</p>
+                <p className="text-xs text-text-muted mt-0.5">{s.desc}</p>
               </button>
             ))}
           </div>
@@ -106,20 +131,29 @@ export function OnboardingModal() {
 
       {step === 2 && (
         <div>
-          <p className="text-sm text-text-muted mb-4">What&apos;s your budget range?</p>
+          <p className="text-sm text-text-secondary mb-4">What&apos;s your budget range?</p>
           <div className="space-y-2">
             {BUDGETS.map((b) => (
               <button
                 key={b.label}
                 onClick={() => setBudgetRange({ min: b.value.min, max: b.value.max })}
                 className={cn(
-                  "w-full p-3 rounded-xl border text-left transition-all",
+                  "w-full p-3.5 rounded-xl border text-left transition-[border-color,background-color] duration-200 flex items-center justify-between",
                   budgetRange?.min === b.value.min && budgetRange?.max === b.value.max
-                    ? "border-accent bg-accent/10"
-                    : "border-border-subtle hover:border-accent/30"
+                    ? "border-accent bg-accent-dim"
+                    : "border-border-subtle bg-bg-surface hover:border-border-accent",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                 )}
               >
-                <p className="font-medium text-text-primary">{b.label}</p>
+                <p className="font-medium text-text-primary text-sm">{b.label}</p>
+                <div className={cn(
+                  "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0",
+                  budgetRange?.min === b.value.min && budgetRange?.max === b.value.max ? "border-accent" : "border-text-muted/30"
+                )}>
+                  {budgetRange?.min === b.value.min && budgetRange?.max === b.value.max && (
+                    <div className="w-2.5 h-2.5 rounded-full bg-accent" />
+                  )}
+                </div>
               </button>
             ))}
           </div>

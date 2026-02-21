@@ -68,24 +68,25 @@ export interface SwitchData {
   _id?: string;
   brand: string;
   name: string;
+  slug?: string;
   type: "linear" | "tactile" | "clicky";
   actuationForceG: number;
-  bottomOutForceG: number;
+  bottomOutForceG?: number;
   actuationMm: number;
   totalTravelMm: number;
-  stemMaterial: string;
-  housingMaterial: string;
-  springType: string;
-  factoryLubed: boolean;
-  longPole: boolean;
-  soundPitch: "low" | "mid" | "high";
-  soundCharacter: "thocky" | "clacky" | "creamy" | "poppy" | "muted" | "crisp";
-  soundVolume: "quiet" | "medium" | "loud";
+  stemMaterial?: string;
+  housingMaterial?: string;
+  springType?: string;
+  factoryLubed?: boolean;
+  longPole?: boolean;
+  soundPitch?: "low" | "mid" | "high";
+  soundCharacter?: "thocky" | "clacky" | "creamy" | "poppy" | "muted" | "crisp";
+  soundVolume?: "quiet" | "medium" | "loud";
   pricePerSwitch: number;
-  communityRating: number;
-  popularFor: string[];
-  notes: string;
-  commonlyComparedTo: string[];
+  communityRating?: number;
+  popularFor?: string[];
+  notes?: string;
+  commonlyComparedTo?: string[];
   imageUrl?: string;
   productUrl?: string;
   soundSampleUrl?: string;
@@ -95,18 +96,43 @@ export interface KeyboardData {
   _id?: string;
   brand: string;
   name: string;
+  slug?: string;
   size: string;
-  mountingStyle: string;
-  plateMaterial: string;
+  mountingStyle?: string;
+  plateMaterial?: string;
   caseMaterial: string;
   hotSwap: boolean;
   wireless: boolean;
   rgb: boolean;
   priceUsd: number;
-  inStock: boolean;
-  notes: string;
+  inStock?: boolean;
+  notes?: string;
   imageUrl?: string;
   productUrl?: string;
+  connectivityType?: string;
+  batteryCapacity?: string;
+  weight?: string;
+  knob?: boolean;
+  qmkVia?: boolean;
+  hallEffect?: boolean;
+  pollingRate?: string;
+}
+
+export interface ProductData {
+  _id?: string;
+  category: string;
+  brand: string;
+  name: string;
+  slug: string;
+  priceUsd?: number;
+  originalPrice?: number;
+  imageUrl?: string;
+  imageUrls?: string[];
+  productUrl?: string;
+  tags?: string[];
+  specs?: Record<string, unknown>;
+  inStock?: boolean;
+  sourceUrl?: string;
 }
 
 export interface ComponentData {
@@ -131,7 +157,7 @@ export interface GlossaryTerm {
 // Vendor link types
 export interface VendorLink {
   _id?: string;
-  productType: "switch" | "keyboard" | "keycaps" | "stabilizer" | "accessory";
+  productType: "switch" | "keyboard" | "keycaps" | "stabilizer" | "accessory" | "mouse" | "deskmat" | "cable" | "pcb" | "lubricant" | "artisan" | "wrist-rest";
   productName: string;
   vendor: string;
   url: string;

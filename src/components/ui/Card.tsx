@@ -14,10 +14,11 @@ export function Card({ children, className, variant = "default", onClick }: Card
     <div
       onClick={onClick}
       className={cn(
-        "rounded-xl border",
-        variant === "default" && "bg-bg-surface border-border-default",
-        variant === "elevated" && "bg-bg-elevated border-border-default",
-        variant === "interactive" && "bg-bg-surface border-border-subtle hover:border-accent/30 cursor-pointer transition-colors",
+        "rounded-xl border relative",
+        variant === "default" && "bg-bg-surface border-border-default shadow-surface",
+        variant === "elevated" && "bg-bg-elevated border-border-default shadow-elevated",
+        variant === "interactive" &&
+          "bg-bg-surface border-border-subtle shadow-surface hover:border-border-accent hover:glow-accent cursor-pointer transition-[border-color,box-shadow] duration-200",
         onClick && "cursor-pointer",
         className
       )}

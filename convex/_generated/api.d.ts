@@ -16,6 +16,7 @@ import type * as groupBuys from "../groupBuys.js";
 import type * as imageGeneration from "../imageGeneration.js";
 import type * as internalFunctions from "../internalFunctions.js";
 import type * as keyboards from "../keyboards.js";
+import type * as products from "../products.js";
 import type * as savedBuilds from "../savedBuilds.js";
 import type * as seed from "../seed.js";
 import type * as switches from "../switches.js";
@@ -37,6 +38,7 @@ declare const fullApi: ApiFromModules<{
   imageGeneration: typeof imageGeneration;
   internalFunctions: typeof internalFunctions;
   keyboards: typeof keyboards;
+  products: typeof products;
   savedBuilds: typeof savedBuilds;
   seed: typeof seed;
   switches: typeof switches;

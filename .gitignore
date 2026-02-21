@@ -34,6 +34,13 @@ yarn-error.log*
 .env*
 !.env.local.example
 
+# screenshots
+/screenshots/
+/references/
+
+# scraped data
+src/data/scraped/
+
 # vercel
 .vercel
 

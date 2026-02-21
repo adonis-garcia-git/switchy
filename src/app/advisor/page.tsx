@@ -11,6 +11,9 @@ import { ChatMessage } from "@/components/ChatMessage";
 import { Button } from "@/components/ui/Button";
 import { LOADING_MESSAGES, PLACEHOLDER_QUERIES } from "@/lib/constants";
 import { getRandomItem } from "@/lib/utils";
+import { KeyboardViewer3D } from "@/components/3d/KeyboardViewer3D";
+import { buildDataToViewerConfig } from "@/lib/keyboard3d";
+import type { BuildData } from "@/lib/types";
 
 interface Message {
   role: "user" | "assistant";
@@ -191,13 +194,13 @@ function AdvisorContent() {
   }, []);
 
   return (
-    <div className="h-[calc(100vh-3.5rem)] lg:h-screen flex">
+    <div className="h-[calc(100vh-4rem)] flex">
       {/* Chat Panel */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="border-b border-border-default p-4 flex items-center justify-between shrink-0">
+        <div className="border-b border-border-default bg-bg-surface/80 backdrop-blur-sm p-4 flex items-center justify-between shrink-0">
           <div>
-            <h1 className="text-lg font-semibold text-text-primary">Build Advisor</h1>
+            <h1 className="text-lg font-semibold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight">Build Advisor</h1>
             <p className="text-xs text-text-muted">AI-powered keyboard recommendations</p>
           </div>
           <div className="flex items-center gap-2">
@@ -211,20 +214,27 @@ function AdvisorContent() {
               </Button>
             )}
             <Button variant="ghost" size="sm" onClick={handleNewConversation}>
+              <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
               New Chat
             </Button>
           </div>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-4 bg-bg-primary">
           {messages.length === 0 && !loading && (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <p className="text-3xl mb-4">⌨️</p>
-              <h2 className="text-xl font-semibold text-text-primary mb-2">
+            <div className="flex flex-col items-center justify-center h-full text-center px-4">
+              <div className="w-14 h-14 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-5">
+                <svg className="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-semibold text-text-primary mb-2 font-[family-name:var(--font-outfit)] tracking-tight">
                 What are you looking for?
               </h2>
-              <p className="text-sm text-text-muted max-w-md mb-6">
+              <p className="text-sm text-text-muted max-w-md mb-8 leading-relaxed">
                 Describe your ideal keyboard — the sound, feel, size, or budget — and I&apos;ll recommend a complete build.
               </p>
               <div className="flex flex-wrap justify-center gap-2">
@@ -232,7 +242,7 @@ function AdvisorContent() {
                   <button
                     key={suggestion}
                     onClick={() => handleSend(suggestion)}
-                    className="px-3 py-1.5 rounded-full border border-border-subtle text-sm text-text-secondary hover:text-accent hover:border-accent/30 transition-colors"
+                    className="px-4 py-2 rounded-full border border-border-subtle bg-bg-surface text-sm text-text-secondary hover:text-accent hover:border-border-accent transition-[border-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
                   >
                     {suggestion}
                   </button>
@@ -254,11 +264,18 @@ function AdvisorContent() {
 
           {loading && (
             <div className="flex gap-3 mb-4">
-              <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent text-sm shrink-0">
-                AI
+              <div className="w-8 h-8 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center text-accent text-xs font-semibold shrink-0">
+                S
               </div>
-              <div className="bg-bg-elevated rounded-2xl rounded-bl-md px-4 py-3">
-                <p className="text-sm text-text-secondary animate-pulse">{loadingMessage}</p>
+              <div className="bg-bg-elevated border-l-2 border-accent rounded-2xl rounded-bl-sm px-4 py-3">
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse [animation-delay:0.15s]" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse [animation-delay:0.3s]" />
+                  </div>
+                  <p className="text-sm text-text-secondary">{loadingMessage}</p>
+                </div>
               </div>
             </div>
           )}
@@ -273,7 +290,7 @@ function AdvisorContent() {
         </div>
 
         {/* Input */}
-        <div className="border-t border-border-default p-4 shrink-0">
+        <div className="border-t border-border-default bg-bg-surface p-4 shrink-0">
           <form onSubmit={handleSubmit} className="flex gap-2">
             <textarea
               ref={inputRef}
@@ -282,9 +299,12 @@ function AdvisorContent() {
               onKeyDown={handleKeyDown}
               placeholder={messages.length === 0 ? PLACEHOLDER_QUERIES[placeholderIndex] : "Ask a follow-up question or request changes..."}
               rows={1}
-              className="flex-1 bg-bg-elevated border border-border-default rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-muted/50 resize-none focus:border-accent/50 transition-colors"
+              className="flex-1 bg-bg-primary border border-border-default rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-muted/50 resize-none focus:border-accent/50 focus:shadow-[0_0_0_3px_rgba(232,89,12,0.08)] transition-[border-color,box-shadow] duration-150 focus:outline-none"
             />
             <Button type="submit" disabled={loading || !input.trim()}>
+              <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
               Send
             </Button>
           </form>
@@ -293,18 +313,25 @@ function AdvisorContent() {
 
       {/* Build Preview Panel */}
       {showBuildPanel && build && (
-        <div className="hidden lg:block w-[420px] border-l border-border-default overflow-y-auto shrink-0">
+        <div className="hidden lg:block w-[420px] border-l border-border-default overflow-y-auto shrink-0 bg-bg-surface">
           <div className="p-4">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wider">Current Build</h2>
+              <h2 className="text-xs font-semibold text-text-muted uppercase tracking-wider font-[family-name:var(--font-outfit)]">Current Build</h2>
               <button
                 onClick={() => setShowBuildPanel(false)}
-                className="text-text-muted hover:text-text-primary"
+                className="text-text-muted hover:text-text-primary hover:bg-bg-elevated rounded-md p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
+            </div>
+            <div className="mb-4">
+              <KeyboardViewer3D
+                config={buildDataToViewerConfig(build as unknown as BuildData)}
+                height="220px"
+                autoRotate
+              />
             </div>
             <BuildCard
               build={build as never}
@@ -313,7 +340,9 @@ function AdvisorContent() {
               saving={saving}
             />
             {saved && (
-              <p className="text-sm text-green-400 text-center mt-3">Build saved!</p>
+              <div className="mt-3 px-3 py-2 rounded-lg bg-accent/10 border border-accent/20 text-center">
+                <p className="text-sm text-accent font-medium">Build saved!</p>
+              </div>
             )}
           </div>
         </div>
@@ -325,7 +354,7 @@ function AdvisorContent() {
 export default function AdvisorPage() {
   return (
     <Suspense fallback={
-      <div className="h-screen flex items-center justify-center">
+      <div className="h-[calc(100vh-4rem)] flex items-center justify-center bg-bg-primary">
         <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
       </div>
     }>

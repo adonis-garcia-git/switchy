@@ -65,8 +65,8 @@ export const list = query({
     }
 
     // Sort
-    const sortBy = args.sortBy || "communityRating";
-    const sortOrder = args.sortOrder || "desc";
+    const sortBy = args.sortBy || "name";
+    const sortOrder = args.sortOrder || "asc";
     switches.sort((a, b) => {
       const aVal: unknown = a[sortBy as keyof typeof a];
       const bVal: unknown = b[sortBy as keyof typeof b];
@@ -76,8 +76,8 @@ export const list = query({
           : bVal.localeCompare(aVal);
       }
       return sortOrder === "asc"
-        ? Number(aVal) - Number(bVal)
-        : Number(bVal) - Number(aVal);
+        ? Number(aVal ?? 0) - Number(bVal ?? 0)
+        : Number(bVal ?? 0) - Number(aVal ?? 0);
     });
 
     return switches;

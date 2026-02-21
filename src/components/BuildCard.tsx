@@ -80,22 +80,22 @@ function ComponentRow({
 
   return (
     <div>
-      <div className="flex items-start gap-3 p-3 rounded-lg bg-bg-primary/50">
+      <div className="flex items-start gap-3 p-3 rounded-lg bg-bg-primary border border-border-subtle">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs text-text-muted uppercase tracking-wider">
+            <span className="text-[10px] text-text-muted uppercase tracking-wider font-medium">
               {label}
             </span>
           </div>
-          <p className="font-medium text-text-primary">{component.name}</p>
+          <p className="font-medium text-text-primary text-sm">{component.name}</p>
           {component.quantity && (
             <p className="text-xs text-text-muted font-mono mt-0.5">
               {component.quantity}x @ {formatPrice(component.priceEach || 0)} each
             </p>
           )}
-          <p className="text-xs text-text-secondary mt-1">{component.reason}</p>
+          <p className="text-xs text-text-secondary mt-1 leading-relaxed">{component.reason}</p>
         </div>
-        <span className="font-mono text-accent font-semibold whitespace-nowrap">
+        <span className="font-mono text-accent font-semibold whitespace-nowrap text-sm">
           {formatPriceWhole(totalPrice)}
         </span>
       </div>
@@ -177,11 +177,11 @@ export function BuildCard({
 
   if (build.rawResponse) {
     return (
-      <div className="rounded-xl border border-border-default bg-bg-surface p-6">
-        <h2 className="text-xl font-bold text-text-primary mb-2">
+      <div className="rounded-xl border border-border-default bg-bg-surface p-6 shadow-surface">
+        <h2 className="text-xl font-bold text-text-primary mb-2 font-[family-name:var(--font-outfit)] tracking-tight">
           {build.buildName}
         </h2>
-        <p className="text-text-secondary whitespace-pre-wrap">
+        <p className="text-text-secondary whitespace-pre-wrap text-sm leading-relaxed">
           {build.rawResponse}
         </p>
       </div>
@@ -189,7 +189,7 @@ export function BuildCard({
   }
 
   return (
-    <div className="rounded-xl border border-border-default bg-bg-surface overflow-hidden">
+    <div className="rounded-xl border border-border-default bg-bg-surface overflow-hidden shadow-surface">
       {/* Build Visualization */}
       {imageUrl && (
         <div className="p-4 pb-0">
@@ -201,10 +201,10 @@ export function BuildCard({
       <div className="p-6 border-b border-border-subtle">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-xl font-bold text-text-primary">
+            <h2 className="text-xl font-bold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight">
               {build.buildName}
             </h2>
-            <p className="text-text-secondary mt-1">{build.summary}</p>
+            <p className="text-text-secondary mt-1 text-sm leading-relaxed">{build.summary}</p>
           </div>
           <div className="text-right shrink-0">
             <p className="text-2xl font-bold font-mono text-accent">
@@ -222,8 +222,8 @@ export function BuildCard({
           </div>
         </div>
         {build.soundProfileExpected && (
-          <div className="mt-3 px-3 py-2 rounded-lg bg-accent-dim/50 border border-accent/20">
-            <span className="text-xs text-accent uppercase tracking-wider font-semibold">
+          <div className="mt-3 px-3 py-2.5 rounded-lg bg-accent-dim border border-accent/20">
+            <span className="text-[10px] text-accent uppercase tracking-wider font-semibold">
               Expected Sound
             </span>
             <p className="text-sm text-text-primary mt-0.5">
@@ -235,7 +235,7 @@ export function BuildCard({
 
       {/* Components */}
       <div className="p-6 space-y-2">
-        <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">
+        <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 font-[family-name:var(--font-outfit)]">
           Components
         </h3>
         {build.components.keyboardKit && (
@@ -264,14 +264,14 @@ export function BuildCard({
       {/* Mods */}
       {build.recommendedMods && build.recommendedMods.length > 0 && (
         <div className="px-6 pb-6">
-          <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">
+          <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 font-[family-name:var(--font-outfit)]">
             Recommended Mods
           </h3>
           <div className="space-y-2">
             {build.recommendedMods.map((mod, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between p-2.5 rounded-lg bg-bg-primary/50"
+                className="flex items-center justify-between p-3 rounded-lg bg-bg-primary border border-border-subtle"
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
@@ -303,7 +303,7 @@ export function BuildCard({
       {/* Notes */}
       {build.notes && (
         <div className="px-6 pb-6">
-          <p className="text-sm text-text-secondary italic">{build.notes}</p>
+          <p className="text-sm text-text-secondary italic leading-relaxed">{build.notes}</p>
         </div>
       )}
 
@@ -314,7 +314,7 @@ export function BuildCard({
             <button
               onClick={onSave}
               disabled={saving}
-              className="px-4 py-2 rounded-lg bg-accent text-bg-primary font-medium text-sm hover:bg-accent-hover transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-lg bg-accent text-bg-primary font-semibold text-sm hover:bg-accent-hover shadow-[0_1px_8px_rgba(232,89,12,0.15)] transition-[background-color,transform] duration-150 disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
             >
               {saving ? "Saving..." : "Save Build"}
             </button>
@@ -323,19 +323,19 @@ export function BuildCard({
             <>
               <button
                 onClick={() => onTweak("Make it cheaper")}
-                className="px-3 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-text-primary hover:border-border-default/60 transition-colors"
+                className="px-3 py-2 rounded-lg border border-border-default bg-bg-elevated text-text-secondary text-sm hover:text-text-primary hover:border-border-accent transition-[border-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
               >
                 Make it cheaper
               </button>
               <button
                 onClick={() => onTweak("Make it thockier")}
-                className="px-3 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-text-primary hover:border-border-default/60 transition-colors"
+                className="px-3 py-2 rounded-lg border border-border-default bg-bg-elevated text-text-secondary text-sm hover:text-text-primary hover:border-border-accent transition-[border-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
               >
                 Make it thockier
               </button>
               <button
                 onClick={() => onTweak("Make it wireless")}
-                className="px-3 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-text-primary hover:border-border-default/60 transition-colors"
+                className="px-3 py-2 rounded-lg border border-border-default bg-bg-elevated text-text-secondary text-sm hover:text-text-primary hover:border-border-accent transition-[border-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
               >
                 Make it wireless
               </button>
@@ -347,14 +347,14 @@ export function BuildCard({
             isPublic && shareSlug ? (
               <button
                 onClick={() => copyToClipboard(`${window.location.origin}/builds/shared/${shareSlug}`, "link")}
-                className="px-3 py-2 rounded-lg border border-accent/30 text-accent text-sm hover:bg-accent/10 transition-colors"
+                className="px-3 py-2 rounded-lg border border-accent/30 text-accent text-sm hover:bg-accent/10 transition-[background-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
               >
                 {copied === "link" ? "Copied!" : "Copy Link"}
               </button>
             ) : (
               <button
                 onClick={onShare}
-                className="px-3 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-text-primary hover:border-border-default/60 transition-colors"
+                className="px-3 py-2 rounded-lg border border-border-default bg-bg-elevated text-text-secondary text-sm hover:text-text-primary hover:border-border-accent transition-[border-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
               >
                 Share
               </button>
@@ -366,7 +366,7 @@ export function BuildCard({
             <button
               onClick={onVisualize}
               disabled={generating}
-              className="px-3 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-text-primary hover:border-border-default/60 transition-colors disabled:opacity-50"
+              className="px-3 py-2 rounded-lg border border-border-default bg-bg-elevated text-text-secondary text-sm hover:text-text-primary hover:border-border-accent transition-[border-color,color] duration-150 disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
             >
               {generating ? "Generating..." : "Visualize"}
             </button>
@@ -375,7 +375,7 @@ export function BuildCard({
           {/* Copy Markdown */}
           <button
             onClick={() => copyToClipboard(buildToMarkdown(build), "markdown")}
-            className="px-3 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-text-primary hover:border-border-default/60 transition-colors"
+            className="px-3 py-2 rounded-lg border border-border-default bg-bg-elevated text-text-secondary text-sm hover:text-text-primary hover:border-border-accent transition-[border-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
           >
             {copied === "markdown" ? "Copied!" : "Copy as Markdown"}
           </button>

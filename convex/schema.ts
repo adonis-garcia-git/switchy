@@ -5,37 +5,39 @@ export default defineSchema({
   switches: defineTable({
     brand: v.string(),
     name: v.string(),
+    slug: v.optional(v.string()),
     type: v.union(v.literal("linear"), v.literal("tactile"), v.literal("clicky")),
     actuationForceG: v.number(),
-    bottomOutForceG: v.number(),
+    bottomOutForceG: v.optional(v.number()),
     actuationMm: v.number(),
     totalTravelMm: v.number(),
-    stemMaterial: v.string(),
-    housingMaterial: v.string(),
-    springType: v.string(),
-    factoryLubed: v.boolean(),
-    longPole: v.boolean(),
-    soundPitch: v.union(v.literal("low"), v.literal("mid"), v.literal("high")),
-    soundCharacter: v.union(
+    stemMaterial: v.optional(v.string()),
+    housingMaterial: v.optional(v.string()),
+    springType: v.optional(v.string()),
+    factoryLubed: v.optional(v.boolean()),
+    longPole: v.optional(v.boolean()),
+    soundPitch: v.optional(v.union(v.literal("low"), v.literal("mid"), v.literal("high"))),
+    soundCharacter: v.optional(v.union(
       v.literal("thocky"),
       v.literal("clacky"),
       v.literal("creamy"),
       v.literal("poppy"),
       v.literal("muted"),
       v.literal("crisp")
-    ),
-    soundVolume: v.union(v.literal("quiet"), v.literal("medium"), v.literal("loud")),
+    )),
+    soundVolume: v.optional(v.union(v.literal("quiet"), v.literal("medium"), v.literal("loud"))),
     pricePerSwitch: v.number(),
-    communityRating: v.number(),
-    popularFor: v.array(v.string()),
-    notes: v.string(),
-    commonlyComparedTo: v.array(v.string()),
+    communityRating: v.optional(v.number()),
+    popularFor: v.optional(v.array(v.string())),
+    notes: v.optional(v.string()),
+    commonlyComparedTo: v.optional(v.array(v.string())),
     imageUrl: v.optional(v.string()),
     productUrl: v.optional(v.string()),
     soundSampleUrl: v.optional(v.string()),
   })
     .index("by_type", ["type"])
     .index("by_brand", ["brand"])
+    .index("by_slug", ["slug"])
     .index("by_soundCharacter", ["soundCharacter"])
     .index("by_soundPitch", ["soundPitch"])
     .searchIndex("search_name", { searchField: "name" }),
@@ -59,20 +61,49 @@ export default defineSchema({
   keyboards: defineTable({
     brand: v.string(),
     name: v.string(),
+    slug: v.optional(v.string()),
     size: v.string(),
-    mountingStyle: v.string(),
-    plateMaterial: v.string(),
+    mountingStyle: v.optional(v.string()),
+    plateMaterial: v.optional(v.string()),
     caseMaterial: v.string(),
     hotSwap: v.boolean(),
     wireless: v.boolean(),
     rgb: v.boolean(),
     priceUsd: v.number(),
-    inStock: v.boolean(),
-    notes: v.string(),
+    inStock: v.optional(v.boolean()),
+    notes: v.optional(v.string()),
+    connectivityType: v.optional(v.string()),
+    batteryCapacity: v.optional(v.string()),
+    weight: v.optional(v.string()),
+    knob: v.optional(v.boolean()),
+    qmkVia: v.optional(v.boolean()),
+    hallEffect: v.optional(v.boolean()),
+    pollingRate: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
     productUrl: v.optional(v.string()),
   })
     .index("by_size", ["size"])
+    .index("by_brand", ["brand"])
+    .index("by_slug", ["slug"])
+    .searchIndex("search_name", { searchField: "name" }),
+
+  products: defineTable({
+    category: v.string(),
+    brand: v.string(),
+    name: v.string(),
+    slug: v.string(),
+    priceUsd: v.optional(v.number()),
+    originalPrice: v.optional(v.number()),
+    imageUrl: v.optional(v.string()),
+    imageUrls: v.optional(v.array(v.string())),
+    productUrl: v.optional(v.string()),
+    tags: v.optional(v.array(v.string())),
+    specs: v.optional(v.any()),
+    inStock: v.optional(v.boolean()),
+    sourceUrl: v.optional(v.string()),
+  })
+    .index("by_category", ["category"])
+    .index("by_slug", ["slug"])
     .index("by_brand", ["brand"])
     .searchIndex("search_name", { searchField: "name" }),
 
@@ -174,7 +205,14 @@ export default defineSchema({
       v.literal("keyboard"),
       v.literal("keycaps"),
       v.literal("stabilizer"),
-      v.literal("accessory")
+      v.literal("accessory"),
+      v.literal("mouse"),
+      v.literal("deskmat"),
+      v.literal("cable"),
+      v.literal("pcb"),
+      v.literal("lubricant"),
+      v.literal("artisan"),
+      v.literal("wrist-rest")
     ),
     productName: v.string(),
     vendor: v.string(),

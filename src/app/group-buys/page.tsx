@@ -6,6 +6,7 @@ import { useUser, SignInButton } from "@clerk/nextjs";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import { GroupBuyEntry } from "@/components/GroupBuyEntry";
+import { Button } from "@/components/ui/Button";
 import { formatPriceWhole } from "@/lib/utils";
 
 type GroupBuyStatus = "ordered" | "in_production" | "shipped" | "delivered";
@@ -69,15 +70,15 @@ export default function GroupBuysPage() {
   if (!isSignedIn) {
     return (
       <div className="min-h-screen">
-                <div className="max-w-3xl mx-auto px-4 py-16 text-center">
-          <h1 className="text-2xl font-bold mb-4">Group Buy Tracker</h1>
-          <p className="text-text-muted mb-6">
+        <div className="max-w-3xl mx-auto px-4 py-16 text-center">
+          <h1 className="text-2xl font-bold font-[family-name:var(--font-outfit)] tracking-tight mb-4">
+            Group Buy Tracker
+          </h1>
+          <p className="text-text-secondary mb-6 leading-relaxed">
             Sign in to track your pending group buys and orders.
           </p>
           <SignInButton mode="modal">
-            <button className="px-6 py-2.5 rounded-lg bg-accent text-bg-primary font-semibold hover:bg-accent-hover transition-colors">
-              Sign In
-            </button>
+            <Button>Sign In</Button>
           </SignInButton>
         </div>
       </div>
@@ -86,10 +87,12 @@ export default function GroupBuysPage() {
 
   return (
     <div className="min-h-screen">
-            <main className="max-w-3xl mx-auto px-4 py-8">
+      <main className="max-w-3xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold">Group Buy Tracker</h1>
+            <h1 className="text-2xl font-bold font-[family-name:var(--font-outfit)] tracking-tight">
+              Group Buy Tracker
+            </h1>
             {activeEntries.length > 0 && (
               <p className="text-sm text-text-muted mt-1">
                 {activeEntries.length} active ·{" "}
@@ -100,23 +103,24 @@ export default function GroupBuysPage() {
               </p>
             )}
           </div>
-          <button
+          <Button
+            variant={showForm ? "secondary" : "primary"}
+            size="sm"
             onClick={() => setShowForm(!showForm)}
-            className="px-4 py-2 rounded-lg bg-accent text-bg-primary text-sm font-semibold hover:bg-accent-hover transition-colors"
           >
             {showForm ? "Cancel" : "+ Add Entry"}
-          </button>
+          </Button>
         </div>
 
         {/* Add Form */}
         {showForm && (
           <form
             onSubmit={handleSubmit}
-            className="rounded-xl border border-border-default bg-bg-surface p-5 mb-6 space-y-4"
+            className="rounded-xl border border-border-default bg-bg-surface p-5 mb-6 space-y-4 shadow-surface"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs text-text-muted uppercase tracking-wider mb-1">
+                <label className="block text-xs text-text-muted uppercase tracking-wider font-semibold mb-1.5">
                   Product Name
                 </label>
                 <input
@@ -125,12 +129,12 @@ export default function GroupBuysPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, productName: e.target.value })
                   }
-                  className="w-full bg-bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary"
+                  className="w-full bg-bg-elevated border border-border-default rounded-lg px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted/60 focus:border-border-accent transition-[border-color,box-shadow] duration-150"
                   placeholder="Keychron Q1 Pro"
                 />
               </div>
               <div>
-                <label className="block text-xs text-text-muted uppercase tracking-wider mb-1">
+                <label className="block text-xs text-text-muted uppercase tracking-wider font-semibold mb-1.5">
                   Vendor
                 </label>
                 <input
@@ -139,12 +143,12 @@ export default function GroupBuysPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, vendor: e.target.value })
                   }
-                  className="w-full bg-bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary"
+                  className="w-full bg-bg-elevated border border-border-default rounded-lg px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted/60 focus:border-border-accent transition-[border-color,box-shadow] duration-150"
                   placeholder="Keychron.com"
                 />
               </div>
               <div>
-                <label className="block text-xs text-text-muted uppercase tracking-wider mb-1">
+                <label className="block text-xs text-text-muted uppercase tracking-wider font-semibold mb-1.5">
                   Order Date
                 </label>
                 <input
@@ -154,11 +158,11 @@ export default function GroupBuysPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, orderDate: e.target.value })
                   }
-                  className="w-full bg-bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary"
+                  className="w-full bg-bg-elevated border border-border-default rounded-lg px-3 py-2.5 text-sm text-text-primary focus:border-border-accent transition-[border-color,box-shadow] duration-150"
                 />
               </div>
               <div>
-                <label className="block text-xs text-text-muted uppercase tracking-wider mb-1">
+                <label className="block text-xs text-text-muted uppercase tracking-wider font-semibold mb-1.5">
                   Est. Ship Date
                 </label>
                 <input
@@ -171,11 +175,11 @@ export default function GroupBuysPage() {
                       estimatedShipDate: e.target.value,
                     })
                   }
-                  className="w-full bg-bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary"
+                  className="w-full bg-bg-elevated border border-border-default rounded-lg px-3 py-2.5 text-sm text-text-primary focus:border-border-accent transition-[border-color,box-shadow] duration-150"
                 />
               </div>
               <div>
-                <label className="block text-xs text-text-muted uppercase tracking-wider mb-1">
+                <label className="block text-xs text-text-muted uppercase tracking-wider font-semibold mb-1.5">
                   Cost ($)
                 </label>
                 <input
@@ -186,12 +190,12 @@ export default function GroupBuysPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, cost: e.target.value })
                   }
-                  className="w-full bg-bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary"
+                  className="w-full bg-bg-elevated border border-border-default rounded-lg px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted/60 focus:border-border-accent transition-[border-color,box-shadow] duration-150"
                   placeholder="199.00"
                 />
               </div>
               <div>
-                <label className="block text-xs text-text-muted uppercase tracking-wider mb-1">
+                <label className="block text-xs text-text-muted uppercase tracking-wider font-semibold mb-1.5">
                   Product Type
                 </label>
                 <select
@@ -202,7 +206,7 @@ export default function GroupBuysPage() {
                       productType: e.target.value as ProductType,
                     })
                   }
-                  className="w-full bg-bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary"
+                  className="w-full bg-bg-elevated border border-border-default rounded-lg px-3 py-2.5 text-sm text-text-primary focus:border-border-accent transition-[border-color,box-shadow] duration-150"
                 >
                   <option value="keyboard">Keyboard</option>
                   <option value="switches">Switches</option>
@@ -212,7 +216,7 @@ export default function GroupBuysPage() {
               </div>
             </div>
             <div>
-              <label className="block text-xs text-text-muted uppercase tracking-wider mb-1">
+              <label className="block text-xs text-text-muted uppercase tracking-wider font-semibold mb-1.5">
                 Notes
               </label>
               <textarea
@@ -221,16 +225,13 @@ export default function GroupBuysPage() {
                   setFormData({ ...formData, notes: e.target.value })
                 }
                 rows={2}
-                className="w-full bg-bg-elevated border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary resize-none"
+                className="w-full bg-bg-elevated border border-border-default rounded-lg px-3 py-2.5 text-sm text-text-primary resize-none placeholder:text-text-muted/60 focus:border-border-accent transition-[border-color,box-shadow] duration-150"
                 placeholder="Optional notes..."
               />
             </div>
-            <button
-              type="submit"
-              className="px-5 py-2 rounded-lg bg-accent text-bg-primary font-semibold text-sm hover:bg-accent-hover transition-colors"
-            >
+            <Button type="submit" size="sm">
               Add Group Buy
-            </button>
+            </Button>
           </form>
         )}
 
@@ -251,7 +252,7 @@ export default function GroupBuysPage() {
         {/* Delivered */}
         {deliveredEntries.length > 0 && (
           <div>
-            <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">
+            <h2 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 font-[family-name:var(--font-outfit)]">
               Delivered
             </h2>
             <div className="space-y-3 opacity-60">

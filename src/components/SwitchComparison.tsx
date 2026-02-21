@@ -3,6 +3,7 @@
 import { SWITCH_TYPE_COLORS } from "@/lib/constants";
 import { cn, formatPrice } from "@/lib/utils";
 import { SoundProfile } from "./SoundProfile";
+import { Badge } from "./ui/Badge";
 
 interface SwitchData {
   _id: string;
@@ -10,21 +11,21 @@ interface SwitchData {
   name: string;
   type: "linear" | "tactile" | "clicky";
   actuationForceG: number;
-  bottomOutForceG: number;
+  bottomOutForceG?: number;
   actuationMm: number;
   totalTravelMm: number;
-  stemMaterial: string;
-  housingMaterial: string;
-  springType: string;
-  factoryLubed: boolean;
-  longPole: boolean;
-  soundPitch: "low" | "mid" | "high";
-  soundCharacter: string;
-  soundVolume: "quiet" | "medium" | "loud";
+  stemMaterial?: string;
+  housingMaterial?: string;
+  springType?: string;
+  factoryLubed?: boolean;
+  longPole?: boolean;
+  soundPitch?: "low" | "mid" | "high";
+  soundCharacter?: string;
+  soundVolume?: "quiet" | "medium" | "loud";
   pricePerSwitch: number;
-  communityRating: number;
-  popularFor: string[];
-  notes: string;
+  communityRating?: number;
+  popularFor?: string[];
+  notes?: string;
 }
 
 interface SwitchComparisonProps {
@@ -36,11 +37,13 @@ function CompareRow({
   values,
   highlight,
   mono,
+  isAlt,
 }: {
   label: string;
   values: (string | number | boolean)[];
   highlight?: "min" | "max";
   mono?: boolean;
+  isAlt?: boolean;
 }) {
   let bestIndex = -1;
   if (highlight && typeof values[0] === "number") {
@@ -53,23 +56,34 @@ function CompareRow({
   }
 
   return (
-    <div className="grid gap-4" style={{ gridTemplateColumns: `160px repeat(${values.length}, 1fr)` }}>
-      <div className="text-xs text-text-muted uppercase tracking-wider py-2 flex items-center">
+    <div
+      className={cn(
+        "grid gap-0",
+        isAlt ? "bg-bg-elevated/40" : "bg-transparent"
+      )}
+      style={{
+        gridTemplateColumns: `180px repeat(${values.length}, 1fr)`,
+      }}
+    >
+      <div className="text-xs text-text-muted uppercase tracking-wider py-3 px-4 flex items-center border-r border-border-subtle">
         {label}
       </div>
       {values.map((val, i) => (
         <div
           key={i}
           className={cn(
-            "py-2 px-3 rounded",
-            i === bestIndex && "bg-accent-dim/50",
-            mono && "font-mono"
+            "py-3 px-4 flex items-center",
+            i < values.length - 1 && "border-r border-border-subtle",
+            i === bestIndex && "bg-accent-dim/30"
           )}
         >
           <span
             className={cn(
               "text-sm",
-              i === bestIndex ? "text-accent font-semibold" : "text-text-primary"
+              mono && "font-mono",
+              i === bestIndex
+                ? "text-accent font-semibold"
+                : "text-text-primary"
             )}
           >
             {typeof val === "boolean" ? (val ? "Yes" : "No") : val}
@@ -83,160 +97,185 @@ function CompareRow({
 export function SwitchComparison({ switches }: SwitchComparisonProps) {
   if (switches.length === 0) {
     return (
-      <div className="text-center py-12 text-text-muted">
+      <div className="text-center py-16 text-text-muted">
         Select switches to compare
       </div>
     );
   }
 
+  const specs: {
+    label: string;
+    values: (string | number | boolean)[];
+    highlight?: "min" | "max";
+    mono?: boolean;
+  }[] = [
+    {
+      label: "Actuation Force",
+      values: switches.map((s) => `${s.actuationForceG}g`),
+    },
+    {
+      label: "Bottom Out Force",
+      values: switches.map((s) => s.bottomOutForceG != null ? `${s.bottomOutForceG}g` : "N/A"),
+    },
+    {
+      label: "Actuation Point",
+      values: switches.map((s) => `${s.actuationMm}mm`),
+    },
+    {
+      label: "Total Travel",
+      values: switches.map((s) => `${s.totalTravelMm}mm`),
+    },
+    {
+      label: "Stem Material",
+      values: switches.map((s) => s.stemMaterial ?? "N/A"),
+    },
+    {
+      label: "Housing",
+      values: switches.map((s) => s.housingMaterial ?? "N/A"),
+    },
+    {
+      label: "Spring Type",
+      values: switches.map((s) => s.springType ?? "N/A"),
+    },
+    {
+      label: "Factory Lubed",
+      values: switches.map((s) => s.factoryLubed != null ? s.factoryLubed : "N/A"),
+    },
+    {
+      label: "Long Pole",
+      values: switches.map((s) => s.longPole != null ? s.longPole : "N/A"),
+    },
+    {
+      label: "Price",
+      values: switches.map((s) => s.pricePerSwitch),
+      highlight: "min" as const,
+      mono: true,
+    },
+    {
+      label: "Rating",
+      values: switches.map((s) => s.communityRating ?? 0),
+      highlight: "max" as const,
+      mono: true,
+    },
+  ];
+
   return (
-    <div className="space-y-1">
-      {/* Header */}
+    <div className="space-y-8">
+      {/* Column headers */}
       <div
-        className="grid gap-4 mb-4"
-        style={{ gridTemplateColumns: `160px repeat(${switches.length}, 1fr)` }}
+        className="grid gap-0"
+        style={{
+          gridTemplateColumns: `180px repeat(${switches.length}, 1fr)`,
+        }}
       >
         <div />
-        {switches.map((sw) => {
-          const colors = SWITCH_TYPE_COLORS[sw.type];
-          return (
-            <div key={sw._id} className="text-center p-3 rounded-lg bg-bg-surface border border-border-subtle">
-              <p className="text-xs text-text-muted">{sw.brand}</p>
-              <p className="font-semibold text-text-primary">{sw.name}</p>
-              <span
-                className={cn(
-                  "inline-block mt-1 px-2 py-0.5 rounded text-xs font-semibold border",
-                  colors.bg,
-                  colors.text,
-                  colors.border
-                )}
-              >
+        {switches.map((sw) => (
+          <div
+            key={sw._id}
+            className="text-center p-4 bg-bg-surface rounded-xl border border-border-subtle mx-1"
+          >
+            <p className="text-[10px] text-text-muted uppercase tracking-wider mb-1">
+              {sw.brand}
+            </p>
+            <p className="font-[family-name:var(--font-outfit)] font-semibold text-text-primary tracking-tight">
+              {sw.name}
+            </p>
+            <div className="mt-2">
+              <Badge variant={sw.type} size="sm">
                 {sw.type}
-              </span>
+              </Badge>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
 
-      {/* Specs */}
-      <div className="space-y-px rounded-lg overflow-hidden border border-border-subtle">
-        <div className="bg-bg-surface/50 px-2">
-          <CompareRow
-            label="Actuation Force"
-            values={switches.map((s) => `${s.actuationForceG}g`)}
-          />
-        </div>
-        <div className="bg-bg-elevated/30 px-2">
-          <CompareRow
-            label="Bottom Out"
-            values={switches.map((s) => `${s.bottomOutForceG}g`)}
-          />
-        </div>
-        <div className="bg-bg-surface/50 px-2">
-          <CompareRow
-            label="Actuation Point"
-            values={switches.map((s) => `${s.actuationMm}mm`)}
-          />
-        </div>
-        <div className="bg-bg-elevated/30 px-2">
-          <CompareRow
-            label="Total Travel"
-            values={switches.map((s) => `${s.totalTravelMm}mm`)}
-          />
-        </div>
-        <div className="bg-bg-surface/50 px-2">
-          <CompareRow
-            label="Stem Material"
-            values={switches.map((s) => s.stemMaterial)}
-          />
-        </div>
-        <div className="bg-bg-elevated/30 px-2">
-          <CompareRow
-            label="Housing"
-            values={switches.map((s) => s.housingMaterial)}
-          />
-        </div>
-        <div className="bg-bg-surface/50 px-2">
-          <CompareRow
-            label="Spring Type"
-            values={switches.map((s) => s.springType)}
-          />
-        </div>
-        <div className="bg-bg-elevated/30 px-2">
-          <CompareRow
-            label="Factory Lubed"
-            values={switches.map((s) => s.factoryLubed)}
-          />
-        </div>
-        <div className="bg-bg-surface/50 px-2">
-          <CompareRow
-            label="Long Pole"
-            values={switches.map((s) => s.longPole)}
-          />
-        </div>
-        <div className="bg-bg-elevated/30 px-2">
-          <CompareRow
-            label="Price"
-            values={switches.map((s) => s.pricePerSwitch)}
-            highlight="min"
-            mono
-          />
-        </div>
-        <div className="bg-bg-surface/50 px-2">
-          <CompareRow
-            label="Rating"
-            values={switches.map((s) => s.communityRating)}
-            highlight="max"
-            mono
-          />
+      {/* Specs table */}
+      <div className="rounded-xl overflow-hidden border border-border-default">
+        <div className="divide-y divide-border-subtle">
+          {specs.map((spec, idx) => (
+            <CompareRow
+              key={spec.label}
+              label={spec.label}
+              values={
+                spec.mono && spec.highlight
+                  ? spec.values.map((v) =>
+                      typeof v === "number"
+                        ? spec.label === "Price"
+                          ? formatPrice(v)
+                          : `${v.toFixed(1)}/5.0`
+                        : v
+                    )
+                  : spec.values
+              }
+              highlight={spec.highlight}
+              mono={spec.mono}
+              isAlt={idx % 2 === 1}
+            />
+          ))}
         </div>
       </div>
 
       {/* Sound Profiles */}
-      <div className="mt-6">
-        <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">
+      <div>
+        <h3 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">
           Sound Profiles
         </h3>
         <div
           className="grid gap-4"
-          style={{ gridTemplateColumns: `repeat(${switches.length}, 1fr)` }}
+          style={{
+            gridTemplateColumns: `repeat(${switches.length}, 1fr)`,
+          }}
         >
           {switches.map((sw) => (
             <div
               key={sw._id}
-              className="p-4 rounded-lg bg-bg-surface border border-border-subtle"
+              className="p-4 rounded-xl bg-bg-surface border border-border-subtle"
             >
-              <p className="text-xs text-text-muted mb-2">{sw.brand} {sw.name}</p>
-              <SoundProfile
-                pitch={sw.soundPitch}
-                volume={sw.soundVolume}
-                character={sw.soundCharacter}
-              />
+              <p className="text-xs text-text-muted mb-3">
+                {sw.brand} {sw.name}
+              </p>
+              {sw.soundPitch && sw.soundVolume && sw.soundCharacter ? (
+                <SoundProfile
+                  pitch={sw.soundPitch}
+                  volume={sw.soundVolume}
+                  character={sw.soundCharacter}
+                />
+              ) : (
+                <p className="text-xs text-text-muted italic">No sound data</p>
+              )}
             </div>
           ))}
         </div>
       </div>
 
       {/* Notes */}
-      <div className="mt-6">
-        <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">
-          Community Notes
-        </h3>
-        <div
-          className="grid gap-4"
-          style={{ gridTemplateColumns: `repeat(${switches.length}, 1fr)` }}
-        >
-          {switches.map((sw) => (
-            <div
-              key={sw._id}
-              className="p-4 rounded-lg bg-bg-surface border border-border-subtle"
-            >
-              <p className="text-xs text-text-muted mb-1">{sw.brand} {sw.name}</p>
-              <p className="text-sm text-text-secondary">{sw.notes}</p>
-            </div>
-          ))}
+      {switches.some((sw) => sw.notes) && (
+        <div>
+          <h3 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">
+            Community Notes
+          </h3>
+          <div
+            className="grid gap-4"
+            style={{
+              gridTemplateColumns: `repeat(${switches.length}, 1fr)`,
+            }}
+          >
+            {switches.map((sw) => (
+              <div
+                key={sw._id}
+                className="p-4 rounded-xl bg-bg-surface border border-border-subtle"
+              >
+                <p className="text-xs text-text-muted mb-2">
+                  {sw.brand} {sw.name}
+                </p>
+                <p className="text-sm text-text-secondary leading-relaxed">
+                  {sw.notes || "No notes available"}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

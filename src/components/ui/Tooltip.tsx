@@ -33,11 +33,11 @@ export function Tooltip({ content, children, className }: TooltipProps) {
       {children}
       {show && (
         <span className={cn(
-          "absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 text-xs text-text-primary bg-bg-elevated border border-border-default rounded-lg shadow-lg max-w-xs whitespace-normal",
+          "absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 text-xs text-text-primary bg-bg-floating border border-border-default rounded-lg shadow-floating max-w-xs whitespace-normal",
           className
         )}>
           {content}
-          <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-4 border-transparent border-t-bg-elevated" />
+          <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-4 border-transparent border-t-bg-floating" />
         </span>
       )}
     </span>

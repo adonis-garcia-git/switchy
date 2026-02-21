@@ -19,96 +19,107 @@ export default function KeyboardDetailPage() {
   if (keyboard === undefined) {
     return (
       <div className="p-6 lg:p-8 max-w-4xl mx-auto space-y-4">
-        <Skeleton variant="text" className="w-48 h-8" />
-        <Skeleton variant="card" className="h-64" />
+        <Skeleton variant="text" className="w-32 h-4" />
+        <Skeleton variant="text" className="w-64 h-8" />
+        <Skeleton variant="card" className="h-80" />
       </div>
     );
   }
 
   if (!keyboard) {
     return (
-      <div className="p-6 lg:p-8 max-w-4xl mx-auto text-center py-16">
-        <p className="text-text-muted">Keyboard not found.</p>
-        <Button variant="ghost" onClick={() => router.push("/keyboards")} className="mt-4">
+      <div className="p-6 lg:p-8 max-w-4xl mx-auto text-center py-20">
+        <p className="text-text-muted mb-4">Keyboard not found.</p>
+        <Button variant="ghost" onClick={() => router.push("/keyboards")}>
           Back to Keyboards
         </Button>
       </div>
     );
   }
 
+  const specs = [
+    { label: "Size", value: keyboard.size },
+    { label: "Mounting Style", value: keyboard.mountingStyle },
+    { label: "Plate Material", value: keyboard.plateMaterial },
+    { label: "Case Material", value: keyboard.caseMaterial },
+  ];
+
   return (
     <div className="p-6 lg:p-8 max-w-4xl mx-auto">
       <button
         onClick={() => router.push("/keyboards")}
-        className="text-sm text-text-muted hover:text-text-primary mb-6 inline-flex items-center gap-1"
+        className="text-sm text-text-muted hover:text-accent mb-8 inline-flex items-center gap-1.5 transition-colors duration-150 focus-visible:outline-none focus-visible:text-accent"
       >
-        ← Back to Keyboards
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to Keyboards
       </button>
 
-      <div className="rounded-xl border border-border-default bg-bg-surface overflow-hidden">
-        <div className="p-6 border-b border-border-subtle">
-          <div className="flex items-start justify-between">
+      <div className="rounded-xl border border-border-default bg-bg-surface shadow-surface overflow-hidden">
+        {/* Header */}
+        <div className="p-6 lg:p-8 border-b border-border-subtle">
+          <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-sm text-text-muted">{keyboard.brand}</p>
-              <h1 className="text-2xl font-bold text-text-primary">{keyboard.name}</h1>
+              <p className="text-xs uppercase tracking-wider text-text-muted mb-1">
+                {keyboard.brand}
+              </p>
+              <h1 className="text-2xl lg:text-3xl font-bold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight">
+                {keyboard.name}
+              </h1>
             </div>
-            <div className="text-right">
-              <p className="text-3xl font-bold font-mono text-accent">
+            <div className="text-right shrink-0">
+              <p className="text-3xl font-bold font-[family-name:var(--font-mono)] text-accent">
                 {formatPriceWhole(keyboard.priceUsd)}
               </p>
-              <span className={keyboard.inStock ? "text-emerald-400 text-sm" : "text-text-muted text-sm"}>
+              <span className={keyboard.inStock
+                ? "inline-flex items-center gap-1 text-emerald-400 text-sm mt-1"
+                : "text-text-muted text-sm mt-1"
+              }>
+                {keyboard.inStock && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+                )}
                 {keyboard.inStock ? "In Stock" : "Out of Stock"}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <div>
-              <p className="text-xs text-text-muted uppercase tracking-wider mb-1">Size</p>
-              <p className="text-text-primary font-medium">{keyboard.size}</p>
-            </div>
-            <div>
-              <p className="text-xs text-text-muted uppercase tracking-wider mb-1">Mounting Style</p>
-              <p className="text-text-primary font-medium">{keyboard.mountingStyle}</p>
-            </div>
-            <div>
-              <p className="text-xs text-text-muted uppercase tracking-wider mb-1">Plate Material</p>
-              <p className="text-text-primary font-medium">{keyboard.plateMaterial}</p>
-            </div>
-            <div>
-              <p className="text-xs text-text-muted uppercase tracking-wider mb-1">Case Material</p>
-              <p className="text-text-primary font-medium">{keyboard.caseMaterial}</p>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <p className="text-xs text-text-muted uppercase tracking-wider mb-2">Features</p>
-              <div className="flex flex-wrap gap-2">
-                <Badge variant={keyboard.hotSwap ? "success" : "default"} size="md">
-                  {keyboard.hotSwap ? "Hot-swap" : "Soldered"}
-                </Badge>
-                <Badge variant={keyboard.wireless ? "info" : "default"} size="md">
-                  {keyboard.wireless ? "Wireless" : "Wired Only"}
-                </Badge>
-                <Badge variant={keyboard.rgb ? "info" : "default"} size="md">
-                  {keyboard.rgb ? "RGB" : "No RGB"}
-                </Badge>
+        {/* Specs Grid */}
+        <div className="p-6 lg:p-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border-subtle rounded-lg overflow-hidden mb-6">
+            {specs.map((spec) => (
+              <div key={spec.label} className="bg-bg-surface p-4 flex items-center justify-between">
+                <span className="text-sm text-text-muted">{spec.label}</span>
+                <span className="text-sm text-text-primary font-medium">{spec.value}</span>
               </div>
+            ))}
+          </div>
+
+          {/* Features */}
+          <div className="mb-6">
+            <p className="text-xs uppercase tracking-wider text-text-muted mb-3">Features</p>
+            <div className="flex flex-wrap gap-2">
+              <Badge variant={keyboard.hotSwap ? "success" : "default"} size="md">
+                {keyboard.hotSwap ? "Hot-swap" : "Soldered"}
+              </Badge>
+              <Badge variant={keyboard.wireless ? "info" : "default"} size="md">
+                {keyboard.wireless ? "Wireless" : "Wired Only"}
+              </Badge>
+              <Badge variant={keyboard.rgb ? "info" : "default"} size="md">
+                {keyboard.rgb ? "RGB" : "No RGB"}
+              </Badge>
             </div>
           </div>
-        </div>
 
-        {keyboard.notes && (
-          <div className="px-6 pb-6">
-            <p className="text-xs text-text-muted uppercase tracking-wider mb-2">Notes</p>
-            <p className="text-sm text-text-secondary">{keyboard.notes}</p>
-          </div>
-        )}
+          {/* Notes */}
+          {keyboard.notes && (
+            <div className="mb-6 p-4 rounded-lg bg-bg-elevated border border-border-subtle">
+              <p className="text-xs uppercase tracking-wider text-text-muted mb-2">Notes</p>
+              <p className="text-sm text-text-secondary leading-relaxed">{keyboard.notes}</p>
+            </div>
+          )}
 
-        <div className="px-6 pb-6">
           <Button
             onClick={() => router.push(`/advisor?q=${encodeURIComponent(`Build a custom keyboard using the ${keyboard.brand} ${keyboard.name} as the base kit`)}`)}
           >

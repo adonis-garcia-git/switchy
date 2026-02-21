@@ -8,12 +8,12 @@ import type { WizardFormData, WizardUseCase, WizardSoundPref, WizardBudget, Wiza
 
 const STEPS = ["Use Case", "Sound", "Budget", "Size", "Priorities", "Review"];
 
-const USE_CASES: { value: WizardUseCase; label: string; icon: string; desc: string }[] = [
-  { value: "gaming", label: "Gaming", icon: "🎮", desc: "Fast response, smooth keypresses" },
-  { value: "programming", label: "Programming", icon: "💻", desc: "Comfortable for long coding sessions" },
-  { value: "office", label: "Office / Typing", icon: "📝", desc: "Quiet, professional, great for typing" },
-  { value: "content-creation", label: "Content Creation", icon: "🎬", desc: "Macro support, versatile" },
-  { value: "all-around", label: "All-Around", icon: "🌟", desc: "Best balance of everything" },
+const USE_CASES: { value: WizardUseCase; label: string; desc: string }[] = [
+  { value: "gaming", label: "Gaming", desc: "Fast response, smooth keypresses" },
+  { value: "programming", label: "Programming", desc: "Comfortable for long coding sessions" },
+  { value: "office", label: "Office / Typing", desc: "Quiet, professional, great for typing" },
+  { value: "content-creation", label: "Content Creation", desc: "Macro support, versatile" },
+  { value: "all-around", label: "All-Around", desc: "Best balance of everything" },
 ];
 
 const SOUND_PREFS: { value: WizardSoundPref; label: string; desc: string }[] = [
@@ -34,11 +34,11 @@ const BUDGETS: { value: WizardBudget; label: string; desc: string }[] = [
 ];
 
 const SIZES: { value: WizardSize; label: string; desc: string; visual: string }[] = [
-  { value: "60", label: "60%", desc: "Compact, no arrows or F-row", visual: "▓▓▓▓▓▓▓▓▓▓" },
-  { value: "65", label: "65%", desc: "Compact + arrow keys", visual: "▓▓▓▓▓▓▓▓▓▓▓" },
-  { value: "75", label: "75%", desc: "Compact + F-row + arrows", visual: "▓▓▓▓▓▓▓▓▓▓▓▓" },
-  { value: "tkl", label: "TKL", desc: "Full layout, no numpad", visual: "▓▓▓▓▓▓▓▓▓▓▓▓▓▓" },
-  { value: "full", label: "Full Size", desc: "Everything included", visual: "▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓" },
+  { value: "60", label: "60%", desc: "Compact, no arrows or F-row", visual: "||||||||" },
+  { value: "65", label: "65%", desc: "Compact + arrow keys", visual: "||||||||||" },
+  { value: "75", label: "75%", desc: "Compact + F-row + arrows", visual: "||||||||||||" },
+  { value: "tkl", label: "TKL", desc: "Full layout, no numpad", visual: "||||||||||||||" },
+  { value: "full", label: "Full Size", desc: "Everything included", visual: "||||||||||||||||" },
 ];
 
 const PRIORITIES: { value: WizardPriority; label: string }[] = [
@@ -131,20 +131,20 @@ export default function WizardPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold text-text-primary mb-2">Build Wizard</h1>
-      <p className="text-text-muted mb-8">Answer a few questions to get a personalized recommendation.</p>
+      <h1 className="text-2xl font-bold text-text-primary mb-2 font-[family-name:var(--font-outfit)] tracking-tight">Build Wizard</h1>
+      <p className="text-text-muted text-sm mb-8">Answer a few questions to get a personalized recommendation.</p>
 
       {/* Progress */}
-      <div className="flex items-center gap-1 mb-8">
+      <div className="flex items-center gap-1.5 mb-8">
         {STEPS.map((s, i) => (
           <div key={s} className="flex-1">
             <div className={cn(
-              "h-1.5 rounded-full transition-colors",
-              i <= step ? "bg-accent" : "bg-bg-elevated"
+              "h-1 rounded-full transition-colors duration-200",
+              i < step ? "bg-accent" : i === step ? "bg-accent" : "bg-bg-elevated"
             )} />
             <p className={cn(
-              "text-[10px] mt-1 text-center",
-              i === step ? "text-accent" : "text-text-muted"
+              "text-[10px] mt-1.5 text-center font-medium font-[family-name:var(--font-outfit)]",
+              i === step ? "text-accent" : i < step ? "text-text-secondary" : "text-text-muted"
             )}>{s}</p>
           </div>
         ))}
@@ -154,7 +154,7 @@ export default function WizardPage() {
       <div className="min-h-[300px]">
         {step === 0 && (
           <div>
-            <h2 className="text-lg font-semibold mb-4">What will you use this keyboard for?</h2>
+            <h2 className="text-lg font-semibold mb-1 font-[family-name:var(--font-outfit)] tracking-tight text-text-primary">What will you use this keyboard for?</h2>
             <p className="text-sm text-text-muted mb-4">Select one or more.</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {USE_CASES.map((uc) => (
@@ -162,15 +162,27 @@ export default function WizardPage() {
                   key={uc.value}
                   onClick={() => toggleUseCase(uc.value)}
                   className={cn(
-                    "p-4 rounded-xl border text-left transition-all",
+                    "p-4 rounded-xl border text-left transition-[border-color,background-color] duration-200",
                     formData.useCases.includes(uc.value)
-                      ? "border-accent bg-accent/10"
-                      : "border-border-subtle bg-bg-surface hover:border-accent/30"
+                      ? "border-accent bg-accent-dim"
+                      : "border-border-subtle bg-bg-surface hover:border-border-accent",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                   )}
                 >
-                  <span className="text-2xl block mb-1">{uc.icon}</span>
-                  <p className="font-medium text-text-primary">{uc.label}</p>
-                  <p className="text-xs text-text-muted mt-0.5">{uc.desc}</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className={cn(
+                      "w-4 h-4 rounded border flex items-center justify-center shrink-0",
+                      formData.useCases.includes(uc.value) ? "border-accent bg-accent" : "border-text-muted/30"
+                    )}>
+                      {formData.useCases.includes(uc.value) && (
+                        <svg className="w-3 h-3 text-bg-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </div>
+                    <p className="font-medium text-text-primary text-sm">{uc.label}</p>
+                  </div>
+                  <p className="text-xs text-text-muted mt-0.5 ml-6">{uc.desc}</p>
                 </button>
               ))}
             </div>
@@ -179,20 +191,21 @@ export default function WizardPage() {
 
         {step === 1 && (
           <div>
-            <h2 className="text-lg font-semibold mb-4">What sound do you want?</h2>
+            <h2 className="text-lg font-semibold mb-4 font-[family-name:var(--font-outfit)] tracking-tight text-text-primary">What sound do you want?</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {SOUND_PREFS.map((sp) => (
                 <button
                   key={sp.value}
                   onClick={() => setFormData(prev => ({ ...prev, soundPreference: sp.value }))}
                   className={cn(
-                    "p-4 rounded-xl border text-left transition-all",
+                    "p-4 rounded-xl border text-left transition-[border-color,background-color] duration-200",
                     formData.soundPreference === sp.value
-                      ? "border-accent bg-accent/10"
-                      : "border-border-subtle bg-bg-surface hover:border-accent/30"
+                      ? "border-accent bg-accent-dim"
+                      : "border-border-subtle bg-bg-surface hover:border-border-accent",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                   )}
                 >
-                  <p className="font-medium text-text-primary">{sp.label}</p>
+                  <p className="font-medium text-text-primary text-sm">{sp.label}</p>
                   <p className="text-xs text-text-muted mt-0.5">{sp.desc}</p>
                 </button>
               ))}
@@ -202,25 +215,26 @@ export default function WizardPage() {
 
         {step === 2 && (
           <div>
-            <h2 className="text-lg font-semibold mb-4">What&apos;s your budget?</h2>
+            <h2 className="text-lg font-semibold mb-4 font-[family-name:var(--font-outfit)] tracking-tight text-text-primary">What&apos;s your budget?</h2>
             <div className="space-y-2">
               {BUDGETS.map((b) => (
                 <button
                   key={b.value}
                   onClick={() => setFormData(prev => ({ ...prev, budget: b.value }))}
                   className={cn(
-                    "w-full p-4 rounded-xl border text-left transition-all flex items-center justify-between",
+                    "w-full p-4 rounded-xl border text-left transition-[border-color,background-color] duration-200 flex items-center justify-between",
                     formData.budget === b.value
-                      ? "border-accent bg-accent/10"
-                      : "border-border-subtle bg-bg-surface hover:border-accent/30"
+                      ? "border-accent bg-accent-dim"
+                      : "border-border-subtle bg-bg-surface hover:border-border-accent",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                   )}
                 >
                   <div>
-                    <p className="font-medium text-text-primary">{b.label}</p>
+                    <p className="font-medium text-text-primary text-sm">{b.label}</p>
                     <p className="text-xs text-text-muted">{b.desc}</p>
                   </div>
                   <div className={cn(
-                    "w-5 h-5 rounded-full border-2 flex items-center justify-center",
+                    "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0",
                     formData.budget === b.value ? "border-accent" : "border-text-muted/30"
                   )}>
                     {formData.budget === b.value && <div className="w-2.5 h-2.5 rounded-full bg-accent" />}
@@ -233,25 +247,26 @@ export default function WizardPage() {
 
         {step === 3 && (
           <div>
-            <h2 className="text-lg font-semibold mb-4">What size keyboard?</h2>
+            <h2 className="text-lg font-semibold mb-4 font-[family-name:var(--font-outfit)] tracking-tight text-text-primary">What size keyboard?</h2>
             <div className="space-y-2">
               {SIZES.map((s) => (
                 <button
                   key={s.value}
                   onClick={() => setFormData(prev => ({ ...prev, size: s.value }))}
                   className={cn(
-                    "w-full p-4 rounded-xl border text-left transition-all",
+                    "w-full p-4 rounded-xl border text-left transition-[border-color,background-color] duration-200",
                     formData.size === s.value
-                      ? "border-accent bg-accent/10"
-                      : "border-border-subtle bg-bg-surface hover:border-accent/30"
+                      ? "border-accent bg-accent-dim"
+                      : "border-border-subtle bg-bg-surface hover:border-border-accent",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                   )}
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium text-text-primary">{s.label}</p>
+                      <p className="font-medium text-text-primary text-sm">{s.label}</p>
                       <p className="text-xs text-text-muted">{s.desc}</p>
                     </div>
-                    <span className="font-mono text-xs text-accent">{s.visual}</span>
+                    <span className="font-mono text-xs text-accent tracking-tight">{s.visual}</span>
                   </div>
                 </button>
               ))}
@@ -261,17 +276,18 @@ export default function WizardPage() {
 
         {step === 4 && (
           <div>
-            <h2 className="text-lg font-semibold mb-4">What matters most? (Pick up to 3)</h2>
+            <h2 className="text-lg font-semibold mb-4 font-[family-name:var(--font-outfit)] tracking-tight text-text-primary">What matters most? (Pick up to 3)</h2>
             <div className="flex flex-wrap gap-2">
               {PRIORITIES.map((p) => (
                 <button
                   key={p.value}
                   onClick={() => togglePriority(p.value)}
                   className={cn(
-                    "px-4 py-2.5 rounded-full border text-sm font-medium transition-all",
+                    "px-4 py-2.5 rounded-full border text-sm font-medium transition-[border-color,background-color,color] duration-200",
                     formData.priorities.includes(p.value)
-                      ? "border-accent bg-accent/10 text-accent"
-                      : "border-border-subtle bg-bg-surface text-text-secondary hover:border-accent/30"
+                      ? "border-accent bg-accent-dim text-accent"
+                      : "border-border-subtle bg-bg-surface text-text-secondary hover:border-border-accent hover:text-text-primary",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                   )}
                 >
                   {p.label}
@@ -283,33 +299,35 @@ export default function WizardPage() {
 
         {step === 5 && (
           <div>
-            <h2 className="text-lg font-semibold mb-4">Review Your Preferences</h2>
-            <div className="space-y-3 rounded-xl border border-border-default bg-bg-surface p-5">
-              <div>
-                <p className="text-xs text-text-muted uppercase tracking-wider">Use Case</p>
-                <p className="text-text-primary">{formData.useCases.map(u => USE_CASES.find(c => c.value === u)?.label).join(", ")}</p>
-              </div>
-              <div>
-                <p className="text-xs text-text-muted uppercase tracking-wider">Sound</p>
-                <p className="text-text-primary">{SOUND_PREFS.find(s => s.value === formData.soundPreference)?.label || "—"}</p>
-              </div>
-              <div>
-                <p className="text-xs text-text-muted uppercase tracking-wider">Budget</p>
-                <p className="text-text-primary">{BUDGETS.find(b => b.value === formData.budget)?.label || "—"}</p>
-              </div>
-              <div>
-                <p className="text-xs text-text-muted uppercase tracking-wider">Size</p>
-                <p className="text-text-primary">{SIZES.find(s => s.value === formData.size)?.label || "—"}</p>
-              </div>
-              <div>
-                <p className="text-xs text-text-muted uppercase tracking-wider">Priorities</p>
-                <p className="text-text-primary">{formData.priorities.map(p => PRIORITIES.find(pr => pr.value === p)?.label).join(", ") || "—"}</p>
+            <h2 className="text-lg font-semibold mb-4 font-[family-name:var(--font-outfit)] tracking-tight text-text-primary">Review Your Preferences</h2>
+            <div className="rounded-xl border border-border-default bg-bg-surface p-5 shadow-surface">
+              <div className="space-y-4">
+                <div className="flex items-baseline justify-between pb-3 border-b border-border-subtle">
+                  <p className="text-xs text-text-muted uppercase tracking-wider font-medium font-[family-name:var(--font-outfit)]">Use Case</p>
+                  <p className="text-sm text-text-primary text-right">{formData.useCases.map(u => USE_CASES.find(c => c.value === u)?.label).join(", ")}</p>
+                </div>
+                <div className="flex items-baseline justify-between pb-3 border-b border-border-subtle">
+                  <p className="text-xs text-text-muted uppercase tracking-wider font-medium font-[family-name:var(--font-outfit)]">Sound</p>
+                  <p className="text-sm text-text-primary">{SOUND_PREFS.find(s => s.value === formData.soundPreference)?.label || "---"}</p>
+                </div>
+                <div className="flex items-baseline justify-between pb-3 border-b border-border-subtle">
+                  <p className="text-xs text-text-muted uppercase tracking-wider font-medium font-[family-name:var(--font-outfit)]">Budget</p>
+                  <p className="text-sm text-text-primary">{BUDGETS.find(b => b.value === formData.budget)?.label || "---"}</p>
+                </div>
+                <div className="flex items-baseline justify-between pb-3 border-b border-border-subtle">
+                  <p className="text-xs text-text-muted uppercase tracking-wider font-medium font-[family-name:var(--font-outfit)]">Size</p>
+                  <p className="text-sm text-text-primary">{SIZES.find(s => s.value === formData.size)?.label || "---"}</p>
+                </div>
+                <div className="flex items-baseline justify-between">
+                  <p className="text-xs text-text-muted uppercase tracking-wider font-medium font-[family-name:var(--font-outfit)]">Priorities</p>
+                  <p className="text-sm text-text-primary text-right">{formData.priorities.map(p => PRIORITIES.find(pr => pr.value === p)?.label).join(", ") || "---"}</p>
+                </div>
               </div>
             </div>
 
-            <div className="mt-4 p-4 rounded-xl bg-accent/5 border border-accent/20">
-              <p className="text-xs text-accent uppercase tracking-wider mb-1">Generated Query</p>
-              <p className="text-sm text-text-secondary">{buildQueryFromWizard(formData)}</p>
+            <div className="mt-4 p-4 rounded-xl bg-accent-dim border border-accent/20 shadow-[0_0_20px_rgba(232,89,12,0.06)]">
+              <p className="text-[10px] text-accent uppercase tracking-wider font-semibold mb-1.5 font-[family-name:var(--font-outfit)]">Generated Query</p>
+              <p className="text-sm text-text-secondary leading-relaxed">{buildQueryFromWizard(formData)}</p>
             </div>
           </div>
         )}

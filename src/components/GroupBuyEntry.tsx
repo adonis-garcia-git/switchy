@@ -24,8 +24,8 @@ interface GroupBuyEntryProps {
 const STATUS_STYLES: Record<string, string> = {
   ordered: "bg-blue-500/15 text-blue-400 border-blue-500/30",
   in_production: "bg-amber-500/15 text-amber-400 border-amber-500/30",
-  shipped: "bg-green-500/15 text-green-400 border-green-500/30",
-  delivered: "bg-gray-500/15 text-gray-400 border-gray-500/30",
+  shipped: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+  delivered: "bg-bg-elevated text-text-secondary border-border-default",
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -35,11 +35,11 @@ const STATUS_LABELS: Record<string, string> = {
   delivered: "Delivered",
 };
 
-const TYPE_ICONS: Record<string, string> = {
-  keyboard: "⌨️",
-  switches: "🔘",
-  keycaps: "🎹",
-  accessories: "🔧",
+const TYPE_LABELS: Record<string, string> = {
+  keyboard: "Keyboard",
+  switches: "Switches",
+  keycaps: "Keycaps",
+  accessories: "Accessories",
 };
 
 export function GroupBuyEntry({
@@ -51,12 +51,14 @@ export function GroupBuyEntry({
   const isOverdue = days < 0;
 
   return (
-    <div className="rounded-lg border border-border-subtle bg-bg-surface p-4">
+    <div className="rounded-xl border border-border-subtle bg-bg-surface p-4 shadow-surface hover:border-border-accent hover:glow-accent transition-[border-color,box-shadow] duration-200">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-lg">{TYPE_ICONS[entry.productType]}</span>
-            <h3 className="font-semibold text-text-primary truncate">
+          <div className="flex items-center gap-2.5 mb-1">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-text-muted bg-bg-elevated border border-border-default rounded-md px-2 py-0.5">
+              {TYPE_LABELS[entry.productType]}
+            </span>
+            <h3 className="font-semibold text-text-primary truncate font-[family-name:var(--font-outfit)]">
               {entry.productName}
             </h3>
           </div>
@@ -66,10 +68,10 @@ export function GroupBuyEntry({
           <span className="font-mono text-accent font-semibold">
             {formatPriceWhole(entry.cost)}
           </span>
-          <div className="mt-1">
+          <div className="mt-1.5">
             <span
               className={cn(
-                "inline-block px-2 py-0.5 rounded text-xs font-medium border",
+                "inline-block px-2.5 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wider border",
                 STATUS_STYLES[entry.status]
               )}
             >
@@ -97,7 +99,7 @@ export function GroupBuyEntry({
       </div>
 
       {entry.notes && (
-        <p className="mt-2 text-xs text-text-secondary">{entry.notes}</p>
+        <p className="mt-2 text-xs text-text-secondary leading-relaxed">{entry.notes}</p>
       )}
 
       <div className="mt-3 flex items-center gap-2">
@@ -110,7 +112,7 @@ export function GroupBuyEntry({
                 e.target.value as GroupBuyData["status"]
               )
             }
-            className="text-xs bg-bg-elevated border border-border-subtle rounded px-2 py-1 text-text-secondary"
+            className="text-xs bg-bg-elevated border border-border-default rounded-md px-2 py-1.5 text-text-secondary focus:border-border-accent transition-[border-color,box-shadow] duration-150"
           >
             <option value="ordered">Ordered</option>
             <option value="in_production">In Production</option>
@@ -120,7 +122,7 @@ export function GroupBuyEntry({
         )}
         <button
           onClick={() => onDelete(entry._id)}
-          className="text-xs text-text-muted hover:text-red-400 transition-colors ml-auto"
+          className="text-xs text-text-muted hover:text-red-400 transition-colors duration-150 ml-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 rounded px-1 py-0.5"
         >
           Delete
         </button>

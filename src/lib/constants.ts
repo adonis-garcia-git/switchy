@@ -1,7 +1,7 @@
 export const SWITCH_TYPE_COLORS = {
-  linear: { bg: "bg-red-500/15", text: "text-red-400", border: "border-red-500/30", hex: "#E74C3C" },
-  tactile: { bg: "bg-orange-500/15", text: "text-orange-400", border: "border-orange-500/30", hex: "#E67E22" },
-  clicky: { bg: "bg-blue-500/15", text: "text-blue-400", border: "border-blue-500/30", hex: "#3498DB" },
+  linear: { bg: "bg-linear/15", text: "text-linear", border: "border-linear/25", hex: "#EF4444" },
+  tactile: { bg: "bg-tactile/15", text: "text-tactile", border: "border-tactile/25", hex: "#F59E0B" },
+  clicky: { bg: "bg-clicky/15", text: "text-clicky", border: "border-clicky/25", hex: "#3B82F6" },
 } as const;
 
 export const SOUND_CHARACTER_LABELS: Record<string, string> = {

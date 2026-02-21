@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import { Button } from "@/components/ui/Button";
 import switchesData from "@/data/switches.json";
 import componentsData from "@/data/components.json";
 import keyboardsData from "@/data/keyboards.json";
@@ -125,70 +126,92 @@ export default function SeedPage() {
   return (
     <div className="min-h-screen">
       <main className="max-w-xl mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold mb-6">Database Seed</h1>
-        <p className="text-text-muted mb-8">
+        <h1 className="text-2xl font-bold font-[family-name:var(--font-outfit)] tracking-tight mb-6">
+          Database Seed
+        </h1>
+        <p className="text-text-secondary mb-8 leading-relaxed">
           Use these buttons to seed or clear the database. Seed is idempotent —
           it won&apos;t duplicate data if it already exists.
         </p>
 
         <div className="space-y-4 mb-8">
           <div className="flex gap-4 justify-center">
-            <button
+            <Button
               onClick={handleSeedEverything}
               disabled={loading}
-              className="px-6 py-2.5 rounded-lg bg-accent text-bg-primary font-semibold hover:bg-accent-hover transition-colors disabled:opacity-50"
+              loading={loading}
             >
-              {loading ? "Working..." : "Seed Everything"}
-            </button>
-            <button
+              Seed Everything
+            </Button>
+            <Button
+              variant="danger"
               onClick={handleClear}
               disabled={loading}
-              className="px-6 py-2.5 rounded-lg border border-red-500/30 text-red-400 font-semibold hover:bg-red-500/10 transition-colors disabled:opacity-50"
             >
               Clear Database
-            </button>
+            </Button>
           </div>
 
           <div className="flex gap-3 justify-center flex-wrap">
-            <button
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={handleSeed}
               disabled={loading}
-              className="px-4 py-2 rounded-lg border border-border-primary text-text-secondary font-medium hover:bg-bg-surface transition-colors disabled:opacity-50 text-sm"
             >
               Seed Core Data
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={handleSeedGlossary}
               disabled={loading}
-              className="px-4 py-2 rounded-lg border border-border-primary text-text-secondary font-medium hover:bg-bg-surface transition-colors disabled:opacity-50 text-sm"
             >
               Seed Glossary
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={handleSeedVendorLinks}
               disabled={loading}
-              className="px-4 py-2 rounded-lg border border-border-primary text-text-secondary font-medium hover:bg-bg-surface transition-colors disabled:opacity-50 text-sm"
             >
               Seed Vendor Links
-            </button>
+            </Button>
           </div>
         </div>
 
-        <div className="bg-bg-surface rounded-lg p-4 mb-6 text-sm text-text-secondary text-left">
-          <h3 className="font-semibold text-text-primary mb-2">Data Counts</h3>
-          <ul className="space-y-1">
-            <li>Switches: {switchesData.length}</li>
-            <li>Components: {componentsData.length}</li>
-            <li>Keyboards: {keyboardsData.length}</li>
-            <li>Glossary Terms: {glossaryData.length}</li>
-            <li>Vendor Links: {vendorLinksData.length}</li>
+        <div className="bg-bg-surface rounded-xl border border-border-default p-4 mb-6 text-sm text-text-secondary text-left shadow-surface">
+          <h3 className="font-semibold text-text-primary mb-2 font-[family-name:var(--font-outfit)]">
+            Data Counts
+          </h3>
+          <ul className="space-y-1.5">
+            <li className="flex items-center justify-between">
+              <span>Switches</span>
+              <span className="font-mono text-accent text-xs">{switchesData.length}</span>
+            </li>
+            <li className="flex items-center justify-between">
+              <span>Components</span>
+              <span className="font-mono text-accent text-xs">{componentsData.length}</span>
+            </li>
+            <li className="flex items-center justify-between">
+              <span>Keyboards</span>
+              <span className="font-mono text-accent text-xs">{keyboardsData.length}</span>
+            </li>
+            <li className="flex items-center justify-between">
+              <span>Glossary Terms</span>
+              <span className="font-mono text-accent text-xs">{glossaryData.length}</span>
+            </li>
+            <li className="flex items-center justify-between">
+              <span>Vendor Links</span>
+              <span className="font-mono text-accent text-xs">{vendorLinksData.length}</span>
+            </li>
           </ul>
         </div>
 
         {status && (
-          <p className="text-sm text-text-secondary bg-bg-surface rounded-lg p-4">
+          <div className="text-sm text-text-secondary bg-bg-surface rounded-xl border border-border-default p-4 shadow-surface">
             {status}
-          </p>
+          </div>
         )}
       </main>
     </div>

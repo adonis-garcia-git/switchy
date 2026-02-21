@@ -1,21 +1,25 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg-primary: #0f0f0f;
-  --color-bg-surface: #1a1a1a;
-  --color-bg-elevated: #242424;
-  --color-border-default: #2a2a2a;
-  --color-border-subtle: #1f1f1f;
-  --color-accent: #00D4AA;
-  --color-accent-dim: #00D4AA33;
-  --color-accent-hover: #00E8BB;
+  --color-bg-primary: #0c0c0c;
+  --color-bg-surface: #121212;
+  --color-bg-elevated: #181818;
+  --color-bg-floating: #202020;
+  --color-border-default: #333333;
+  --color-border-subtle: #292929;
+  --color-border-accent: rgba(232, 89, 12, 0.3);
+  --color-accent: #E8590C;
+  --color-accent-dim: rgba(232, 89, 12, 0.15);
+  --color-accent-hover: #F97316;
+  --color-accent-glow: rgba(232, 89, 12, 0.08);
   --color-warning: #F59E0B;
-  --color-text-primary: #f5f5f5;
-  --color-text-secondary: #a0a0a0;
-  --color-text-muted: #666666;
-  --color-linear: #E74C3C;
-  --color-tactile: #E67E22;
-  --color-clicky: #3498DB;
+  --color-text-primary: #FAFAFA;
+  --color-text-secondary: #A3A3A3;
+  --color-text-muted: #525252;
+  --color-linear: #EF4444;
+  --color-tactile: #F59E0B;
+  --color-clicky: #3B82F6;
+  --font-display: "Outfit", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", "Geist Mono", ui-monospace, monospace;
 }
@@ -24,6 +28,12 @@ body {
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
+}
+
+/* Headings use display font */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
 }
 
 /* Custom scrollbar */
@@ -46,5 +56,71 @@ input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  box-shadow: 0 0 0 2px var(--color-accent-dim);
+  box-shadow: 0 0 0 2px var(--color-accent-dim), 0 0 20px var(--color-accent-glow);
+}
+
+/* Grain overlay for depth */
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+/* Accent glow effect */
+.glow-accent {
+  box-shadow:
+    0 0 0 1px rgba(232, 89, 12, 0.15),
+    0 4px 16px rgba(232, 89, 12, 0.06),
+    0 8px 32px rgba(232, 89, 12, 0.03);
+}
+
+.glow-accent-strong {
+  box-shadow:
+    0 0 0 1px rgba(232, 89, 12, 0.25),
+    0 4px 20px rgba(232, 89, 12, 0.12),
+    0 12px 40px rgba(232, 89, 12, 0.06);
+}
+
+/* Layered shadow system */
+.shadow-surface {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-elevated {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    0 8px 16px rgba(0, 0, 0, 0.25),
+    0 16px 32px rgba(0, 0, 0, 0.15);
+}
+
+.shadow-floating {
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    0 12px 24px rgba(0, 0, 0, 0.3),
+    0 24px 48px rgba(0, 0, 0, 0.2);
+}
+
+/* Hero gradient mesh */
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232, 89, 12, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 70% 10%, rgba(232, 89, 12, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 30% 20%, rgba(232, 89, 12, 0.03) 0%, transparent 40%);
+}
+
+/* Accent-tinted shadows */
+.shadow-accent-sm { box-shadow: 0 1px 8px rgba(232, 89, 12, 0.15); }
+.shadow-accent-md { box-shadow: 0 1px 6px rgba(232, 89, 12, 0.2); }
+
+/* Utility for top nav spacer */
+.pt-nav {
+  padding-top: 4rem;
 }
