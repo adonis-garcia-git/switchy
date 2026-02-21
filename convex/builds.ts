@@ -168,3 +168,168 @@ ${JSON.stringify(components, null, 0)}
     }
   },
 });
+
+export const generateBuildConversational = action({
+  args: {
+    conversationId: v.id("conversations"),
+    message: v.string(),
+  },
+  returns: v.any(),
+  handler: async (ctx, args) => {
+    // Get conversation history
+    const conversation = await ctx.runQuery(
+      internal.internalFunctions.getConversationById,
+      { id: args.conversationId }
+    );
+    if (!conversation) throw new Error("Conversation not found");
+
+    // Get user preferences if available
+    const identity = await ctx.auth.getUserIdentity();
+    let preferences = null;
+    if (identity) {
+      preferences = await ctx.runQuery(
+        internal.internalFunctions.getUserPreferences,
+        { userId: identity.subject }
+      );
+    }
+
+    // Get database context
+    const switches = await ctx.runQuery(
+      internal.internalFunctions.getAllSwitches
+    );
+    const components = await ctx.runQuery(
+      internal.internalFunctions.getAllComponents
+    );
+    const keyboards = await ctx.runQuery(
+      internal.internalFunctions.getAllKeyboards
+    );
+
+    const databaseContext = `
+## Available Switches Database
+${JSON.stringify(
+  switches.map((s: Record<string, unknown>) => ({
+    name: `${s.brand} ${s.name}`,
+    type: s.type,
+    actuationForceG: s.actuationForceG,
+    soundCharacter: s.soundCharacter,
+    soundPitch: s.soundPitch,
+    soundVolume: s.soundVolume,
+    pricePerSwitch: s.pricePerSwitch,
+    longPole: s.longPole,
+    stemMaterial: s.stemMaterial,
+    housingMaterial: s.housingMaterial,
+    communityRating: s.communityRating,
+    popularFor: s.popularFor,
+  })),
+  null,
+  0
+)}
+
+## Available Keyboard Kits
+${JSON.stringify(
+  keyboards.map((k: Record<string, unknown>) => ({
+    name: `${k.brand} ${k.name}`,
+    size: k.size,
+    mountingStyle: k.mountingStyle,
+    plateMaterial: k.plateMaterial,
+    caseMaterial: k.caseMaterial,
+    hotSwap: k.hotSwap,
+    wireless: k.wireless,
+    priceUsd: k.priceUsd,
+    inStock: k.inStock,
+  })),
+  null,
+  0
+)}
+
+## Available Components & Mods
+${JSON.stringify(components, null, 0)}`;
+
+    // Build preference context
+    let preferenceContext = "";
+    if (preferences) {
+      preferenceContext = `\n\n## User Preferences\n- Experience Level: ${preferences.experienceLevel}\n`;
+      if (preferences.preferredSound)
+        preferenceContext += `- Preferred Sound: ${preferences.preferredSound}\n`;
+      if (preferences.budgetRange)
+        preferenceContext += `- Budget Range: $${preferences.budgetRange.min}-$${preferences.budgetRange.max}\n`;
+      if (preferences.preferredSize)
+        preferenceContext += `- Preferred Size: ${preferences.preferredSize}\n`;
+    }
+
+    // Build conversation system prompt
+    const conversationalSystemPrompt =
+      SYSTEM_PROMPT +
+      `
+
+## Conversation Mode
+You are in a multi-turn conversation with the user. You can:
+1. Answer questions about keyboards conversationally (respond with plain text)
+2. Recommend builds (respond with the JSON format above)
+3. Modify previous recommendations based on feedback
+
+If the user is asking a question or chatting, respond conversationally in plain text (NOT JSON).
+If the user is requesting a build or modification, respond with the JSON build format.
+${preferenceContext}`;
+
+    // Build messages array from conversation history
+    const messages: Array<{ role: "user" | "assistant"; content: string }> = [];
+
+    if (conversation.messages.length === 0) {
+      // First message includes DB context
+      messages.push({
+        role: "user",
+        content: `Here is the component database to choose from:\n${databaseContext}\n\nUser's request: "${args.message}"`,
+      });
+    } else {
+      // Include database context in the first message
+      messages.push({
+        role: "user",
+        content: `Here is the component database to choose from:\n${databaseContext}\n\nUser's request: "${conversation.messages[0].content}"`,
+      });
+      // Add remaining conversation history
+      for (let i = 1; i < conversation.messages.length; i++) {
+        messages.push({
+          role: conversation.messages[i].role as "user" | "assistant",
+          content: conversation.messages[i].content,
+        });
+      }
+      // Add the new message
+      messages.push({ role: "user", content: args.message });
+    }
+
+    const client = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY!,
+    });
+
+    const response = await client.messages.create({
+      model: "claude-sonnet-4-6",
+      max_tokens: 2000,
+      system: conversationalSystemPrompt,
+      messages,
+    });
+
+    const textContent = response.content.find(
+      (block) => block.type === "text"
+    );
+    if (!textContent || textContent.type !== "text") {
+      throw new Error("No text response from AI");
+    }
+
+    let responseText = textContent.text.trim();
+    if (responseText.startsWith("```")) {
+      responseText = responseText
+        .replace(/^```(?:json)?\n?/, "")
+        .replace(/\n?```$/, "");
+    }
+
+    // Try to parse as JSON (build recommendation)
+    try {
+      const buildData = JSON.parse(responseText);
+      return { type: "build", data: buildData, rawText: responseText };
+    } catch {
+      // It's a conversational response
+      return { type: "message", data: null, rawText: responseText };
+    }
+  },
+});

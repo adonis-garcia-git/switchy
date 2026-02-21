@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
-import { Navigation } from "@/components/Navigation";
 import { SoundProfile } from "@/components/SoundProfile";
+import { VendorLinksSection } from "@/components/VendorLinks";
 import { SWITCH_TYPE_COLORS } from "@/lib/constants";
 import { cn, formatPrice } from "@/lib/utils";
 
@@ -23,7 +23,6 @@ export default function SwitchDetailPage({
   if (sw === undefined) {
     return (
       <div className="min-h-screen">
-        <Navigation />
         <div className="flex items-center justify-center py-24">
           <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
         </div>
@@ -34,7 +33,6 @@ export default function SwitchDetailPage({
   if (!sw) {
     return (
       <div className="min-h-screen">
-        <Navigation />
         <div className="max-w-3xl mx-auto px-4 py-16 text-center">
           <p className="text-text-muted">Switch not found</p>
           <Link href="/switches" className="text-accent text-sm mt-2 inline-block">
@@ -49,7 +47,6 @@ export default function SwitchDetailPage({
 
   return (
     <div className="min-h-screen">
-      <Navigation />
       <main className="max-w-3xl mx-auto px-4 py-8">
         <Link
           href="/switches"
@@ -163,6 +160,14 @@ export default function SwitchDetailPage({
               <p className="text-sm text-text-secondary">{sw.notes}</p>
             </div>
           )}
+
+          {/* Where to Buy */}
+          <div className="mb-6 pb-6 border-b border-border-subtle">
+            <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">
+              Where to Buy
+            </h2>
+            <VendorLinksSection productName={sw.name} />
+          </div>
 
           {/* Commonly Compared To */}
           {sw.commonlyComparedTo.length > 0 && (

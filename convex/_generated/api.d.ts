@@ -10,12 +10,17 @@
 
 import type * as builds from "../builds.js";
 import type * as components_ from "../components.js";
+import type * as conversations from "../conversations.js";
+import type * as glossary from "../glossary.js";
 import type * as groupBuys from "../groupBuys.js";
+import type * as imageGeneration from "../imageGeneration.js";
 import type * as internalFunctions from "../internalFunctions.js";
 import type * as keyboards from "../keyboards.js";
 import type * as savedBuilds from "../savedBuilds.js";
 import type * as seed from "../seed.js";
 import type * as switches from "../switches.js";
+import type * as userPreferences from "../userPreferences.js";
+import type * as vendorLinks from "../vendorLinks.js";
 
 import type {
   ApiFromModules,
@@ -26,12 +31,17 @@ import type {
 declare const fullApi: ApiFromModules<{
   builds: typeof builds;
   components: typeof components_;
+  conversations: typeof conversations;
+  glossary: typeof glossary;
   groupBuys: typeof groupBuys;
+  imageGeneration: typeof imageGeneration;
   internalFunctions: typeof internalFunctions;
   keyboards: typeof keyboards;
   savedBuilds: typeof savedBuilds;
   seed: typeof seed;
   switches: typeof switches;
+  userPreferences: typeof userPreferences;
+  vendorLinks: typeof vendorLinks;
 }>;
 
 /**

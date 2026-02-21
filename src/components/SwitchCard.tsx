@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SWITCH_TYPE_COLORS } from "@/lib/constants";
 import { cn, formatPrice } from "@/lib/utils";
 import { SoundProfile } from "./SoundProfile";
+import { VendorLinksSection } from "./VendorLinks";
 import { Id } from "../../convex/_generated/dataModel";
 
 interface SwitchData {
@@ -126,9 +127,12 @@ export function SwitchCard({
               </span>{" "}
               actuation
             </span>
-            <span className="font-mono text-accent font-semibold">
-              {formatPrice(sw.pricePerSwitch)}
-            </span>
+            <div className="flex items-center gap-2">
+              <VendorLinksSection productName={sw.name} compact />
+              <span className="font-mono text-accent font-semibold">
+                {formatPrice(sw.pricePerSwitch)}
+              </span>
+            </div>
           </div>
 
           <SoundProfile

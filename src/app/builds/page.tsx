@@ -1,23 +1,40 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation, useAction } from "convex/react";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
-import { Navigation } from "@/components/Navigation";
 import { BuildCard } from "@/components/BuildCard";
 
 export default function BuildsPage() {
   const { isSignedIn } = useUser();
   const builds = useQuery(api.savedBuilds.listByUser, {});
   const removeBuild = useMutation(api.savedBuilds.remove);
+  const togglePublic = useMutation(api.savedBuilds.togglePublic);
+  const generateImage = useAction(api.imageGeneration.generateBuildImage);
+  const [generatingId, setGeneratingId] = useState<string | null>(null);
+
+  const handleShare = async (buildId: Id<"builds">) => {
+    await togglePublic({ id: buildId });
+  };
+
+  const handleVisualize = async (buildId: Id<"builds">) => {
+    setGeneratingId(buildId);
+    try {
+      await generateImage({ buildId });
+    } catch (e) {
+      console.error("Image generation failed:", e);
+    } finally {
+      setGeneratingId(null);
+    }
+  };
 
   if (!isSignedIn) {
     return (
       <div className="min-h-screen">
-        <Navigation />
-        <div className="max-w-3xl mx-auto px-4 py-16 text-center">
+                <div className="max-w-3xl mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">My Builds</h1>
           <p className="text-text-muted mb-6">
             Sign in to save and view your build recommendations.
@@ -34,8 +51,7 @@ export default function BuildsPage() {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
-      <main className="max-w-3xl mx-auto px-4 py-8">
+            <main className="max-w-3xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">My Builds</h1>
           <Link
@@ -63,13 +79,26 @@ export default function BuildsPage() {
           </div>
         ) : (
           <div className="space-y-6">
-            {builds.map((build) => (
+            {builds.map((build: any) => (
               <div key={build._id} className="relative">
-                <BuildCard build={build as never} showActions={false} />
+                <BuildCard
+                  build={build as never}
+                  showActions={true}
+                  id={build._id}
+                  imageUrl={build.imageUrl}
+                  isPublic={build.isPublic}
+                  shareSlug={build.shareSlug}
+                  onShare={() => handleShare(build._id as Id<"builds">)}
+                  onVisualize={() => handleVisualize(build._id as Id<"builds">)}
+                  generating={generatingId === build._id}
+                />
                 <div className="flex items-center gap-3 mt-2 px-2">
                   <span className="text-xs text-text-muted">
                     Query: &ldquo;{build.query}&rdquo;
                   </span>
+                  {build.isPublic && (
+                    <span className="text-xs text-accent">Public</span>
+                  )}
                   <button
                     onClick={() =>
                       removeBuild({ id: build._id as Id<"builds"> })

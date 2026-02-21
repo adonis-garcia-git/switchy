@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { cn, formatPrice, formatPriceWhole } from "@/lib/utils";
+import { VendorLinksSection } from "./VendorLinks";
+import { BuildImagePreview } from "./BuildImagePreview";
 
 interface BuildComponent {
   name: string;
@@ -40,6 +43,14 @@ interface BuildCardProps {
   onTweak?: (tweakType: string) => void;
   saving?: boolean;
   showActions?: boolean;
+  // v2 props
+  id?: string;
+  imageUrl?: string;
+  isPublic?: boolean;
+  shareSlug?: string;
+  onShare?: () => void;
+  onVisualize?: () => void;
+  generating?: boolean;
 }
 
 const DIFFICULTY_COLORS: Record<string, string> = {
@@ -68,26 +79,78 @@ function ComponentRow({
       : component.price;
 
   return (
-    <div className="flex items-start gap-3 p-3 rounded-lg bg-bg-primary/50">
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs text-text-muted uppercase tracking-wider">
-            {label}
-          </span>
+    <div>
+      <div className="flex items-start gap-3 p-3 rounded-lg bg-bg-primary/50">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-xs text-text-muted uppercase tracking-wider">
+              {label}
+            </span>
+          </div>
+          <p className="font-medium text-text-primary">{component.name}</p>
+          {component.quantity && (
+            <p className="text-xs text-text-muted font-mono mt-0.5">
+              {component.quantity}x @ {formatPrice(component.priceEach || 0)} each
+            </p>
+          )}
+          <p className="text-xs text-text-secondary mt-1">{component.reason}</p>
         </div>
-        <p className="font-medium text-text-primary">{component.name}</p>
-        {component.quantity && (
-          <p className="text-xs text-text-muted font-mono mt-0.5">
-            {component.quantity}x @ {formatPrice(component.priceEach || 0)} each
-          </p>
-        )}
-        <p className="text-xs text-text-secondary mt-1">{component.reason}</p>
+        <span className="font-mono text-accent font-semibold whitespace-nowrap">
+          {formatPriceWhole(totalPrice)}
+        </span>
       </div>
-      <span className="font-mono text-accent font-semibold whitespace-nowrap">
-        {formatPriceWhole(totalPrice)}
-      </span>
+      <VendorLinksSection productName={component.name} />
     </div>
   );
+}
+
+function buildToMarkdown(build: BuildData): string {
+  const lines: string[] = [];
+  lines.push(`# ${build.buildName}`);
+  lines.push("");
+  lines.push(build.summary);
+  lines.push("");
+  lines.push("## Components");
+  lines.push("");
+
+  const components = build.components;
+  if (components.keyboardKit) {
+    lines.push(`- **Keyboard Kit:** ${components.keyboardKit.name} — ${formatPriceWhole(components.keyboardKit.price)}`);
+  }
+  if (components.switches) {
+    const sw = components.switches;
+    const total = sw.quantity && sw.priceEach ? sw.quantity * sw.priceEach : sw.price;
+    lines.push(`- **Switches:** ${sw.name} (${sw.quantity}x @ ${formatPrice(sw.priceEach || 0)}) — ${formatPriceWhole(total)}`);
+  }
+  if (components.keycaps) {
+    lines.push(`- **Keycaps:** ${components.keycaps.name} — ${formatPriceWhole(components.keycaps.price)}`);
+  }
+  if (components.stabilizers) {
+    lines.push(`- **Stabilizers:** ${components.stabilizers.name} — ${formatPriceWhole(components.stabilizers.price)}`);
+  }
+
+  if (build.recommendedMods && build.recommendedMods.length > 0) {
+    lines.push("");
+    lines.push("## Recommended Mods");
+    lines.push("");
+    for (const mod of build.recommendedMods) {
+      lines.push(`- ${mod.mod} (+${formatPriceWhole(mod.cost)}) — ${mod.effect}`);
+    }
+  }
+
+  lines.push("");
+  lines.push(`**Estimated Total:** ${formatPriceWhole(build.estimatedTotal)}`);
+  if (build.soundProfileExpected) {
+    lines.push(`**Sound Profile:** ${build.soundProfileExpected}`);
+  }
+  lines.push(`**Difficulty:** ${build.buildDifficulty}`);
+
+  if (build.notes) {
+    lines.push("");
+    lines.push(`> ${build.notes}`);
+  }
+
+  return lines.join("\n");
 }
 
 export function BuildCard({
@@ -96,7 +159,22 @@ export function BuildCard({
   onTweak,
   saving,
   showActions = true,
+  id,
+  imageUrl,
+  isPublic,
+  shareSlug,
+  onShare,
+  onVisualize,
+  generating,
 }: BuildCardProps) {
+  const [copied, setCopied] = useState<"link" | "markdown" | null>(null);
+
+  const copyToClipboard = (text: string, type: "link" | "markdown") => {
+    navigator.clipboard.writeText(text);
+    setCopied(type);
+    setTimeout(() => setCopied(null), 2000);
+  };
+
   if (build.rawResponse) {
     return (
       <div className="rounded-xl border border-border-default bg-bg-surface p-6">
@@ -112,6 +190,13 @@ export function BuildCard({
 
   return (
     <div className="rounded-xl border border-border-default bg-bg-surface overflow-hidden">
+      {/* Build Visualization */}
+      {imageUrl && (
+        <div className="p-4 pb-0">
+          <BuildImagePreview imageUrl={imageUrl} />
+        </div>
+      )}
+
       {/* Header */}
       <div className="p-6 border-b border-border-subtle">
         <div className="flex items-start justify-between gap-4">
@@ -256,6 +341,51 @@ export function BuildCard({
               </button>
             </>
           )}
+
+          {/* Share */}
+          {onShare && (
+            isPublic && shareSlug ? (
+              <button
+                onClick={() => copyToClipboard(`${window.location.origin}/builds/shared/${shareSlug}`, "link")}
+                className="px-3 py-2 rounded-lg border border-accent/30 text-accent text-sm hover:bg-accent/10 transition-colors"
+              >
+                {copied === "link" ? "Copied!" : "Copy Link"}
+              </button>
+            ) : (
+              <button
+                onClick={onShare}
+                className="px-3 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-text-primary hover:border-border-default/60 transition-colors"
+              >
+                Share
+              </button>
+            )
+          )}
+
+          {/* Visualize */}
+          {id && !imageUrl && onVisualize && (
+            <button
+              onClick={onVisualize}
+              disabled={generating}
+              className="px-3 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-text-primary hover:border-border-default/60 transition-colors disabled:opacity-50"
+            >
+              {generating ? "Generating..." : "Visualize"}
+            </button>
+          )}
+
+          {/* Copy Markdown */}
+          <button
+            onClick={() => copyToClipboard(buildToMarkdown(build), "markdown")}
+            className="px-3 py-2 rounded-lg border border-border-default text-text-secondary text-sm hover:text-text-primary hover:border-border-default/60 transition-colors"
+          >
+            {copied === "markdown" ? "Copied!" : "Copy as Markdown"}
+          </button>
+        </div>
+      )}
+
+      {/* Visualization generator (when no image yet, shown after actions) */}
+      {showActions && id && !imageUrl && onVisualize && generating && (
+        <div className="px-6 pb-6">
+          <BuildImagePreview generating={generating} />
         </div>
       )}
     </div>

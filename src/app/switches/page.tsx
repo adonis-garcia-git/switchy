@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { Navigation } from "@/components/Navigation";
 import { SwitchCard } from "@/components/SwitchCard";
 import { FilterBar, FilterState } from "@/components/FilterBar";
 import { Id } from "../../../convex/_generated/dataModel";
@@ -33,7 +32,7 @@ export default function SwitchesPage() {
   const brands = useQuery(api.switches.getAllBrands, {}) ?? [];
 
   const switches = useQuery(api.switches.list, {
-    type: filters.type || undefined,
+    type: (filters.type as "linear" | "tactile" | "clicky") || undefined,
     brand: filters.brand || undefined,
     soundCharacter: filters.soundCharacter || undefined,
     soundPitch: filters.soundPitch || undefined,
@@ -70,7 +69,6 @@ export default function SwitchesPage() {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">Switch Explorer</h1>
@@ -125,7 +123,7 @@ export default function SwitchesPage() {
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {displaySwitches?.map((sw) => (
+          {displaySwitches?.map((sw: any) => (
             <SwitchCard
               key={sw._id}
               sw={sw}

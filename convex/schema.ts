@@ -30,6 +30,9 @@ export default defineSchema({
     popularFor: v.array(v.string()),
     notes: v.string(),
     commonlyComparedTo: v.array(v.string()),
+    imageUrl: v.optional(v.string()),
+    productUrl: v.optional(v.string()),
+    soundSampleUrl: v.optional(v.string()),
   })
     .index("by_type", ["type"])
     .index("by_brand", ["brand"])
@@ -66,6 +69,8 @@ export default defineSchema({
     priceUsd: v.number(),
     inStock: v.boolean(),
     notes: v.string(),
+    imageUrl: v.optional(v.string()),
+    productUrl: v.optional(v.string()),
   })
     .index("by_size", ["size"])
     .index("by_brand", ["brand"])
@@ -82,7 +87,13 @@ export default defineSchema({
     soundProfileExpected: v.string(),
     buildDifficulty: v.string(),
     notes: v.string(),
-  }).index("by_userId", ["userId"]),
+    isPublic: v.optional(v.boolean()),
+    shareSlug: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+    conversationId: v.optional(v.string()),
+  })
+    .index("by_userId", ["userId"])
+    .index("by_shareSlug", ["shareSlug"]),
 
   groupBuys: defineTable({
     userId: v.string(),
@@ -119,4 +130,65 @@ export default defineSchema({
     totalCost: v.optional(v.number()),
     notes: v.string(),
   }).index("by_userId", ["userId"]),
+
+  conversations: defineTable({
+    userId: v.string(),
+    messages: v.array(
+      v.object({
+        role: v.string(),
+        content: v.string(),
+        timestamp: v.number(),
+      })
+    ),
+    activeBuildResult: v.optional(v.any()),
+    createdAt: v.number(),
+  }).index("by_userId", ["userId"]),
+
+  userPreferences: defineTable({
+    userId: v.string(),
+    experienceLevel: v.union(
+      v.literal("beginner"),
+      v.literal("intermediate"),
+      v.literal("expert")
+    ),
+    preferredSound: v.optional(v.string()),
+    budgetRange: v.optional(
+      v.object({ min: v.number(), max: v.number() })
+    ),
+    preferredSize: v.optional(v.string()),
+    hasCompletedOnboarding: v.boolean(),
+  }).index("by_userId", ["userId"]),
+
+  glossaryTerms: defineTable({
+    term: v.string(),
+    definition: v.string(),
+    category: v.string(),
+    relatedTerms: v.array(v.string()),
+  })
+    .index("by_category", ["category"])
+    .searchIndex("search_term", { searchField: "term" }),
+
+  vendorLinks: defineTable({
+    productType: v.union(
+      v.literal("switch"),
+      v.literal("keyboard"),
+      v.literal("keycaps"),
+      v.literal("stabilizer"),
+      v.literal("accessory")
+    ),
+    productName: v.string(),
+    vendor: v.string(),
+    url: v.string(),
+    price: v.optional(v.number()),
+    lastVerified: v.optional(v.string()),
+  })
+    .index("by_productName", ["productName"])
+    .index("by_vendor", ["vendor"]),
+
+  soundSamples: defineTable({
+    switchName: v.string(),
+    audioUrl: v.string(),
+    plateType: v.optional(v.string()),
+    recordingNotes: v.optional(v.string()),
+  }).index("by_switchName", ["switchName"]),
 });

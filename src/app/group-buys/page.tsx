@@ -5,7 +5,6 @@ import { useQuery, useMutation } from "convex/react";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
-import { Navigation } from "@/components/Navigation";
 import { GroupBuyEntry } from "@/components/GroupBuyEntry";
 import { formatPriceWhole } from "@/lib/utils";
 
@@ -62,16 +61,15 @@ export default function GroupBuysPage() {
   };
 
   const activeEntries =
-    groupBuys?.filter((g) => g.status !== "delivered") ?? [];
+    groupBuys?.filter((g: any) => g.status !== "delivered") ?? [];
   const deliveredEntries =
-    groupBuys?.filter((g) => g.status === "delivered") ?? [];
-  const totalPending = activeEntries.reduce((sum, g) => sum + g.cost, 0);
+    groupBuys?.filter((g: any) => g.status === "delivered") ?? [];
+  const totalPending = activeEntries.reduce((sum: number, g: any) => sum + g.cost, 0);
 
   if (!isSignedIn) {
     return (
       <div className="min-h-screen">
-        <Navigation />
-        <div className="max-w-3xl mx-auto px-4 py-16 text-center">
+                <div className="max-w-3xl mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">Group Buy Tracker</h1>
           <p className="text-text-muted mb-6">
             Sign in to track your pending group buys and orders.
@@ -88,8 +86,7 @@ export default function GroupBuysPage() {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
-      <main className="max-w-3xl mx-auto px-4 py-8">
+            <main className="max-w-3xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold">Group Buy Tracker</h1>
@@ -240,7 +237,7 @@ export default function GroupBuysPage() {
         {/* Active entries */}
         {activeEntries.length > 0 && (
           <div className="space-y-3 mb-8">
-            {activeEntries.map((entry) => (
+            {activeEntries.map((entry: any) => (
               <GroupBuyEntry
                 key={entry._id}
                 entry={entry as never}
@@ -258,7 +255,7 @@ export default function GroupBuysPage() {
               Delivered
             </h2>
             <div className="space-y-3 opacity-60">
-              {deliveredEntries.map((entry) => (
+              {deliveredEntries.map((entry: any) => (
                 <GroupBuyEntry
                   key={entry._id}
                   entry={entry as never}

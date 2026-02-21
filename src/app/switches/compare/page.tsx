@@ -1,14 +1,14 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "convex/react";
 import Link from "next/link";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
-import { Navigation } from "@/components/Navigation";
 import { SwitchComparison } from "@/components/SwitchComparison";
 
-export default function ComparePage() {
+function CompareContent() {
   const searchParams = useSearchParams();
   const idsParam = searchParams.get("ids") || "";
   const ids = idsParam.split(",").filter(Boolean);
@@ -37,7 +37,6 @@ export default function ComparePage() {
 
   return (
     <div className="min-h-screen">
-      <Navigation />
       <main className="max-w-6xl mx-auto px-4 py-8">
         <Link
           href="/switches"
@@ -71,5 +70,17 @@ export default function ComparePage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function ComparePage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center py-24">
+        <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
+      </div>
+    }>
+      <CompareContent />
+    </Suspense>
   );
 }

@@ -51,7 +51,13 @@ export const clearAll = mutation({
   args: {},
   returns: v.null(),
   handler: async (ctx) => {
-    const tables = ["switches", "components", "keyboards"] as const;
+    const tables = [
+      "switches",
+      "components",
+      "keyboards",
+      "glossaryTerms",
+      "vendorLinks",
+    ] as const;
     for (const table of tables) {
       const docs = await ctx.db.query(table).collect();
       for (const doc of docs) {
