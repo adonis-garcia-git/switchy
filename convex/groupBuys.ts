@@ -1,0 +1,106 @@
+import { mutation, query } from "./_generated/server";
+import { v } from "convex/values";
+
+export const listByUser = query({
+  args: {},
+  returns: v.array(v.any()),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return [];
+    return await ctx.db
+      .query("groupBuys")
+      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .collect();
+  },
+});
+
+export const create = mutation({
+  args: {
+    productName: v.string(),
+    vendor: v.string(),
+    orderDate: v.string(),
+    estimatedShipDate: v.string(),
+    cost: v.number(),
+    status: v.union(
+      v.literal("ordered"),
+      v.literal("in_production"),
+      v.literal("shipped"),
+      v.literal("delivered")
+    ),
+    productType: v.union(
+      v.literal("keyboard"),
+      v.literal("switches"),
+      v.literal("keycaps"),
+      v.literal("accessories")
+    ),
+    notes: v.string(),
+  },
+  returns: v.id("groupBuys"),
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+    return await ctx.db.insert("groupBuys", {
+      userId: identity.subject,
+      ...args,
+    });
+  },
+});
+
+export const update = mutation({
+  args: {
+    id: v.id("groupBuys"),
+    productName: v.optional(v.string()),
+    vendor: v.optional(v.string()),
+    orderDate: v.optional(v.string()),
+    estimatedShipDate: v.optional(v.string()),
+    cost: v.optional(v.number()),
+    status: v.optional(
+      v.union(
+        v.literal("ordered"),
+        v.literal("in_production"),
+        v.literal("shipped"),
+        v.literal("delivered")
+      )
+    ),
+    productType: v.optional(
+      v.union(
+        v.literal("keyboard"),
+        v.literal("switches"),
+        v.literal("keycaps"),
+        v.literal("accessories")
+      )
+    ),
+    notes: v.optional(v.string()),
+  },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+    const { id, ...fields } = args;
+    const existing = await ctx.db.get(id);
+    if (!existing || existing.userId !== identity.subject) {
+      throw new Error("Not found or not authorized");
+    }
+    const updates: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(fields)) {
+      if (value !== undefined) updates[key] = value;
+    }
+    await ctx.db.patch(id, updates);
+    return null;
+  },
+});
+
+export const remove = mutation({
+  args: { id: v.id("groupBuys") },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+    const existing = await ctx.db.get(args.id);
+    if (!existing || existing.userId !== identity.subject) {
+      throw new Error("Not found or not authorized");
+    }
+    await ctx.db.delete(args.id);
+    return null;
+  },
+});

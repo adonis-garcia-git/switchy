@@ -1,0 +1,274 @@
+[
+  {
+    "category": "plate",
+    "name": "Aluminum",
+    "soundEffect": "brighter, stiffer",
+    "priceRange": "budget",
+    "notes": "Most common plate material, can be pingy without dampening.",
+    "compatibilityNotes": "Universal fit for most builds."
+  },
+  {
+    "category": "plate",
+    "name": "Polycarbonate (PC)",
+    "soundEffect": "deeper, softer, more flex",
+    "priceRange": "mid",
+    "notes": "Popular for a softer, flexier typing experience.",
+    "compatibilityNotes": "May not be available for all layouts; check vendor listings."
+  },
+  {
+    "category": "plate",
+    "name": "FR4",
+    "soundEffect": "balanced, slightly muted",
+    "priceRange": "mid",
+    "notes": "Popular mid-range option with a neutral sound signature.",
+    "compatibilityNotes": "Widely available; same PCB material so pairs well structurally."
+  },
+  {
+    "category": "plate",
+    "name": "Brass",
+    "soundEffect": "sharp, heavy, pingy",
+    "priceRange": "premium",
+    "notes": "Heavy and premium-feeling, pingy without dampening.",
+    "compatibilityNotes": "Adds significant weight; not ideal for portable builds."
+  },
+  {
+    "category": "plate",
+    "name": "POM",
+    "soundEffect": "smooth, slightly deeper than PC",
+    "priceRange": "mid",
+    "notes": "Self-lubricating material, smooth typing feel.",
+    "compatibilityNotes": "Less common; check compatibility with your case and PCB."
+  },
+  {
+    "category": "case",
+    "name": "Aluminum",
+    "soundEffect": "resonant, premium feel",
+    "priceRange": "premium",
+    "notes": "Needs foam to tame resonance; most popular premium option.",
+    "compatibilityNotes": "Heavy; most custom kits use aluminum cases."
+  },
+  {
+    "category": "case",
+    "name": "Polycarbonate",
+    "soundEffect": "warmer",
+    "priceRange": "mid",
+    "notes": "See-through for RGB lighting; warmer sound profile.",
+    "compatibilityNotes": "Great for RGB builds; can yellow over time with UV exposure."
+  },
+  {
+    "category": "case",
+    "name": "Plastic/ABS",
+    "soundEffect": "hollow without foam",
+    "priceRange": "budget",
+    "notes": "Budget-friendly; hollow sound without internal dampening.",
+    "compatibilityNotes": "Common in prebuilt keyboards; benefits greatly from mods."
+  },
+  {
+    "category": "case",
+    "name": "Wood",
+    "soundEffect": "warm, unique aesthetic",
+    "priceRange": "premium",
+    "notes": "Niche material with a distinctive warm sound and look.",
+    "compatibilityNotes": "Very limited availability; often custom or artisan builds only."
+  },
+  {
+    "category": "keycapProfile",
+    "name": "Cherry",
+    "soundEffect": "neutral",
+    "priceRange": "mid",
+    "notes": "Low profile, most popular, comfortable for long sessions.",
+    "compatibilityNotes": "Compatible with virtually all MX-style switches and layouts."
+  },
+  {
+    "category": "keycapProfile",
+    "name": "SA",
+    "soundEffect": "deeper, thockier",
+    "priceRange": "premium",
+    "notes": "Tall, sculpted, retro look; deeper sound due to larger keycap cavity.",
+    "compatibilityNotes": "Taller profile may interfere with low-profile cases; check clearance."
+  },
+  {
+    "category": "keycapProfile",
+    "name": "MT3",
+    "soundEffect": "deeper, similar to SA",
+    "priceRange": "premium",
+    "notes": "Similar to SA but more ergonomic with scooped tops.",
+    "compatibilityNotes": "Same clearance considerations as SA profile."
+  },
+  {
+    "category": "keycapProfile",
+    "name": "DSA",
+    "soundEffect": "neutral, slightly higher-pitched",
+    "priceRange": "mid",
+    "notes": "Uniform, flat profile; easy to rearrange keys between rows.",
+    "compatibilityNotes": "Works well with ortholinear and non-standard layouts."
+  },
+  {
+    "category": "keycapProfile",
+    "name": "KAT",
+    "soundEffect": "neutral, moderate depth",
+    "priceRange": "mid",
+    "notes": "Medium height with a smooth feel; good all-rounder.",
+    "compatibilityNotes": "Compatible with most standard and non-standard layouts."
+  },
+  {
+    "category": "keycapMaterial",
+    "name": "PBT",
+    "soundEffect": "deeper, muted",
+    "priceRange": "mid",
+    "notes": "Textured, durable, doesn't develop shine over time.",
+    "compatibilityNotes": "Available in most profiles; some color limitations with dyesub legends."
+  },
+  {
+    "category": "keycapMaterial",
+    "name": "ABS",
+    "soundEffect": "brighter, higher-pitched",
+    "priceRange": "mid",
+    "notes": "Smoother feel, can develop shine over time with use.",
+    "compatibilityNotes": "Supports doubleshot legends with excellent clarity; widely available."
+  },
+  {
+    "category": "keycapMaterial",
+    "name": "POM",
+    "soundEffect": "unique, smooth",
+    "priceRange": "premium",
+    "notes": "Rare material; very smooth surface with a distinctive sound.",
+    "compatibilityNotes": "Limited availability; usually only in Cherry or uniform profiles."
+  },
+  {
+    "category": "mountingStyle",
+    "name": "Gasket Mount",
+    "soundEffect": "dampened, flexible typing, reduced ping",
+    "priceRange": "mid",
+    "notes": "Now the most common mounting style across mid-range and above; soft, bouncy typing feel. Available on boards as low as $50.",
+    "compatibilityNotes": "Requires gaskets between plate and case; used in most custom keyboards from budget to premium."
+  },
+  {
+    "category": "mountingStyle",
+    "name": "Top Mount",
+    "soundEffect": "stiffer, louder, more direct",
+    "priceRange": "mid",
+    "notes": "Plate screws into the top of the case; stiffer and louder.",
+    "compatibilityNotes": "Common in mid-range customs; straightforward assembly."
+  },
+  {
+    "category": "mountingStyle",
+    "name": "Tray Mount",
+    "soundEffect": "hollow, pingy",
+    "priceRange": "budget",
+    "notes": "Budget standard; most hollow and pingy without mods.",
+    "compatibilityNotes": "Most common in prebuilt and entry-level custom keyboards."
+  },
+  {
+    "category": "mountingStyle",
+    "name": "Sandwich Mount",
+    "soundEffect": "balanced, moderate flex",
+    "priceRange": "mid",
+    "notes": "Plate sandwiched between top and bottom case layers.",
+    "compatibilityNotes": "Common in acrylic or stacked builds; simpler construction."
+  },
+  {
+    "category": "mountingStyle",
+    "name": "Leaf Spring / O-ring",
+    "soundEffect": "very soft, bouncy",
+    "priceRange": "premium",
+    "notes": "Very soft and bouncy typing experience; niche but loved.",
+    "compatibilityNotes": "Found in specific high-end boards; not interchangeable with other mount types."
+  },
+  {
+    "category": "mod",
+    "name": "PE Foam Sheet",
+    "soundEffect": "adds pop, marble-like sound",
+    "priceRange": "budget",
+    "notes": "Placed between PCB and switches; gives a poppy, marble-like sound.",
+    "compatibilityNotes": "Must be cut to fit PCB layout; may affect switch seating on hotswap boards."
+  },
+  {
+    "category": "mod",
+    "name": "Tape Mod (Tempest)",
+    "soundEffect": "deepens sound, more bass",
+    "priceRange": "budget",
+    "notes": "Layers of tape on the back of the PCB to deepen the sound profile.",
+    "compatibilityNotes": "Works on any PCB; use painter's tape to avoid residue."
+  },
+  {
+    "category": "mod",
+    "name": "Case Foam",
+    "soundEffect": "removes hollowness, dampens case resonance",
+    "priceRange": "budget",
+    "notes": "Foam placed inside the case to reduce empty-space resonance.",
+    "compatibilityNotes": "Must be cut to fit; avoid blocking PCB components or screw posts."
+  },
+  {
+    "category": "mod",
+    "name": "Switch Films",
+    "soundEffect": "tighter housings, less rattle",
+    "priceRange": "budget",
+    "notes": "Thin films placed between switch top and bottom housings for a tighter fit.",
+    "compatibilityNotes": "Not needed on switches with already tight tolerances; may prevent closure on some switches."
+  },
+  {
+    "category": "mod",
+    "name": "Holee Mod (stabilizers)",
+    "soundEffect": "eliminates stabilizer rattle",
+    "priceRange": "budget",
+    "notes": "Band-aid or fabric placed inside stabilizer stems to eliminate rattle.",
+    "compatibilityNotes": "Works on Cherry-style screw-in and plate-mount stabilizers."
+  },
+  {
+    "category": "mod",
+    "name": "Band-Aid Mod (stabilizers)",
+    "soundEffect": "cushions stabilizer impact",
+    "priceRange": "budget",
+    "notes": "Small fabric bandage pads placed on PCB under stabilizers to cushion bottom-out.",
+    "compatibilityNotes": "Best used with PCB-mount stabilizers; less effective with plate-mount."
+  },
+  {
+    "category": "mod",
+    "name": "Lubing Switches (Krytox 205g0)",
+    "soundEffect": "smoother, quieter, premium feel",
+    "priceRange": "mid",
+    "notes": "Hand-lubing switches with Krytox 205g0 for a smooth, premium sound and feel.",
+    "compatibilityNotes": "Use 205g0 for linears; consider lighter lubes (3203/3204) for tactiles to preserve bump."
+  },
+  {
+    "category": "mod",
+    "name": "Lubing Stabilizers (Dielectric Grease)",
+    "soundEffect": "eliminates wire rattle",
+    "priceRange": "budget",
+    "notes": "Dielectric grease on stabilizer wires to eliminate rattle and ticking.",
+    "compatibilityNotes": "Apply to wire ends and contact points; works on all Cherry-style stabilizers."
+  },
+  {
+    "category": "mod",
+    "name": "Spring Swap",
+    "soundEffect": "changes actuation weight",
+    "priceRange": "budget",
+    "notes": "Swap stock springs for custom weights to customize actuation force.",
+    "compatibilityNotes": "Most MX-style switches accept standard springs; check spring length for long-pole switches."
+  },
+  {
+    "category": "mod",
+    "name": "O-Ring Dampeners",
+    "soundEffect": "reduces bottom-out noise",
+    "priceRange": "budget",
+    "notes": "Rubber rings placed on keycap stems; not recommended by enthusiasts as they create a mushy feel.",
+    "compatibilityNotes": "Fits any MX-compatible keycap stem; reduces travel distance."
+  },
+  {
+    "category": "mod",
+    "name": "Polyfill / Stuffing",
+    "soundEffect": "fills empty case space, reduces hollowness",
+    "priceRange": "budget",
+    "notes": "Polyester stuffing placed in the case cavity to absorb sound and reduce hollowness.",
+    "compatibilityNotes": "Works in any case with empty space; avoid overpacking to prevent PCB flex."
+  },
+  {
+    "category": "mod",
+    "name": "Force Break Mod",
+    "soundEffect": "reduces plate-case contact, more flex",
+    "priceRange": "budget",
+    "notes": "Reduces direct contact between plate and case for increased flex and a softer typing feel.",
+    "compatibilityNotes": "Most effective on top-mount and tray-mount boards; gasket-mount boards already isolate the plate."
+  }
+]

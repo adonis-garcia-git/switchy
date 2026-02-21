@@ -1,63 +1,110 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { Navigation } from "@/components/Navigation";
+import { PLACEHOLDER_QUERIES } from "@/lib/constants";
 
 export default function Home() {
+  const router = useRouter();
+  const [query, setQuery] = useState("");
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+
+  const switches = useQuery(api.switches.list, {});
+  const switchCount = switches?.length ?? 0;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderIndex((i) => (i + 1) % PLACEHOLDER_QUERIES.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!query.trim()) return;
+    router.push(`/advisor?q=${encodeURIComponent(query.trim())}`);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen">
+      <Navigation />
+
+      {/* Hero */}
+      <main className="max-w-4xl mx-auto px-4 pt-20 pb-16">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
+            Build your dream{" "}
+            <span className="text-accent">keyboard</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+            Describe the sound and feel you want. Switchy&apos;s AI will recommend
+            a complete, compatible build with specific products and prices.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        {/* Build Advisor Input */}
+        <form onSubmit={handleSubmit} className="relative mb-16">
+          <textarea
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={PLACEHOLDER_QUERIES[placeholderIndex]}
+            rows={3}
+            className="w-full bg-bg-surface border border-border-default rounded-xl px-5 py-4 text-lg text-text-primary placeholder:text-text-muted/50 resize-none focus:border-accent/50 transition-colors"
+          />
+          <button
+            type="submit"
+            disabled={!query.trim()}
+            className="absolute bottom-4 right-4 px-5 py-2 rounded-lg bg-accent text-bg-primary font-semibold text-sm hover:bg-accent-hover transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Build My Board
+          </button>
+        </form>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-16">
+          <div className="rounded-xl border border-border-subtle bg-bg-surface p-5 text-center">
+            <p className="text-3xl font-bold font-mono text-accent">
+              {switchCount}
+            </p>
+            <p className="text-sm text-text-muted mt-1">Switches in Database</p>
+          </div>
+          <div className="rounded-xl border border-border-subtle bg-bg-surface p-5 text-center">
+            <p className="text-3xl font-bold font-mono text-accent">AI</p>
+            <p className="text-sm text-text-muted mt-1">Powered Build Advisor</p>
+          </div>
+          <div className="rounded-xl border border-border-subtle bg-bg-surface p-5 text-center">
+            <p className="text-3xl font-bold font-mono text-accent">25+</p>
+            <p className="text-sm text-text-muted mt-1">Keyboard Kits</p>
+          </div>
+        </div>
+
+        {/* Quick Links */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <button
+            onClick={() => router.push("/switches")}
+            className="group rounded-xl border border-border-subtle bg-bg-surface p-6 text-left hover:border-accent/30 transition-colors"
           >
-            Documentation
-          </a>
+            <h3 className="font-semibold text-text-primary group-hover:text-accent transition-colors mb-1">
+              Switch Explorer
+            </h3>
+            <p className="text-sm text-text-muted">
+              Browse, filter, and compare mechanical keyboard switches
+            </p>
+          </button>
+          <button
+            onClick={() => router.push("/group-buys")}
+            className="group rounded-xl border border-border-subtle bg-bg-surface p-6 text-left hover:border-accent/30 transition-colors"
+          >
+            <h3 className="font-semibold text-text-primary group-hover:text-accent transition-colors mb-1">
+              Group Buy Tracker
+            </h3>
+            <p className="text-sm text-text-muted">
+              Track your pending keyboard orders and group buys
+            </p>
+          </button>
         </div>
       </main>
     </div>
