@@ -6,7 +6,6 @@ import { useQuery } from "convex/react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "../../convex/_generated/api";
 import { SwitchCard } from "@/components/SwitchCard";
-import { SponsoredBadge } from "@/components/SponsoredBadge";
 import { Card } from "@/components/ui/Card";
 import { PLACEHOLDER_QUERIES } from "@/lib/constants";
 
@@ -64,7 +63,6 @@ export default function Home() {
   const switches = useQuery(api.switches.list, {});
   const keyboards = useQuery(api.keyboards.list, {});
   const builds = useQuery(api.savedBuilds.listByUser, isSignedIn ? {} : "skip");
-  const sponsoredProducts = useQuery(api.sponsorships.getActive, { placement: "homepage_spotlight" });
 
   const switchCount = switches?.length ?? 0;
   const keyboardCount = keyboards?.length ?? 0;
@@ -123,7 +121,10 @@ export default function Home() {
                   rows={3}
                   className="w-full bg-transparent px-5 py-4 text-base text-text-primary placeholder:text-text-muted/50 resize-none focus:outline-none"
                 />
-                <div className="flex items-center justify-end px-5 pb-4">
+                <div className="flex items-center justify-between px-5 pb-4">
+                  <span className="text-[10px] text-text-muted font-mono uppercase tracking-wider">
+                    Powered by Claude Sonnet 4.6
+                  </span>
                   <button
                     type="submit"
                     disabled={!query.trim()}
@@ -199,53 +200,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ── Sponsored Section ── */}
-      {sponsoredProducts && sponsoredProducts.length > 0 && (
-        <section className="px-6 lg:px-8 py-12 lg:py-16 border-t border-border-subtle">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center gap-3 mb-6">
-              <SponsoredBadge />
-              <h2 className="text-xl font-semibold font-[family-name:var(--font-display)] tracking-tight text-text-primary">
-                Featured
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {sponsoredProducts.map((sp: any) => {
-                // Try to find matching switch data for a richer card
-                const matchedSwitch = switches?.find(
-                  (sw) => sw.name === sp.productName || `${sw.brand} ${sw.name}` === sp.productName
-                );
-                if (matchedSwitch) {
-                  return <SwitchCard key={sp._id} sw={matchedSwitch} sponsored />;
-                }
-                // Fallback: simple card
-                return (
-                  <div
-                    key={sp._id}
-                    className="relative rounded-xl border border-amber-500/20 bg-bg-surface p-5 shadow-surface"
-                  >
-                    <div className="absolute top-3 left-3 z-10">
-                      <SponsoredBadge />
-                    </div>
-                    <div className="pt-6">
-                      <p className="text-[10px] text-text-muted uppercase tracking-wider mb-1">
-                        {sp.vendorName}
-                      </p>
-                      <h3 className="text-base font-semibold text-text-primary font-[family-name:var(--font-outfit)]">
-                        {sp.productName}
-                      </h3>
-                      {sp.productType && (
-                        <p className="text-xs text-text-secondary mt-1">{sp.productType}</p>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ── Section 3: Featured Switches ── */}
       {topSwitches.length > 0 && (

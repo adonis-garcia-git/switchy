@@ -59,6 +59,27 @@ export const search = query({
   },
 });
 
+export const getRecommended = query({
+  args: {
+    limit: v.optional(v.number()),
+    subcategory: v.optional(v.string()),
+  },
+  returns: v.array(v.any()),
+  handler: async (ctx, args) => {
+    let all;
+    if (args.subcategory) {
+      all = await ctx.db
+        .query("accessories")
+        .withIndex("by_subcategory", (q) => q.eq("subcategory", args.subcategory!))
+        .take(200);
+    } else {
+      all = await ctx.db.query("accessories").take(200);
+    }
+    const sorted = [...all].sort((a, b) => a.priceUsd - b.priceUsd);
+    return sorted.slice(0, args.limit ?? 3);
+  },
+});
+
 export const getAllBrands = query({
   args: {},
   returns: v.array(v.string()),
@@ -104,5 +125,40 @@ export const seed = mutation({
       await ctx.db.insert("accessories", accessory);
     }
     return args.accessories.length;
+  },
+});
+
+export const cleanAndReseed = mutation({
+  args: {
+    accessories: v.array(v.object({
+      brand: v.string(),
+      name: v.string(),
+      slug: v.optional(v.string()),
+      subcategory: v.string(),
+      priceUsd: v.number(),
+      inStock: v.optional(v.boolean()),
+      notes: v.optional(v.string()),
+      imageUrl: v.optional(v.string()),
+      productUrl: v.optional(v.string()),
+      specs: v.optional(v.any()),
+      tags: v.optional(v.array(v.string())),
+      fabricated: v.optional(v.boolean()),
+    })),
+  },
+  returns: v.object({
+    deleted: v.number(),
+    added: v.number(),
+  }),
+  handler: async (ctx, args) => {
+    const existing = await ctx.db.query("accessories").collect();
+    for (const acc of existing) {
+      await ctx.db.delete(acc._id);
+    }
+
+    for (const acc of args.accessories) {
+      await ctx.db.insert("accessories", acc);
+    }
+
+    return { deleted: existing.length, added: args.accessories.length };
   },
 });

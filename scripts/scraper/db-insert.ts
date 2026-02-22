@@ -28,14 +28,8 @@ const client = new ConvexHttpClient(CONVEX_URL);
 
 async function clearTable(table: string): Promise<void> {
   log("db", `Clearing table: ${table}`);
-  let totalDeleted = 0;
-  let deleted: number;
-  do {
-    deleted = await client.mutation(api.seed.clearTable, { table });
-    totalDeleted += deleted;
-    if (deleted > 0) await sleep(200);
-  } while (deleted > 0);
-  log("db", `Cleared ${totalDeleted} records from ${table}`);
+  const deleted = await client.mutation(api.seed.clearTable, { table });
+  log("db", `Cleared ${deleted} records from ${table}`);
 }
 
 async function insertSwitches(useEnriched: boolean): Promise<number> {

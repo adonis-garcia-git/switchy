@@ -8,19 +8,12 @@ export const generateBuildImage = action({
   args: { buildId: v.id("builds") },
   returns: v.any(),
   handler: async (ctx, args): Promise<{ imageUrl: string }> => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
-
     const buildResult = await ctx.runQuery(
       internal.internalFunctions.getBuildById,
       { id: args.buildId }
     );
     if (!buildResult) throw new Error("Build not found");
     const build: Record<string, any> = buildResult;
-
-    if (build.userId !== identity.subject) {
-      throw new Error("Not authorized");
-    }
 
     const components: Record<string, any> = build.components;
 

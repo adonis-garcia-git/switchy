@@ -36,7 +36,7 @@ function SegmentBar({
             className={cn(
               "h-1.5 w-full rounded-full transition-colors duration-150",
               i === activeIndex
-                ? "bg-accent shadow-[0_0_8px_rgba(232,89,12,0.3)]"
+                ? "bg-accent shadow-[0_0_8px_rgba(118,185,0,0.3)]"
                 : "bg-bg-elevated"
             )}
           />

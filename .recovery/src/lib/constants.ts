@@ -1,0 +1,67 @@
+export const SWITCH_TYPE_COLORS = {
+  linear: { bg: "bg-linear/15", text: "text-linear", border: "border-linear/25", hex: "#EF4444" },
+  tactile: { bg: "bg-tactile/15", text: "text-tactile", border: "border-tactile/25", hex: "#F59E0B" },
+  clicky: { bg: "bg-clicky/15", text: "text-clicky", border: "border-clicky/25", hex: "#3B82F6" },
+} as const;
+
+export const SOUND_CHARACTER_LABELS: Record<string, string> = {
+  thocky: "Thocky",
+  clacky: "Clacky",
+  creamy: "Creamy",
+  poppy: "Poppy",
+  muted: "Muted",
+  crisp: "Crisp",
+};
+
+export const LOADING_MESSAGES = [
+  "Lubing the switches...",
+  "Testing the plate flex...",
+  "Foam modding the case...",
+  "Sound testing your build...",
+  "Comparing spring weights...",
+  "Checking group buy status...",
+  "Measuring actuation force...",
+  "Tuning the stabilizers...",
+  "Applying band-aid mod...",
+  "Filming the switches...",
+];
+
+export const PLACEHOLDER_QUERIES = [
+  "I want a deep thocky 65% board for office use, under $300",
+  "Best budget first custom keyboard for a college student who games",
+  "Something that sounds like rain on a wooden desk, very quiet",
+  "Clacky and loud 75% for maximum typing satisfaction",
+  "I have a Keychron Q1 and want to make it sound more creamy",
+  "What's a good tactile switch that isn't mushy? I type a lot of code",
+];
+
+export const ACCESSORY_SUBCATEGORIES = [
+  { value: "stabilizer", label: "Stabilizers" },
+  { value: "spring", label: "Springs" },
+  { value: "lube", label: "Lubricants" },
+  { value: "film", label: "Switch Films" },
+  { value: "foam", label: "Foam & Dampening" },
+  { value: "tool", label: "Tools" },
+  { value: "cable", label: "Cables" },
+  { value: "deskmat", label: "Desk Mats" },
+  { value: "wrist-rest", label: "Wrist Rests" },
+  { value: "cover", label: "Covers & Cases" },
+] as const;
+
+export const KEYCAP_PROFILES = [
+  "Cherry", "SA", "MT3", "DSA", "OEM", "KAT", "XDA", "ASA",
+] as const;
+
+export const KEYCAP_MATERIALS = [
+  "PBT", "ABS", "POM",
+] as const;
+
+// App-wide numeric constants
+export const MAX_COMPARE_SWITCHES = 3;
+export const SHARE_SLUG_LENGTH = 12;
+export const IMAGE_POLL_INTERVAL_MS = 2000;
+export const IMAGE_POLL_MAX_ATTEMPTS = 30;
+export const SUGGESTION_ROTATION_MS = 4000;
+export const AI_MAX_TOKENS = 2000;
+export const DEFAULT_PAGE_LIMIT = 200;
+export const VENDOR_LINKS_PAGE_LIMIT = 500;

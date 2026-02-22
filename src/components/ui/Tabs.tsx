@@ -24,7 +24,7 @@ export function Tabs({ tabs, activeTab, onChange, className }: TabsProps) {
           className={cn(
             "px-4 py-2 text-sm font-semibold rounded-md transition-[background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
             activeTab === tab.value
-              ? "bg-accent text-bg-primary shadow-[0_1px_6px_rgba(232,89,12,0.2)]"
+              ? "bg-accent text-bg-primary shadow-[0_1px_6px_rgba(118,185,0,0.2)]"
               : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
           )}
         >

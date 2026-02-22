@@ -12,6 +12,7 @@ import { ModPicker } from "./pickers/ModPicker";
 import { KeyboardCustomizer } from "./KeyboardCustomizer";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { checkCompatibility } from "@/lib/compatibilityCheck";
 import type {
   CustomBuilderStep,
   CustomBuilderState,
@@ -160,11 +161,11 @@ const STEP_TITLES: Record<CustomBuilderStep, { title: string; subtitle: string }
   },
   mods: {
     title: "Add Modifications",
-    subtitle: "Fine-tune your sound and feel with optional mods.",
+    subtitle: "Fine-tune your sound and feel with optional mods. (Optional)",
   },
   customize: {
     title: "Customize Keycaps",
-    subtitle: "Click individual keys to change colors, add artisans, and personalize your layout.",
+    subtitle: "Click individual keys to change colors, add artisans, and personalize your layout. (Optional)",
   },
   review: {
     title: "Review Your Build",
@@ -193,6 +194,11 @@ export function CustomBuilder({ onViewerUpdate, viewerConfig }: CustomBuilderPro
 
   const soundProfile = useMemo(
     () => predictSoundProfile(selections),
+    [selections]
+  );
+
+  const compatWarnings = useMemo(
+    () => checkCompatibility(selections),
     [selections]
   );
 
@@ -279,32 +285,54 @@ export function CustomBuilder({ onViewerUpdate, viewerConfig }: CustomBuilderPro
 
         {/* Main content */}
         <div className="flex-1 min-w-0">
-          {/* Mobile step indicator */}
+          {/* Mobile step indicator — pill strip */}
           <div className="lg:hidden mb-4">
-            <div className="flex items-center gap-1.5 mb-3 overflow-x-auto pb-1">
-              {STEP_ORDER.map((s, i) => (
-                <button
-                  key={s}
-                  onClick={() => dispatch({ type: "SET_STEP", step: s })}
-                  className={cn(
-                    "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-[background-color,color] duration-150",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
-                    step === s
-                      ? "bg-accent text-bg-primary"
-                      : i < currentStepIndex
-                        ? "bg-emerald-500/20 text-emerald-400"
-                        : "bg-bg-elevated text-text-muted border border-border-subtle"
-                  )}
-                >
-                  {i < currentStepIndex ? (
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  ) : (
-                    i + 1
-                  )}
-                </button>
-              ))}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {STEP_ORDER.map((s, i) => {
+                const isActive = step === s;
+                const isCompleted = i < currentStepIndex;
+                const abbreviations: Record<string, string> = {
+                  keyboard: "KB", switches: "SW", keycaps: "KC",
+                  stabilizers: "Stab", mods: "Mods", customize: "Paint", review: "Review",
+                };
+                const icons: Record<string, string> = {
+                  keyboard: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+                  switches: "M13 10V3L4 14h7v7l9-11h-7z",
+                  keycaps: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4",
+                  stabilizers: "M4 6h16M4 10h16M4 14h16M4 18h16",
+                  mods: "M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4",
+                  customize: "M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485",
+                  review: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+                };
+
+                return (
+                  <button
+                    key={s}
+                    onClick={() => dispatch({ type: "SET_STEP", step: s })}
+                    className={cn(
+                      "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium shrink-0 snap-start",
+                      "transition-[background-color,color,border-color] duration-150",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                      isActive
+                        ? "bg-accent text-white"
+                        : isCompleted
+                          ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20"
+                          : "bg-bg-elevated text-text-muted border border-border-subtle"
+                    )}
+                  >
+                    {isCompleted ? (
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    ) : (
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icons[s]} />
+                      </svg>
+                    )}
+                    {abbreviations[s]}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -399,7 +427,11 @@ export function CustomBuilder({ onViewerUpdate, viewerConfig }: CustomBuilderPro
                   onClick={goNext}
                   disabled={!canAdvance && step !== "mods" && step !== "customize"}
                 >
-                  {step === "mods" ? "Customize" : step === "customize" ? "Review" : "Next"}
+                  {step === "mods"
+                    ? (selections.mods.length === 0 ? "Skip" : "Customize")
+                    : step === "customize"
+                      ? (Object.keys(selections.perKeyOverrides).length === 0 ? "Skip" : "Review")
+                      : "Next"}
                   <svg className="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -407,6 +439,40 @@ export function CustomBuilder({ onViewerUpdate, viewerConfig }: CustomBuilderPro
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Compatibility warnings */}
+      {compatWarnings.length > 0 && step !== "review" && (
+        <div className="mt-4 space-y-2">
+          {compatWarnings.map((w, i) => (
+            <div
+              key={i}
+              className={cn(
+                "flex items-start gap-2.5 px-4 py-3 rounded-xl text-sm",
+                w.severity === "warning"
+                  ? "bg-amber-500/10 border border-amber-500/20 text-amber-200"
+                  : "bg-blue-500/10 border border-blue-500/20 text-blue-200"
+              )}
+            >
+              <svg
+                className={cn(
+                  "w-4 h-4 mt-0.5 shrink-0",
+                  w.severity === "warning" ? "text-amber-400" : "text-blue-400"
+                )}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {w.severity === "warning" ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                )}
+              </svg>
+              <span>{w.message}</span>
+            </div>
+          ))}
         </div>
       )}
 
@@ -424,7 +490,11 @@ export function CustomBuilder({ onViewerUpdate, viewerConfig }: CustomBuilderPro
             )}
           </div>
           <Button onClick={goNext} disabled={!canAdvance && step !== "mods" && step !== "customize"}>
-            {step === "mods" ? "Customize Keycaps" : step === "customize" ? "Review Build" : "Continue"}
+            {step === "mods"
+              ? (selections.mods.length === 0 ? "Skip \u2014 No Mods" : "Customize Keycaps")
+              : step === "customize"
+                ? (Object.keys(selections.perKeyOverrides).length === 0 ? "Skip \u2014 No Customization" : "Review Build")
+                : "Continue"}
             <svg className="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>

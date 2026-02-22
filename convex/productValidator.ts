@@ -108,12 +108,6 @@ export function validateBuild(
 
       // Correct name and price for high-confidence matches
       if (match.score >= 0.6) {
-        const productMeta = {
-          matchedId: String(k._id),
-          imageUrl: k.imageUrl ? String(k.imageUrl) : undefined,
-          detailUrl: `/keyboards/${k._id}`,
-          productUrl: k.productUrl ? String(k.productUrl) : undefined,
-        };
         const realPrice = Number(k.priceUsd);
         if (
           realPrice &&
@@ -124,13 +118,11 @@ export function validateBuild(
             ...components.keyboardKit,
             name: matchedName,
             price: realPrice,
-            ...productMeta,
           };
         } else {
           validatedComponents.keyboardKit = {
             ...components.keyboardKit,
             name: matchedName,
-            ...productMeta,
           };
         }
       }
@@ -156,12 +148,6 @@ export function validateBuild(
       };
 
       if (match.score >= 0.6) {
-        const productMeta = {
-          matchedId: String(s._id),
-          imageUrl: s.imageUrl ? String(s.imageUrl) : undefined,
-          detailUrl: `/switches/${s._id}`,
-          productUrl: s.productUrl ? String(s.productUrl) : undefined,
-        };
         const realPrice = Number(s.pricePerSwitch);
         if (
           realPrice &&
@@ -172,13 +158,11 @@ export function validateBuild(
             ...components.switches,
             name: matchedName,
             priceEach: realPrice,
-            ...productMeta,
           };
         } else {
           validatedComponents.switches = {
             ...components.switches,
             name: matchedName,
-            ...productMeta,
           };
         }
       }

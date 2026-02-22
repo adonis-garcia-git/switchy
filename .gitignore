@@ -47,3 +47,4 @@ src/data/scraped/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.claude/

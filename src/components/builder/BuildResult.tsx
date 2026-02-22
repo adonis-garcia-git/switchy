@@ -4,8 +4,10 @@ import { useState } from "react";
 import { cn, formatPriceWhole } from "@/lib/utils";
 import { ComponentCard } from "./ComponentCard";
 import { TweakInput } from "./TweakInput";
+import { CostBreakdown } from "./CostBreakdown";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { Modal } from "@/components/ui/Modal";
 import { BuildQuoteModal } from "@/components/BuildQuoteModal";
 import type { BuildData } from "@/lib/types";
 
@@ -30,6 +32,7 @@ export function BuildResult({
 }: BuildResultProps) {
   const [copied, setCopied] = useState(false);
   const [showQuoteModal, setShowQuoteModal] = useState(false);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   const handleCopy = async () => {
     const text = `${build.buildName}\n${build.summary}\n\nComponents:\n- Keyboard: ${build.components.keyboardKit?.name} ($${build.components.keyboardKit?.price})\n- Switches: ${build.components.switches?.name} (${build.components.switches?.quantity}x @ $${build.components.switches?.priceEach})\n- Keycaps: ${build.components.keycaps?.name} ($${build.components.keycaps?.price})\n- Stabilizers: ${build.components.stabilizers?.name} ($${build.components.stabilizers?.price})\n\nTotal: $${build.estimatedTotal}\nSound: ${build.soundProfileExpected}\nDifficulty: ${build.buildDifficulty}`;
@@ -52,39 +55,52 @@ export function BuildResult({
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6 backdrop-blur-md bg-bg-primary/50 rounded-3xl p-8 border border-border-subtle/30">
       {/* Build header */}
-      <div className="text-center mb-2">
+      <div className="mb-2">
         <h2 className="text-2xl sm:text-3xl font-bold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight">
           {build.buildName}
         </h2>
-        <p className="text-sm text-text-secondary mt-2 max-w-lg mx-auto leading-relaxed">
+        <p className="text-sm text-text-secondary mt-2 max-w-lg leading-relaxed">
           {build.summary}
         </p>
       </div>
 
       {/* Stats row */}
-      <div className="flex items-center justify-center gap-4 flex-wrap">
-        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-accent-dim border border-accent/20">
-          <span className="text-xs text-text-muted">Total</span>
-          <span className="text-lg font-bold font-[family-name:var(--font-mono)] text-accent">
+      <div className="flex items-center gap-3 flex-wrap">
+        <div className="px-5 py-3 rounded-xl bg-bg-surface border border-accent/20">
+          <span className="text-[10px] text-text-muted uppercase tracking-wider block mb-0.5">Total</span>
+          <span className="text-2xl font-bold font-[family-name:var(--font-mono)] text-accent">
             {formatPriceWhole(build.estimatedTotal)}
           </span>
         </div>
-        <Badge variant={
-          build.buildDifficulty === "beginner-friendly" ? "success" :
-          build.buildDifficulty === "intermediate" ? "warning" : "default"
-        } size="md">
-          {build.buildDifficulty}
-        </Badge>
+        <div className="flex items-center gap-2">
+          <svg className="w-4 h-4 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11.42 15.17l-5.69 3.29a.75.75 0 01-1.12-.67V4.44a.75.75 0 01.37-.64l5.26-3.04a.75.75 0 01.75 0l5.26 3.04a.75.75 0 01.37.64v13.35a.75.75 0 01-1.12.67l-5.69-3.29a.75.75 0 00-.75 0z" />
+          </svg>
+          <Badge variant={
+            build.buildDifficulty === "beginner-friendly" ? "success" :
+            build.buildDifficulty === "intermediate" ? "warning" : "default"
+          } size="md">
+            {build.buildDifficulty}
+          </Badge>
+        </div>
         {build.soundProfileExpected && (
-          <div className="px-3 py-1.5 rounded-full bg-bg-elevated border border-border-subtle text-xs text-text-secondary">
-            {build.soundProfileExpected}
+          <div className="flex items-center gap-2">
+            <svg className="w-4 h-4 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z" />
+            </svg>
+            <div className="px-3 py-1.5 rounded-full bg-bg-elevated border border-border-subtle text-xs text-text-secondary">
+              {build.soundProfileExpected}
+            </div>
           </div>
         )}
       </div>
 
-      {/* Component grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {build.components.keyboardKit && (
+      {/* Cost breakdown */}
+      <CostBreakdown components={build.components} total={build.estimatedTotal} />
+
+      {/* Hero component — keyboard kit */}
+      {build.components.keyboardKit && (
+        <div className="w-full">
           <ComponentCard
             type="keyboardKit"
             name={build.components.keyboardKit.name}
@@ -94,7 +110,11 @@ export function BuildResult({
             productUrl={build.components.keyboardKit.productUrl}
             detailUrl={build.components.keyboardKit.detailUrl}
           />
-        )}
+        </div>
+      )}
+
+      {/* Other components */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {build.components.switches && (
           <ComponentCard
             type="switches"
@@ -132,6 +152,15 @@ export function BuildResult({
         )}
       </div>
 
+      {/* Build Summary divider */}
+      {(build.recommendedMods?.length > 0 || build.notes) && (
+        <div className="flex items-center gap-3 pt-2">
+          <div className="h-px flex-1 bg-border-subtle/30" />
+          <span className="text-[10px] uppercase tracking-wider text-text-muted font-medium">Build Summary</span>
+          <div className="h-px flex-1 bg-border-subtle/30" />
+        </div>
+      )}
+
       {/* Recommended mods */}
       {build.recommendedMods && build.recommendedMods.length > 0 && (
         <div>
@@ -168,8 +197,15 @@ export function BuildResult({
       {/* Notes */}
       {build.notes && (
         <div className="p-4 rounded-xl bg-bg-elevated border border-border-subtle">
-          <p className="text-xs text-text-muted uppercase tracking-wider font-medium mb-2 font-[family-name:var(--font-outfit)]">Notes</p>
-          <p className="text-sm text-text-secondary leading-relaxed">{build.notes}</p>
+          <div className="flex items-start gap-3">
+            <svg className="w-4 h-4 text-accent shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+            <div>
+              <p className="text-xs text-text-muted uppercase tracking-wider font-medium mb-1 font-[family-name:var(--font-outfit)]">Notes</p>
+              <p className="text-sm text-text-secondary leading-relaxed">{build.notes}</p>
+            </div>
+          </div>
         </div>
       )}
 
@@ -209,11 +245,25 @@ export function BuildResult({
           {copied ? "Copied!" : "Copy"}
         </Button>
         {onReset && (
-          <Button variant="ghost" onClick={onReset}>
+          <Button variant="ghost" onClick={() => {
+            if (saved) { onReset(); } else { setShowResetConfirm(true); }
+          }}>
             Start Over
           </Button>
         )}
       </div>
+
+      {/* Refine your build */}
+      {onTweak && (
+        <div className="border-t border-border-subtle/30 pt-5">
+          <p className="text-xs text-text-muted uppercase tracking-wider font-medium font-[family-name:var(--font-outfit)] mb-3">
+            Refine Your Build
+          </p>
+          <div className="max-w-lg">
+            <TweakInput onSubmit={onTweak} loading={tweaking} />
+          </div>
+        </div>
+      )}
 
       {/* Have This Built section */}
       <div className="border-t border-border-subtle/30 pt-5">
@@ -247,12 +297,16 @@ export function BuildResult({
         buildSpec={build}
       />
 
-      {/* Tweak input */}
-      {onTweak && (
-        <div className="max-w-lg mx-auto">
-          <TweakInput onSubmit={onTweak} loading={tweaking} />
+      {/* Reset confirmation modal */}
+      <Modal isOpen={showResetConfirm} onClose={() => setShowResetConfirm(false)} title="Start a new build?">
+        <p className="text-sm text-text-secondary mb-6">
+          Your current build will not be saved unless you save it first.
+        </p>
+        <div className="flex justify-end gap-3">
+          <Button variant="ghost" onClick={() => setShowResetConfirm(false)}>Cancel</Button>
+          <Button onClick={() => { setShowResetConfirm(false); onReset?.(); }}>Start Over</Button>
         </div>
-      )}
+      </Modal>
     </div>
   );
 }

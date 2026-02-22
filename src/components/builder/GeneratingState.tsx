@@ -22,8 +22,7 @@ export function GeneratingState() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center px-4 py-8">
-      <div className="backdrop-blur-md bg-bg-primary/50 rounded-3xl p-8 border border-border-subtle/30">
+    <div className="flex flex-col items-center justify-center py-16 px-4">
       {/* Animated spinner */}
       <div className="relative w-20 h-20 mb-8">
         <div className="absolute inset-0 rounded-full border-2 border-border-subtle" />
@@ -56,7 +55,6 @@ export function GeneratingState() {
             }`}
           />
         ))}
-      </div>
       </div>
     </div>
   );

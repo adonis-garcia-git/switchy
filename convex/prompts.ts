@@ -195,7 +195,6 @@ export function formatDatabaseContext(
   return `## Available Switches (${switches.length} matches)
 ${JSON.stringify(
   switches.map((s) => ({
-    _id: s._id,
     name: `${s.brand} ${s.name}`,
     type: s.type,
     actuationForceG: s.actuationForceG,
@@ -216,7 +215,6 @@ ${JSON.stringify(
 ## Available Keyboard Kits (${keyboards.length} matches)
 ${JSON.stringify(
   keyboards.map((k) => ({
-    _id: k._id,
     name: `${k.brand} ${k.name}`,
     size: k.size,
     mountingStyle: k.mountingStyle,

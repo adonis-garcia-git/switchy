@@ -41,19 +41,24 @@ export function InitialPrompt({ onSubmit, loading }: InitialPromptProps) {
 
   return (
     <div className="flex flex-col items-center justify-center px-4 py-8 sm:py-12 w-full max-w-2xl">
-      <div className="backdrop-blur-md bg-bg-primary/50 rounded-3xl p-8 border border-border-subtle/30 w-full">
-      {/* Tagline */}
+      {/* Tagline — floating text with shadow for contrast over 3D scene */}
       <div className="text-center mb-8 sm:mb-10">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight leading-[1.1] mb-3">
+        <h1
+          className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white font-[family-name:var(--font-outfit)] tracking-tight leading-[1.1] mb-3"
+          style={{ textShadow: "0 2px 30px rgba(0,0,0,0.8), 0 0 60px rgba(0,0,0,0.5)" }}
+        >
           Build your dream<br />
-          <span className="text-accent">keyboard</span>
+          <span className="text-accent drop-shadow-[0_0_24px_rgba(232,89,12,0.4)]">keyboard</span>
         </h1>
-        <p className="text-sm sm:text-base text-text-secondary max-w-md mx-auto leading-relaxed">
+        <p
+          className="text-sm sm:text-base text-white/60 max-w-md mx-auto leading-relaxed"
+          style={{ textShadow: "0 1px 20px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.6)" }}
+        >
           Describe what you want and our AI will recommend the perfect build with specific components and pricing.
         </p>
       </div>
 
-      {/* Input */}
+      {/* Input — semi-transparent, no blur, keyboard shows through */}
       <div className="w-full max-w-xl mb-6">
         <div className="relative group">
           <input
@@ -68,10 +73,10 @@ export function InitialPrompt({ onSubmit, loading }: InitialPromptProps) {
             disabled={loading}
             className={cn(
               "w-full px-6 py-4 sm:py-5 rounded-2xl text-base sm:text-lg",
-              "bg-bg-surface border-2 border-border-default",
-              "text-text-primary placeholder:text-text-muted/40",
-              "focus:border-accent/60 focus:outline-none",
-              "focus:shadow-[0_0_0_4px_rgba(232,89,12,0.08),0_4px_24px_rgba(232,89,12,0.06)]",
+              "bg-black/25 border border-white/[0.08]",
+              "text-white placeholder:text-white/25",
+              "focus:border-accent/40 focus:outline-none",
+              "focus:shadow-[0_0_0_3px_rgba(232,89,12,0.1),0_4px_32px_rgba(0,0,0,0.3)]",
               "transition-[border-color,box-shadow] duration-200",
               "disabled:opacity-50 disabled:cursor-not-allowed",
               "pr-14"
@@ -87,8 +92,8 @@ export function InitialPrompt({ onSubmit, loading }: InitialPromptProps) {
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
               "active:scale-[0.9]",
               value.trim()
-                ? "bg-accent text-bg-primary hover:bg-accent-hover"
-                : "bg-bg-elevated text-text-muted cursor-not-allowed"
+                ? "bg-accent text-white hover:bg-accent-hover"
+                : "bg-white/[0.06] text-white/30 cursor-not-allowed"
             )}
           >
             {loading ? (
@@ -102,7 +107,7 @@ export function InitialPrompt({ onSubmit, loading }: InitialPromptProps) {
         </div>
       </div>
 
-      {/* Suggestion chips */}
+      {/* Suggestion chips — minimal, transparent */}
       <div className="flex flex-wrap justify-center gap-2 max-w-xl">
         {SUGGESTION_CHIPS.map((chip) => (
           <button
@@ -111,9 +116,9 @@ export function InitialPrompt({ onSubmit, loading }: InitialPromptProps) {
             disabled={loading}
             className={cn(
               "px-4 py-2 rounded-full border text-sm",
-              "border-border-subtle bg-bg-surface text-text-secondary",
-              "hover:text-accent hover:border-border-accent",
-              "transition-[border-color,color] duration-150",
+              "border-white/[0.08] bg-black/20 text-white/50",
+              "hover:text-accent hover:border-accent/30 hover:bg-black/30",
+              "transition-[border-color,color,background-color] duration-150",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
               "active:scale-[0.97]",
               "disabled:opacity-50 disabled:cursor-not-allowed"
@@ -122,7 +127,6 @@ export function InitialPrompt({ onSubmit, loading }: InitialPromptProps) {
             {chip}
           </button>
         ))}
-      </div>
       </div>
     </div>
   );

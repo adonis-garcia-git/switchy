@@ -314,7 +314,7 @@ export function BuildCard({
             <button
               onClick={onSave}
               disabled={saving}
-              className="px-4 py-2 rounded-lg bg-accent text-bg-primary font-semibold text-sm hover:bg-accent-hover shadow-[0_1px_8px_rgba(232,89,12,0.15)] transition-[background-color,transform] duration-150 disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+              className="px-4 py-2 rounded-lg bg-accent text-bg-primary font-semibold text-sm hover:bg-accent-hover shadow-[0_1px_8px_rgba(118,185,0,0.15)] transition-[background-color,transform] duration-150 disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
             >
               {saving ? "Saving..." : "Save Build"}
             </button>

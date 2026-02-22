@@ -139,9 +139,9 @@
     "category": "mountingStyle",
     "name": "Gasket Mount",
     "soundEffect": "dampened, flexible typing, reduced ping",
-    "priceRange": "mid",
-    "notes": "Now the most common mounting style across mid-range and above; soft, bouncy typing feel. Available on boards as low as $50.",
-    "compatibilityNotes": "Requires gaskets between plate and case; used in most custom keyboards from budget to premium."
+    "priceRange": "premium",
+    "notes": "Most sought-after mounting style; soft, bouncy typing feel.",
+    "compatibilityNotes": "Requires gaskets between plate and case; most mid-to-high-end customs use this."
   },
   {
     "category": "mountingStyle",

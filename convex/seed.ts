@@ -26,7 +26,14 @@ export const seedAll = mutation({
     let keyboardsAdded = 0;
 
     if (!existingSwitches) {
+      const seenSwitches = new Set<string>();
       for (const sw of args.switches) {
+        const dedupKey = `${sw.brand}::${sw.name}`;
+        if (seenSwitches.has(dedupKey)) {
+          console.warn(`Skipping duplicate switch: ${dedupKey}`);
+          continue;
+        }
+        seenSwitches.add(dedupKey);
         const cleaned: Record<string, unknown> = {};
         for (const [key, value] of Object.entries(sw)) {
           if (value !== null) cleaned[key] = value;
@@ -67,6 +74,10 @@ export const clearAll = mutation({
       "keyboards",
       "glossaryTerms",
       "vendorLinks",
+      "keycaps",
+      "accessories",
+      "sponsorships",
+      "groupBuyListings",
     ] as const;
     for (const table of tables) {
       const docs = await ctx.db.query(table).collect();
@@ -104,8 +115,15 @@ export const seedSwitchesBatch = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
+    const seen = new Set<string>();
     let count = 0;
     for (const sw of args.switches) {
+      const key = `${sw.brand}::${sw.name}`;
+      if (seen.has(key)) {
+        console.warn(`Skipping duplicate switch: ${key}`);
+        continue;
+      }
+      seen.add(key);
       const cleaned: Record<string, unknown> = {};
       for (const [key, value] of Object.entries(sw)) {
         if (value !== null) cleaned[key] = value;
@@ -176,8 +194,16 @@ export const cleanAndReseedSwitches = mutation({
     }
 
     // Re-insert from clean data (strip null values — Convex requires undefined, not null)
+    // Deduplicate by brand+name to prevent duplicate entries
+    const seen = new Set<string>();
     let added = 0;
     for (const sw of args.switches) {
+      const dedupKey = `${sw.brand}::${sw.name}`;
+      if (seen.has(dedupKey)) {
+        console.warn(`Skipping duplicate switch: ${dedupKey}`);
+        continue;
+      }
+      seen.add(dedupKey);
       const cleaned: Record<string, unknown> = {};
       for (const [key, value] of Object.entries(sw)) {
         if (value !== null) {
@@ -189,6 +215,31 @@ export const cleanAndReseedSwitches = mutation({
     }
 
     return { deleted, added };
+  },
+});
+
+export const cleanAndReseedKeyboards = mutation({
+  args: {
+    keyboards: v.array(v.any()),
+  },
+  returns: v.object({
+    deleted: v.number(),
+    added: v.number(),
+  }),
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const existing = await ctx.db.query("keyboards").collect();
+    for (const kb of existing) {
+      await ctx.db.delete(kb._id);
+    }
+
+    for (const kb of args.keyboards) {
+      await ctx.db.insert("keyboards", kb);
+    }
+
+    return { deleted: existing.length, added: args.keyboards.length };
   },
 });
 

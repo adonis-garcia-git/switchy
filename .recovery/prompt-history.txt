@@ -1,0 +1,685 @@
+--- Prompt 1 [2026-02-20 16:23] ---
+/mcp
+
+--- Prompt 2 [2026-02-20 16:24] ---
+/mcp
+
+--- Prompt 3 [2026-02-20 16:26] ---
+/mcp
+
+--- Prompt 4 [2026-02-20 16:27] ---
+/mcp
+
+--- Prompt 5 [2026-02-20 16:39] ---
+/mcp
+
+--- Prompt 6 [2026-02-20 16:42] ---
+use the @switchy-prompt.md file as the initial prompt and instructions. Before writing any code, use Nia to index the latest documentation for: Convex (docs.convex.dev), Clerk (clerk.com/docs), Anthropic SDK (docs.anthropic.com), and Next.js App Router (nextjs.org/docs). Reference these indexed docs whenever implementing integrations to avoid using outdated API patterns.
+
+--- Prompt 7 [2026-02-20 16:45] ---
+use the @switchy-prompt.md file as the initial prompt and instructions. Before writing any code, use Nia to index the latest documentation for: Convex (docs.convex.dev), Clerk (clerk.com/docs), Anthropic SDK (docs.anthropic.com), and Next.js App Router (nextjs.org/docs). Reference these indexed docs whenever implementing integrations to avoid using outdated API patterns.
+
+--- Prompt 8 [2026-02-20 17:39] ---
+ok now set up convex and let's get this running
+
+--- Prompt 9 [2026-02-20 17:47] ---
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_c21hc2hpbmctYnJlYW0tNzQuY2xlcmsuYWNjb3VudHMuZGV2JA
+CLERK_SECRET_KEY=sk_test_ld57ZMwz2q8GC8dsMoodwi4AIidNvBqeWr7T0mkQq7
+CLERK_JWT_ISSUER_DOMAIN=https://smashing-bream-74.clerk.accounts.dev
+
+--- Prompt 10 [2026-02-20 18:03] ---
+how to stop servers?
+
+--- Prompt 11 [2026-02-20 18:03] ---
+/clear
+
+--- Prompt 12 [2026-02-20 18:04] ---
+When opening the link, I get faced with the following error. 
+
+[Pasted text #1 +25 lines]
+
+Please investigate and fix.
+
+--- Prompt 13 [2026-02-20 18:51] ---
+Can I run this on a different local link than the default?
+
+--- Prompt 14 [2026-02-20 18:52] ---
+What are the two commands I need to run in order to test this out?
+
+--- Prompt 15 [2026-02-20 18:54] ---
+/clear
+
+--- Prompt 16 [2026-02-20 18:55] ---
+To click and build my board, I get the following error. 
+
+[CONVEX A(builds:generateBuild)] [Request ID: 761b1f4ffc80a10b] Server Error Uncaught Error: 404 {"type":"error","error":{"type":"not_found_error","message":"model: claude-sonnet-4-5-20250514"},"request_id":"req_011CYLDsWcvBpxNK5f8oWoyQ"} at generate [as generate] (../node_modules/@anthropic-ai/sdk/src/core/error.ts:94:2) at makeStatusError [as makeStatusError] (../node_modules/@anthropic-ai/sdk/src/client.ts:514:2) at makeRequest [as makeRequest] (../node_modules/@anthropic-ai/sdk/src/client.ts:750:4) at async handler (../convex/builds.ts:128:14) Called by client
+
+Please investigate and fix this.
+
+--- Prompt 17 [2026-02-20 19:52] ---
+when i click on the switches tab, i get the following error:
+
+[Pasted text #2 +26 lines]
+
+investigate and fix.
+
+--- Prompt 18 [2026-02-20 19:54] ---
+switches database is empty, what are the best ways to populate this database?
+
+--- Prompt 19 [2026-02-20 19:57] ---
+is this fake data?
+
+--- Prompt 20 [2026-02-20 19:58] ---
+where did it get the information from?
+
+--- Prompt 21 [2026-02-20 20:07] ---
+can you update the seed data with accurate real-world pricing and specs
+
+--- Prompt 22 [2026-02-20 21:29] ---
+/clear
+
+--- Prompt 23 [2026-02-20 21:45] ---
+/plugin
+
+--- Prompt 24 [2026-02-20 21:47] ---
+/plugin
+
+--- Prompt 25 [2026-02-20 22:55] ---
+/skills
+
+--- Prompt 26 [2026-02-20 22:59] ---
+/skills
+
+--- Prompt 27 [2026-02-20 23:35] ---
+I want you to analyze this from the perspective of the user, of someone who [Pasted text #1 +4 lines] For this, create a plan and outline structure for a Claude team of agents to build this and make sure it works effectively.
+
+--- Prompt 28 [2026-02-21 10:50] ---
+analyze the new @claude.md file and tell me what i need to do for this to function correctly and if there is anything that should be changed
+
+--- Prompt 29 [2026-02-21 10:52] ---
+/skills
+
+--- Prompt 30 [2026-02-21 10:52] ---
+/plugin
+
+--- Prompt 31 [2026-02-21 10:54] ---
+not yet, first do [Pasted text #1 +8 lines]
+
+--- Prompt 32 [2026-02-21 10:54] ---
+/plugin marketplace add anthropics/claude-code
+
+--- Prompt 33 [2026-02-21 10:54] ---
+/plugin install frontend-design@claude-code-plugins
+
+--- Prompt 34 [2026-02-21 10:54] ---
+/plugin
+
+--- Prompt 35 [2026-02-21 10:58] ---
+can you see the skill now?
+
+--- Prompt 36 [2026-02-21 11:00] ---
+look through claude.md, i want this to function for my workflow. what is everything that i need to do for this to function. analyze it thoroughly.
+
+--- Prompt 37 [2026-02-21 11:03] ---
+yes, rewrite it for my setup. then complete the appropriate tasks for this to work effectively.
+
+--- Prompt 38 [2026-02-21 11:10] ---
+/plugin
+
+--- Prompt 39 [2026-02-21 11:10] ---
+/skills
+
+--- Prompt 40 [2026-02-21 11:11] ---
+add back the frontend-design skill stuff
+
+--- Prompt 41 [2026-02-21 11:17] ---
+okay so how does the screesnhot workflow now work?
+
+--- Prompt 42 [2026-02-21 11:18] ---
+I want to have a separate folder of screenshots from my reference website. Implement that.
+
+--- Prompt 43 [2026-02-21 11:20] ---
+where do i put all my reference images?
+
+--- Prompt 44 [2026-02-21 11:21] ---
+how does the flow work now?
+
+--- Prompt 45 [2026-02-21 11:23] ---
+Okay, I want you to do a complete UI overhaul using the screenshots in the references folder as reference, but obviously altered for the functionality of this application. If you deem necessary, create an agent team.
+
+--- Prompt 46 [2026-02-21 12:18] ---
+[Pasted text #1 +12 lines]
+
+--- Prompt 47 [2026-02-21 13:00] ---
+run the scraper pipeline and see what we get
+
+--- Prompt 48 [2026-02-21 13:07] ---
+[Pasted text #1 +584 lines]
+
+--- Prompt 49 [2026-02-21 13:08] ---
+/compact
+
+--- Prompt 50 [2026-02-21 13:11] ---
+I have a full-site screenshot of a website that I would like you to use as a reference image for the landing page of this application. Where should I put it?
+
+--- Prompt 51 [2026-02-21 13:15] ---
+3. And then I also want you to see if there's any better way to scrape the internet for the information that I want. It doesn't necessarily have to come from key finder; I just thought that was the best approach. If you think that there's a better way to get this without running into any errors, or just a better approach to the key finder scraping, then let us do it. I just want to populate my database with accurate, comprehensive data.
+
+--- Prompt 52 [2026-02-21 13:20] ---
+Okay, now I want you to complete the landing page. I am also going to include a few copies of this styling code from the website that I used as my previous reference. I want you to combine this styling of the landing page with the current styling of the app. I don't want green at all. Use the landing page image as pure reference as to the kind of vibe I want, but obviously make it applicable to my application and the features that my application has. copy1: [Pasted text #2 +575 lines] copy 2: [Pasted text #3 +576 lines] copy 3: [Pasted text #4 +598 lines]
+
+--- Prompt 53 [2026-02-21 13:43] ---
+run the ai enrichment
+
+--- Prompt 54 [2026-02-21 13:47] ---
+/clear
+
+--- Prompt 55 [2026-02-21 13:49] ---
+/clear
+
+--- Prompt 56 [2026-02-21 13:50] ---
+I would like to go above and beyond and create either an image that shows them their built keyboard, or, on top of that, a 3D rendering that they can look through and turn to see the keyboard. That might just be static, but still 3D. Talk me through this: what are all your recommendations? What are the possibilities? What are the current modern tools that will be able to effectively help me do this?I'm building this application for a hackathon in 48 hours. I wanted to have the best wow factor, but I wanted to actually be feasible.
+I don't know much about 3D modeling, but when I do mention it to others, they say that that sounds fantastic. If possible, I would love to do so, but I don't want to overburden myself, so please tell me what do you think is the best approach, the best use of my time, and the best way to win this hackathon? For an application that's basically like Keebfinder with AI elements on top of it, in regards to this visualizer aspect of it.You are building it.
+
+--- Prompt 57 [2026-02-21 14:34] ---
+keep the currently enriched ones.
+
+--- Prompt 58 [2026-02-21 14:42] ---
+stop running
+
+--- Prompt 59 [2026-02-21 14:52] ---
+/clear
+
+--- Prompt 60 [2026-02-21 15:03] ---
+[Pasted text #1 +4 lines] Based on their initial input, the advisor would then ask a series of questions that would really help with the creation of the keyboard. Questions that are valuable, necessary, and effective so that it's actually customized and not generic. For example, color, feel, things kind of similar to what's currently in the build wizard, but I want these to be integrated together. Instead of it looking like a chat bot, I want each question to follow after the other, taking up the screen, so that it's more aesthetic instead of looking like I'm just speaking to a different version of ChatGPT. [Pasted text #2 +2 lines] Also make accessing the link for any of these items very intuitive. Except it's obvious that they can go purchase it, and if for the items in the database that don't currently have a link associated with them, create a link that basically just takes them to Amazon with the title of that item typed in, or just google the name of that item typed in, based on what you think works best. So add light mode and get the default with the current version being considered dark mode. If necessary, create a team of agents to accomplish this task.
+
+--- Prompt 61 [2026-02-21 15:39] ---
+/clear
+
+--- Prompt 62 [2026-02-21 15:40] ---
+I'm getting the two following issues. 
+
+[Pasted text #1 +70 lines]
+
+[Pasted text #2 +24 lines]
+
+Please investigate and fix.
+
+--- Prompt 63 [2026-02-21 16:10] ---
+[Pasted text #1 +4 lines] Make the nav bar separated by keycap switches, keyboards, and more (call more accessories). Go through the current switch database, because some of the things in there aren't actually switches. There's switch lubricants or something else that isn't a switch, so if it's not, make sure to put those in their respective location. Every single item in the database should have an image. When I go through the database, I should be able to see the image of that item alongside whatever crucial information I want at the top. The buy button, not the build, should be more prominent in this case. Make the My Build section UI correlate to the rest of the application, because right now it's just one long list of really long formatted text. Make it look better and function better and be more aesthetically pleasing and user-friendly, and incorporate some sort of image which can or cannot be the model. Update the web app to use the logo found in the brand assets directory. Maintain its aspect ratio. Create a team of agents if necessary.
+
+--- Prompt 64 [2026-02-21 16:42] ---
+if i reseed, is all the data accurate and real?
+
+--- Prompt 65 [2026-02-21 16:50] ---
+/clear
+
+--- Prompt 66 [2026-02-21 16:51] ---
+Clicked the clean and reseed button and got the following error. :
+
+Error: [CONVEX M(seed:cleanAndReseedSwitches)] [Request ID: e3dadef96d57c26d] Server Error Uncaught Error: Failed to insert or update a document in table "switches" because it does not match the schema: Value does not match validator. Path: .soundSampleUrl Value: null Validator: v.string() at async handler (../convex/seed.ts:155:4) Called by client
+
+Please investigate and fix
+
+--- Prompt 67 [2026-02-21 16:52] ---
+/clear
+
+--- Prompt 68 [2026-02-21 16:52] ---
+logo on screen is way too small, use screenshoting to confirm the correct sizing. maintain aspect ratio.
+
+--- Prompt 69 [2026-02-21 16:53] ---
+I tried again and still got the following error:
+
+[Pasted text #1 +16 lines]
+
+[Pasted text #2 +5 lines]
+
+Please fix and investigate.
+
+--- Prompt 70 [2026-02-21 16:55] ---
+/clear
+
+--- Prompt 71 [2026-02-21 16:55] ---
+make the nav bar black
+
+--- Prompt 72 [2026-02-21 16:55] ---
+try the clean and reseed button again
+
+--- Prompt 73 [2026-02-21 16:59] ---
+what happened to all the images for the switches?
+
+--- Prompt 74 [2026-02-21 17:01] ---
+1
+
+--- Prompt 75 [2026-02-21 17:19] ---
+how do i edit logo size
+
+--- Prompt 76 [2026-02-21 19:17] ---
+/clear
+
+--- Prompt 77 [2026-02-21 19:17] ---
+Lessen the gradient for the images because some of them seem too dark.
+
+--- Prompt 78 [2026-02-21 19:17] ---
+/clear
+
+--- Prompt 79 [2026-02-21 19:18] ---
+Although there is a feature to have a list of components, be advised that I want there to be a way for you to create the keyboard that you want and specifically choose the components that you want to create that keyboard.
+
+--- Prompt 80 [2026-02-21 19:21] ---
+I want you to play as devil advocate and analyze this application from a stance of calling out everything that's wrong with it in order to devise a plan for how to improve the application. Anything counts.
+
+--- Prompt 81 [2026-02-21 19:23] ---
+I want you to spin up a team of agents to make the 3D rendering much, much better than it currently is. Right now, it looks way too generic. I want it to be completely customizable so that the user is really shocked by the fact that the 3D rendering is really showcasing their keyboard coming to life.
+
+--- Prompt 82 [2026-02-21 19:48] ---
+On the builder screen, the 3D rendering in the background is frozen. Please investigate and fix this.
+
+--- Prompt 83 [2026-02-21 19:53] ---
+/clear
+
+--- Prompt 84 [2026-02-21 19:53] ---
+Analyze currently how the Builder AI is actually coming up with the response for the user. Analyze whether this is effective, whether it's accurate. What is a better alternative to do this that would be faster, more efficient? More effective for the user? Better overall for the context of the application?
+
+--- Prompt 85 [2026-02-21 19:54] ---
+/clear
+
+--- Prompt 86 [2026-02-21 19:54] ---
+/mcp
+
+--- Prompt 87 [2026-02-21 19:55] ---
+/skills
+
+--- Prompt 88 [2026-02-21 19:55] ---
+Remove the Powered by Claude Sonnet 4.6 that's currently present in the chat window of the initial screen.
+
+--- Prompt 89 [2026-02-21 20:10] ---
+Can it just provide the user with pieces that are already in the database? That way, when it populates, the user can see an image and be able to see more about the pieces, since it's already in the database.
+
+--- Prompt 90 [2026-02-21 20:13] ---
+/clear
+
+--- Prompt 91 [2026-02-21 20:14] ---
+"[Pasted text #1]"
+
+The prompt above is copy and pasted without context to the codebase. Still, complete the prompt, but certain things might not make sense or be applicable, or certain categories might not exist. Keep that in mind as you complete the task.
+
+--- Prompt 92 [2026-02-21 20:14] ---
+/clear
+
+--- Prompt 93 [2026-02-21 20:15] ---
+Remove the flat plane under the 3D render of the keyboard because it doesn't look nice. I just want the keyboard to be present.
+
+--- Prompt 94 [2026-02-21 20:25] ---
+/clear
+
+--- Prompt 95 [2026-02-21 20:27] ---
+/nia Make the 3D rendering 1000 times better. I want the color of each individual key to have the ability to be changed. I want every update the user makes to be showcased on the keyboard. I want there to be different styles of keycaps and really make it so that the user's 3D rendering is unique to them.
+
+--- Prompt 96 [2026-02-21 20:31] ---
+/clear
+
+--- Prompt 97 [2026-02-21 20:31] ---
+What would be the best way to make money off of this app?
+
+--- Prompt 98 [2026-02-21 20:33] ---
+implement all of these. what do you need?
+
+--- Prompt 99 [2026-02-21 20:41] ---
+/clear
+
+--- Prompt 100 [2026-02-21 20:46] ---
+[Pasted text #1 +8 lines]
+
+--- Prompt 101 [2026-02-21 21:14] ---
+Give me step-by-step instructions to complete the prerequisites.
+
+--- Prompt 102 [2026-02-21 21:27] ---
+seed the affiliate data
+
+--- Prompt 103 [2026-02-21 21:33] ---
+What is the difference between the current Seed Affiliate Config list versus if I click Seed Affiliate Config in the /seed page?
+
+--- Prompt 104 [2026-02-21 21:34] ---
+So do I need to do this, and what's the point of doing so?
+
+--- Prompt 105 [2026-02-21 21:35] ---
+Is there anything else that I should see right now?
+
+--- Prompt 106 [2026-02-21 21:49] ---
+In the Glossary, none of the terms have a difficulty level currently, so if I click any of the difficulty filters, nothing appears.
+
+--- Prompt 107 [2026-02-21 22:00] ---
+/clear
+
+--- Prompt 108 [2026-02-21 22:00] ---
+I'm getting the following error and I don't know why. 
+
+[Pasted text #1 +26 lines]
+
+Please investigate and fix.
+
+--- Prompt 109 [2026-02-21 22:10] ---
+/clear
+
+--- Prompt 110 [2026-02-21 22:10] ---
+When I go to deploy this, how would I deploy it using Vercel?
+
+--- Prompt 111 [2026-02-21 22:15] ---
+i'm not ready to push to production yet but i would like to have a link that's publicly accessible for testing purposes so that my team mate can see what i'm working on and the current status of the page as i push updates. how would i do that?
+
+--- Prompt 112 [2026-02-21 22:16] ---
+vercel
+
+--- Prompt 113 [2026-02-21 22:33] ---
+dangerously-skip-permissions
+
+--- Prompt 114 [2026-02-21 22:33] ---
+dangerously-skip-permissions
+
+--- Prompt 115 [2026-02-21 22:34] ---
+/clear
+
+--- Prompt 116 [2026-02-21 22:35] ---
+I created a verse so preview deployment for my friends' access to the link and to test everything out, but I'm currently seeing these errors come in through the backend. 
+
+[Pasted text #1 +16 lines]
+
+Please investigate this. How can this be fixed?
+
+--- Prompt 117 [2026-02-21 23:00] ---
+The Keyboard Explorer currently says that there are 200 items in it, as I look at the UI; however, I can very quickly see that some of these things are not actual keyboards. I would like you to go through the Keyboard Explorer, through everything that's currently being showcased on the Keyboard Explorer, and take out the things that are not actual keyboards. Put them over to where the accessories are, or, if they are key caps, put them into the key caps list. I also want you to populate the Keycaps Explorer and the Accessories databases with more data and images.
+
+--- Prompt 118 [2026-02-21 23:00] ---
+/clear
+
+--- Prompt 119 [2026-02-21 23:01] ---
+For the builder tab, I would like for the screen to almost be split in half, or in whatever way makes sense, so that the typing and the text and everything is on the left. On the right side, you have the keyboard 3D in full opacity so that you can actually see the 3D rendering move around with it, see it update as you change things.
+
+--- Prompt 120 [2026-02-21 23:02] ---
+/clear
+
+--- Prompt 121 [2026-02-21 23:02] ---
+I added a new logo image to brand assets. Please replace a current logo with the new logo image in a way that looks nice and aesthetic for the page. It was uploaded as a PNG file; use screenshots to make sure it looks correct.
+
+--- Prompt 122 [2026-02-21 23:04] ---
+/clear
+
+--- Prompt 123 [2026-02-21 23:04] ---
+Add a layouts category to the glossary.
+
+--- Prompt 124 [2026-02-21 23:05] ---
+Make a logo and text slightly bigger.
+
+--- Prompt 125 [2026-02-21 23:07] ---
+What's bigger than xl?
+
+--- Prompt 126 [2026-02-21 23:08] ---
+How can I move the text closer to the logo?
+
+--- Prompt 127 [2026-02-21 23:11] ---
+How can I move the logo slightly down?
+
+--- Prompt 128 [2026-02-21 23:11] ---
+apply translate-y-1 to the logo
+
+--- Prompt 129 [2026-02-21 23:16] ---
+/clear
+
+--- Prompt 130 [2026-02-21 23:16] ---
+/clear
+
+--- Prompt 131 [2026-02-21 23:18] ---
+keep going, waiting for the background agents to finish
+
+--- Prompt 132 [2026-02-21 23:19] ---
+Add pagination to each of the explorer tabs.
+
+--- Prompt 133 [2026-02-21 23:23] ---
+Will running any of these clean and reseed stuff erase images or delete images?
+
+--- Prompt 134 [2026-02-21 23:24] ---
+How about the ones that don't have Place Hold Code and actually have image URLs there?
+
+--- Prompt 135 [2026-02-21 23:34] ---
+Take screenshots of the Keyboard Explorer page. They have images, so I'm confused.
+
+--- Prompt 136 [2026-02-21 23:39] ---
+yeah update keyboards.json first to preserve the real images from the database
+
+--- Prompt 137 [2026-02-21 23:58] ---
+Pull all the data from the database and export it to a.json, and then use that exported JSON to populate the other JSONs, which are the actual keyboards one, the accessories one, and everything else. Don't touch switches at all. I don't want any items that don't have an image with them, because images are a big component of the app, so I don't want anything with placeholders.
+
+--- Prompt 138 [2026-02-22 00:04] ---
+/clear
+
+--- Prompt 139 [2026-02-22 00:05] ---
+When I click on the Builder tab, the keyboard is extremely zoomed in. How can this be fixed?
+
+--- Prompt 140 [2026-02-22 00:10] ---
+Can you look through switches database and remove duplicates?
+
+--- Prompt 141 [2026-02-22 00:14] ---
+/clear
+
+--- Prompt 142 [2026-02-22 00:14] ---
+Can you remove duplicate switches in the switches database?
+
+--- Prompt 143 [2026-02-22 00:22] ---
+/clear
+
+--- Prompt 144 [2026-02-22 00:24] ---
+I really want to sell the idea of this application having monetization for pitching purposes, but at the same time, I don't want to overwhelm the user. Include more aspects of monetization that might be used for this page. For example, may be having a row of sponsored items at the top of each Explorer tab. These would obviously showcase that they're sponsored in some way. And then include any more monetization features in other places or anywhere you think might be beneficial and effective.
+
+--- Prompt 145 [2026-02-22 00:25] ---
+Have each row of each explorer directory contain four items instead of three. And actually add the ability for the user to change this in a way that makes sense.
+
+--- Prompt 146 [2026-02-22 00:28] ---
+How can I move this even more back?
+
+--- Prompt 147 [2026-02-22 00:31] ---
+I want to confirm that this doesn't delete any of the images corresponding with any of the switches.
+
+--- Prompt 148 [2026-02-22 00:33] ---
+Have options be 4 by 4, 3 by 3, and 2 by 2, with the icons matching accordingly.
+
+--- Prompt 149 [2026-02-22 00:36] ---
+Zoom out even more and reduce the aggressive lighting. I want the line that divides the 3D rendering and the build your dream keyboard to be as invisible as possible. I don't want the keyboard at any moment to seem like it's cut off.
+
+You're going to have a lot of fun doing it. Maybe make it so there actually isn't a dividing border between the two. If the user decides to zoom in, that just means that the keyboard might now be flowing under all the text and stuff, but that's perfectly fine.
+
+--- Prompt 150 [2026-02-22 00:37] ---
+/clear
+
+--- Prompt 151 [2026-02-22 00:38] ---
+When I click the compare button in order to select various items to compare, the selection box on each of the items is very small and hard to see. Fix this or switch the selection box to something that's better.
+
+--- Prompt 152 [2026-02-22 00:38] ---
+/clear
+
+--- Prompt 153 [2026-02-22 00:40] ---
+For the glossary tab, add a chat bot on the left of the screen that doesn't take up too much space. The user can ask the chat bot questions about any keyboard terminology and/or functionality, and it'll respond in a concise way using haiku as the model of choice.
+
+--- Prompt 154 [2026-02-22 00:41] ---
+I don't like the black-to-white gradient, and I don't like the fact that the keyboard behind the container and all the text is not really visible. Also, move the center point of the keyboard to the right.
+
+--- Prompt 155 [2026-02-22 00:42] ---
+/clear
+
+--- Prompt 156 [2026-02-22 00:43] ---
+Inside of the comparison tabs, maintain the images of the items.
+
+--- Prompt 157 [2026-02-22 00:56] ---
+I want Switchy to already be open on the left side of the screen and take up maybe about one fifth of the width of the screen.
+
+--- Prompt 158 [2026-02-22 00:58] ---
+I currently don't see any of these promoted products. Why is that?
+
+--- Prompt 159 [2026-02-22 01:00] ---
+Okay, instead for now, what I want you to do is take some from the current database and showcase them as sponsored products, because I want the sponsored products to have an associated image. At the same time, add a rule somewhere in the code base to always remember that I don't want any image placeholders. I want every product that is being showcased on this page to have an associated image.
+
+--- Prompt 160 [2026-02-22 01:01] ---
+How can I make him take up more space?
+
+--- Prompt 161 [2026-02-22 01:07] ---
+/clear
+
+--- Prompt 162 [2026-02-22 01:07] ---
+Do you have any suggestions on how to make the chat bot in the glossary page look or fit better into this page?
+
+--- Prompt 163 [2026-02-22 01:08] ---
+The sponsored products are way too big on the screen. Use screen shots to see this, and fix it to make it look good and make sense.
+
+--- Prompt 164 [2026-02-22 01:16] ---
+Make them slightly bigger, but in a way that makes sense, because I think now it's a little too small. Also remove the thing that shows a fiery emoji with some random product and then a "Shop Now" link. Remove that, and instead put that kind of fire emblem as a tag on the top product or something like that, and then have the products be sorted by recommended as default.Also, make the card of the products that have the promoted tag be outlined so it could kind of stand out from the rest.
+
+--- Prompt 165 [2026-02-22 01:19] ---
+/clear
+
+--- Prompt 166 [2026-02-22 01:21] ---
+I want you to add more functionality to the group buy tab. I want it to also showcase current group buys going on. You have the ability to look through them, search for one, streamline the adding it to your tracker process in some sort of way, and make the UI make sense amongst any other features that you think would be beneficial to have in this group buy tab.
+
+--- Prompt 167 [2026-02-22 01:23] ---
+I don't want the container around "Build Your Dream Keyboard" and the text box and everything else to blur the keyboard in the background. Update the UI of this to be very aesthetic, with the keyboard in the background spinning in a way that makes sense. It doesn't necessarily interfere with what I'm clicking and typing, and it makes it look weird, but it looks better than it currently does.
+
+--- Prompt 168 [2026-02-22 01:58] ---
+I don't like this. I want the chat bot to be more prominent on the page and easily accessible, because the user might completely just miss that widget when they get to the Glossary.
+
+I also want it: when you click on any of these terms, that may be under where the chat bot will be, it opens up with a picture of what that term can be visualized at. Obviously, it's a layout that shows the keyboard layout; if it's an aluminum case, it shows an aluminum case. This means that I would need you to get an image for every single one of these terms; that makes sense. For these updates, make the UI nice. Initiate an agent team if you need to.
+
+--- Prompt 169 [2026-02-22 02:13] ---
+The text in UI is a bit difficult to see just on its own. Can you fix this? Make it look more professional and better?
+
+--- Prompt 170 [2026-02-22 02:19] ---
+The tags on the group buys are a bit hard to see. If you add an entry to your tracker, it should have the image with it, and if you add one manually, you should have the ability to upload an image of it. Some of the images for the seeded products show a cabin with a sunrise background, which doesn't make any sense. Then the image for a lot of the other ones is the same exact image of a colorful keyboard. Please fix this. Also fix if the image is not working. For example, the Milky Way Onyx 75 image is not working. The Canon Keystack 75 image is not working. For the Ending soon row at the top, make sure that each of those shows the image as well.
+
+--- Prompt 171 [2026-02-22 02:23] ---
+/clear
+
+--- Prompt 172 [2026-02-22 02:24] ---
+After making a custom build and I click the save build button, I get the following errors. 
+
+[Pasted text #1 +13 lines]
+
+[Pasted text #2 +26 lines]
+
+Please Investigative and fix.
+
+--- Prompt 173 [2026-02-22 02:24] ---
+/clear
+
+--- Prompt 174 [2026-02-22 02:29] ---
+When I click on the AI Advisor after putting in my prompt, it starts asking me questions regarding base color and keycap color. The 3D model rotation freezes, and then, as I pick the colors that I want, nothing changes on the 3D rendering. The whole goal of this is that, as the user is clicking certain things, the 3D rendering is changing to show them what their keyboard would look like. That's not working properly.
+
+I need you to investigate that, fix that, and if there's anything that prevents this functionality from happening effectively, I need you to upgrade it, add it, change it, or do whatever you need to do for this to work beautifully. If you believe that the 3D model needs to be drastically upgraded and fixed and add new things so that everything is customizable and can be visually changed, then do so. 
+
+Feel free to create as many agents as you need and as big of a team as you need for this to work. You can change whatever it is that you need to change.
+
+--- Prompt 175 [2026-02-22 02:31] ---
+/clear
+
+--- Prompt 176 [2026-02-22 02:32] ---
+On the glossary page, move the term of the day box to the top right side of the page, and then move the ask switchy box under that, to the bottom right corner of the page. Re-orient UI accordingly, because currently the actual content of the glossary has been pushed down way too much for this initial screen, and I don't like that.
+
+--- Prompt 177 [2026-02-22 02:36] ---
+On the right hand side of the My Tracker tab, add a list of recommended group buys to look into that are based off of the user's current tracking list. Making sure to account for whether it is empty and other edge cases. Obviously, make sure that whatever you recommend has the image being displayed associated with it.
+
+--- Prompt 178 [2026-02-22 02:41] ---
+/clear
+
+--- Prompt 179 [2026-02-22 02:42] ---
+what specific orange does this app use?
+
+--- Prompt 180 [2026-02-22 03:01] ---
+Move the whole glossary system to the left, and then make Term of the Day and Ask Switchy much bigger boxes to fill up the right side.
+
+--- Prompt 181 [2026-02-22 03:07] ---
+Add something cool to fit under Ask Switchy, and then bring the filter list out to the left and adjust everything else accordingly. The whole purpose of all of this is so that it fits the entirety of the screen, so there's not really any white space on either side of the Glossary tab.
+
+--- Prompt 182 [2026-02-22 03:08] ---
+/clear
+
+--- Prompt 183 [2026-02-22 03:16] ---
+Do a complete overhaul of the UI for custom build. A few things to keep in mind, amongst the many other things you should just do to make it better, are:
+- For example, when I'm looking at keyboard kit, there are two categories called "Full size" and then there's "Unknown" and then there's a numpad, which I'm pretty sure doesn't make sense.
+- I also want images to be shown for whatever we're looking at.Remove the rightmost scrollbar, the main scrollbar, as it just seems to be splitting the screen up right now, and then do whatever else you think makes sense for this UI.
+
+--- Prompt 184 [2026-02-22 03:18] ---
+/clear
+
+--- Prompt 185 [2026-02-22 03:34] ---
+I want you to once again do a sophisticated upgrade of the 3D model of the keyboard. I really love how it's working right now, but I want to make it even better. I want you to figure out how to make it better and then go ahead and make it better, especially given what we're trying to use it for and that the goal is to make this be the main thing that sets our application apart from everything else. One thing for sure is that the emblems on certain keys do not look realistic, such as the shift, the enter, the delete. They look either stretched out or compressed, or something along those lines. Also, the keyboard base seems to be metallic or something like that right now; maybe having the ability to make it matte so that the color really shows, or something like that.
+
+Anyway, I really want some really minute, specific niche updates to this 3D model, along with everything else I think might be beneficial. This is supposed to be a huge wow factor, and it does work effectively now in the bare bone state, but I want it to be absolutely amazing. Run all the agents you need, figure out all the best ways to better this 3D model, and then better the 3D model. Maybe also add a wire poking out the back to resemble a wired keyboard, and then if the user doesn't click, the user clicks wireless, then obviously that gets removed or something like that. I don't know. Do everything that you need to do to make this amazing.
+
+--- Prompt 186 [2026-02-22 03:40] ---
+/clear
+
+--- Prompt 187 [2026-02-22 03:41] ---
+[Pasted text #1 +6 lines]
+
+--- Prompt 188 [2026-02-22 03:44] ---
+/clear
+
+--- Prompt 189 [2026-02-22 03:45] ---
+There is an item in the keyboard dictionary called Tx Cloth Keyboard Cover. This is not a keyboard, so please take this and move it over to accessories.
+
+--- Prompt 190 [2026-02-22 03:45] ---
+/clear
+
+--- Prompt 191 [2026-02-22 03:46] ---
+So, looking at the keyboard's directory now, the very first product, which is referred to as a top pick, has a very long text for case material, causing it to double up in line and then making the card for it end up being longer than the other kinds of cards. What would be the best approach to prevent this from happening?
+
+--- Prompt 192 [2026-02-22 04:21] ---
+/clear
+
+--- Prompt 193 [2026-02-22 04:26] ---
+continue
+
+--- Prompt 194 [2026-02-22 04:26] ---
+Update the pagination because right now it's showing an extra single for everything. Make it so that, regardless of the grid layout that you choose, it shows five rows of products per page.
+
+--- Prompt 195 [2026-02-22 04:28] ---
+/clear
+
+--- Prompt 196 [2026-02-22 04:39] ---
+restart
+
+--- Prompt 197 [2026-02-22 04:40] ---
+restart
+
+--- Prompt 198 [2026-02-22 04:40] ---
+When looking at the glossary page, the knowledge map is covering Ask Switchy. Use screenshots to confirm this, update it, and make it look better and work properly.
+
+--- Prompt 199 [2026-02-22 04:42] ---
+I want you to take the approach that you initially had in regards to spawning four agents in parallel, each in an isolated work tree for this.
+
+--- Prompt 200 [2026-02-22 04:56] ---
+I think I messed up. I had made a lot of crucial updates to my code right before I asked you to run this task. The first thing you did was `git checkout`, which I'm scared deleted all of the progress that I made up to that point because I didn't add or commit anything. Please tell me there's some way to revert back to that version.
+
+--- Prompt 201 [2026-02-22 05:11] ---
+yes, restore the 48 lost files
+
+--- Prompt 202 [2026-02-22 05:12] ---
+/clear
+
+--- Prompt 203 [2026-02-22 05:12] ---
+[Pasted text #1 +28 lines]
+
+fix
+
+--- Prompt 204 [2026-02-22 05:13] ---
+[Pasted text #2 +28 lines]
+
+--- Prompt 205 [2026-02-22 05:13] ---
+[Pasted text #3 +28 lines]
+
+--- Prompt 206 [2026-02-22 05:14] ---
+I don't see all of the updates from my old files.
+
+--- Prompt 207 [2026-02-22 05:19] ---
+So it seems as though a git checkout made me lose all of my code. I want to see if there is any way for me to recover all of my previous prompts in order to try and create everything that I lost.
+
+--- Prompt 208 [2026-02-22 05:20] ---
+It was not by your git checkout; it was by another git checkout, but my question is, is there absolutely any way to gather the history of all my prompts to Claude code?
+

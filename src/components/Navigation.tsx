@@ -40,14 +40,14 @@ export function Navigation() {
         <div className="h-full max-w-[1440px] mx-auto px-4 sm:px-6 flex items-center justify-between">
           {/* Left: Logo + Nav Links */}
           <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center shrink-0 group">
+            <Link href="/" className="flex items-center gap-1.5 shrink-0 group">
               <img
                 src="/logo.png"
                 alt=""
-                className="h-16 w-16 object-contain translate-y-0.5 drop-shadow-[0_2px_6px_rgba(243,146,28,0.35)] transition-transform duration-200 group-hover:scale-110 group-active:scale-95"
+                className="h-16 w-16 object-contain drop-shadow-[0_2px_6px_rgba(243,146,28,0.35)] transition-transform duration-200 group-hover:scale-110 group-active:scale-95"
               />
               <span className="text-2xl font-bold tracking-tight text-white font-[family-name:var(--font-outfit)]">
-                switch<span className="text-[#F3921C]">y</span>
+                Switch<span className="text-[#F3921C]">y</span>
               </span>
             </Link>
 

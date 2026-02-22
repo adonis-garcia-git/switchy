@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { cn, formatPriceWhole, generatePurchaseUrl } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
+import { PriceCompareDropdown } from "@/components/PriceCompareDropdown";
 
 interface KeycapCardData {
   _id: string;
@@ -27,7 +28,7 @@ export function KeycapCard({ keycap }: { keycap: KeycapCardData }) {
         {/* Product image */}
         <div className="aspect-[4/3] rounded-lg overflow-hidden mb-4 bg-bg-elevated relative -mx-5 -mt-5 rounded-t-xl rounded-b-none">
           <img
-            src={keycap.imageUrl || `https://placehold.co/640x480/181818/525252?text=${encodeURIComponent(keycap.name)}`}
+            src={keycap.imageUrl}
             alt={keycap.name}
             className="w-full h-full object-cover"
           />
@@ -67,9 +68,12 @@ export function KeycapCard({ keycap }: { keycap: KeycapCardData }) {
         )}
 
         <div className="flex items-end justify-between pt-3 border-t border-border-subtle">
-          <span className="text-lg font-bold font-[family-name:var(--font-mono)] text-accent">
-            {formatPriceWhole(keycap.priceUsd)}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-bold font-[family-name:var(--font-mono)] text-accent">
+              {formatPriceWhole(keycap.priceUsd)}
+            </span>
+            <PriceCompareDropdown productName={`${keycap.brand} ${keycap.name}`} referrerPage="/keycaps" />
+          </div>
           <button
             onClick={(e) => {
               e.preventDefault();

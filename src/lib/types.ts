@@ -339,6 +339,39 @@ export interface CustomBuildSelections {
   perKeyOverrides: import("./keyCustomization").PerKeyOverrides;
 }
 
+// Group Buy Listing types
+export type GroupBuyListingStatus = "upcoming" | "live" | "ended" | "shipped";
+export type GroupBuyListingProductType = "keyboard" | "switches" | "keycaps" | "accessories";
+
+export interface GroupBuyListingData {
+  _id?: string;
+  name: string;
+  slug: string;
+  designer?: string;
+  vendor: string;
+  vendorUrl?: string;
+  description?: string;
+  productType: GroupBuyListingProductType;
+  status: GroupBuyListingStatus;
+  priceMin: number;
+  priceMax?: number;
+  startDate?: string;
+  endDate?: string;
+  estimatedShipDate?: string;
+  imageUrl?: string;
+  tags?: string[];
+  trackingCount: number;
+  isFeatured?: boolean;
+}
+
+export interface GroupBuyListingFilterState {
+  productType: string | null;
+  status: string | null;
+  minPrice: number | null;
+  maxPrice: number | null;
+  sortBy: string;
+}
+
 // ── Monetization types ──
 
 export type UserTier = "free" | "pro";
@@ -374,12 +407,15 @@ export interface Sponsorship {
   vendorName: string;
   productType?: string;
   productName: string;
-  placement: "featured_badge" | "promoted_search" | "build_recommendation" | "homepage_spotlight";
+  placement: "featured_badge" | "promoted_search" | "build_recommendation" | "homepage_spotlight" | "explorer_carousel" | "deal_banner";
   startDate: string;
   endDate: string;
   isActive: boolean;
   impressions: number;
   clicks: number;
+  productUrl?: string;
+  imageUrl?: string;
+  priceUsd?: number;
 }
 
 export interface BuildRequest {

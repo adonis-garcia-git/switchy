@@ -12,6 +12,8 @@ import vendorLinksData from "@/data/vendorLinks.json";
 import affiliateConfigData from "@/data/affiliateConfig.json";
 import keycapsData from "@/data/keycaps.json";
 import accessoriesData from "@/data/accessories.json";
+import sponsorshipsData from "@/data/sponsorships.json";
+import groupBuyListingsData from "@/data/groupBuyListings.json";
 
 export default function SeedPage() {
   const [status, setStatus] = useState<string>("");
@@ -25,6 +27,13 @@ export default function SeedPage() {
   const seedAffiliateConfig = useMutation(api.affiliateConfig.seed);
   const seedKeycaps = useMutation(api.keycaps.seed);
   const seedAccessories = useMutation(api.accessories.seed);
+  const cleanKeyboards = useMutation(api.seed.cleanAndReseedKeyboards);
+  const cleanKeycaps = useMutation(api.keycaps.cleanAndReseed);
+  const cleanAccessories = useMutation(api.accessories.cleanAndReseed);
+  const seedSponsorships = useMutation(api.sponsorships.seed);
+  const cleanSponsorships = useMutation(api.sponsorships.cleanAndReseed);
+  const seedGroupBuyListings = useMutation(api.groupBuyListings.seed);
+  const cleanGroupBuyListings = useMutation(api.groupBuyListings.cleanAndReseed);
 
   const handleSeed = async () => {
     setLoading(true);
@@ -124,8 +133,10 @@ export default function SeedPage() {
       const affiliateCount = await seedAffiliateConfig({ configs: affiliateConfigData });
       const keycapsCount = await seedKeycaps({ keycaps: keycapsData as any });
       const accessoriesCount = await seedAccessories({ accessories: accessoriesData as any });
+      const sponsorshipsCount = await seedSponsorships({ sponsorships: sponsorshipsData as any });
+      const gbListingsCount = await seedGroupBuyListings({ listings: groupBuyListingsData as any });
       setStatus(
-        `Done! Added ${result.switchesAdded} switches, ${result.componentsAdded} components, ${result.keyboardsAdded} keyboards, ${glossaryCount} glossary terms, ${vendorLinksCount} vendor links, ${affiliateCount} affiliate configs, ${keycapsCount} keycaps, ${accessoriesCount} accessories.`
+        `Done! Added ${result.switchesAdded} switches, ${result.componentsAdded} components, ${result.keyboardsAdded} keyboards, ${glossaryCount} glossary terms, ${vendorLinksCount} vendor links, ${affiliateCount} affiliate configs, ${keycapsCount} keycaps, ${accessoriesCount} accessories, ${sponsorshipsCount} sponsorships, ${gbListingsCount} group buy listings.`
       );
     } catch (err) {
       setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
@@ -208,6 +219,96 @@ export default function SeedPage() {
             >
               Clean &amp; Re-seed Glossary
             </Button>
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                setLoading(true);
+                setStatus("Cleaning & re-seeding keyboards...");
+                try {
+                  const result = await cleanKeyboards({ keyboards: keyboardsData });
+                  setStatus(`Done! Deleted ${result.deleted} old keyboards, added ${result.added} fresh keyboards.`);
+                } catch (err) {
+                  setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+            >
+              Clean &amp; Re-seed Keyboards
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                setLoading(true);
+                setStatus("Cleaning & re-seeding keycaps...");
+                try {
+                  const result = await cleanKeycaps({ keycaps: keycapsData as any });
+                  setStatus(`Done! Deleted ${result.deleted} old keycaps, added ${result.added} fresh keycap sets.`);
+                } catch (err) {
+                  setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+            >
+              Clean &amp; Re-seed Keycaps
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                setLoading(true);
+                setStatus("Cleaning & re-seeding accessories...");
+                try {
+                  const result = await cleanAccessories({ accessories: accessoriesData as any });
+                  setStatus(`Done! Deleted ${result.deleted} old accessories, added ${result.added} fresh accessories.`);
+                } catch (err) {
+                  setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+            >
+              Clean &amp; Re-seed Accessories
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                setLoading(true);
+                setStatus("Cleaning & re-seeding sponsorships...");
+                try {
+                  const result = await cleanSponsorships({ sponsorships: sponsorshipsData as any });
+                  setStatus(`Done! Deleted ${result.deleted} old sponsorships, added ${result.added} fresh sponsorships.`);
+                } catch (err) {
+                  setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+            >
+              Clean &amp; Re-seed Sponsorships
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                setLoading(true);
+                setStatus("Cleaning & re-seeding group buy listings...");
+                try {
+                  const result = await cleanGroupBuyListings({ listings: groupBuyListingsData as any });
+                  setStatus(`Done! Deleted ${result.deleted} old listings, added ${result.added} fresh group buy listings.`);
+                } catch (err) {
+                  setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+            >
+              Clean &amp; Re-seed Group Buy Listings
+            </Button>
           </div>
 
           <div className="flex gap-3 justify-center flex-wrap">
@@ -228,6 +329,34 @@ export default function SeedPage() {
             </Button>
             <Button variant="secondary" size="sm" onClick={handleSeedAccessories} disabled={loading}>
               Seed Accessories
+            </Button>
+            <Button variant="secondary" size="sm" onClick={async () => {
+              setLoading(true);
+              setStatus("Seeding sponsorships...");
+              try {
+                const count = await seedSponsorships({ sponsorships: sponsorshipsData as any });
+                setStatus(count > 0 ? `Done! Added ${count} sponsorships.` : "Sponsorships already exist.");
+              } catch (err) {
+                setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+              } finally {
+                setLoading(false);
+              }
+            }} disabled={loading}>
+              Seed Sponsorships
+            </Button>
+            <Button variant="secondary" size="sm" onClick={async () => {
+              setLoading(true);
+              setStatus("Seeding group buy listings...");
+              try {
+                const count = await seedGroupBuyListings({ listings: groupBuyListingsData as any });
+                setStatus(count > 0 ? `Done! Added ${count} group buy listings.` : "Group buy listings already exist.");
+              } catch (err) {
+                setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+              } finally {
+                setLoading(false);
+              }
+            }} disabled={loading}>
+              Seed Group Buy Listings
             </Button>
           </div>
         </div>
@@ -268,6 +397,14 @@ export default function SeedPage() {
             <li className="flex items-center justify-between">
               <span>Accessories</span>
               <span className="font-mono text-accent text-xs">{accessoriesData.length}</span>
+            </li>
+            <li className="flex items-center justify-between">
+              <span>Sponsorships</span>
+              <span className="font-mono text-accent text-xs">{sponsorshipsData.length}</span>
+            </li>
+            <li className="flex items-center justify-between">
+              <span>Group Buy Listings</span>
+              <span className="font-mono text-accent text-xs">{groupBuyListingsData.length}</span>
             </li>
           </ul>
         </div>

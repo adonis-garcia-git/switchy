@@ -1,4 +1,3 @@
-// Legacy redirect: /advisor was replaced by /builder in v3
 "use client";
 
 import { useEffect } from "react";

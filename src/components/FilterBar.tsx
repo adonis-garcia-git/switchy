@@ -134,7 +134,7 @@ function RangeSlider({
         className="w-full accent-accent h-1 bg-bg-elevated rounded-full appearance-none cursor-pointer
           [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5
           [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-accent
-          [&::-webkit-slider-thumb]:shadow-[0_0_8px_rgba(232,89,12,0.3)]
+          [&::-webkit-slider-thumb]:shadow-[0_0_8px_rgba(118,185,0,0.3)]
           [&::-webkit-slider-thumb]:cursor-pointer"
       />
     </div>

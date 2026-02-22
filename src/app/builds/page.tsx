@@ -7,7 +7,6 @@ import { useUser, SignInButton } from "@clerk/nextjs";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import { BuildCard } from "@/components/BuildCard";
-import { BuildCardCompact } from "@/components/BuildCardCompact";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { KeyboardViewer3D } from "@/components/3d/KeyboardViewer3D";
@@ -22,7 +21,6 @@ export default function BuildsPage() {
   const generateImage = useAction(api.imageGeneration.generateBuildImage);
   const [generatingId, setGeneratingId] = useState<string | null>(null);
   const [viewer3DId, setViewer3DId] = useState<string | null>(null);
-  const [expandedBuildId, setExpandedBuildId] = useState<string | null>(null);
 
   const handleShare = async (buildId: Id<"builds">) => {
     await togglePublic({ id: buildId });
@@ -61,7 +59,7 @@ export default function BuildsPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <main className="max-w-5xl mx-auto">
+      <main className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-2xl font-bold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight">
             My Builds
@@ -77,15 +75,8 @@ export default function BuildsPage() {
         </div>
 
         {builds === undefined ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="rounded-xl border border-border-subtle bg-bg-surface p-5 animate-pulse">
-                <div className="h-5 bg-bg-elevated rounded w-3/4 mb-3" />
-                <div className="h-4 bg-bg-elevated rounded w-full mb-2" />
-                <div className="h-4 bg-bg-elevated rounded w-2/3 mb-4" />
-                <div className="h-5 bg-bg-elevated rounded w-1/4" />
-              </div>
-            ))}
+          <div className="flex items-center justify-center py-24">
+            <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
           </div>
         ) : builds.length === 0 ? (
           <div className="text-center py-20 rounded-xl border border-border-subtle bg-bg-surface/50">
@@ -99,60 +90,54 @@ export default function BuildsPage() {
             </p>
           </div>
         ) : (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {builds.map((build: any) => (
-                <BuildCardCompact
-                  key={build._id}
-                  build={build}
-                  onClick={() => setExpandedBuildId(build._id)}
+          <div className="space-y-6">
+            {builds.map((build: any) => (
+              <div key={build._id}>
+                <BuildCard
+                  build={build as never}
+                  showActions={true}
+                  id={build._id}
+                  imageUrl={build.imageUrl}
+                  isPublic={build.isPublic}
+                  shareSlug={build.shareSlug}
+                  onShare={() => handleShare(build._id as Id<"builds">)}
+                  onVisualize={() => handleVisualize(build._id as Id<"builds">)}
+                  generating={generatingId === build._id}
                 />
-              ))}
-            </div>
-
-            {expandedBuildId && (() => {
-              const build = builds.find((b: any) => b._id === expandedBuildId);
-              if (!build) return null;
-              return (
-                <Modal isOpen onClose={() => setExpandedBuildId(null)} title={build.buildName} size="lg">
-                  <BuildCard
-                    build={build as never}
-                    showActions={true}
-                    id={build._id}
-                    imageUrl={build.imageUrl}
-                    isPublic={build.isPublic}
-                    shareSlug={build.shareSlug}
-                    onShare={() => handleShare(build._id as Id<"builds">)}
-                    onVisualize={() => handleVisualize(build._id as Id<"builds">)}
-                    generating={generatingId === build._id}
-                  />
-                  <div className="flex items-center gap-3 mt-4 px-1">
-                    <button
-                      onClick={() => setViewer3DId(build._id)}
-                      className="text-sm text-text-secondary hover:text-accent transition-colors duration-150 focus-visible:outline-none focus-visible:text-accent"
-                    >
-                      3D View
-                    </button>
-                    <button
-                      onClick={() => removeBuild({ id: build._id as Id<"builds"> })}
-                      className="text-sm text-text-muted hover:text-red-400 active:text-red-500 transition-colors duration-150 focus-visible:outline-none focus-visible:text-red-400"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                  {viewer3DId === build._id && (
-                    <div className="mt-4">
-                      <KeyboardViewer3D
-                        config={buildDataToViewerConfig(build as unknown as BuildData)}
-                        height="400px"
-                        autoRotate
-                      />
-                    </div>
+                <div className="flex items-center gap-3 mt-2 px-1">
+                  <span className="text-xs text-text-muted truncate">
+                    Query: &ldquo;{build.query}&rdquo;
+                  </span>
+                  {build.isPublic && (
+                    <span className="text-xs text-accent shrink-0">Public</span>
                   )}
-                </Modal>
-              );
-            })()}
-          </>
+                  <button
+                    onClick={() => setViewer3DId(build._id)}
+                    className="text-xs text-text-secondary hover:text-accent transition-colors duration-150 shrink-0 focus-visible:outline-none focus-visible:text-accent ml-auto"
+                  >
+                    3D View
+                  </button>
+                  <button
+                    onClick={() =>
+                      removeBuild({ id: build._id as Id<"builds"> })
+                    }
+                    className="text-xs text-text-muted hover:text-red-400 active:text-red-500 transition-colors duration-150 shrink-0 focus-visible:outline-none focus-visible:text-red-400"
+                  >
+                    Delete
+                  </button>
+                </div>
+                {viewer3DId === build._id && (
+                  <Modal isOpen onClose={() => setViewer3DId(null)} title="3D Keyboard View" size="lg">
+                    <KeyboardViewer3D
+                      config={buildDataToViewerConfig(build as unknown as BuildData)}
+                      height="400px"
+                      autoRotate
+                    />
+                  </Modal>
+                )}
+              </div>
+            ))}
+          </div>
         )}
       </main>
     </div>

@@ -282,7 +282,7 @@ function MegaMenuColumn({ heading, links }: { heading: string; links: MegaMenuLi
       <div className="space-y-0.5">
         {links.map((link) => (
           <Link
-            key={`${link.href}-${link.label}`}
+            key={link.href}
             href={link.href}
             className="block py-1.5 text-sm text-text-secondary hover:text-text-primary transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded px-1 -mx-1"
           >

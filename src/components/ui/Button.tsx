@@ -17,7 +17,7 @@ export function Button({ children, variant = "primary", size = "md", loading, cl
         size === "sm" && "px-3 py-1.5 text-xs",
         size === "md" && "px-4 py-2 text-sm",
         size === "lg" && "px-6 py-3 text-base",
-        variant === "primary" && "bg-accent text-bg-primary hover:bg-accent-hover shadow-[0_1px_8px_rgba(232,89,12,0.15)]",
+        variant === "primary" && "bg-accent text-bg-primary hover:bg-accent-hover shadow-[0_1px_8px_rgba(118,185,0,0.15)]",
         variant === "secondary" && "bg-bg-elevated text-text-primary border border-border-default hover:border-border-accent hover:bg-bg-floating",
         variant === "ghost" && "text-text-secondary hover:text-text-primary hover:bg-bg-elevated",
         variant === "danger" && "bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20",

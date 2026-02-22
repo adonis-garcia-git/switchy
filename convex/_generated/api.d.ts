@@ -18,6 +18,8 @@ import type * as builds from "../builds.js";
 import type * as components_ from "../components.js";
 import type * as conversations from "../conversations.js";
 import type * as glossary from "../glossary.js";
+import type * as glossaryChat from "../glossaryChat.js";
+import type * as groupBuyListings from "../groupBuyListings.js";
 import type * as groupBuyPartnerships from "../groupBuyPartnerships.js";
 import type * as groupBuys from "../groupBuys.js";
 import type * as http from "../http.js";
@@ -56,6 +58,8 @@ declare const fullApi: ApiFromModules<{
   components: typeof components_;
   conversations: typeof conversations;
   glossary: typeof glossary;
+  glossaryChat: typeof glossaryChat;
+  groupBuyListings: typeof groupBuyListings;
   groupBuyPartnerships: typeof groupBuyPartnerships;
   groupBuys: typeof groupBuys;
   http: typeof http;

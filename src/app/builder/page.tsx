@@ -12,11 +12,13 @@ import { BuildResult } from "@/components/builder/BuildResult";
 import { CustomBuilder } from "@/components/builder/CustomBuilder";
 import { KeyboardViewer3D } from "@/components/3d/KeyboardViewer3D";
 import { Tabs } from "@/components/ui/Tabs";
+import { ToastContainer } from "@/components/ui/Toast";
 import { DEFAULT_VIEWER_CONFIG } from "@/lib/keyboard3d";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
 import type { BuilderPhase, BuilderQuestion, BuilderAnswer, BuildData } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useSubscription } from "@/hooks/useSubscription";
+import { useToast } from "@/hooks/useToast";
 import { PaywallModal } from "@/components/PaywallModal";
 import { UsageCounter } from "@/components/UsageCounter";
 
@@ -75,6 +77,9 @@ function BuilderPageInner() {
   // Sign-in prompt state for unauthenticated users
   const [showSignIn, setShowSignIn] = useState(false);
 
+  // Toast notifications
+  const { toasts, showToast, dismissToast } = useToast();
+
   // Phase 1: Handle initial prompt
   const handleInitialSubmit = useCallback(async (prompt: string) => {
     // Require auth before calling Convex actions
@@ -111,6 +116,7 @@ function BuilderPageInner() {
           setShowPaywall(true);
           setPhase("landing");
         } else {
+          showToast({ message: "Something went wrong generating your build. Please try again.", variant: "error", action: { label: "Try again", onClick: () => handleInitialSubmit(prompt) } });
           setPhase("landing");
         }
       }
@@ -168,6 +174,8 @@ function BuilderPageInner() {
           } catch (fallbackErr: unknown) {
             if (fallbackErr instanceof Error && fallbackErr.message.includes("FREE_TIER_LIMIT_REACHED")) {
               setShowPaywall(true);
+            } else {
+              showToast({ message: "Failed to generate build. Please try again.", variant: "error" });
             }
             setPhase("landing");
           }
@@ -177,6 +185,20 @@ function BuilderPageInner() {
       }
     }
   }, [answers, currentQuestionIndex, questions.length, generateBuildFromAnswers, generateBuild, initialPrompt]);
+
+  // Handle going back in question flow
+  const handleQuestionBack = useCallback((targetIndex: number) => {
+    // Trim answers back to the target index
+    setAnswers((prev) => prev.slice(0, targetIndex));
+    setCurrentQuestionIndex(targetIndex);
+  }, []);
+
+  // Handle aborting the generating phase
+  const handleGeneratingAbort = useCallback(() => {
+    setGenerating(false);
+    setPhase("landing");
+    showToast({ message: "Build generation cancelled.", variant: "info" });
+  }, [showToast]);
 
   // Handle viewer config updates from questions
   const handleViewerUpdate = useCallback((update: Partial<KeyboardViewerConfig>) => {
@@ -202,10 +224,11 @@ function BuilderPageInner() {
       setSaved(true);
     } catch (err) {
       console.error("Failed to save build:", err);
+      showToast({ message: "Failed to save build. Please try again.", variant: "error" });
     } finally {
       setSaving(false);
     }
-  }, [buildResult, isSignedIn, saveBuild, initialPrompt]);
+  }, [buildResult, isSignedIn, saveBuild, initialPrompt, showToast]);
 
   // Handle tweak
   const handleTweak = useCallback(async (tweakText: string) => {
@@ -223,11 +246,12 @@ function BuilderPageInner() {
         setShowPaywall(true);
       } else {
         console.error("Failed to tweak build:", err);
+        showToast({ message: "Failed to refine build. Please try again.", variant: "error" });
       }
     } finally {
       setTweaking(false);
     }
-  }, [buildResult, generateBuild, initialPrompt]);
+  }, [buildResult, generateBuild, initialPrompt, showToast]);
 
   // Reset
   const handleReset = useCallback(() => {
@@ -308,6 +332,7 @@ function BuilderPageInner() {
                 currentIndex={currentQuestionIndex}
                 answers={answers}
                 onAnswer={handleAnswer}
+                onBack={handleQuestionBack}
                 onViewerUpdate={handleViewerUpdate}
               />
             )}
@@ -321,7 +346,7 @@ function BuilderPageInner() {
             )}
 
             {/* Phase 3: Generating */}
-            {phase === "generating" && <GeneratingState />}
+            {phase === "generating" && <GeneratingState onAbort={handleGeneratingAbort} />}
 
             {/* Phase 4: Build Result */}
             {phase === "result" && buildResult && (
@@ -343,6 +368,9 @@ function BuilderPageInner() {
           <CustomBuilder onViewerUpdate={handleViewerUpdate} viewerConfig={viewerConfig} />
         )}
       </div>
+
+      {/* Toast notifications */}
+      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
 
       {/* Paywall modal */}
       <PaywallModal isOpen={showPaywall} onClose={() => setShowPaywall(false)} />
