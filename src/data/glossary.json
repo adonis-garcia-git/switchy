@@ -641,7 +641,7 @@
   {
     "term": "60% Layout",
     "definition": "A compact keyboard layout with only the main alphanumeric keys, removing the function row, navigation cluster, and numpad. About 61 keys total. Functions are accessed through key layers. Popular for its minimalist look and desk space savings.",
-    "category": "general",
+    "category": "layouts",
     "relatedTerms": ["65% Layout", "75% Layout", "TKL"],
     "difficulty": "beginner",
     "example": "I switched to a 60% layout for the extra desk space, and I got used to using function layers within a week."
@@ -649,7 +649,7 @@
   {
     "term": "65% Layout",
     "definition": "A keyboard layout that adds arrow keys and a few navigation keys to a 60% layout, without a function row. About 66-68 keys. Considered the sweet spot between compactness and functionality by many enthusiasts.",
-    "category": "general",
+    "category": "layouts",
     "relatedTerms": ["60% Layout", "75% Layout", "TKL"],
     "difficulty": "beginner",
     "example": "The 65% layout is perfect for me because I need dedicated arrow keys but don't miss the function row."
@@ -657,7 +657,7 @@
   {
     "term": "75% Layout",
     "definition": "A keyboard layout that includes the function row (F1-F12) and arrow keys in a compact arrangement. About 82-84 keys. The most popular custom keyboard size because it keeps essential keys without taking up too much desk space.",
-    "category": "general",
+    "category": "layouts",
     "relatedTerms": ["65% Layout", "TKL", "Full-size"],
     "difficulty": "beginner",
     "example": "I went with a 75% layout because I use F-keys for shortcuts at work but still wanted a compact board."
@@ -665,7 +665,7 @@
   {
     "term": "TKL",
     "definition": "Tenkeyless - a keyboard layout that removes only the number pad from a full-size keyboard, keeping the function row and navigation cluster. About 87 keys. Great for users who want familiar layout with more desk space for mouse movement.",
-    "category": "general",
+    "category": "layouts",
     "relatedTerms": ["75% Layout", "Full-size", "60% Layout"],
     "difficulty": "beginner",
     "pronunciation": "/tee-kay-ell/",
@@ -674,7 +674,7 @@
   {
     "term": "Full-size",
     "definition": "A keyboard with all standard keys including the number pad, function row, and navigation cluster. About 104 keys. Preferred by users who frequently use the numpad for data entry, accounting, or number-heavy work.",
-    "category": "general",
+    "category": "layouts",
     "relatedTerms": ["TKL", "75% Layout", "96% Layout"],
     "difficulty": "beginner",
     "example": "I need a full-size keyboard for accounting because I'm entering numbers on the numpad all day."
@@ -682,7 +682,7 @@
   {
     "term": "96% Layout",
     "definition": "A compact layout that fits all the keys of a full-size keyboard (including numpad) into a smaller footprint by eliminating gaps between key clusters. About 99-100 keys. Great for numpad users who want a smaller board.",
-    "category": "general",
+    "category": "layouts",
     "relatedTerms": ["Full-size", "TKL", "75% Layout"],
     "difficulty": "intermediate",
     "example": "The 96% layout gives me a numpad without the wasted space — all the clusters are pushed together."
@@ -742,7 +742,7 @@
   {
     "term": "40% Layout",
     "definition": "The smallest common keyboard layout, removing the number row entirely along with function and navigation keys. About 40-48 keys. Everything is accessed through multiple layers. Requires significant adjustment but offers maximum desk space.",
-    "category": "general",
+    "category": "layouts",
     "relatedTerms": ["60% Layout", "65% Layout", "QMK"],
     "difficulty": "advanced",
     "example": "It took me two weeks to get comfortable with my 40% board, but now I type faster because my fingers never leave the home row."
@@ -750,7 +750,7 @@
   {
     "term": "1800 Layout",
     "definition": "A compact full-size layout that includes a numpad but reduces spacing between key clusters. Similar to 96% but with a small gap between the main keys and numpad. Found in some vintage keyboards and modern customs.",
-    "category": "general",
+    "category": "layouts",
     "relatedTerms": ["96% Layout", "Full-size", "TKL"],
     "difficulty": "advanced",
     "pronunciation": "/AY-teen-hundred/",
@@ -773,5 +773,98 @@
     "difficulty": "intermediate",
     "pronunciation": "/TRIB-oh-sis thirty-two-oh-three/",
     "example": "I used Tribosys 3203 on my tactile switches because it smooths things out without killing the bump."
+  },
+  {
+    "term": "ANSI Layout",
+    "definition": "The standard keyboard layout used in the United States, featuring a wide single-row Enter key and a long left Shift. Most custom keyboards and keycap sets are designed for ANSI layout first.",
+    "category": "layouts",
+    "relatedTerms": ["ISO Layout", "Full-size", "65% Layout"],
+    "difficulty": "beginner",
+    "pronunciation": "/AN-see/",
+    "example": "I always buy ANSI layout boards because finding keycap sets is so much easier."
+  },
+  {
+    "term": "ISO Layout",
+    "definition": "The keyboard layout standard used in most European countries, featuring an L-shaped Enter key, a shorter left Shift with an extra key next to it, and a different backslash key position. Keycap compatibility can be more limited.",
+    "category": "layouts",
+    "relatedTerms": ["ANSI Layout", "Full-size", "75% Layout"],
+    "difficulty": "beginner",
+    "pronunciation": "/EYE-so/",
+    "example": "Finding a good ISO keycap set is harder because most group buys only include ANSI as the base kit."
+  },
+  {
+    "term": "Ortholinear",
+    "definition": "A keyboard layout where all keys are arranged in a straight grid pattern instead of the traditional staggered rows. Proponents say it reduces finger travel and is more ergonomic once you adapt to it. Planck and Preonic are popular ortho boards.",
+    "category": "layouts",
+    "relatedTerms": ["40% Layout", "Split Keyboard", "QMK"],
+    "difficulty": "advanced",
+    "pronunciation": "/OR-tho-LIN-ee-er/",
+    "example": "Switching to ortholinear took a week of painful relearning, but now my fingers move in straight lines and it feels way more natural."
+  },
+  {
+    "term": "Split Keyboard",
+    "definition": "A keyboard physically separated into two halves that can be positioned independently for a more natural, ergonomic hand position. Reduces shoulder strain by letting you place each half at shoulder width. Popular models include the Corne, Lily58, and Dactyl.",
+    "category": "layouts",
+    "relatedTerms": ["Alice Layout", "Ortholinear", "QMK"],
+    "difficulty": "intermediate",
+    "example": "After getting shoulder pain from a traditional board, I switched to a split keyboard and the pain went away within a week."
+  },
+  {
+    "term": "Alice Layout",
+    "definition": "An ergonomic keyboard layout where the alphanumeric keys are split into two angled halves on a single connected board, with a gap and blocker in the center. Named after the TGR Alice keyboard that popularized the design. Offers ergonomic benefits without going full split.",
+    "category": "layouts",
+    "relatedTerms": ["Split Keyboard", "65% Layout", "75% Layout"],
+    "difficulty": "intermediate",
+    "example": "The Alice layout is my compromise between ergonomics and a traditional keyboard — the angled halves feel much more natural."
+  },
+  {
+    "term": "HHKB Layout",
+    "definition": "A 60% layout variant inspired by the Happy Hacking Keyboard, featuring blockers where the Caps Lock key, bottom row corners, and Windows keys would normally be. Control is placed where Caps Lock usually sits. Beloved by programmers.",
+    "category": "layouts",
+    "relatedTerms": ["60% Layout", "WKL", "QMK"],
+    "difficulty": "advanced",
+    "pronunciation": "/aitch-aitch-kay-bee/",
+    "example": "The HHKB layout puts Control right where my pinky rests, which is perfect for Vim and terminal use."
+  },
+  {
+    "term": "WKL",
+    "definition": "Winkeyless — a keyboard layout or case design that removes the Windows/Super keys from the bottom row, leaving blockers (blank spaces) in their place. Common on high-end custom keyboards for a clean, minimalist aesthetic.",
+    "category": "layouts",
+    "relatedTerms": ["HHKB Layout", "60% Layout", "TKL"],
+    "difficulty": "intermediate",
+    "pronunciation": "/dub-ul-you-kay-ell/",
+    "example": "I went WKL on my TKL build — the blockers on either side of the spacebar look so clean."
+  },
+  {
+    "term": "Southpaw",
+    "definition": "A keyboard layout where the numpad is placed on the left side instead of the traditional right side. This gives right-handed mouse users more room for mouse movement while keeping the numpad accessible with the left hand.",
+    "category": "layouts",
+    "relatedTerms": ["Full-size", "96% Layout", "1800 Layout"],
+    "difficulty": "intermediate",
+    "example": "As a right-handed gamer who also does data entry, the southpaw layout gives me the best of both worlds."
+  },
+  {
+    "term": "Numpad",
+    "definition": "A dedicated cluster of number keys arranged in a calculator-style grid, typically found on the right side of full-size keyboards. Also available as a standalone external pad for compact keyboard users who occasionally need number entry.",
+    "category": "layouts",
+    "relatedTerms": ["Full-size", "96% Layout", "Southpaw"],
+    "difficulty": "beginner",
+    "example": "I use a 65% board daily but keep a separate numpad on my desk for when I need to crunch numbers in spreadsheets."
+  },
+  {
+    "term": "Staggered Layout",
+    "definition": "The traditional keyboard key arrangement where each row is horizontally offset from the one above it. This design dates back to typewriters where staggering prevented the mechanical arms from jamming. Almost all standard keyboards use staggered layout.",
+    "category": "layouts",
+    "relatedTerms": ["Ortholinear", "Split Keyboard", "ANSI Layout"],
+    "difficulty": "beginner",
+    "example": "Staggered layout is so universal that most people don't even realize there are alternatives until they discover ortho boards."
+  },
+  {
+    "term": "Column Stagger",
+    "definition": "A keyboard layout where keys are staggered vertically by column rather than horizontally by row, aligning each column with the natural reach of each finger. Found on ergonomic boards like the Corne and Lily58. More natural than traditional row stagger.",
+    "category": "layouts",
+    "relatedTerms": ["Ortholinear", "Split Keyboard", "Staggered Layout"],
+    "difficulty": "advanced",
+    "example": "Column stagger finally made touch typing click for me — each finger just drops straight down to the right key."
   }
 ]

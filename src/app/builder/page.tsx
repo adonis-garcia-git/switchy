@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAction, useMutation } from "convex/react";
-import { useUser } from "@clerk/nextjs";
+import { useUser, SignInButton } from "@clerk/nextjs";
 import { api } from "../../../convex/_generated/api";
 import { InitialPrompt } from "@/components/builder/InitialPrompt";
 import { QuestionFlow } from "@/components/builder/QuestionFlow";
@@ -72,8 +72,17 @@ function BuilderPageInner() {
   const generateBuild = useAction(api.builds.generateBuild);
   const saveBuild = useMutation(api.savedBuilds.save);
 
+  // Sign-in prompt state for unauthenticated users
+  const [showSignIn, setShowSignIn] = useState(false);
+
   // Phase 1: Handle initial prompt
   const handleInitialSubmit = useCallback(async (prompt: string) => {
+    // Require auth before calling Convex actions
+    if (!isSignedIn) {
+      setShowSignIn(true);
+      return;
+    }
+
     // Check paywall before generating
     if (isAtLimit) {
       setShowPaywall(true);
@@ -109,7 +118,7 @@ function BuilderPageInner() {
     } finally {
       setLoadingQuestions(false);
     }
-  }, [generateQuestions, generateBuild, isAtLimit]);
+  }, [generateQuestions, generateBuild, isAtLimit, isSignedIn]);
 
   // Auto-submit from ?q= query param (e.g. from homepage)
   const [autoSubmitted, setAutoSubmitted] = useState(false);
@@ -337,6 +346,31 @@ function BuilderPageInner() {
 
       {/* Paywall modal */}
       <PaywallModal isOpen={showPaywall} onClose={() => setShowPaywall(false)} />
+
+      {/* Sign-in modal for unauthenticated users */}
+      {showSignIn && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-bg-surface border border-border rounded-2xl p-8 max-w-sm mx-4 text-center shadow-xl">
+            <h3 className="text-lg font-semibold text-text-primary mb-2">Sign in to continue</h3>
+            <p className="text-sm text-text-secondary mb-6">
+              Create a free account to use the AI Build Advisor.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => setShowSignIn(false)}
+                className="px-4 py-2 text-sm rounded-lg border border-border text-text-secondary hover:bg-bg-elevated transition-colors"
+              >
+                Cancel
+              </button>
+              <SignInButton mode="modal">
+                <button className="px-4 py-2 text-sm rounded-lg bg-accent text-white hover:opacity-90 transition-opacity">
+                  Sign in
+                </button>
+              </SignInButton>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

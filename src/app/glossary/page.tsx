@@ -17,6 +17,7 @@ const CATEGORIES = [
   { label: "Cases", value: "cases" },
   { label: "Mounting", value: "mounting" },
   { label: "Mods", value: "mods" },
+  { label: "Layouts", value: "layouts" },
   { label: "General", value: "general" },
 ];
 
@@ -27,6 +28,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   cases: "bg-orange-800/10 text-orange-300 border-orange-800/20",
   mounting: "bg-emerald-600/10 text-emerald-400 border-emerald-600/20",
   mods: "bg-rose-600/10 text-rose-400 border-rose-600/20",
+  layouts: "bg-violet-600/10 text-violet-400 border-violet-600/20",
   general: "bg-bg-elevated text-text-secondary border-border-default",
 };
 
