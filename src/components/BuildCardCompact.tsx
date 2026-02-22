@@ -43,8 +43,16 @@ export function BuildCardCompact({ build, onClick }: BuildCardCompactProps) {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="text-3xl text-text-muted/20 font-bold font-[family-name:var(--font-outfit)]">
+          <div className="w-full h-full flex items-center justify-center relative">
+            <img
+              src="/images/build-card-default.webp"
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover opacity-60"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+              }}
+            />
+            <span className="relative text-3xl text-text-muted/20 font-bold font-[family-name:var(--font-outfit)]">
               {build.buildName.charAt(0)}
             </span>
           </div>

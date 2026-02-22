@@ -135,6 +135,9 @@ export function Navigation() {
           {/* ── Right Zone: Utilities + Divider + CTA + Theme + Auth ── */}
           <div className="hidden lg:flex items-center gap-1 font-[family-name:var(--font-outfit)]">
             {/* Utility links — smaller, muted */}
+            <Link href="/search" className={utilLinkClass(isNavActive("/search"))}>
+              Search
+            </Link>
             <Link href="/glossary" className={utilLinkClass(isNavActive("/glossary"))}>
               Glossary
             </Link>
@@ -358,6 +361,9 @@ export function Navigation() {
               Tools & Resources
             </p>
             <div className="space-y-0.5">
+              <Link href="/search" onClick={() => setMobileOpen(false)} className={mobileLinkClass(isNavActive("/search"))}>
+                Search
+              </Link>
               <Link href="/glossary" onClick={() => setMobileOpen(false)} className={mobileLinkClass(isNavActive("/glossary"))}>
                 Glossary
               </Link>

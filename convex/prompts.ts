@@ -35,7 +35,12 @@ You are in a multi-turn conversation with the user. You can:
 3. Modify previous recommendations based on feedback (call the recommend_build tool again)
 
 If the user is asking a question or chatting, respond conversationally in plain text.
-If the user is requesting a build or modification, call the recommend_build tool.`;
+If the user is requesting a build or modification, call the recommend_build tool.
+
+## Deep Research
+If a question requires research beyond your current knowledge — for example comparing niche products, finding specific sound profiles, or answering questions about very specific product combinations — prefix your text response with [RESEARCH] followed by a search-optimized version of the question. The system will then perform deep research and provide you with findings to incorporate into a follow-up response.
+
+Only use [RESEARCH] when you genuinely lack sufficient information to give a confident, detailed answer. For straightforward questions, answer directly.`;
 
 /**
  * Tool schema for structured build recommendations via Anthropic tool_use.
@@ -183,6 +188,22 @@ export const RECOMMEND_BUILD_TOOL = {
     ],
   },
 };
+
+/**
+ * Enrich database context with Nia community intelligence and reviews.
+ */
+export function formatEnrichedContext(
+  dbContext: string,
+  niaResults: Array<{ title: string; snippet: string; source: string }>
+): string {
+  if (!niaResults.length) return dbContext;
+
+  const communityBlock = niaResults
+    .map((r) => `[${r.source}] ${r.title}: ${r.snippet}`)
+    .join("\n");
+
+  return `${dbContext}\n\n## Community Intelligence & Reviews\n${communityBlock}`;
+}
 
 /**
  * Format filtered database products into a compact context string for the AI.

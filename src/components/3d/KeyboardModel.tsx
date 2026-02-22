@@ -743,17 +743,20 @@ function Keycap({
     pressOffset.current += (targetOffset.current - pressOffset.current) * 0.2;
     groupRef.current.position.y = position[1] + pressOffset.current;
 
-    // Color lerp — snappier for customization
+    // Color lerp — snappier for customization, applied directly to material
     currentColor.current.lerp(targetColor, 0.12);
 
-    // Emissive priority chain: flash > selection glow > rest
     if (meshRef.current) {
       const mat = meshRef.current.material as THREE.MeshPhysicalMaterial;
 
+      // Apply lerped base color every frame (ensures smooth transitions)
+      mat.color.copy(currentColor.current);
+
+      // Emissive priority chain: flash > selection glow > rest
       if (flashIntensity.current > 0.01) {
         // Flash effect takes priority — fast decay
         flashIntensity.current *= 0.88;
-        mat.emissive.set(color);
+        mat.emissive.copy(currentColor.current);
         mat.emissiveIntensity = flashIntensity.current;
       } else if (selected) {
         // Selection glow — breathing animation

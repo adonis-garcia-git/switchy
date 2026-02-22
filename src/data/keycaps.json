@@ -10,7 +10,12 @@
     "priceUsd": 175,
     "inStock": true,
     "notes": "Iconic pink and dark colorway. One of the most popular GMK sets ever produced.",
-    "tags": ["colorful", "iconic", "premium"]
+    "tags": [
+      "colorful",
+      "iconic",
+      "premium"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75"
   },
   {
     "brand": "GMK",
@@ -23,7 +28,13 @@
     "priceUsd": 160,
     "inStock": false,
     "notes": "Nature-inspired green and cream colorway with botanical novelties. Ran multiple rounds.",
-    "tags": ["nature", "green", "premium", "novelties"]
+    "tags": [
+      "nature",
+      "green",
+      "premium",
+      "novelties"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75"
   },
   {
     "brand": "GMK",
@@ -36,7 +47,13 @@
     "priceUsd": 185,
     "inStock": false,
     "notes": "Based on the Dracula color scheme popular with developers. Dark purple and green accents.",
-    "tags": ["dark", "developer", "premium", "purple"]
+    "tags": [
+      "dark",
+      "developer",
+      "premium",
+      "purple"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75"
   },
   {
     "brand": "GMK",
@@ -49,7 +66,13 @@
     "priceUsd": 170,
     "inStock": true,
     "notes": "Synthwave-inspired magenta and cyan on dark purple. Drop collaboration.",
-    "tags": ["synthwave", "retro", "colorful", "premium"]
+    "tags": [
+      "synthwave",
+      "retro",
+      "colorful",
+      "premium"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75"
   },
   {
     "brand": "GMK",
@@ -62,7 +85,13 @@
     "priceUsd": 155,
     "inStock": false,
     "notes": "Soft pink and grey colorway inspired by the 8008 processor. Clean modern aesthetic.",
-    "tags": ["pink", "minimal", "iconic", "premium"]
+    "tags": [
+      "pink",
+      "minimal",
+      "iconic",
+      "premium"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75"
   },
   {
     "brand": "GMK",
@@ -75,7 +104,13 @@
     "priceUsd": 165,
     "inStock": false,
     "notes": "Bold blue and white colorway inspired by football kits. Crisp contrast.",
-    "tags": ["blue", "sports", "bold", "premium"]
+    "tags": [
+      "blue",
+      "sports",
+      "bold",
+      "premium"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75"
   },
   {
     "brand": "GMK",
@@ -88,7 +123,13 @@
     "priceUsd": 160,
     "inStock": false,
     "notes": "Japanese bento box inspired. Navy blue base with salmon and indigo accents.",
-    "tags": ["japanese", "blue", "iconic", "premium"]
+    "tags": [
+      "japanese",
+      "blue",
+      "iconic",
+      "premium"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75"
   },
   {
     "brand": "GMK",
@@ -101,7 +142,13 @@
     "priceUsd": 130,
     "inStock": true,
     "notes": "Clean all-white set. Simple, versatile, and pairs well with any board.",
-    "tags": ["minimal", "white", "clean", "versatile"]
+    "tags": [
+      "minimal",
+      "white",
+      "clean",
+      "versatile"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75"
   },
   {
     "brand": "GMK",
@@ -114,7 +161,13 @@
     "priceUsd": 135,
     "inStock": true,
     "notes": "White on Black classic. Timeless stock colorway, always in production.",
-    "tags": ["classic", "dark", "minimal", "staple"]
+    "tags": [
+      "classic",
+      "dark",
+      "minimal",
+      "staple"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75"
   },
   {
     "brand": "Drop",
@@ -127,7 +180,14 @@
     "priceUsd": 110,
     "inStock": true,
     "notes": "Inspired by Studio Ghibli soot sprites. Dark charcoal with sculpted MT3 profile.",
-    "tags": ["dark", "sculpted", "anime", "premium"]
+    "tags": [
+      "dark",
+      "sculpted",
+      "anime",
+      "premium"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Drop",
@@ -140,7 +200,14 @@
     "priceUsd": 120,
     "inStock": true,
     "notes": "Retro terminal inspired. Beige and grey tones with the deeply sculpted MT3 profile.",
-    "tags": ["retro", "sculpted", "developer", "classic"]
+    "tags": [
+      "retro",
+      "sculpted",
+      "developer",
+      "classic"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Drop",
@@ -153,7 +220,13 @@
     "priceUsd": 95,
     "inStock": true,
     "notes": "Warm terracotta and cream colorway. DCX is Drop's Cherry-profile line.",
-    "tags": ["warm", "earthy", "mid-range"]
+    "tags": [
+      "warm",
+      "earthy",
+      "mid-range"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Drop",
@@ -166,7 +239,14 @@
     "priceUsd": 100,
     "inStock": true,
     "notes": "Cyberpunk-inspired neon green legends on black. Eye-catching in the dark.",
-    "tags": ["cyberpunk", "neon", "dark", "sculpted"]
+    "tags": [
+      "cyberpunk",
+      "neon",
+      "dark",
+      "sculpted"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Akko",
@@ -179,7 +259,12 @@
     "priceUsd": 45,
     "inStock": true,
     "notes": "Deep navy blue with white legends. ASA profile offers comfortable sculpt at budget price.",
-    "tags": ["dark", "budget", "sculpted"]
+    "tags": [
+      "dark",
+      "budget",
+      "sculpted"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   },
   {
     "brand": "Akko",
@@ -192,7 +277,13 @@
     "priceUsd": 50,
     "inStock": true,
     "notes": "Vibrant neon accents on dark base. Great value colorful set.",
-    "tags": ["neon", "colorful", "budget", "fun"]
+    "tags": [
+      "neon",
+      "colorful",
+      "budget",
+      "fun"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0476/4965/2888/products/5d1446e9-a7d3-48a8-ba0e-3bb079dc9149_jpg_1eac2120-f84a-4389-8edb-9b09a7bb2ce7.jpg?v=1623320802&width=3840&quality=75"
   },
   {
     "brand": "Akko",
@@ -205,7 +296,13 @@
     "priceUsd": 45,
     "inStock": true,
     "notes": "Tropical bird inspired with bold red, yellow, blue, and green modifiers.",
-    "tags": ["colorful", "tropical", "budget", "fun"]
+    "tags": [
+      "colorful",
+      "tropical",
+      "budget",
+      "fun"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0476/4965/2888/products/product-image-1821131203.jpg?v=1629973549&width=3840&quality=75"
   },
   {
     "brand": "Akko",
@@ -218,7 +315,13 @@
     "priceUsd": 55,
     "inStock": true,
     "notes": "Elegant black base with gold legends and accents. Surprisingly premium feel for the price.",
-    "tags": ["elegant", "dark", "budget", "gold"]
+    "tags": [
+      "elegant",
+      "dark",
+      "budget",
+      "gold"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   },
   {
     "brand": "Akko",
@@ -231,7 +334,13 @@
     "priceUsd": 40,
     "inStock": true,
     "notes": "Budget recreation of the classic 9009 retro colorway. Beige and grey tones.",
-    "tags": ["retro", "classic", "budget", "neutral"]
+    "tags": [
+      "retro",
+      "classic",
+      "budget",
+      "neutral"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   },
   {
     "brand": "HK Gaming",
@@ -244,7 +353,13 @@
     "priceUsd": 40,
     "inStock": true,
     "notes": "Affordable 9009 colorway clone. Solid PBT quality for the price.",
-    "tags": ["retro", "classic", "budget"]
+    "tags": [
+      "retro",
+      "classic",
+      "budget"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "HK Gaming",
@@ -257,7 +372,13 @@
     "priceUsd": 35,
     "inStock": true,
     "notes": "Pastel rainbow modifiers on white alphas. Popular entry-level colorful set.",
-    "tags": ["pastel", "colorful", "budget", "rainbow"]
+    "tags": [
+      "pastel",
+      "colorful",
+      "budget",
+      "rainbow"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   },
   {
     "brand": "HK Gaming",
@@ -270,7 +391,12 @@
     "priceUsd": 38,
     "inStock": true,
     "notes": "Teal and purple gradient colorway. Inspired by GMK Pegaso at a fraction of the cost.",
-    "tags": ["gradient", "teal", "budget"]
+    "tags": [
+      "gradient",
+      "teal",
+      "budget"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   },
   {
     "brand": "PBTfans",
@@ -283,7 +409,13 @@
     "priceUsd": 95,
     "inStock": true,
     "notes": "Crisp white and orange colorway. PBT doubleshot with GMK-like quality.",
-    "tags": ["bright", "orange", "premium", "doubleshot"]
+    "tags": [
+      "bright",
+      "orange",
+      "premium",
+      "doubleshot"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   },
   {
     "brand": "PBTfans",
@@ -296,7 +428,13 @@
     "priceUsd": 100,
     "inStock": true,
     "notes": "Dark retro-inspired colorway with muted accent keys. No shine PBT doubleshot.",
-    "tags": ["retro", "dark", "premium", "doubleshot"]
+    "tags": [
+      "retro",
+      "dark",
+      "premium",
+      "doubleshot"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   },
   {
     "brand": "PBTfans",
@@ -309,7 +447,13 @@
     "priceUsd": 75,
     "inStock": true,
     "notes": "Black on White classic. PBT doubleshot alternative to GMK with no shine.",
-    "tags": ["classic", "minimal", "versatile", "doubleshot"]
+    "tags": [
+      "classic",
+      "minimal",
+      "versatile",
+      "doubleshot"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   },
   {
     "brand": "ePBT",
@@ -322,7 +466,13 @@
     "priceUsd": 100,
     "inStock": false,
     "notes": "Japanese origami inspired. White base with colorful paper crane novelties.",
-    "tags": ["japanese", "colorful", "novelties", "artistic"]
+    "tags": [
+      "japanese",
+      "colorful",
+      "novelties",
+      "artistic"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0476/4965/2888/products/6391ace427ade714b70fb966024ae804_97d7a997-dc30-4d2f-a975-2ddcb3d19815.jpg?v=1645519585&width=3840&quality=75"
   },
   {
     "brand": "ePBT",
@@ -335,7 +485,14 @@
     "priceUsd": 110,
     "inStock": false,
     "notes": "Space exploration themed with deep navy and gold accents. Extensive kit coverage.",
-    "tags": ["space", "navy", "gold", "themed"]
+    "tags": [
+      "space",
+      "navy",
+      "gold",
+      "themed"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "ePBT",
@@ -348,7 +505,12 @@
     "priceUsd": 90,
     "inStock": true,
     "notes": "Dreamy pastel lavender and mint colorway. Soft and calming aesthetic.",
-    "tags": ["pastel", "dreamy", "soft"]
+    "tags": [
+      "pastel",
+      "dreamy",
+      "soft"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0476/4965/2888/products/6391ace427ade714b70fb966024ae804_97d7a997-dc30-4d2f-a975-2ddcb3d19815.jpg?v=1645519585&width=3840&quality=75"
   },
   {
     "brand": "NicePBT",
@@ -361,7 +523,13 @@
     "priceUsd": 55,
     "inStock": true,
     "notes": "Mount Fuji inspired blue and white colorway by CannonKeys. Excellent value.",
-    "tags": ["japanese", "blue", "budget", "nature"]
+    "tags": [
+      "japanese",
+      "blue",
+      "budget",
+      "nature"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1674/0405/files/WeixinImage_20240106115914.png?v=1704513765&width=3840&quality=75"
   },
   {
     "brand": "NicePBT",
@@ -374,7 +542,12 @@
     "priceUsd": 50,
     "inStock": true,
     "notes": "Rich purple tones inspired by elderberries. Great budget purple option.",
-    "tags": ["purple", "budget", "nature"]
+    "tags": [
+      "purple",
+      "budget",
+      "nature"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1674/0405/files/WeixinImage_20240106115914.png?v=1704513765&width=3840&quality=75"
   },
   {
     "brand": "NicePBT",
@@ -387,7 +560,13 @@
     "priceUsd": 55,
     "inStock": true,
     "notes": "Soft blue and lavender colorway. Holiday-inspired but versatile year-round.",
-    "tags": ["pastel", "blue", "budget", "soft"]
+    "tags": [
+      "pastel",
+      "blue",
+      "budget",
+      "soft"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1674/0405/files/WeixinImage_20240106115914.png?v=1704513765&width=3840&quality=75"
   },
   {
     "brand": "Osume",
@@ -400,7 +579,14 @@
     "priceUsd": 90,
     "inStock": false,
     "notes": "Moon viewing festival inspired. Deep navy with warm gold accents and moon novelties.",
-    "tags": ["japanese", "navy", "gold", "novelties"]
+    "tags": [
+      "japanese",
+      "navy",
+      "gold",
+      "novelties"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Osume",
@@ -413,7 +599,14 @@
     "priceUsd": 85,
     "inStock": true,
     "notes": "Cherry blossom inspired pink and white. Delicate floral novelties included.",
-    "tags": ["japanese", "pink", "floral", "novelties"]
+    "tags": [
+      "japanese",
+      "pink",
+      "floral",
+      "novelties"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Osume",
@@ -426,7 +619,14 @@
     "priceUsd": 80,
     "inStock": true,
     "notes": "Warm caramel and cream tones inspired by Korean dalgona candy.",
-    "tags": ["warm", "brown", "food", "cozy"]
+    "tags": [
+      "warm",
+      "brown",
+      "food",
+      "cozy"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "KAT",
@@ -439,7 +639,13 @@
     "priceUsd": 120,
     "inStock": false,
     "notes": "Pastel fruit milkshake colors by biip. KAT profile with uniform sculpt. Massive kit options.",
-    "tags": ["pastel", "colorful", "iconic", "food"]
+    "tags": [
+      "pastel",
+      "colorful",
+      "iconic",
+      "food"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   },
   {
     "brand": "KAT",
@@ -452,7 +658,13 @@
     "priceUsd": 100,
     "inStock": false,
     "notes": "Cool white and icy blue colorway. Clean arctic theme with subtle blue accents.",
-    "tags": ["cool", "white", "blue", "minimal"]
+    "tags": [
+      "cool",
+      "white",
+      "blue",
+      "minimal"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   },
   {
     "brand": "KAT",
@@ -465,7 +677,12 @@
     "priceUsd": 95,
     "inStock": true,
     "notes": "Elegant beige and brown tones. Understated sophistication in KAT profile.",
-    "tags": ["elegant", "neutral", "classic"]
+    "tags": [
+      "elegant",
+      "neutral",
+      "classic"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   },
   {
     "brand": "JTK",
@@ -478,7 +695,14 @@
     "priceUsd": 130,
     "inStock": false,
     "notes": "Dark cherry blossom theme. Deep magenta and navy with sakura novelties. Tripleshot legends.",
-    "tags": ["japanese", "dark", "floral", "premium"]
+    "tags": [
+      "japanese",
+      "dark",
+      "floral",
+      "premium"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "JTK",
@@ -491,7 +715,13 @@
     "priceUsd": 120,
     "inStock": true,
     "notes": "Warm grey tones with orange accents. Classic neutral palette with a pop of color.",
-    "tags": ["neutral", "warm", "orange", "classic"]
+    "tags": [
+      "neutral",
+      "warm",
+      "orange",
+      "classic"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1674/0405/products/5-JTK-Hanami-Keycaps-by-Vala-75_-Artemis-Paragon-Mechanical-Keyboard-Vala-Supply-Hanami-PURPLE-3.jpg?v=1752819953&width=3840&quality=75"
   },
   {
     "brand": "CRP",
@@ -504,7 +734,14 @@
     "priceUsd": 120,
     "inStock": false,
     "notes": "Classic Hammerworks CRP quality. Beige with pink tulip-colored accents. Round 4 groupbuy.",
-    "tags": ["retro", "pink", "classic", "premium"]
+    "tags": [
+      "retro",
+      "pink",
+      "classic",
+      "premium"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "CRP",
@@ -517,7 +754,14 @@
     "priceUsd": 125,
     "inStock": false,
     "notes": "Teal and green accents on classic CRP beige base. Vibrant yet vintage feel.",
-    "tags": ["retro", "teal", "green", "premium"]
+    "tags": [
+      "retro",
+      "teal",
+      "green",
+      "premium"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "CRP",
@@ -530,7 +774,14 @@
     "priceUsd": 140,
     "inStock": false,
     "notes": "Arabic sub-legends on classic beige. Unique layout support. Collector's item.",
-    "tags": ["retro", "unique", "collector", "premium"]
+    "tags": [
+      "retro",
+      "unique",
+      "collector",
+      "premium"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Domikey",
@@ -543,7 +794,14 @@
     "priceUsd": 85,
     "inStock": true,
     "notes": "Neon yellow and dark grey in tall SA profile. Cyberpunk aesthetic at mid-range price.",
-    "tags": ["cyberpunk", "neon", "sculpted", "SA"]
+    "tags": [
+      "cyberpunk",
+      "neon",
+      "sculpted",
+      "SA"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Domikey",
@@ -556,7 +814,14 @@
     "priceUsd": 80,
     "inStock": true,
     "notes": "Ocean blue and teal colorway in SA profile. Underwater city themed.",
-    "tags": ["blue", "teal", "themed", "SA"]
+    "tags": [
+      "blue",
+      "teal",
+      "themed",
+      "SA"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Domikey",
@@ -569,7 +834,14 @@
     "priceUsd": 75,
     "inStock": true,
     "notes": "Circuit board green on black. Tech-themed SA set with unique novelties.",
-    "tags": ["tech", "green", "dark", "SA"]
+    "tags": [
+      "tech",
+      "green",
+      "dark",
+      "SA"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Keyreative",
@@ -582,7 +854,13 @@
     "priceUsd": 90,
     "inStock": false,
     "notes": "Floral multicolor design on white. KAM uniform profile, similar to KAT.",
-    "tags": ["floral", "colorful", "artistic", "unique"]
+    "tags": [
+      "floral",
+      "colorful",
+      "artistic",
+      "unique"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   },
   {
     "brand": "CannonKeys",
@@ -595,6 +873,12 @@
     "priceUsd": 80,
     "inStock": false,
     "notes": "Magical girl anime inspired. Pink, lavender, and white with wand and star novelties.",
-    "tags": ["anime", "pink", "cute", "novelties"]
+    "tags": [
+      "anime",
+      "pink",
+      "cute",
+      "novelties"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75"
   }
 ]

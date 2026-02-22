@@ -4,6 +4,7 @@ import { useState } from "react";
 import { cn, formatPrice, formatPriceWhole } from "@/lib/utils";
 import { VendorLinksSection } from "./VendorLinks";
 import { BuildImagePreview } from "./BuildImagePreview";
+import { ModCard } from "./builder/ModCard";
 
 interface BuildComponent {
   name: string;
@@ -57,12 +58,6 @@ const DIFFICULTY_COLORS: Record<string, string> = {
   "beginner-friendly": "text-green-400 bg-green-500/15 border-green-500/30",
   intermediate: "text-amber-400 bg-amber-500/15 border-amber-500/30",
   advanced: "text-red-400 bg-red-500/15 border-red-500/30",
-};
-
-const MOD_DIFFICULTY_COLORS: Record<string, string> = {
-  easy: "text-green-400",
-  medium: "text-amber-400",
-  hard: "text-red-400",
 };
 
 function ComponentRow({
@@ -267,34 +262,15 @@ export function BuildCard({
           <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 font-[family-name:var(--font-outfit)]">
             Recommended Mods
           </h3>
-          <div className="space-y-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {build.recommendedMods.map((mod, i) => (
-              <div
+              <ModCard
                 key={i}
-                className="flex items-center justify-between p-3 rounded-lg bg-bg-primary border border-border-subtle"
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-text-primary">
-                      {mod.mod}
-                    </span>
-                    <span
-                      className={cn(
-                        "text-[10px] uppercase font-semibold",
-                        MOD_DIFFICULTY_COLORS[mod.difficulty] || "text-text-muted"
-                      )}
-                    >
-                      {mod.difficulty}
-                    </span>
-                  </div>
-                  <p className="text-xs text-text-secondary mt-0.5">
-                    {mod.effect}
-                  </p>
-                </div>
-                <span className="font-mono text-sm text-text-secondary ml-3">
-                  +{formatPriceWhole(mod.cost)}
-                </span>
-              </div>
+                mod={mod.mod}
+                cost={mod.cost}
+                effect={mod.effect}
+                difficulty={mod.difficulty}
+              />
             ))}
           </div>
         </div>

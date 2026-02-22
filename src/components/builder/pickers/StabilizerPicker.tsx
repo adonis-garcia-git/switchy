@@ -11,13 +11,16 @@ interface StabilizerPickerProps {
   onSelect: (stabilizer: StabilizerSelection) => void;
 }
 
+const TX_SCREW_IN_IMG = "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/tx-ap-stabilizers-top-clip-in-232141.webp?v=1724328004";
+const TX_CLIP_PLATE_IMG = "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/tx-ap-long-pole-stabilizers-top-clip-in-912738.webp?v=1724328004";
+
 const STABILIZER_PRESETS: StabilizerPreset[] = [
-  { name: "Durock V2 Screw-in", price: 18, type: "screw-in" },
-  { name: "C3 Equalz V3", price: 22, type: "screw-in" },
-  { name: "TX Stabilizers", price: 20, type: "screw-in" },
-  { name: "Gateron Ink V2", price: 15, type: "screw-in" },
-  { name: "Cherry Clip-in", price: 12, type: "clip-in" },
-  { name: "Budget Plate-mount", price: 8, type: "plate-mount" },
+  { name: "Durock V2 Screw-in", price: 18, type: "screw-in", imageUrl: TX_SCREW_IN_IMG, isRepresentativeImage: true },
+  { name: "C3 Equalz V3", price: 22, type: "screw-in", imageUrl: TX_SCREW_IN_IMG, isRepresentativeImage: true },
+  { name: "TX Stabilizers", price: 20, type: "screw-in", imageUrl: TX_SCREW_IN_IMG, isRepresentativeImage: true },
+  { name: "Gateron Ink V2", price: 15, type: "screw-in", imageUrl: TX_SCREW_IN_IMG, isRepresentativeImage: true },
+  { name: "Cherry Clip-in", price: 12, type: "clip-in", imageUrl: TX_CLIP_PLATE_IMG, isRepresentativeImage: true },
+  { name: "Budget Plate-mount", price: 8, type: "plate-mount", imageUrl: TX_CLIP_PLATE_IMG, isRepresentativeImage: true },
 ];
 
 const TYPE_BADGES: Record<string, { color: string; label: string }> = {
@@ -45,6 +48,8 @@ export function StabilizerPicker({ selected, onSelect }: StabilizerPickerProps) 
                 key={preset.name}
                 selected={!isCustomSelected && selected?.name === preset.name}
                 onClick={() => onSelect({ name: preset.name, price: preset.price, isCustom: false })}
+                imageUrl={preset.imageUrl}
+                imageAlt={preset.name}
               >
                 <div className="pr-6">
                   <div className="flex items-center gap-2 mb-1">

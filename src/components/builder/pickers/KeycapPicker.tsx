@@ -6,6 +6,7 @@ import { api } from "../../../../convex/_generated/api";
 import { SelectableItemCard } from "../SelectableItemCard";
 import { Input } from "@/components/ui/Input";
 import { cn } from "@/lib/utils";
+import { KEYCAP_PROFILE_IMAGES, KEYCAP_MATERIAL_IMAGES } from "@/lib/constants";
 import type { KeycapSelection, ComponentData } from "@/lib/types";
 
 interface KeycapPickerProps {
@@ -70,6 +71,8 @@ export function KeycapPicker({
               key={profile.name}
               selected={selection.profile === profile.name}
               onClick={() => onSelectProfile(profile.name)}
+              imageUrl={KEYCAP_PROFILE_IMAGES[profile.name]}
+              imageAlt={`${profile.name} profile keycaps`}
             >
               <div className="pr-6">
                 <h4 className="font-semibold text-sm text-text-primary font-[family-name:var(--font-outfit)] mb-1">
@@ -95,6 +98,8 @@ export function KeycapPicker({
               key={material.name}
               selected={selection.material === material.name}
               onClick={() => onSelectMaterial(material.name)}
+              imageUrl={KEYCAP_MATERIAL_IMAGES[material.name]}
+              imageAlt={`${material.name} keycaps`}
             >
               <div className="pr-6">
                 <h4 className="font-semibold text-sm text-text-primary font-[family-name:var(--font-outfit)] mb-1">

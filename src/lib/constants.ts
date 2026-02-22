@@ -57,6 +57,25 @@ export const KEYCAP_MATERIALS = [
   "PBT", "ABS", "POM",
 ] as const;
 
+// ── Representative images for keycap profile / material pickers ──
+
+export const KEYCAP_PROFILE_IMAGES: Record<string, string> = {
+  Cherry: "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+  SA: "https://cdn.shopify.com/s/files/1/0476/4965/2888/products/01_b16db5a0-d439-4aba-8dd6-1873552d0ea6.jpg?v=1629973574&width=3840&quality=75",
+  MT3: "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/keykobo-retro-rc-759-keycaps-7517969.webp?v=1769908511&width=3840&quality=75",
+  DSA: "https://cdn.shopify.com/s/files/1/0476/4965/2888/products/product-image-1821136700.jpg?v=1629973574&width=3840&quality=75",
+  OEM: "https://cdn.shopify.com/s/files/1/0476/4965/2888/products/product-image-1599597626_a2b4e3b9-c680-4cd5-a8a3-efc9f81a1d1b.jpg?v=1629973574&width=3840&quality=75",
+  KAT: "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/a-design-layout-keycaps-5302402.webp?v=1770889990&width=3840&quality=75",
+  XDA: "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/1-Keykobo-Beige-Keycaps.webp?v=1770246171&width=3840&quality=75",
+  ASA: "https://cdn.shopify.com/s/files/1/0631/9590/6271/files/piifox-binary-asa-profile-keycaps-mechkeysshop.webp?v=1769908511&width=3840&quality=75",
+};
+
+export const KEYCAP_MATERIAL_IMAGES: Record<string, string> = {
+  PBT: "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/keykobo-angel-keycaps-6742403.webp?v=1770918692&width=3840&quality=75",
+  ABS: "https://cdn.shopify.com/s/files/1/0950/6157/3976/files/gmk-nightshade-keycap-set-7388671.jpg?v=1764038428&width=3840&quality=75",
+  POM: "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/1-Keykobo-Beige-Keycaps.webp?v=1770246171&width=3840&quality=75",
+};
+
 export const GROUP_BUY_LISTING_STATUS_COLORS = {
   ic: { bg: "bg-sky-500/15", text: "text-sky-400", border: "border-sky-500/25", label: "Interest Check" },
   upcoming: { bg: "bg-blue-500/15", text: "text-blue-400", border: "border-blue-500/25", label: "Upcoming" },

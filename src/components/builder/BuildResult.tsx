@@ -11,6 +11,7 @@ import { Modal } from "@/components/ui/Modal";
 import { BuildQuoteModal } from "@/components/BuildQuoteModal";
 import type { BuildData } from "@/lib/types";
 import { BuilderUpsells } from "./BuilderUpsells";
+import { ModCard } from "./ModCard";
 
 interface BuildResultProps {
   build: BuildData;
@@ -154,38 +155,16 @@ export function BuildResult({
           <h3 className="text-xs text-text-muted uppercase tracking-wider font-medium font-[family-name:var(--font-outfit)] mb-3">
             Recommended Mods
           </h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {build.recommendedMods.map((mod, i) => (
-              <a
+              <ModCard
                 key={i}
-                href={`https://www.amazon.com/s?k=${encodeURIComponent(mod.mod + " keyboard mod")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  "flex items-center gap-2 px-3 py-2 rounded-lg border text-sm group/mod",
-                  "bg-bg-surface border-border-subtle",
-                  "hover:border-border-accent hover:bg-bg-elevated",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
-                  "active:scale-[0.98]",
-                  "transition-[border-color,background-color,transform] duration-150"
-                )}
-              >
-                <span className="text-text-primary font-medium group-hover/mod:text-accent transition-colors duration-150">{mod.mod}</span>
-                {mod.cost > 0 && (
-                  <span className="text-[10px] font-mono text-accent">+${mod.cost}</span>
-                )}
-                <span className={cn(
-                  "text-[10px] px-1.5 py-0.5 rounded font-medium",
-                  mod.difficulty === "easy" ? "bg-emerald-500/10 text-emerald-400" :
-                  mod.difficulty === "medium" ? "bg-amber-500/10 text-amber-400" :
-                  "bg-red-500/10 text-red-400"
-                )}>
-                  {mod.difficulty}
-                </span>
-                <svg className="w-3 h-3 text-text-muted group-hover/mod:text-accent transition-colors duration-150 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
+                mod={mod.mod}
+                cost={mod.cost}
+                effect={mod.effect}
+                difficulty={mod.difficulty}
+                showLink
+              />
             ))}
           </div>
         </div>

@@ -9,7 +9,14 @@ import {
   CONVERSATIONAL_SYSTEM_PROMPT,
   RECOMMEND_BUILD_TOOL,
   formatDatabaseContext,
+  formatEnrichedContext,
 } from "./prompts";
+import {
+  niaUniversalSearch,
+  hashQuery,
+  type NiaSearchResult,
+} from "./niaClient";
+import { niaOracleRun } from "./niaClient";
 import {
   extractCriteriaFromPrompt,
   filterSwitches,
@@ -127,8 +134,37 @@ export const generateBuild = action({
           .join("\n");
     }
 
-    const databaseContext =
+    const rawDbContext =
       formatDatabaseContext(switches, keyboards, components) + sponsoredContext;
+
+    // Enrich with community intelligence from Nia
+    let databaseContext = rawDbContext;
+    try {
+      const cacheKey = hashQuery(args.query, "universal");
+      const cached = await ctx.runQuery(
+        internal.internalFunctions.getNiaCacheByHash,
+        { queryHash: cacheKey }
+      );
+      let niaResults: NiaSearchResult[];
+      if (cached && cached.expiresAt > Date.now()) {
+        niaResults = (cached.result as NiaSearchResult[]).slice(0, 5);
+      } else {
+        niaResults = await niaUniversalSearch(args.query, 5);
+        if (niaResults.length > 0) {
+          await ctx.runMutation(internal.internalFunctions.insertNiaCache, {
+            queryHash: cacheKey,
+            result: niaResults,
+            source: "universal",
+            createdAt: Date.now(),
+            expiresAt: Date.now() + 86400000,
+          });
+        }
+      }
+      databaseContext = formatEnrichedContext(rawDbContext, niaResults);
+    } catch (e) {
+      // Nia enrichment is best-effort — proceed with DB context only
+      console.error("Nia enrichment failed for generateBuild:", e);
+    }
 
     const messages: Anthropic.MessageParam[] = [];
 
@@ -197,11 +233,37 @@ export const generateBuild = action({
     }
 
     // Validate against real products — correct names, prices, attach IDs + images
+    // Use Nia as fallback for products not in local DB
+    let niaFallbacks: Record<string, { found: boolean; vendorUrl?: string; price?: number; name?: string } | null> = {};
+    const comps = buildData.components as Record<string, Record<string, unknown>>;
+    try {
+      const fallbackPromises: Promise<void>[] = [];
+      const checkNiaFallback = async (key: string, name: string) => {
+        const result = await niaUniversalSearch(`"${name}" mechanical keyboard buy price`, 1);
+        if (result.length > 0) {
+          const priceMatch = result[0].snippet.match(/\$(\d+(?:\.\d{1,2})?)/);
+          niaFallbacks[key] = {
+            found: true,
+            vendorUrl: result[0].url,
+            name: result[0].title,
+            price: priceMatch ? parseFloat(priceMatch[1]) : undefined,
+          };
+        }
+      };
+      if (comps.keyboardKit?.name) fallbackPromises.push(checkNiaFallback("keyboard", String(comps.keyboardKit.name)));
+      if (comps.switches?.name) fallbackPromises.push(checkNiaFallback("switches", String(comps.switches.name)));
+      if (comps.keycaps?.name) fallbackPromises.push(checkNiaFallback("keycaps", String(comps.keycaps.name)));
+      await Promise.all(fallbackPromises);
+    } catch (e) {
+      console.error("Nia fallback lookup failed:", e);
+    }
+
     const { validatedBuild } = validateBuild(
       buildData,
       allSwitches,
       allKeyboards,
-      allKeycaps
+      allKeycaps,
+      niaFallbacks
     );
 
     // Record usage after successful generation
@@ -286,11 +348,40 @@ export const generateBuildConversational = action({
     const keyboards = filterKeyboards(allKeyboards, criteria);
     const components = filterComponents(allComponents, criteria);
 
-    const databaseContext = formatDatabaseContext(
+    const rawDbContext = formatDatabaseContext(
       switches,
       keyboards,
       components
     );
+
+    // Enrich with community intelligence from Nia
+    let databaseContext = rawDbContext;
+    try {
+      const searchQuery = args.message;
+      const cacheKey = hashQuery(searchQuery, "universal");
+      const cached = await ctx.runQuery(
+        internal.internalFunctions.getNiaCacheByHash,
+        { queryHash: cacheKey }
+      );
+      let niaResults: NiaSearchResult[];
+      if (cached && cached.expiresAt > Date.now()) {
+        niaResults = (cached.result as NiaSearchResult[]).slice(0, 5);
+      } else {
+        niaResults = await niaUniversalSearch(searchQuery, 5);
+        if (niaResults.length > 0) {
+          await ctx.runMutation(internal.internalFunctions.insertNiaCache, {
+            queryHash: cacheKey,
+            result: niaResults,
+            source: "universal",
+            createdAt: Date.now(),
+            expiresAt: Date.now() + 86400000,
+          });
+        }
+      }
+      databaseContext = formatEnrichedContext(rawDbContext, niaResults);
+    } catch (e) {
+      console.error("Nia enrichment failed for conversational:", e);
+    }
 
     // Build preference context
     let preferenceContext = "";
@@ -345,12 +436,37 @@ export const generateBuildConversational = action({
     const buildData = extractBuildFromResponse(response);
 
     if (buildData) {
-      // Validate against real products
+      // Validate against real products with Nia fallbacks
+      let niaFallbacks: Record<string, { found: boolean; vendorUrl?: string; price?: number; name?: string } | null> = {};
+      const comps = buildData.components as Record<string, Record<string, unknown>>;
+      try {
+        const fallbackPromises: Promise<void>[] = [];
+        const checkNiaFallback = async (key: string, name: string) => {
+          const result = await niaUniversalSearch(`"${name}" mechanical keyboard buy price`, 1);
+          if (result.length > 0) {
+            const priceMatch = result[0].snippet.match(/\$(\d+(?:\.\d{1,2})?)/);
+            niaFallbacks[key] = {
+              found: true,
+              vendorUrl: result[0].url,
+              name: result[0].title,
+              price: priceMatch ? parseFloat(priceMatch[1]) : undefined,
+            };
+          }
+        };
+        if (comps.keyboardKit?.name) fallbackPromises.push(checkNiaFallback("keyboard", String(comps.keyboardKit.name)));
+        if (comps.switches?.name) fallbackPromises.push(checkNiaFallback("switches", String(comps.switches.name)));
+        if (comps.keycaps?.name) fallbackPromises.push(checkNiaFallback("keycaps", String(comps.keycaps.name)));
+        await Promise.all(fallbackPromises);
+      } catch (e) {
+        console.error("Nia fallback lookup failed:", e);
+      }
+
       const { validatedBuild } = validateBuild(
         buildData,
         allSwitches,
         allKeyboards,
-        allKeycaps
+        allKeycaps,
+        niaFallbacks
       );
 
       // Record usage after successful build generation
@@ -375,6 +491,79 @@ export const generateBuildConversational = action({
       textContent && textContent.type === "text"
         ? textContent.text.trim()
         : "";
+
+    // Deep research: if AI signals it needs more context
+    if (rawText.includes("[RESEARCH]")) {
+      try {
+        const researchQuery = rawText
+          .replace("[RESEARCH]", "")
+          .trim()
+          .split("\n")[0]; // Take just the first line as the search query
+        const oracleResult = await niaOracleRun(researchQuery);
+
+        // Re-call Claude with enriched context from research
+        const enrichedMessages: Anthropic.MessageParam[] = [
+          ...messages,
+          { role: "assistant" as const, content: rawText.replace(/\[RESEARCH\].*/, "").trim() || "Let me research that for you." },
+          {
+            role: "user" as const,
+            content: `Research findings:\n${oracleResult.answer}\n\nBased on this research, please provide your detailed recommendation or answer.`,
+          },
+        ];
+
+        const enrichedResponse = await client.messages.create({
+          model: "claude-sonnet-4-6",
+          max_tokens: 2000,
+          system: systemPrompt,
+          messages: enrichedMessages,
+          tools: [RECOMMEND_BUILD_TOOL],
+        });
+
+        // Check if the enriched response contains a build
+        const enrichedBuild = extractBuildFromResponse(enrichedResponse);
+        if (enrichedBuild) {
+          const { validatedBuild } = validateBuild(
+            enrichedBuild,
+            allSwitches,
+            allKeyboards,
+            allKeycaps
+          );
+          await ctx.runMutation(internal.internalFunctions.insertUsageRecord, {
+            userId,
+            actionType: "generateBuildConversational" as const,
+            monthKey,
+          });
+          return {
+            type: "build",
+            data: validatedBuild,
+            rawText: JSON.stringify(validatedBuild),
+            researchUsed: true,
+          };
+        }
+
+        const enrichedText = enrichedResponse.content.find(
+          (b) => b.type === "text"
+        );
+        const finalText =
+          enrichedText && enrichedText.type === "text"
+            ? enrichedText.text.trim()
+            : rawText;
+
+        return { type: "message", data: null, rawText: finalText, researchUsed: true };
+      } catch (e) {
+        console.error("Oracle research failed, returning original response:", e);
+        // Strip the [RESEARCH] marker and return what we have
+        const cleaned = rawText.replace(/\[RESEARCH\].*/, "").trim();
+        return {
+          type: "message",
+          data: null,
+          rawText:
+            cleaned ||
+            "I tried to research that but encountered an issue. Could you rephrase your question?",
+        };
+      }
+    }
+
     return { type: "message", data: null, rawText };
   },
 });

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { WeeklyDigest } from "@/components/WeeklyDigest";
 
 export default function Home() {
   const switches = useQuery(api.switches.list, {});
@@ -47,25 +48,29 @@ export default function Home() {
       title: "Switches",
       href: "/switches",
       count: switchCount,
-      image: switchImage?.imageUrl,
+      image: "/images/category-switches.webp",
+      fallbackImage: switchImage?.imageUrl,
     },
     {
       title: "Keyboard Kits",
       href: "/keyboards",
       count: keyboardCount,
-      image: keyboardImage?.imageUrl,
+      image: "/images/category-keyboards.webp",
+      fallbackImage: keyboardImage?.imageUrl,
     },
     {
       title: "Keycaps",
       href: "/keycaps",
       count: keycaps?.length ?? 0,
-      image: keycapImage?.imageUrl,
+      image: "/images/category-keycaps.webp",
+      fallbackImage: keycapImage?.imageUrl,
     },
     {
       title: "Accessories",
       href: "/accessories",
       count: accessories?.length ?? 0,
-      image: accessoryImage?.imageUrl,
+      image: "/images/category-accessories.webp",
+      fallbackImage: accessoryImage?.imageUrl,
     },
   ];
 
@@ -85,7 +90,7 @@ export default function Home() {
             className="hero-animate-in font-[family-name:var(--font-display)] font-extrabold tracking-[-0.04em] leading-[0.9] select-none text-white"
             style={{ fontSize: "clamp(4rem, 12vw, 10rem)" }}
           >
-            Switch<span className="text-accent">y</span>
+            switch<span className="text-accent">y</span>
           </h1>
 
           {/* Divider */}
@@ -241,6 +246,10 @@ export default function Home() {
                       src={cat.image}
                       alt={cat.title}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      onError={(e) => {
+                        if (cat.fallbackImage) (e.target as HTMLImageElement).src = cat.fallbackImage;
+                        else (e.target as HTMLImageElement).style.display = "none";
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                     <div className="absolute inset-0 bg-accent/5 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -279,6 +288,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── Section 3.5: Weekly Digest ── */}
+      <WeeklyDigest />
 
       {/* ── Section 4: Feature / Content Cards ── */}
       <section className="bg-bg-surface border-t border-border-subtle">

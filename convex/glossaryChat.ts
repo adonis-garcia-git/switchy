@@ -4,6 +4,7 @@ import { action } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { v } from "convex/values";
 import Anthropic from "@anthropic-ai/sdk";
+import { niaUniversalSearch, hashQuery } from "./niaClient";
 
 export const askGlossary = action({
   args: {
@@ -43,6 +44,50 @@ export const askGlossary = action({
       )
       .join("\n");
 
+    // Check if the question references a term not in the glossary
+    const knownTerms = allTerms.map(
+      (t: { term: string }) => t.term.toLowerCase()
+    );
+    const questionLower = args.question.toLowerCase();
+    const isUnknownTerm = !knownTerms.some((t: string) =>
+      questionLower.includes(t)
+    );
+
+    let niaContext = "";
+    if (isUnknownTerm) {
+      try {
+        const cacheKey = hashQuery(args.question, "glossary");
+        const cached = await ctx.runQuery(
+          internal.internalFunctions.getNiaCacheByHash,
+          { queryHash: cacheKey }
+        );
+        if (cached && cached.expiresAt > Date.now()) {
+          const results = cached.result as Array<{ snippet: string; source: string }>;
+          if (results.length > 0) {
+            niaContext = `\n\nAdditional context from community sources: ${results.map((r) => r.snippet).join(" ")}`;
+          }
+        } else {
+          const results = await niaUniversalSearch(
+            `mechanical keyboard "${args.question}" definition meaning`,
+            3
+          );
+          if (results.length > 0) {
+            niaContext = `\n\nAdditional context from community sources: ${results.map((r) => r.snippet).join(" ")}`;
+            await ctx.runMutation(internal.internalFunctions.insertNiaCache, {
+              queryHash: cacheKey,
+              result: results,
+              source: "glossary",
+              createdAt: Date.now(),
+              expiresAt: Date.now() + 86400000,
+            });
+          }
+        }
+      } catch (e) {
+        // Nia enrichment is best-effort
+        console.error("Nia glossary search failed:", e);
+      }
+    }
+
     const systemPrompt: string = `You are Switchy's glossary assistant — a concise, friendly expert on mechanical keyboard terminology.
 
 Rules:
@@ -54,7 +99,7 @@ Rules:
 - Use a warm, approachable tone. You can be slightly playful but stay informative.
 
 ## Glossary Reference (${allTerms.length} terms)
-${glossaryBlock}`;
+${glossaryBlock}${niaContext}`;
 
     // Only send last 6 message pairs to keep context small
     const recentHistory = args.history.slice(-12);

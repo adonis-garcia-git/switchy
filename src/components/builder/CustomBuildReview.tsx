@@ -7,13 +7,14 @@ import { api } from "../../../convex/_generated/api";
 import { ComponentCard } from "./ComponentCard";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { cn, formatPriceWhole, formatPrice } from "@/lib/utils";
+import { formatPriceWhole, formatPrice } from "@/lib/utils";
 import {
   getRunningTotal,
   predictSoundProfile,
   predictDifficulty,
 } from "./CustomBuilderSidebar";
 import { SIZE_DISPLAY_LABELS } from "@/lib/constants";
+import { ModCard } from "./ModCard";
 import type { CustomBuildSelections, BuildData } from "@/lib/types";
 
 interface CustomBuildReviewProps {
@@ -256,26 +257,15 @@ export function CustomBuildReview({
           <h3 className="text-xs text-text-muted uppercase tracking-wider font-medium font-[family-name:var(--font-outfit)] mb-3">
             Selected Mods
           </h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {build.recommendedMods.map((mod, i) => (
-              <div
+              <ModCard
                 key={i}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg border bg-bg-surface border-border-subtle text-sm"
-              >
-                <span className="text-text-primary font-medium">{mod.mod}</span>
-                <span
-                  className={cn(
-                    "text-[10px] px-1.5 py-0.5 rounded font-medium",
-                    mod.difficulty === "easy"
-                      ? "bg-emerald-500/10 text-emerald-400"
-                      : mod.difficulty === "medium"
-                        ? "bg-amber-500/10 text-amber-400"
-                        : "bg-red-500/10 text-red-400"
-                  )}
-                >
-                  {mod.difficulty}
-                </span>
-              </div>
+                mod={mod.mod}
+                cost={mod.cost}
+                effect={mod.effect}
+                difficulty={mod.difficulty}
+              />
             ))}
           </div>
         </div>

@@ -1,6 +1,14 @@
 // Validate AI-recommended products against the actual database.
 // Fuzzy-matches names, corrects prices, and attaches real product IDs,
 // imageUrls, productUrls, and detailUrls for deep linking.
+// Falls back to Nia search when products aren't found in the local catalog.
+
+export interface NiaProductFallback {
+  found: boolean;
+  vendorUrl?: string;
+  price?: number;
+  name?: string;
+}
 
 interface ProductMatch {
   originalName: string;
@@ -8,6 +16,8 @@ interface ProductMatch {
   matchedId?: string;
   confidence: number;
   priceCorrection?: number;
+  externalProduct?: boolean;
+  productUrl?: string;
 }
 
 function normalizeForComparison(name: string): string {
@@ -72,7 +82,12 @@ export function validateBuild(
   build: Record<string, unknown>,
   switches: Record<string, unknown>[],
   keyboards: Record<string, unknown>[],
-  keycaps?: Record<string, unknown>[]
+  keycaps?: Record<string, unknown>[],
+  niaFallbacks?: {
+    keyboard?: NiaProductFallback | null;
+    switches?: NiaProductFallback | null;
+    keycaps?: NiaProductFallback | null;
+  }
 ): {
   validatedBuild: Record<string, unknown>;
   matches: {
@@ -133,6 +148,24 @@ export function validateBuild(
 
         validatedComponents.keyboardKit = patchFields;
       }
+    } else if (niaFallbacks?.keyboard?.found) {
+      // Product exists externally but not in our DB
+      const patchFields: Record<string, unknown> = {
+        ...components.keyboardKit,
+        externalProduct: true,
+      };
+      if (niaFallbacks.keyboard.vendorUrl)
+        patchFields.productUrl = niaFallbacks.keyboard.vendorUrl;
+      if (niaFallbacks.keyboard.price)
+        patchFields.price = niaFallbacks.keyboard.price;
+      validatedComponents.keyboardKit = patchFields;
+      matches.keyboard = {
+        originalName: kitName,
+        matchedName: niaFallbacks.keyboard.name ?? kitName,
+        confidence: 0.3,
+        externalProduct: true,
+        productUrl: niaFallbacks.keyboard.vendorUrl,
+      };
     }
   }
 
@@ -177,6 +210,23 @@ export function validateBuild(
 
         validatedComponents.switches = patchFields;
       }
+    } else if (niaFallbacks?.switches?.found) {
+      const patchFields: Record<string, unknown> = {
+        ...components.switches,
+        externalProduct: true,
+      };
+      if (niaFallbacks.switches.vendorUrl)
+        patchFields.productUrl = niaFallbacks.switches.vendorUrl;
+      if (niaFallbacks.switches.price)
+        patchFields.priceEach = niaFallbacks.switches.price;
+      validatedComponents.switches = patchFields;
+      matches.switches = {
+        originalName: switchName,
+        matchedName: niaFallbacks.switches.name ?? switchName,
+        confidence: 0.3,
+        externalProduct: true,
+        productUrl: niaFallbacks.switches.vendorUrl,
+      };
     }
   }
 
@@ -221,6 +271,23 @@ export function validateBuild(
 
         validatedComponents.keycaps = patchFields;
       }
+    } else if (niaFallbacks?.keycaps?.found) {
+      const patchFields: Record<string, unknown> = {
+        ...components.keycaps,
+        externalProduct: true,
+      };
+      if (niaFallbacks.keycaps.vendorUrl)
+        patchFields.productUrl = niaFallbacks.keycaps.vendorUrl;
+      if (niaFallbacks.keycaps.price)
+        patchFields.price = niaFallbacks.keycaps.price;
+      validatedComponents.keycaps = patchFields;
+      matches.keycaps = {
+        originalName: keycapName,
+        matchedName: niaFallbacks.keycaps.name ?? keycapName,
+        confidence: 0.3,
+        externalProduct: true,
+        productUrl: niaFallbacks.keycaps.vendorUrl,
+      };
     }
   }
 

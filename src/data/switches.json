@@ -5,8 +5,8 @@
     "type": "linear",
     "actuationForceG": 45,
     "bottomOutForceG": 60,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -15,11 +15,19 @@
     "soundPitch": "mid",
     "soundCharacter": "crisp",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 3.2,
-    "popularFor": ["gaming", "beginner builds"],
+    "popularFor": [
+      "gaming",
+      "beginner builds"
+    ],
     "notes": "The classic linear switch. Feels scratchy stock compared to modern competitors. Benefits significantly from lubing and filming. Still a solid reference point for the hobby.",
-    "commonlyComparedTo": ["Gateron Yellow", "Gateron Pro 3.0 Red", "Akko CS Radiant Red"]
+    "commonlyComparedTo": [
+      "Gateron Yellow",
+      "Gateron Pro 3.0 Red",
+      "Akko CS Radiant Red"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75"
   },
   {
     "brand": "Cherry",
@@ -27,8 +35,8 @@
     "type": "tactile",
     "actuationForceG": 45,
     "bottomOutForceG": 55,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -37,11 +45,19 @@
     "soundPitch": "mid",
     "soundCharacter": "crisp",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 2.8,
-    "popularFor": ["office use", "beginner builds"],
+    "popularFor": [
+      "office use",
+      "beginner builds"
+    ],
     "notes": "Often memed as 'scratchy linear' due to its subtle tactile bump. Many enthusiasts recommend upgrading to a proper tactile. Still popular in prebuilts for a reason - inoffensive and versatile.",
-    "commonlyComparedTo": ["Gateron Pro 3.0 Brown", "Boba U4T", "Kailh Box Brown"]
+    "commonlyComparedTo": [
+      "Gateron Pro 3.0 Brown",
+      "Boba U4T",
+      "Kailh Box Brown"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75"
   },
   {
     "brand": "Cherry",
@@ -50,7 +66,7 @@
     "actuationForceG": 50,
     "bottomOutForceG": 60,
     "actuationMm": 2.2,
-    "totalTravelMm": 4.0,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -59,11 +75,19 @@
     "soundPitch": "high",
     "soundCharacter": "crisp",
     "soundVolume": "loud",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 2.5,
-    "popularFor": ["typing enthusiasts", "nostalgia"],
+    "popularFor": [
+      "typing enthusiasts",
+      "nostalgia"
+    ],
     "notes": "The iconic clicky switch. Click jacket mechanism produces a sharp audible click. Not recommended for shared office spaces. Kailh Box clickies are generally preferred by enthusiasts for a crisper click.",
-    "commonlyComparedTo": ["Kailh Box White", "Kailh Box Jade", "Kailh Box Navy"]
+    "commonlyComparedTo": [
+      "Kailh Box White",
+      "Kailh Box Jade",
+      "Kailh Box Navy"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16991-5Q3Y7-Cherry-MX-20-Blue-Clicky-Plate-Mount-Switches_eb467ad5-d68b-4564-a658-6ed16a2c2d5f.png?v=1708700941&width=3840&quality=75"
   },
   {
     "brand": "Cherry",
@@ -71,8 +95,8 @@
     "type": "linear",
     "actuationForceG": 60,
     "bottomOutForceG": 80,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -81,11 +105,19 @@
     "soundPitch": "low",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 3.4,
-    "popularFor": ["heavy typists", "vintage keyboard fans"],
+    "popularFor": [
+      "heavy typists",
+      "vintage keyboard fans"
+    ],
     "notes": "Heavier linear that some prefer for its resistance to accidental keypresses. Vintage Cherry Blacks (harvested from old boards) are highly sought after for their smoothness. New ones benefit from break-in and lubing.",
-    "commonlyComparedTo": ["Gateron Ink Black V2", "Gateron Oil King", "Cherry MX Red"]
+    "commonlyComparedTo": [
+      "Gateron Ink Black V2",
+      "Gateron Oil King",
+      "Cherry MX Red"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75"
   },
   {
     "brand": "Cherry",
@@ -104,10 +136,19 @@
     "soundCharacter": "muted",
     "soundVolume": "quiet",
     "pricePerSwitch": 0.35,
-    "communityRating": 3.0,
-    "popularFor": ["office use", "quiet builds", "shared spaces"],
+    "communityRating": 3,
+    "popularFor": [
+      "office use",
+      "quiet builds",
+      "shared spaces"
+    ],
     "notes": "Silicone dampeners on stem reduce noise on both down and upstroke. Feels slightly mushy to some. Modern silent linears like Outemu Silent Lemon V3 and Boba U4 offer better feel at similar or lower prices.",
-    "commonlyComparedTo": ["Outemu Silent Lemon V3", "Boba U4", "Kailh Midnight Pro Silent"]
+    "commonlyComparedTo": [
+      "Outemu Silent Lemon V3",
+      "Boba U4",
+      "Kailh Midnight Pro Silent"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75"
   },
   {
     "brand": "Cherry",
@@ -127,9 +168,17 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.35,
     "communityRating": 3.1,
-    "popularFor": ["gaming", "fast typists"],
+    "popularFor": [
+      "gaming",
+      "fast typists"
+    ],
     "notes": "Short actuation point designed for rapid inputs. Can lead to accidental keypresses for those not used to it. Gateron and Kailh speed switches are smoother stock alternatives.",
-    "commonlyComparedTo": ["Kailh Speed Silver", "Gateron G Pro 3.0 Silver", "Cherry MX Red"]
+    "commonlyComparedTo": [
+      "Kailh Speed Silver",
+      "Gateron G Pro 3.0 Silver",
+      "Cherry MX Red"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16993-SYV2M-Cherry-MX-20-Silver-Linear-Plate-Mount-Switches_00d9d01e-6170-467d-a005-c02b8ac461a7.png?v=1708699760&width=3840&quality=75"
   },
   {
     "brand": "Cherry",
@@ -137,8 +186,8 @@
     "type": "tactile",
     "actuationForceG": 55,
     "bottomOutForceG": 95,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Progressive",
@@ -149,9 +198,17 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.35,
     "communityRating": 3.3,
-    "popularFor": ["heavy typists", "tactile enthusiasts"],
+    "popularFor": [
+      "heavy typists",
+      "tactile enthusiasts"
+    ],
     "notes": "Much more pronounced tactile bump than MX Brown with a heavy bottom-out. Progressive spring ramps up steeply. Popular for Ergo-Clear mod (lighter spring swap). Stock spring can be fatiguing for some.",
-    "commonlyComparedTo": ["Zealios V2 67g", "Boba U4T", "Durock T1"]
+    "commonlyComparedTo": [
+      "Zealios V2 67g",
+      "Boba U4T",
+      "Durock T1"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/4951-ADSTW-Cherry-MX-Clear-Switch.png?v=1713286805&width=3840&quality=75"
   },
   {
     "brand": "Gateron",
@@ -159,8 +216,8 @@
     "type": "linear",
     "actuationForceG": 50,
     "bottomOutForceG": 67,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -170,10 +227,19 @@
     "soundCharacter": "thocky",
     "soundVolume": "medium",
     "pricePerSwitch": 0.22,
-    "communityRating": 4.0,
-    "popularFor": ["budget builds", "first custom keyboard", "modding"],
+    "communityRating": 4,
+    "popularFor": [
+      "budget builds",
+      "first custom keyboard",
+      "modding"
+    ],
     "notes": "The gold standard budget linear. Smooth stock and incredible value. Lubed and filmed Gateron Yellows are a rite of passage for keyboard enthusiasts. Milky top version adds deeper sound.",
-    "commonlyComparedTo": ["Gateron Milky Yellow Pro", "Akko CS Jelly Pink", "Cherry MX Red"]
+    "commonlyComparedTo": [
+      "Gateron Milky Yellow Pro",
+      "Akko CS Jelly Pink",
+      "Cherry MX Red"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/17666-BQUDL-Gateron-KS-3-Milky-Yellow-Pro-50g-Linear-PCB-Mount-Switch.png?v=1708712136&width=3840&quality=75"
   },
   {
     "brand": "Gateron",
@@ -181,8 +247,8 @@
     "type": "linear",
     "actuationForceG": 55,
     "bottomOutForceG": 80,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon (Ink-style)",
     "springType": "Standard",
@@ -191,11 +257,21 @@
     "soundPitch": "low",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.50,
+    "pricePerSwitch": 0.5,
     "communityRating": 4.3,
-    "popularFor": ["thocky builds", "deep sound profiles", "no-mod builds"],
+    "popularFor": [
+      "thocky builds",
+      "deep sound profiles",
+      "no-mod builds"
+    ],
     "notes": "Full nylon construction produces a deep, thocky sound profile. Factory lubed and smooth. Very popular for builds aiming for that deep, full-bodied sound. Some prefer to re-lube for consistency.",
-    "commonlyComparedTo": ["Gateron Ink Black V2", "Gateron CJ", "Durock POM Linear"]
+    "commonlyComparedTo": [
+      "Gateron Ink Black V2",
+      "Gateron CJ",
+      "Durock POM Linear"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Gateron",
@@ -203,8 +279,8 @@
     "type": "linear",
     "actuationForceG": 50,
     "bottomOutForceG": 63,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Milky Nylon",
     "springType": "Standard",
@@ -215,9 +291,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.25,
     "communityRating": 4.2,
-    "popularFor": ["budget builds", "creamy sound", "first custom keyboard"],
+    "popularFor": [
+      "budget builds",
+      "creamy sound",
+      "first custom keyboard"
+    ],
     "notes": "Pre-lubed upgrade to the classic Gateron Yellow. Milky housing adds warmth to the sound. One of the best value propositions in the hobby. Great stock, even better with a touch more lube.",
-    "commonlyComparedTo": ["Gateron Yellow", "Akko V3 Cream Yellow", "KTT Kang White V3"]
+    "commonlyComparedTo": [
+      "Gateron Yellow",
+      "Akko V3 Cream Yellow",
+      "KTT Kang White V3"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/17666-BQUDL-Gateron-KS-3-Milky-Yellow-Pro-50g-Linear-PCB-Mount-Switch.png?v=1708712136&width=3840&quality=75"
   },
   {
     "brand": "Gateron",
@@ -225,8 +310,8 @@
     "type": "linear",
     "actuationForceG": 45,
     "bottomOutForceG": 55,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Standard",
@@ -235,11 +320,20 @@
     "soundPitch": "mid",
     "soundCharacter": "poppy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 3.8,
-    "popularFor": ["gaming", "light typists", "beginner builds"],
+    "popularFor": [
+      "gaming",
+      "light typists",
+      "beginner builds"
+    ],
     "notes": "Factory pre-lubed with improved mold tolerances over previous Gateron generations. Solid stock experience. Dustproof stem design. Good stepping stone from Cherry MX Red.",
-    "commonlyComparedTo": ["Cherry MX Red", "Akko CS Radiant Red", "Gateron Yellow"]
+    "commonlyComparedTo": [
+      "Cherry MX Red",
+      "Akko CS Radiant Red",
+      "Gateron Yellow"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/18787-55D24-Gateron-KS-33-Low-Profile-Chocolate-20-55g-Tactile-Plate-Mou.jpg?v=1711563431&width=3840&quality=75"
   },
   {
     "brand": "Gateron",
@@ -247,8 +341,8 @@
     "type": "tactile",
     "actuationForceG": 45,
     "bottomOutForceG": 55,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Standard",
@@ -257,11 +351,19 @@
     "soundPitch": "mid",
     "soundCharacter": "poppy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 3.4,
-    "popularFor": ["office use", "light tactile fans"],
+    "popularFor": [
+      "office use",
+      "light tactile fans"
+    ],
     "notes": "Improved over older Gateron Browns with factory lube and tighter tolerances. Still a mild tactile bump. For more pronounced tactility, look at Boba U4T or Durock T1.",
-    "commonlyComparedTo": ["Cherry MX Brown", "Kailh Box Brown", "Akko CS Lavender Purple"]
+    "commonlyComparedTo": [
+      "Cherry MX Brown",
+      "Kailh Box Brown",
+      "Akko CS Lavender Purple"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/18787-55D24-Gateron-KS-33-Low-Profile-Chocolate-20-55g-Tactile-Plate-Mou.jpg?v=1711563431&width=3840&quality=75"
   },
   {
     "brand": "Gateron",
@@ -279,11 +381,19 @@
     "soundPitch": "mid",
     "soundCharacter": "poppy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 3.6,
-    "popularFor": ["gaming", "rapid actuation"],
+    "popularFor": [
+      "gaming",
+      "rapid actuation"
+    ],
     "notes": "Short travel speed switch with factory lube. Smoother than Cherry Speed Silver out of the box. Short actuation takes getting used to for typing but great for competitive gaming.",
-    "commonlyComparedTo": ["Cherry MX Speed Silver", "Kailh Speed Silver", "Gateron Pro 3.0 Red"]
+    "commonlyComparedTo": [
+      "Cherry MX Speed Silver",
+      "Kailh Speed Silver",
+      "Gateron Pro 3.0 Red"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/18787-55D24-Gateron-KS-33-Low-Profile-Chocolate-20-55g-Tactile-Plate-Mou.jpg?v=1711563431&width=3840&quality=75"
   },
   {
     "brand": "Gateron",
@@ -291,8 +401,8 @@
     "type": "linear",
     "actuationForceG": 60,
     "bottomOutForceG": 70,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Ink (Smokey PC)",
     "springType": "Standard",
@@ -301,11 +411,20 @@
     "soundPitch": "low",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.70,
+    "pricePerSwitch": 0.7,
     "communityRating": 4.4,
-    "popularFor": ["premium builds", "thocky sound", "smooth linears"],
+    "popularFor": [
+      "premium builds",
+      "thocky sound",
+      "smooth linears"
+    ],
     "notes": "One of the most popular premium linears. Ink housing produces a deep, satisfying sound. Very smooth when lubed with Krytox 205g0. Stock springs can be slightly pingy - spring swap or bag lube recommended.",
-    "commonlyComparedTo": ["Gateron Oil King", "Gateron CJ", "Cherry MX Black"]
+    "commonlyComparedTo": [
+      "Gateron Oil King",
+      "Gateron CJ",
+      "Cherry MX Black"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/14642_636ac8475414f_Gateron-Ink-BOX-V2-Black-Keyswitch-PCB-Mount-Linear.jpg?v=1707266290&width=3840&quality=75"
   },
   {
     "brand": "Gateron",
@@ -313,8 +432,8 @@
     "type": "linear",
     "actuationForceG": 45,
     "bottomOutForceG": 60,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Ink (Smokey PC)",
     "springType": "Standard",
@@ -323,11 +442,19 @@
     "soundPitch": "low",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.70,
+    "pricePerSwitch": 0.7,
     "communityRating": 4.2,
-    "popularFor": ["premium builds", "lighter linear preference"],
+    "popularFor": [
+      "premium builds",
+      "lighter linear preference"
+    ],
     "notes": "Lighter version of Ink Black V2. Same excellent ink housing sound profile with less resistance. Great for those who want the Ink sound but prefer lighter springs. Benefits from lubing and filming.",
-    "commonlyComparedTo": ["Gateron Ink Black V2", "Gateron Oil King", "Durock L7"]
+    "commonlyComparedTo": [
+      "Gateron Ink Black V2",
+      "Gateron Oil King",
+      "Durock L7"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/14642_636ac8475414f_Gateron-Ink-BOX-V2-Black-Keyswitch-PCB-Mount-Linear.jpg?v=1707266290&width=3840&quality=75"
   },
   {
     "brand": "Gateron",
@@ -335,8 +462,8 @@
     "type": "linear",
     "actuationForceG": 50,
     "bottomOutForceG": 65,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Two-stage",
@@ -347,9 +474,19 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.65,
     "communityRating": 4.3,
-    "popularFor": ["premium builds", "thocky sound", "smooth stock experience"],
+    "popularFor": [
+      "premium builds",
+      "thocky sound",
+      "smooth stock experience"
+    ],
     "notes": "Collaboration with keyboard enthusiast CJ. Full nylon housing for deep sound. Two-stage spring provides unique weight curve. Great stock but can be improved with hand-lubing. Competes well with Oil King.",
-    "commonlyComparedTo": ["Gateron Oil King", "Gateron Ink Black V2", "Durock POM Linear"]
+    "commonlyComparedTo": [
+      "Gateron Oil King",
+      "Gateron Ink Black V2",
+      "Durock POM Linear"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Gateron",
@@ -357,8 +494,8 @@
     "type": "linear",
     "actuationForceG": 50,
     "bottomOutForceG": 62,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Standard",
@@ -368,10 +505,19 @@
     "soundCharacter": "clacky",
     "soundVolume": "medium",
     "pricePerSwitch": 0.45,
-    "communityRating": 4.0,
-    "popularFor": ["clacky builds", "north-facing PCB compatibility"],
+    "communityRating": 4,
+    "popularFor": [
+      "clacky builds",
+      "north-facing PCB compatibility"
+    ],
     "notes": "Designed specifically for north-facing PCBs - no interference issues. Long pole stem gives a satisfying clacky bottom-out. Factory lubed and smooth stock. Great all-around mid-range linear.",
-    "commonlyComparedTo": ["Gateron Oil King", "Gateron CJ", "HMX Xinhai"]
+    "commonlyComparedTo": [
+      "Gateron Oil King",
+      "Gateron CJ",
+      "HMX Xinhai"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Gateron",
@@ -379,8 +525,8 @@
     "type": "linear",
     "actuationForceG": 50,
     "bottomOutForceG": 63,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon + PC",
     "springType": "Standard",
@@ -391,9 +537,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.45,
     "communityRating": 3.9,
-    "popularFor": ["budget-premium builds", "creamy sound"],
+    "popularFor": [
+      "budget-premium builds",
+      "creamy sound"
+    ],
     "notes": "Cap switch design with unique top housing geometry for reduced wobble. Creamy smooth with factory lube. A nice step up from Milky Yellows without breaking the bank.",
-    "commonlyComparedTo": ["Gateron Milky Yellow Pro", "Gateron Yellow", "Akko V3 Cream Yellow"]
+    "commonlyComparedTo": [
+      "Gateron Milky Yellow Pro",
+      "Gateron Yellow",
+      "Akko V3 Cream Yellow"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Gateron",
@@ -401,8 +556,8 @@
     "type": "tactile",
     "actuationForceG": 50,
     "bottomOutForceG": 60,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon + PC",
     "springType": "Standard",
@@ -413,9 +568,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.45,
     "communityRating": 3.7,
-    "popularFor": ["light tactile preference", "office builds"],
+    "popularFor": [
+      "light tactile preference",
+      "office builds"
+    ],
     "notes": "Cap design reduces stem wobble for better feel. Subtle but clean tactile bump. Better than standard Gateron Brown but still lighter tactility than enthusiast options. Good for those who want gentle feedback.",
-    "commonlyComparedTo": ["Gateron Pro 3.0 Brown", "Cherry MX Brown", "Kailh Box Brown"]
+    "commonlyComparedTo": [
+      "Gateron Pro 3.0 Brown",
+      "Cherry MX Brown",
+      "Kailh Box Brown"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Kailh",
@@ -435,9 +599,18 @@
     "soundVolume": "loud",
     "pricePerSwitch": 0.35,
     "communityRating": 4.2,
-    "popularFor": ["clicky enthusiasts", "typing satisfaction", "maximum feedback"],
+    "popularFor": [
+      "clicky enthusiasts",
+      "typing satisfaction",
+      "maximum feedback"
+    ],
     "notes": "Thick click bar mechanism produces one of the crispest, most satisfying clicks in the hobby. Very loud - not for office use. The heavier click bar compared to Box White gives a more substantial click. A community favorite for clicky lovers.",
-    "commonlyComparedTo": ["Kailh Box Navy", "Kailh Box White", "Cherry MX Blue"]
+    "commonlyComparedTo": [
+      "Kailh Box Navy",
+      "Kailh Box White",
+      "Cherry MX Blue"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/3513-VX7JE-Kailh-BOX-Silent-Brown-Plate-Mount-Tactile.png?v=1708470205&width=3840&quality=75"
   },
   {
     "brand": "Kailh",
@@ -456,10 +629,18 @@
     "soundCharacter": "crisp",
     "soundVolume": "loud",
     "pricePerSwitch": 0.35,
-    "communityRating": 4.0,
-    "popularFor": ["heavy clicky fans", "typewriter feel"],
+    "communityRating": 4,
+    "popularFor": [
+      "heavy clicky fans",
+      "typewriter feel"
+    ],
     "notes": "The heavy-handed sibling of Box Jade. Thick click bar with a heavier spring makes for an extremely tactile and loud typing experience. Can be fatiguing for long sessions. Feels like a tiny typewriter.",
-    "commonlyComparedTo": ["Kailh Box Jade", "Kailh Box White", "Cherry MX Blue"]
+    "commonlyComparedTo": [
+      "Kailh Box Jade",
+      "Kailh Box White",
+      "Cherry MX Blue"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/BOX_navy_switch.png?v=1724270157&width=3840&quality=75"
   },
   {
     "brand": "Kailh",
@@ -477,11 +658,19 @@
     "soundPitch": "high",
     "soundCharacter": "crisp",
     "soundVolume": "loud",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 3.9,
-    "popularFor": ["clicky fans", "lighter clicky option"],
+    "popularFor": [
+      "clicky fans",
+      "lighter clicky option"
+    ],
     "notes": "Click bar mechanism is sharper and more consistent than Cherry click jacket. Lighter than Box Jade making it better for extended typing. Box stem design provides IP56 dust and moisture resistance.",
-    "commonlyComparedTo": ["Kailh Box Jade", "Cherry MX Blue", "Kailh Box Navy"]
+    "commonlyComparedTo": [
+      "Kailh Box Jade",
+      "Cherry MX Blue",
+      "Kailh Box Navy"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/3513-VX7JE-Kailh-BOX-Silent-Brown-Plate-Mount-Tactile.png?v=1708470205&width=3840&quality=75"
   },
   {
     "brand": "Kailh",
@@ -499,11 +688,19 @@
     "soundPitch": "mid",
     "soundCharacter": "poppy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 3.3,
-    "popularFor": ["budget tactile", "office use"],
+    "popularFor": [
+      "budget tactile",
+      "office use"
+    ],
     "notes": "Box stem design gives slightly more defined bump than Cherry Brown. Dustproof and waterproof stem. Still a light tactile - enthusiasts wanting more bump should look at Boba U4T or Durock T1.",
-    "commonlyComparedTo": ["Cherry MX Brown", "Gateron Pro 3.0 Brown", "Akko CS Lavender Purple"]
+    "commonlyComparedTo": [
+      "Cherry MX Brown",
+      "Gateron Pro 3.0 Brown",
+      "Akko CS Lavender Purple"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/3513-VX7JE-Kailh-BOX-Silent-Brown-Plate-Mount-Tactile.png?v=1708470205&width=3840&quality=75"
   },
   {
     "brand": "Kailh",
@@ -523,9 +720,17 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.28,
     "communityRating": 3.5,
-    "popularFor": ["gaming", "budget linear"],
+    "popularFor": [
+      "gaming",
+      "budget linear"
+    ],
     "notes": "Box stem provides stability and dust resistance. Smoother than Cherry Red stock. Shorter travel than standard MX switches. Solid budget choice for gaming-focused builds.",
-    "commonlyComparedTo": ["Cherry MX Red", "Gateron Pro 3.0 Red", "Kailh Speed Silver"]
+    "commonlyComparedTo": [
+      "Cherry MX Red",
+      "Gateron Pro 3.0 Red",
+      "Kailh Speed Silver"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/3513-VX7JE-Kailh-BOX-Silent-Brown-Plate-Mount-Tactile.png?v=1708470205&width=3840&quality=75"
   },
   {
     "brand": "Kailh",
@@ -543,11 +748,19 @@
     "soundPitch": "mid",
     "soundCharacter": "poppy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 3.5,
-    "popularFor": ["competitive gaming", "rapid actuation"],
+    "popularFor": [
+      "competitive gaming",
+      "rapid actuation"
+    ],
     "notes": "Very short actuation point for rapid input registration. Light spring weight means minimal effort per press. Takes adjustment if coming from standard travel switches. Not ideal for typing-heavy work.",
-    "commonlyComparedTo": ["Cherry MX Speed Silver", "Gateron G Pro 3.0 Silver", "Kailh Box Red"]
+    "commonlyComparedTo": [
+      "Cherry MX Speed Silver",
+      "Gateron G Pro 3.0 Silver",
+      "Kailh Box Red"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0602/3639/8777/files/DSF3558.webp?v=1771571717&width=3840&quality=75"
   },
   {
     "brand": "Kailh",
@@ -565,11 +778,20 @@
     "soundPitch": "mid",
     "soundCharacter": "crisp",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 3.4,
-    "popularFor": ["fast tactile", "gaming with feedback"],
+    "popularFor": [
+      "fast tactile",
+      "gaming with feedback"
+    ],
     "notes": "Rare speed tactile switch. Short actuation with a quick tactile bump near the top. Useful for gamers who want some feedback without the full travel. Bump is subtle due to short travel distance.",
-    "commonlyComparedTo": ["Kailh Speed Silver", "Kailh Box Brown", "Cherry MX Brown"]
+    "commonlyComparedTo": [
+      "Kailh Speed Silver",
+      "Kailh Box Brown",
+      "Cherry MX Brown"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Kailh",
@@ -587,11 +809,21 @@
     "soundPitch": "low",
     "soundCharacter": "muted",
     "soundVolume": "quiet",
-    "pricePerSwitch": 0.40,
+    "pricePerSwitch": 0.4,
     "communityRating": 3.9,
-    "popularFor": ["office use", "silent builds", "shared spaces"],
+    "popularFor": [
+      "office use",
+      "silent builds",
+      "shared spaces"
+    ],
     "notes": "Dual silicone dampeners minimize both downstroke and upstroke noise. Factory lubed for smooth operation. One of the better mass-market silent linears. Less mushy feel than Cherry Silent Red.",
-    "commonlyComparedTo": ["Cherry MX Silent Red", "Boba U4", "Outemu Silent Lemon V3"]
+    "commonlyComparedTo": [
+      "Cherry MX Silent Red",
+      "Boba U4",
+      "Outemu Silent Lemon V3"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Durock",
@@ -599,8 +831,8 @@
     "type": "linear",
     "actuationForceG": 63,
     "bottomOutForceG": 78,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "POM",
     "springType": "Standard",
@@ -611,9 +843,19 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.55,
     "communityRating": 4.3,
-    "popularFor": ["deep sound builds", "thock chasers", "self-lubricating"],
+    "popularFor": [
+      "deep sound builds",
+      "thock chasers",
+      "self-lubricating"
+    ],
     "notes": "Full POM housing is naturally self-lubricating and produces an incredibly deep sound. One of the deepest sounding switches available. Minimal need for additional lube. Medium-heavy weight suits controlled typing.",
-    "commonlyComparedTo": ["Gateron Oil King", "Gateron Ink Black V2", "NovelKeys Cream"]
+    "commonlyComparedTo": [
+      "Gateron Oil King",
+      "Gateron Ink Black V2",
+      "NovelKeys Cream"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Durock",
@@ -621,8 +863,8 @@
     "type": "tactile",
     "actuationForceG": 53,
     "bottomOutForceG": 67,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Gold-plated",
@@ -633,9 +875,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.55,
     "communityRating": 4.2,
-    "popularFor": ["tactile enthusiasts", "rounded bump preference"],
+    "popularFor": [
+      "tactile enthusiasts",
+      "rounded bump preference"
+    ],
     "notes": "Large, rounded tactile bump that is satisfying without being sharp. Very popular mid-range tactile. JWK manufactured. Smoky housing version has slightly different sound. Great lubed with Tribosys 3203.",
-    "commonlyComparedTo": ["Boba U4T", "Zealios V2 67g", "Tecsee Purple Panda"]
+    "commonlyComparedTo": [
+      "Boba U4T",
+      "Zealios V2 67g",
+      "Tecsee Purple Panda"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Durock",
@@ -643,8 +894,8 @@
     "type": "linear",
     "actuationForceG": 55,
     "bottomOutForceG": 67,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Gold-plated",
@@ -655,9 +906,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.55,
     "communityRating": 4.1,
-    "popularFor": ["smooth linears", "mid-range builds"],
+    "popularFor": [
+      "smooth linears",
+      "mid-range builds"
+    ],
     "notes": "JWK-manufactured smooth linear with tight tolerances. Very little stem wobble. Comes in multiple colors/weights. Factory lube is decent but benefits from hand lubing. Solid all-around performer.",
-    "commonlyComparedTo": ["JWK Black V2", "Gateron Ink Black V2", "Durock Sunflower"]
+    "commonlyComparedTo": [
+      "JWK Black V2",
+      "Gateron Ink Black V2",
+      "Durock Sunflower"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Durock",
@@ -665,8 +925,8 @@
     "type": "linear",
     "actuationForceG": 62,
     "bottomOutForceG": 78,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "POM",
     "springType": "Gold-plated",
@@ -677,9 +937,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.55,
     "communityRating": 4.1,
-    "popularFor": ["deep sound", "heavy linear fans"],
+    "popularFor": [
+      "deep sound",
+      "heavy linear fans"
+    ],
     "notes": "Full POM housing similar to Durock POM Linear with a different spring weight and gold-plated spring. Deep, thocky sound profile. Heavier weight provides good control. Self-lubricating POM is low maintenance.",
-    "commonlyComparedTo": ["Durock POM Linear", "Gateron Oil King", "Gateron Ink Black V2"]
+    "commonlyComparedTo": [
+      "Durock POM Linear",
+      "Gateron Oil King",
+      "Gateron Ink Black V2"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "JWK",
@@ -687,8 +956,8 @@
     "type": "linear",
     "actuationForceG": 62,
     "bottomOutForceG": 78,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Gold-plated",
@@ -697,11 +966,20 @@
     "soundPitch": "mid",
     "soundCharacter": "clacky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.60,
+    "pricePerSwitch": 0.6,
     "communityRating": 4.5,
-    "popularFor": ["premium builds", "smooth linears", "endgame switches"],
+    "popularFor": [
+      "premium builds",
+      "smooth linears",
+      "endgame switches"
+    ],
     "notes": "Also known as Alpaca V2. One of the smoothest stock linears available. JWK's refined molds produce exceptional consistency. Lubed with Krytox 205g0 these are many enthusiasts' endgame linear. Slightly clacky PC housing.",
-    "commonlyComparedTo": ["JWK Lavender", "Durock L7", "Gateron Ink Black V2"]
+    "commonlyComparedTo": [
+      "JWK Lavender",
+      "Durock L7",
+      "Gateron Ink Black V2"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/14642_636ac8475414f_Gateron-Ink-BOX-V2-Black-Keyswitch-PCB-Mount-Linear.jpg?v=1707266290&width=3840&quality=75"
   },
   {
     "brand": "JWK",
@@ -709,8 +987,8 @@
     "type": "linear",
     "actuationForceG": 58,
     "bottomOutForceG": 70,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Gold-plated",
@@ -719,11 +997,21 @@
     "soundPitch": "mid",
     "soundCharacter": "creamy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.60,
+    "pricePerSwitch": 0.6,
     "communityRating": 4.4,
-    "popularFor": ["premium builds", "creamy sound", "smooth linears"],
+    "popularFor": [
+      "premium builds",
+      "creamy sound",
+      "smooth linears"
+    ],
     "notes": "Nylon housing gives a deeper, creamier sound compared to PC-housed JWK switches. Same incredible JWK smoothness as the Alpaca V2. Beautiful lavender colorway. One of the community's top linear recommendations.",
-    "commonlyComparedTo": ["JWK Black V2", "Gateron CJ", "Durock L7"]
+    "commonlyComparedTo": [
+      "JWK Black V2",
+      "Gateron CJ",
+      "Durock L7"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "JWK",
@@ -731,8 +1019,8 @@
     "type": "linear",
     "actuationForceG": 67,
     "bottomOutForceG": 78,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Gold-plated",
@@ -741,11 +1029,20 @@
     "soundPitch": "mid",
     "soundCharacter": "clacky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.60,
+    "pricePerSwitch": 0.6,
     "communityRating": 4.3,
-    "popularFor": ["heavy linear fans", "premium builds"],
+    "popularFor": [
+      "heavy linear fans",
+      "premium builds"
+    ],
     "notes": "Heavier JWK linear with a beautiful teal colorway. 67g actuation is on the heavier side but provides excellent control and deliberate keypresses. Same JWK smoothness as Alpaca V2. Gorgeous switch aesthetics.",
-    "commonlyComparedTo": ["JWK Black V2", "JWK Lavender", "Gateron Ink Black V2"]
+    "commonlyComparedTo": [
+      "JWK Black V2",
+      "JWK Lavender",
+      "Gateron Ink Black V2"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "SP-Star",
@@ -753,8 +1050,8 @@
     "type": "linear",
     "actuationForceG": 57,
     "bottomOutForceG": 67,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon + PC",
     "springType": "Standard",
@@ -763,11 +1060,20 @@
     "soundPitch": "mid",
     "soundCharacter": "creamy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.40,
+    "pricePerSwitch": 0.4,
     "communityRating": 4.1,
-    "popularFor": ["mid-range builds", "smooth stock experience"],
+    "popularFor": [
+      "mid-range builds",
+      "smooth stock experience"
+    ],
     "notes": "Surprisingly smooth for the price point. SP-Star's improved mold quality puts these near JWK levels of smoothness. Clean white colorway. Great value mid-range linear that punches above its weight.",
-    "commonlyComparedTo": ["SP-Star Polaris Gray", "JWK Black V2", "Gateron Oil King"]
+    "commonlyComparedTo": [
+      "SP-Star Polaris Gray",
+      "JWK Black V2",
+      "Gateron Oil King"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "SP-Star",
@@ -775,8 +1081,8 @@
     "type": "linear",
     "actuationForceG": 60,
     "bottomOutForceG": 67,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Standard",
@@ -785,11 +1091,19 @@
     "soundPitch": "mid",
     "soundCharacter": "poppy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.40,
-    "communityRating": 4.0,
-    "popularFor": ["mid-range builds", "neutral sound"],
+    "pricePerSwitch": 0.4,
+    "communityRating": 4,
+    "popularFor": [
+      "mid-range builds",
+      "neutral sound"
+    ],
     "notes": "Clean, no-nonsense linear with good smoothness at a reasonable price. PC housing gives a slightly higher-pitched, poppier sound than the Meteor White. Consistent factory lube application. Underrated option.",
-    "commonlyComparedTo": ["SP-Star Meteor White", "Gateron Oil King", "JWK Black V2"]
+    "commonlyComparedTo": [
+      "SP-Star Meteor White",
+      "Gateron Oil King",
+      "JWK Black V2"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0602/3639/8777/files/DSF3558.webp?v=1771571717&width=3840&quality=75"
   },
   {
     "brand": "Gazzew",
@@ -797,8 +1111,8 @@
     "type": "tactile",
     "actuationForceG": 53,
     "bottomOutForceG": 62,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Boba Housing (proprietary nylon blend)",
     "springType": "Standard",
@@ -809,9 +1123,19 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.65,
     "communityRating": 4.7,
-    "popularFor": ["tactile enthusiasts", "thocky tactile", "best-in-class tactile"],
+    "popularFor": [
+      "tactile enthusiasts",
+      "thocky tactile",
+      "best-in-class tactile"
+    ],
     "notes": "Widely considered the gold standard for tactile switches. Large, round D-shaped bump with a thocky sound profile. Long pole stem provides satisfying bottom-out. Many prefer stock without lube to preserve tactility. Tight housing means no need for films.",
-    "commonlyComparedTo": ["Zealios V2 67g", "Durock T1", "Tecsee Purple Panda"]
+    "commonlyComparedTo": [
+      "Zealios V2 67g",
+      "Durock T1",
+      "Tecsee Purple Panda"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Gazzew",
@@ -819,8 +1143,8 @@
     "type": "tactile",
     "actuationForceG": 53,
     "bottomOutForceG": 62,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Boba Housing (proprietary nylon blend)",
     "springType": "Standard",
@@ -831,9 +1155,19 @@
     "soundVolume": "quiet",
     "pricePerSwitch": 0.65,
     "communityRating": 4.5,
-    "popularFor": ["silent tactile", "office builds", "quiet tactile"],
+    "popularFor": [
+      "silent tactile",
+      "office builds",
+      "quiet tactile"
+    ],
     "notes": "Silent version of the U4T with rubber dampeners. Retains the excellent tactile bump while being near-silent. One of the best silent tactiles available. No mushy feel like many silent switches. Housing is tight, no films needed.",
-    "commonlyComparedTo": ["Boba U4T", "Outemu Silent Cream", "Cherry MX Silent Red"]
+    "commonlyComparedTo": [
+      "Boba U4T",
+      "Outemu Silent Cream",
+      "Cherry MX Silent Red"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Zeal PC",
@@ -841,8 +1175,8 @@
     "type": "tactile",
     "actuationForceG": 47,
     "bottomOutForceG": 62,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PMMA (clear PC)",
     "springType": "Gold-plated",
@@ -851,11 +1185,20 @@
     "soundPitch": "high",
     "soundCharacter": "clacky",
     "soundVolume": "medium",
-    "pricePerSwitch": 1.10,
+    "pricePerSwitch": 1.1,
     "communityRating": 4.3,
-    "popularFor": ["premium tactile", "sharp tactile bump"],
+    "popularFor": [
+      "premium tactile",
+      "sharp tactile bump"
+    ],
     "notes": "Sharp, pronounced tactile bump at the top of the keystroke. Premium pricing is controversial - many feel Boba U4T offers similar or better tactility for less. Still an excellent switch with a unique bump profile. Clear housing allows RGB shine-through.",
-    "commonlyComparedTo": ["Zealios V2 67g", "Boba U4T", "Durock T1"]
+    "commonlyComparedTo": [
+      "Zealios V2 67g",
+      "Boba U4T",
+      "Durock T1"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Zeal PC",
@@ -863,8 +1206,8 @@
     "type": "tactile",
     "actuationForceG": 50,
     "bottomOutForceG": 67,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PMMA (clear PC)",
     "springType": "Gold-plated",
@@ -873,11 +1216,21 @@
     "soundPitch": "high",
     "soundCharacter": "clacky",
     "soundVolume": "medium",
-    "pricePerSwitch": 1.10,
+    "pricePerSwitch": 1.1,
     "communityRating": 4.4,
-    "popularFor": ["premium tactile", "sharp tactile bump", "typing"],
+    "popularFor": [
+      "premium tactile",
+      "sharp tactile bump",
+      "typing"
+    ],
     "notes": "The most popular Zealios weight. Sharper, snappier bump compared to the rounder U4T. Premium priced but exceptional build quality. PMMA housing is somewhat brittle - be careful when opening. Sounds best with a light lube on springs only.",
-    "commonlyComparedTo": ["Zealios V2 62g", "Boba U4T", "Durock T1"]
+    "commonlyComparedTo": [
+      "Zealios V2 62g",
+      "Boba U4T",
+      "Durock T1"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Akko",
@@ -885,8 +1238,8 @@
     "type": "tactile",
     "actuationForceG": 36,
     "bottomOutForceG": 50,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Standard",
@@ -897,9 +1250,19 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.25,
     "communityRating": 3.8,
-    "popularFor": ["budget tactile", "light tactile", "beginner builds"],
+    "popularFor": [
+      "budget tactile",
+      "light tactile",
+      "beginner builds"
+    ],
     "notes": "Very light tactile that is easy on the fingers. Good entry-level tactile at an incredible price. More noticeable bump than Cherry Brown. Akko's CS line offers insane value across the board.",
-    "commonlyComparedTo": ["Cherry MX Brown", "Kailh Box Brown", "Gateron Pro 3.0 Brown"]
+    "commonlyComparedTo": [
+      "Cherry MX Brown",
+      "Kailh Box Brown",
+      "Gateron Pro 3.0 Brown"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Akko",
@@ -907,8 +1270,8 @@
     "type": "linear",
     "actuationForceG": 43,
     "bottomOutForceG": 55,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Standard",
@@ -919,9 +1282,19 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.25,
     "communityRating": 3.7,
-    "popularFor": ["budget linear", "gaming", "beginner builds"],
+    "popularFor": [
+      "budget linear",
+      "gaming",
+      "beginner builds"
+    ],
     "notes": "Light, smooth budget linear from Akko. Factory lubed with decent smoothness out of the box. Outperforms Cherry MX Red at a fraction of the price. Great for budget gaming builds.",
-    "commonlyComparedTo": ["Cherry MX Red", "Gateron Pro 3.0 Red", "Akko CS Jelly Pink"]
+    "commonlyComparedTo": [
+      "Cherry MX Red",
+      "Gateron Pro 3.0 Red",
+      "Akko CS Jelly Pink"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Akko",
@@ -941,9 +1314,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.25,
     "communityRating": 3.6,
-    "popularFor": ["budget speed switch", "gaming"],
+    "popularFor": [
+      "budget speed switch",
+      "gaming"
+    ],
     "notes": "Budget speed linear with shorter travel and actuation. Great alternative to expensive Kailh or Cherry speed switches. Smooth with factory lube. Shorter travel takes some adjustment for typing.",
-    "commonlyComparedTo": ["Kailh Speed Silver", "Akko CS Radiant Red", "Cherry MX Speed Silver"]
+    "commonlyComparedTo": [
+      "Kailh Speed Silver",
+      "Akko CS Radiant Red",
+      "Cherry MX Speed Silver"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Akko",
@@ -951,8 +1333,8 @@
     "type": "linear",
     "actuationForceG": 50,
     "bottomOutForceG": 63,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon + PC",
     "springType": "Standard",
@@ -961,11 +1343,20 @@
     "soundPitch": "mid",
     "soundCharacter": "creamy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
-    "communityRating": 4.0,
-    "popularFor": ["budget creamy linear", "all-purpose builds"],
+    "pricePerSwitch": 0.3,
+    "communityRating": 4,
+    "popularFor": [
+      "budget creamy linear",
+      "all-purpose builds"
+    ],
     "notes": "Akko's V3 line represents a significant step up from the CS series. Creamy, smooth sound profile. Upgraded molds and better factory lube application. Competes with switches twice its price. One of the best budget linears available.",
-    "commonlyComparedTo": ["Gateron Milky Yellow Pro", "Gateron Yellow", "KTT Kang White V3"]
+    "commonlyComparedTo": [
+      "Gateron Milky Yellow Pro",
+      "Gateron Yellow",
+      "KTT Kang White V3"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Akko",
@@ -973,8 +1364,8 @@
     "type": "tactile",
     "actuationForceG": 45,
     "bottomOutForceG": 58,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon + PC",
     "springType": "Standard",
@@ -983,11 +1374,20 @@
     "soundPitch": "mid",
     "soundCharacter": "creamy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 3.9,
-    "popularFor": ["budget tactile", "creamy tactile"],
+    "popularFor": [
+      "budget tactile",
+      "creamy tactile"
+    ],
     "notes": "Improved tactile from Akko's V3 line. More defined bump than CS Lavender Purple while maintaining a smooth, creamy feel. Great value tactile option. Factory lube is well-applied for the price range.",
-    "commonlyComparedTo": ["Akko CS Lavender Purple", "Durock T1", "Boba U4T"]
+    "commonlyComparedTo": [
+      "Akko CS Lavender Purple",
+      "Durock T1",
+      "Boba U4T"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Akko",
@@ -995,8 +1395,8 @@
     "type": "linear",
     "actuationForceG": 50,
     "bottomOutForceG": 63,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon + PC",
     "springType": "Standard",
@@ -1005,11 +1405,20 @@
     "soundPitch": "mid",
     "soundCharacter": "creamy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 3.9,
-    "popularFor": ["budget linear", "themed builds"],
+    "popularFor": [
+      "budget linear",
+      "themed builds"
+    ],
     "notes": "Same internals as V3 Cream Yellow with a matcha green colorway. Pairs beautifully with green-themed builds. Smooth factory lube and creamy sound. Another excellent budget linear from Akko.",
-    "commonlyComparedTo": ["Akko V3 Cream Yellow", "Gateron Milky Yellow Pro", "Gateron Yellow"]
+    "commonlyComparedTo": [
+      "Akko V3 Cream Yellow",
+      "Gateron Milky Yellow Pro",
+      "Gateron Yellow"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "HMX",
@@ -1017,7 +1426,7 @@
     "type": "linear",
     "actuationForceG": 47,
     "bottomOutForceG": 53,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
@@ -1029,9 +1438,19 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.35,
     "communityRating": 4.3,
-    "popularFor": ["clacky sound", "long pole enthusiasts", "budget premium"],
+    "popularFor": [
+      "clacky sound",
+      "long pole enthusiasts",
+      "budget premium"
+    ],
     "notes": "HMX has been a rising star in the switch game. Extended spring with long pole stem creates a snappy, clacky sound. Excellent smoothness for the price. Strong competitor in the mid-range. A community darling.",
-    "commonlyComparedTo": ["HMX Cloud", "Gateron North Pole", "WS Morandi"]
+    "commonlyComparedTo": [
+      "HMX Cloud",
+      "Gateron North Pole",
+      "WS Morandi"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "HMX",
@@ -1039,7 +1458,7 @@
     "type": "linear",
     "actuationForceG": 42,
     "bottomOutForceG": 50,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
@@ -1051,9 +1470,19 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.35,
     "communityRating": 4.2,
-    "popularFor": ["light linear", "poppy sound", "smooth typing"],
+    "popularFor": [
+      "light linear",
+      "poppy sound",
+      "smooth typing"
+    ],
     "notes": "Lighter version in the HMX lineup. Very light spring weight creates an effortless typing experience. Extended spring reduces ping. Excellent smoothness stock. One of the best light linears at this price point.",
-    "commonlyComparedTo": ["HMX Xinhai", "Gateron North Pole", "WS Aurora"]
+    "commonlyComparedTo": [
+      "HMX Xinhai",
+      "Gateron North Pole",
+      "WS Aurora"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Tecsee",
@@ -1061,8 +1490,8 @@
     "type": "tactile",
     "actuationForceG": 55,
     "bottomOutForceG": 67,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PME (proprietary blend)",
     "springType": "Standard",
@@ -1071,11 +1500,21 @@
     "soundPitch": "low",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.40,
-    "communityRating": 4.0,
-    "popularFor": ["budget tactile", "thocky tactile", "Holy Panda alternative"],
+    "pricePerSwitch": 0.4,
+    "communityRating": 4,
+    "popularFor": [
+      "budget tactile",
+      "thocky tactile",
+      "Holy Panda alternative"
+    ],
     "notes": "Marketed as a budget Holy Panda alternative. Large tactile bump with a thocky sound. PME housing material is unique and contributes to the deep sound. Long pole gives a definitive bottom-out feel. Great value for tactile lovers.",
-    "commonlyComparedTo": ["Boba U4T", "Durock T1", "Akko V3 Cream Blue"]
+    "commonlyComparedTo": [
+      "Boba U4T",
+      "Durock T1",
+      "Akko V3 Cream Blue"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Tecsee",
@@ -1083,8 +1522,8 @@
     "type": "tactile",
     "actuationForceG": 50,
     "bottomOutForceG": 63,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "UHMWPE",
     "housingMaterial": "PC + Nylon",
     "springType": "Standard",
@@ -1095,9 +1534,17 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.45,
     "communityRating": 3.9,
-    "popularFor": ["UHMWPE stem", "clacky tactile"],
+    "popularFor": [
+      "UHMWPE stem",
+      "clacky tactile"
+    ],
     "notes": "UHMWPE stem is inherently smooth and self-lubricating. Clean tactile bump with a clacky sound signature. V2 fixed some of the V1's tolerance issues. Interesting alternative for tactile fans wanting a different material feel.",
-    "commonlyComparedTo": ["Tecsee Purple Panda", "Durock T1", "Boba U4T"]
+    "commonlyComparedTo": [
+      "Tecsee Purple Panda",
+      "Durock T1",
+      "Boba U4T"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0602/3639/8777/files/DSF3558.webp?v=1771571717&width=3840&quality=75"
   },
   {
     "brand": "Tecsee",
@@ -1105,8 +1552,8 @@
     "type": "linear",
     "actuationForceG": 52,
     "bottomOutForceG": 63,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "UHMWPE",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -1115,11 +1562,20 @@
     "soundPitch": "low",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.40,
+    "pricePerSwitch": 0.4,
     "communityRating": 3.8,
-    "popularFor": ["thocky linear", "UHMWPE stem experience"],
+    "popularFor": [
+      "thocky linear",
+      "UHMWPE stem experience"
+    ],
     "notes": "Full nylon housing with UHMWPE stem for a deep, thocky sound. Long pole adds definition to the bottom-out. UHMWPE material is very smooth by nature. Unique translucent stem is visually interesting. Good mid-range option.",
-    "commonlyComparedTo": ["Durock POM Linear", "Gateron Oil King", "Tecsee Purple Panda"]
+    "commonlyComparedTo": [
+      "Durock POM Linear",
+      "Gateron Oil King",
+      "Tecsee Purple Panda"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "KTT",
@@ -1127,8 +1583,8 @@
     "type": "linear",
     "actuationForceG": 43,
     "bottomOutForceG": 55,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Extended",
@@ -1138,10 +1594,20 @@
     "soundCharacter": "poppy",
     "soundVolume": "medium",
     "pricePerSwitch": 0.22,
-    "communityRating": 4.0,
-    "popularFor": ["ultra budget", "poppy sound", "long pole budget"],
+    "communityRating": 4,
+    "popularFor": [
+      "ultra budget",
+      "poppy sound",
+      "long pole budget"
+    ],
     "notes": "Incredible value - one of the cheapest long pole switches available. Poppy, higher-pitched sound signature. Factory lube is decent. Extended spring helps with ping. KTT has been a revelation in budget switches.",
-    "commonlyComparedTo": ["KTT Kang White V3", "KTT Peach", "HMX Xinhai"]
+    "commonlyComparedTo": [
+      "KTT Kang White V3",
+      "KTT Peach",
+      "HMX Xinhai"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "KTT",
@@ -1149,8 +1615,8 @@
     "type": "linear",
     "actuationForceG": 45,
     "bottomOutForceG": 58,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Extended",
@@ -1161,9 +1627,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.22,
     "communityRating": 4.2,
-    "popularFor": ["budget linear", "creamy sound on a budget"],
+    "popularFor": [
+      "budget linear",
+      "creamy sound on a budget"
+    ],
     "notes": "One of the most recommended budget linears. V3 improves on already excellent V2. Nylon housing gives creamy sound. Long pole and extended spring combo is satisfying. Competes with switches three times its price. A must-try for budget builders.",
-    "commonlyComparedTo": ["KTT Strawberry", "Gateron Milky Yellow Pro", "Akko V3 Cream Yellow"]
+    "commonlyComparedTo": [
+      "KTT Strawberry",
+      "Gateron Milky Yellow Pro",
+      "Akko V3 Cream Yellow"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "KTT",
@@ -1171,7 +1646,7 @@
     "type": "linear",
     "actuationForceG": 50,
     "bottomOutForceG": 60,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon + PC",
@@ -1182,10 +1657,19 @@
     "soundCharacter": "thocky",
     "soundVolume": "medium",
     "pricePerSwitch": 0.25,
-    "communityRating": 4.0,
-    "popularFor": ["budget thock", "value long pole"],
+    "communityRating": 4,
+    "popularFor": [
+      "budget thock",
+      "value long pole"
+    ],
     "notes": "Deeper, thockier variant in the KTT lineup. Mixed housing material creates a balanced sound. Long pole provides satisfying bottom-out. Slightly heavier than Strawberry for a more controlled feel. Another KTT budget winner.",
-    "commonlyComparedTo": ["KTT Kang White V3", "KTT Strawberry", "Gateron Yellow"]
+    "commonlyComparedTo": [
+      "KTT Kang White V3",
+      "KTT Strawberry",
+      "Gateron Yellow"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "WS",
@@ -1193,7 +1677,7 @@
     "type": "linear",
     "actuationForceG": 48,
     "bottomOutForceG": 55,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
@@ -1205,9 +1689,19 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.35,
     "communityRating": 4.2,
-    "popularFor": ["clacky sound", "mid-range value", "trendy sound profile"],
+    "popularFor": [
+      "clacky sound",
+      "mid-range value",
+      "trendy sound profile"
+    ],
     "notes": "Named after the muted color palette of Giorgio Morandi paintings. Long pole with extended spring for a clean, clacky sound. Excellent smoothness. Has gained a strong following in the community for its unique sound signature.",
-    "commonlyComparedTo": ["WS Aurora", "HMX Xinhai", "Gateron North Pole"]
+    "commonlyComparedTo": [
+      "WS Aurora",
+      "HMX Xinhai",
+      "Gateron North Pole"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "WS",
@@ -1215,7 +1709,7 @@
     "type": "linear",
     "actuationForceG": 45,
     "bottomOutForceG": 52,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
@@ -1227,9 +1721,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.35,
     "communityRating": 4.1,
-    "popularFor": ["poppy sound", "higher-pitched linear"],
+    "popularFor": [
+      "poppy sound",
+      "higher-pitched linear"
+    ],
     "notes": "PC housing gives a higher-pitched, poppier sound compared to the nylon Morandi. Light spring weight for effortless typing. Extended spring eliminates ping. Good choice for those who prefer brighter sound profiles.",
-    "commonlyComparedTo": ["WS Morandi", "HMX Cloud", "KTT Strawberry"]
+    "commonlyComparedTo": [
+      "WS Morandi",
+      "HMX Cloud",
+      "KTT Strawberry"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Outemu",
@@ -1237,8 +1740,8 @@
     "type": "linear",
     "actuationForceG": 40,
     "bottomOutForceG": 50,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -1249,9 +1752,19 @@
     "soundVolume": "quiet",
     "pricePerSwitch": 0.25,
     "communityRating": 4.1,
-    "popularFor": ["budget silent", "office builds", "quiet builds"],
+    "popularFor": [
+      "budget silent",
+      "office builds",
+      "quiet builds"
+    ],
     "notes": "Outstanding budget silent linear. V3 revision dramatically improved smoothness and reduced mushiness. Dual silicone dampeners are well-tuned. Rivals switches at twice the price. Top recommendation for budget silent builds.",
-    "commonlyComparedTo": ["Boba U4", "Cherry MX Silent Red", "Outemu Silent Cream"]
+    "commonlyComparedTo": [
+      "Boba U4",
+      "Cherry MX Silent Red",
+      "Outemu Silent Cream"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Outemu",
@@ -1259,8 +1772,8 @@
     "type": "tactile",
     "actuationForceG": 50,
     "bottomOutForceG": 60,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -1271,9 +1784,18 @@
     "soundVolume": "quiet",
     "pricePerSwitch": 0.28,
     "communityRating": 3.9,
-    "popularFor": ["budget silent tactile", "office use"],
+    "popularFor": [
+      "budget silent tactile",
+      "office use"
+    ],
     "notes": "Budget silent tactile with a noticeable bump. Less premium feel than Boba U4 but at less than half the price. Silicone dampeners work well. Factory lube is acceptable. Great for office keyboards where silence matters.",
-    "commonlyComparedTo": ["Boba U4", "Outemu Silent Lemon V3", "Kailh Midnight Pro Silent"]
+    "commonlyComparedTo": [
+      "Boba U4",
+      "Outemu Silent Lemon V3",
+      "Kailh Midnight Pro Silent"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "TTC",
@@ -1281,8 +1803,8 @@
     "type": "linear",
     "actuationForceG": 37,
     "bottomOutForceG": 45,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Gold-plated",
@@ -1293,9 +1815,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.35,
     "communityRating": 3.9,
-    "popularFor": ["ultra-light linear", "gentle typing"],
+    "popularFor": [
+      "ultra-light linear",
+      "gentle typing"
+    ],
     "notes": "One of the lightest mainstream linears available at 37g actuation. Extremely effortless keypresses. Gold-plated spring adds corrosion resistance. V2 improved smoothness over original. Not for heavy-handed typists - accidental presses are common.",
-    "commonlyComparedTo": ["TTC Bluish White", "Akko CS Radiant Red", "Gateron Pro 3.0 Red"]
+    "commonlyComparedTo": [
+      "TTC Bluish White",
+      "Akko CS Radiant Red",
+      "Gateron Pro 3.0 Red"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "TTC",
@@ -1303,8 +1834,8 @@
     "type": "tactile",
     "actuationForceG": 42,
     "bottomOutForceG": 52,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
     "springType": "Gold-plated",
@@ -1315,9 +1846,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.35,
     "communityRating": 3.8,
-    "popularFor": ["light tactile", "gentle tactile feedback"],
+    "popularFor": [
+      "light tactile",
+      "gentle tactile feedback"
+    ],
     "notes": "Light tactile with a crisp, clean bump. More defined than Cherry Brown at a lighter weight. TTC's gold-plated springs are a nice touch at this price point. Clean typing experience with minimal fatigue.",
-    "commonlyComparedTo": ["TTC Gold Pink V2", "Cherry MX Brown", "Akko CS Lavender Purple"]
+    "commonlyComparedTo": [
+      "TTC Gold Pink V2",
+      "Cherry MX Brown",
+      "Akko CS Lavender Purple"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "TTC",
@@ -1325,7 +1865,7 @@
     "type": "linear",
     "actuationForceG": 45,
     "bottomOutForceG": 55,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.8,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
@@ -1335,11 +1875,19 @@
     "soundPitch": "low",
     "soundCharacter": "muted",
     "soundVolume": "quiet",
-    "pricePerSwitch": 0.40,
+    "pricePerSwitch": 0.4,
     "communityRating": 3.8,
-    "popularFor": ["silent builds", "office use"],
+    "popularFor": [
+      "silent builds",
+      "office use"
+    ],
     "notes": "TTC's entry in the silent linear category. Dual dampening system with gold-plated spring. Smooth and quiet with less mushiness than Cherry Silent Red. Attractive translucent icy blue housing. Solid mid-range silent option.",
-    "commonlyComparedTo": ["Cherry MX Silent Red", "Outemu Silent Lemon V3", "Kailh Midnight Pro Silent"]
+    "commonlyComparedTo": [
+      "Cherry MX Silent Red",
+      "Outemu Silent Lemon V3",
+      "Kailh Midnight Pro Silent"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/4b501208-b66e-4653-9d9a-85f0f1c71541.png?v=1750279293&width=3840&quality=75"
   },
   {
     "brand": "NovelKeys",
@@ -1347,8 +1895,8 @@
     "type": "linear",
     "actuationForceG": 55,
     "bottomOutForceG": 70,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "POM",
     "springType": "Standard",
@@ -1359,9 +1907,19 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.65,
     "communityRating": 3.8,
-    "popularFor": ["creamy sound", "full POM", "sound profile enthusiasts"],
+    "popularFor": [
+      "creamy sound",
+      "full POM",
+      "sound profile enthusiasts"
+    ],
     "notes": "Full POM construction pioneer that helped popularize the 'creamy' sound descriptor. Scratchy out of the box and needs extensive break-in period (200k+ keypresses) or lube. Once broken in, very smooth with a unique sound signature. Iconic switch in the hobby's history.",
-    "commonlyComparedTo": ["Durock POM Linear", "Gateron Oil King", "NovelKeys Silk Series Yellow"]
+    "commonlyComparedTo": [
+      "Durock POM Linear",
+      "Gateron Oil King",
+      "NovelKeys Silk Series Yellow"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "NovelKeys",
@@ -1369,8 +1927,8 @@
     "type": "linear",
     "actuationForceG": 45,
     "bottomOutForceG": 63,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon + PC",
     "springType": "Standard",
@@ -1381,9 +1939,17 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.55,
     "communityRating": 4.1,
-    "popularFor": ["pre-lubed convenience", "smooth stock"],
+    "popularFor": [
+      "pre-lubed convenience",
+      "smooth stock"
+    ],
     "notes": "JWK-manufactured and factory lubed with a NovelKeys-proprietary blend. Very smooth stock - one of the best factory lube jobs in the hobby. Silk name is apt - genuinely silky feel. Good choice for those who do not want to hand-lube.",
-    "commonlyComparedTo": ["NovelKeys Cream", "JWK Black V2", "Gateron Milky Yellow Pro"]
+    "commonlyComparedTo": [
+      "NovelKeys Cream",
+      "JWK Black V2",
+      "Gateron Milky Yellow Pro"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0602/3639/8777/files/DSF3558.webp?v=1771571717&width=3840&quality=75"
   },
   {
     "brand": "Everglide",
@@ -1391,8 +1957,8 @@
     "type": "linear",
     "actuationForceG": 55,
     "bottomOutForceG": 67,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "PC (transparent)",
     "housingMaterial": "PC (fully transparent)",
     "springType": "Gold-plated",
@@ -1402,10 +1968,20 @@
     "soundCharacter": "clacky",
     "soundVolume": "medium",
     "pricePerSwitch": 0.55,
-    "communityRating": 4.0,
-    "popularFor": ["RGB builds", "transparent aesthetics", "unique sound"],
+    "communityRating": 4,
+    "popularFor": [
+      "RGB builds",
+      "transparent aesthetics",
+      "unique sound"
+    ],
     "notes": "Fully transparent housing and stem make this the king of RGB builds. Pre-lubed and smooth. PC-on-PC contact creates a unique higher-pitched sound. V3 fixed the over-lubing issues of earlier versions. Striking visual appearance.",
-    "commonlyComparedTo": ["JWK Black V2", "Gateron Ink Black V2", "Durock L7"]
+    "commonlyComparedTo": [
+      "JWK Black V2",
+      "Gateron Ink Black V2",
+      "Durock L7"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Wuque Studio",
@@ -1413,7 +1989,7 @@
     "type": "linear",
     "actuationForceG": 42,
     "bottomOutForceG": 52,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
@@ -1423,11 +1999,20 @@
     "soundPitch": "mid",
     "soundCharacter": "clacky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.40,
+    "pricePerSwitch": 0.4,
     "communityRating": 4.1,
-    "popularFor": ["clacky builds", "light linears"],
+    "popularFor": [
+      "clacky builds",
+      "light linears"
+    ],
     "notes": "Light linear with a satisfying clacky long pole bottom-out. Extended spring prevents ping. Nylon housing adds warmth to the clack. Smooth factory lube. Part of Wuque Studio's well-regarded WS switch lineup.",
-    "commonlyComparedTo": ["WS Morandi", "HMX Xinhai", "Gateron North Pole"]
+    "commonlyComparedTo": [
+      "WS Morandi",
+      "HMX Xinhai",
+      "Gateron North Pole"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Wuque Studio",
@@ -1435,8 +2020,8 @@
     "type": "tactile",
     "actuationForceG": 58,
     "bottomOutForceG": 72,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "22mm Extended",
@@ -1446,10 +2031,19 @@
     "soundCharacter": "thocky",
     "soundVolume": "medium",
     "pricePerSwitch": 0.45,
-    "communityRating": 4.0,
-    "popularFor": ["heavy tactile", "thocky tactile"],
+    "communityRating": 4,
+    "popularFor": [
+      "heavy tactile",
+      "thocky tactile"
+    ],
     "notes": "One of the better mid-range heavy tactiles. Large D-shaped bump with a satisfying, thocky bottom-out from the long pole. Extended spring eliminates ping. Nylon housing contributes to the deeper sound. Competes well with Boba U4T at a lower price.",
-    "commonlyComparedTo": ["Boba U4T", "Durock T1", "Tecsee Purple Panda"]
+    "commonlyComparedTo": [
+      "Boba U4T",
+      "Durock T1",
+      "Tecsee Purple Panda"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "C3 Equalz",
@@ -1457,8 +2051,8 @@
     "type": "linear",
     "actuationForceG": 62,
     "bottomOutForceG": 78,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "UHMWPE",
     "springType": "Gold-plated",
@@ -1469,9 +2063,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.65,
     "communityRating": 4.4,
-    "popularFor": ["premium smooth linear", "UHMWPE housing"],
+    "popularFor": [
+      "premium smooth linear",
+      "UHMWPE housing"
+    ],
     "notes": "UHMWPE housing is inherently self-lubricating, making this one of the smoothest linears. JWK manufactured. Iconic orange colorway. Available in 62g and 67g variants. A longtime community favorite for buttery smooth linears.",
-    "commonlyComparedTo": ["JWK Black V2", "JWK Lavender", "Gateron Ink Black V2"]
+    "commonlyComparedTo": [
+      "JWK Black V2",
+      "JWK Lavender",
+      "Gateron Ink Black V2"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "KS-3",
@@ -1479,8 +2082,8 @@
     "type": "linear",
     "actuationForceG": 62,
     "bottomOutForceG": 78,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC + Nylon",
     "springType": "Gold-plated",
@@ -1491,9 +2094,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.65,
     "communityRating": 4.2,
-    "popularFor": ["aesthetic builds", "smooth linears"],
+    "popularFor": [
+      "aesthetic builds",
+      "smooth linears"
+    ],
     "notes": "JWK manufactured with a striking yellow stem and purple housing colorway. Same excellent JWK smoothness. Popular for themed builds. Sound is very similar to Alpaca V2. The look alone sells these for many builders.",
-    "commonlyComparedTo": ["JWK Black V2", "JWK Lavender", "C3 Equalz Tangerine V2"]
+    "commonlyComparedTo": [
+      "JWK Black V2",
+      "JWK Lavender",
+      "C3 Equalz Tangerine V2"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Drop",
@@ -1501,8 +2113,8 @@
     "type": "tactile",
     "actuationForceG": 53,
     "bottomOutForceG": 67,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "PC + Nylon",
     "springType": "Standard",
@@ -1513,9 +2125,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.85,
     "communityRating": 3.9,
-    "popularFor": ["iconic tactile", "sharp tactile bump"],
+    "popularFor": [
+      "iconic tactile",
+      "sharp tactile bump"
+    ],
     "notes": "The latest iteration of the legendary Holy Panda. Large, sharp tactile bump with a snappy return. Community opinions are divided - some feel original Invyr Pandas were better. Still a solid tactile but faces stiff competition from Boba U4T at a lower price.",
-    "commonlyComparedTo": ["Boba U4T", "Tecsee Purple Panda", "Durock T1"]
+    "commonlyComparedTo": [
+      "Boba U4T",
+      "Tecsee Purple Panda",
+      "Durock T1"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Invokeys",
@@ -1523,7 +2144,7 @@
     "type": "linear",
     "actuationForceG": 50,
     "bottomOutForceG": 60,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
@@ -1535,9 +2156,19 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.35,
     "communityRating": 4.2,
-    "popularFor": ["clacky builds", "aesthetics", "mid-range value"],
+    "popularFor": [
+      "clacky builds",
+      "aesthetics",
+      "mid-range value"
+    ],
     "notes": "Beautiful matcha and cream colorway with excellent performance. Long pole delivers a clean clacky bottom-out. Extended spring eliminates ping. Smooth factory lube. One of the best-looking switches that also performs exceptionally well.",
-    "commonlyComparedTo": ["WS Morandi", "HMX Xinhai", "Gateron North Pole"]
+    "commonlyComparedTo": [
+      "WS Morandi",
+      "HMX Xinhai",
+      "Gateron North Pole"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Cherry",
@@ -1545,8 +2176,8 @@
     "type": "linear",
     "actuationForceG": 45,
     "bottomOutForceG": 60,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -1557,9 +2188,17 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.35,
     "communityRating": 3.5,
-    "popularFor": ["Cherry fans", "improved Cherry experience"],
+    "popularFor": [
+      "Cherry fans",
+      "improved Cherry experience"
+    ],
     "notes": "Updated molds from Cherry with improved smoothness over original MX Red. Hyperglide designation indicates the new tooling. Still not as smooth as Gateron or JWK stock but a noticeable improvement. Cherry loyalists appreciate the upgrade.",
-    "commonlyComparedTo": ["Cherry MX Red", "Gateron Pro 3.0 Red", "Gateron Yellow"]
+    "commonlyComparedTo": [
+      "Cherry MX Red",
+      "Gateron Pro 3.0 Red",
+      "Gateron Yellow"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75"
   },
   {
     "brand": "Prevail",
@@ -1567,7 +2206,7 @@
     "type": "linear",
     "actuationForceG": 55,
     "bottomOutForceG": 63,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
@@ -1579,9 +2218,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.38,
     "communityRating": 4.1,
-    "popularFor": ["thocky sound", "long pole linear"],
+    "popularFor": [
+      "thocky sound",
+      "long pole linear"
+    ],
     "notes": "Deep, thocky sound from nylon housing and long pole combo. Extended spring for a pingless experience. Smooth factory lube. Good mid-range competitor in the increasingly crowded long pole linear space.",
-    "commonlyComparedTo": ["HMX Xinhai", "WS Morandi", "Gateron Oil King"]
+    "commonlyComparedTo": [
+      "HMX Xinhai",
+      "WS Morandi",
+      "Gateron Oil King"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Gateron",
@@ -1589,7 +2237,7 @@
     "type": "linear",
     "actuationForceG": 60,
     "bottomOutForceG": 70,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.8,
     "stemMaterial": "POM",
     "housingMaterial": "Ink (Smokey PC)",
@@ -1601,9 +2249,17 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.75,
     "communityRating": 4.3,
-    "popularFor": ["premium builds", "dustproof linear"],
+    "popularFor": [
+      "premium builds",
+      "dustproof linear"
+    ],
     "notes": "Combines the beloved Ink housing with a Box-style dustproof stem. Reduced stem wobble compared to standard Ink V2. Maintains the deep, thocky Ink sound. Factory lubed. Premium pricing justified by the refined design.",
-    "commonlyComparedTo": ["Gateron Ink Black V2", "Gateron Oil King", "Kailh Box Red"]
+    "commonlyComparedTo": [
+      "Gateron Ink Black V2",
+      "Gateron Oil King",
+      "Kailh Box Red"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/14642_636ac8475414f_Gateron-Ink-BOX-V2-Black-Keyswitch-PCB-Mount-Linear.jpg?v=1707266290&width=3840&quality=75"
   },
   {
     "brand": "Aflion",
@@ -1611,7 +2267,7 @@
     "type": "linear",
     "actuationForceG": 50,
     "bottomOutForceG": 58,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
@@ -1621,11 +2277,20 @@
     "soundPitch": "low",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
-    "communityRating": 4.0,
-    "popularFor": ["budget thock", "value linear"],
+    "pricePerSwitch": 0.3,
+    "communityRating": 4,
+    "popularFor": [
+      "budget thock",
+      "value linear"
+    ],
     "notes": "Budget long pole linear that delivers surprisingly deep sound. Aflion has been gaining reputation for quality budget switches. Factory lube is decent. Extended spring helps with ping. Great value thocky option.",
-    "commonlyComparedTo": ["KTT Peach", "HMX Xinhai", "WS Morandi"]
+    "commonlyComparedTo": [
+      "KTT Peach",
+      "HMX Xinhai",
+      "WS Morandi"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Huano",
@@ -1633,8 +2298,8 @@
     "type": "tactile",
     "actuationForceG": 50,
     "bottomOutForceG": 62,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -1645,9 +2310,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.28,
     "communityRating": 3.9,
-    "popularFor": ["budget tactile", "Holy Panda alternative"],
+    "popularFor": [
+      "budget tactile",
+      "Holy Panda alternative"
+    ],
     "notes": "Budget tactile with a large, satisfying bump reminiscent of Holy Pandas. Long pole adds definition. Huano's manufacturing quality has improved significantly. V2 addresses the scratchiness issues of V1. Excellent value tactile.",
-    "commonlyComparedTo": ["Boba U4T", "Tecsee Purple Panda", "Drop Holy Panda X"]
+    "commonlyComparedTo": [
+      "Boba U4T",
+      "Tecsee Purple Panda",
+      "Drop Holy Panda X"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Cherry",
@@ -1667,9 +2341,17 @@
     "soundVolume": "quiet",
     "pricePerSwitch": 0.45,
     "communityRating": 3.6,
-    "popularFor": ["office use", "upgraded Cherry silent"],
+    "popularFor": [
+      "office use",
+      "upgraded Cherry silent"
+    ],
     "notes": "Cherry's MX2A revision with improved molds and factory lube. Noticeably smoother than the original Silent Red. Updated dampening material reduces mushiness. Cherry finally catching up to competitors in the silent switch space.",
-    "commonlyComparedTo": ["Cherry MX Silent Red", "Outemu Silent Lemon V3", "Boba U4"]
+    "commonlyComparedTo": [
+      "Cherry MX Silent Red",
+      "Outemu Silent Lemon V3",
+      "Boba U4"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75"
   },
   {
     "brand": "Ajazz",
@@ -1677,7 +2359,7 @@
     "type": "linear",
     "actuationForceG": 40,
     "bottomOutForceG": 48,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.6,
     "stemMaterial": "POM",
     "housingMaterial": "PC",
@@ -1689,9 +2371,19 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.22,
     "communityRating": 3.9,
-    "popularFor": ["ultra budget", "light linear", "poppy sound"],
+    "popularFor": [
+      "ultra budget",
+      "light linear",
+      "poppy sound"
+    ],
     "notes": "Extremely light and poppy budget switch. Extended spring and long pole at an unbelievable price point. Factory lube is thin but functional. Higher-pitched sound from PC housing. Great ultra-budget option for light typists.",
-    "commonlyComparedTo": ["KTT Strawberry", "TTC Gold Pink V2", "HMX Cloud"]
+    "commonlyComparedTo": [
+      "KTT Strawberry",
+      "TTC Gold Pink V2",
+      "HMX Cloud"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "JWICK",
@@ -1699,8 +2391,8 @@
     "type": "linear",
     "actuationForceG": 50,
     "bottomOutForceG": 62,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon + PC",
     "springType": "Standard",
@@ -1711,9 +2403,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.22,
     "communityRating": 3.8,
-    "popularFor": ["budget linear", "no-mod builds"],
+    "popularFor": [
+      "budget linear",
+      "no-mod builds"
+    ],
     "notes": "Ultra-budget linear with surprisingly good smoothness. JWICK (also known as JWICK/Dongguan Golden Orange) has earned respect for budget switch quality. Factory lube is acceptable. Hard to beat at this price point.",
-    "commonlyComparedTo": ["Gateron Yellow", "KTT Kang White V3", "Akko V3 Cream Yellow"]
+    "commonlyComparedTo": [
+      "Gateron Yellow",
+      "KTT Kang White V3",
+      "Akko V3 Cream Yellow"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Lichicx",
@@ -1721,7 +2422,7 @@
     "type": "linear",
     "actuationForceG": 52,
     "bottomOutForceG": 60,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
@@ -1732,10 +2433,19 @@
     "soundCharacter": "clacky",
     "soundVolume": "medium",
     "pricePerSwitch": 0.28,
-    "communityRating": 4.0,
-    "popularFor": ["budget long pole", "clacky builds"],
+    "communityRating": 4,
+    "popularFor": [
+      "budget long pole",
+      "clacky builds"
+    ],
     "notes": "Budget long pole linear with good smoothness and a clean clacky sound. Extended spring prevents ping. One of many excellent budget Chinese switches that have flooded the market. Well-regarded in Asian keyboard communities.",
-    "commonlyComparedTo": ["HMX Xinhai", "WS Morandi", "KTT Kang White V3"]
+    "commonlyComparedTo": [
+      "HMX Xinhai",
+      "WS Morandi",
+      "KTT Kang White V3"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Geon",
@@ -1743,8 +2453,8 @@
     "type": "linear",
     "actuationForceG": 48,
     "bottomOutForceG": 62,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -1753,11 +2463,19 @@
     "soundPitch": "low",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.80,
+    "pricePerSwitch": 0.8,
     "communityRating": 4.2,
-    "popularFor": ["premium builds", "raw aesthetic"],
+    "popularFor": [
+      "premium builds",
+      "raw aesthetic"
+    ],
     "notes": "From premium keyboard maker Geon. Uncolored, raw nylon housing gives a unique aesthetic and deep sound. Manufactured by JWK with tight tolerances. Smooth stock with quality factory lube. Premium but justified by build quality.",
-    "commonlyComparedTo": ["JWK Black V2", "Gateron Oil King", "JWK Lavender"]
+    "commonlyComparedTo": [
+      "JWK Black V2",
+      "Gateron Oil King",
+      "JWK Lavender"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/geon-raptor-he-v2-switches-5532753.webp?v=1754679777&width=3840&quality=75"
   },
   {
     "brand": "MMD",
@@ -1765,7 +2483,7 @@
     "type": "linear",
     "actuationForceG": 45,
     "bottomOutForceG": 55,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
@@ -1777,9 +2495,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.25,
     "communityRating": 4.1,
-    "popularFor": ["budget long pole", "creamy sound"],
+    "popularFor": [
+      "budget long pole",
+      "creamy sound"
+    ],
     "notes": "Budget long pole linear with a creamy sound signature from the nylon housing. Well-lubed stock. MMD switches offer surprising quality for the price. Extended spring combo is satisfying and ping-free.",
-    "commonlyComparedTo": ["KTT Kang White V3", "HMX Xinhai", "Aflion Shadow"]
+    "commonlyComparedTo": [
+      "KTT Kang White V3",
+      "HMX Xinhai",
+      "Aflion Shadow"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "YOK",
@@ -1787,8 +2514,8 @@
     "type": "tactile",
     "actuationForceG": 55,
     "bottomOutForceG": 67,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -1799,9 +2526,18 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.45,
     "communityRating": 3.7,
-    "popularFor": ["Holy Panda builds", "Panda housing donor"],
+    "popularFor": [
+      "Holy Panda builds",
+      "Panda housing donor"
+    ],
     "notes": "Originally popular as a housing donor for Holy Panda frankenswitches. Decent standalone tactile with a rounded bump. The Panda housing is the star - pairs well with Halo stems. Less relevant now that factory Holy Pandas exist.",
-    "commonlyComparedTo": ["Drop Holy Panda X", "Tecsee Purple Panda", "Boba U4T"]
+    "commonlyComparedTo": [
+      "Drop Holy Panda X",
+      "Tecsee Purple Panda",
+      "Boba U4T"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Kelowna",
@@ -1809,7 +2545,7 @@
     "type": "linear",
     "actuationForceG": 50,
     "bottomOutForceG": 60,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
@@ -1819,11 +2555,20 @@
     "soundPitch": "low",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
-    "communityRating": 4.0,
-    "popularFor": ["progressive spring feel", "thocky linear"],
+    "pricePerSwitch": 0.3,
+    "communityRating": 4,
+    "popularFor": [
+      "progressive spring feel",
+      "thocky linear"
+    ],
     "notes": "Progressive spring provides a unique weight curve - light at top, heavier toward bottom-out. Long pole and nylon housing create a thocky sound. Good factory lube. Interesting alternative for those tired of standard spring feel.",
-    "commonlyComparedTo": ["HMX Xinhai", "Aflion Shadow", "Gateron Oil King"]
+    "commonlyComparedTo": [
+      "HMX Xinhai",
+      "Aflion Shadow",
+      "Gateron Oil King"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/16992-XP3TV-Cherry-MX-20-Silent-Red-Linear-Plate-Mount-Switches_b02c0f7a-e4be-404d-9089-6509e35cb6d7.png?v=1708622612&width=3840&quality=75",
+    "representativeImage": true
   },
   {
     "brand": "Gateron",
@@ -1831,7 +2576,7 @@
     "type": "linear",
     "actuationForceG": 47,
     "bottomOutForceG": 57,
-    "actuationMm": 2.0,
+    "actuationMm": 2,
     "totalTravelMm": 3.7,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
@@ -1843,9 +2588,17 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.45,
     "communityRating": 4.1,
-    "popularFor": ["clacky builds", "refined Gateron linear"],
+    "popularFor": [
+      "clacky builds",
+      "refined Gateron linear"
+    ],
     "notes": "Gateron's response to the long pole trend. Extended spring and long pole stem create a satisfying clacky bottom-out. Nylon housing adds depth. Factory lube is well-applied. A nice middle ground between North Pole and Oil King.",
-    "commonlyComparedTo": ["Gateron North Pole", "Gateron Oil King", "HMX Xinhai"]
+    "commonlyComparedTo": [
+      "Gateron North Pole",
+      "Gateron Oil King",
+      "HMX Xinhai"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/61mQKe5tcXL._SX522.jpg?v=1757781694&width=3840&quality=75"
   },
   {
     "brand": "Chosfox",
@@ -1853,8 +2606,8 @@
     "type": "tactile",
     "actuationForceG": 55,
     "bottomOutForceG": 65,
-    "actuationMm": 2.0,
-    "totalTravelMm": 4.0,
+    "actuationMm": 2,
+    "totalTravelMm": 4,
     "stemMaterial": "POM",
     "housingMaterial": "Nylon",
     "springType": "Standard",
@@ -1865,8 +2618,17 @@
     "soundVolume": "medium",
     "pricePerSwitch": 0.35,
     "communityRating": 3.9,
-    "popularFor": ["budget tactile", "thocky tactile"],
+    "popularFor": [
+      "budget tactile",
+      "thocky tactile"
+    ],
     "notes": "Budget tactile with a pronounced bump and long pole bottom-out. Nylon housing contributes to a deep, thocky sound. Factory lube is decent. Solid competitor in the budget tactile space alongside Tecsee Purple Panda.",
-    "commonlyComparedTo": ["Tecsee Purple Panda", "Boba U4T", "Durock T1"]
+    "commonlyComparedTo": [
+      "Tecsee Purple Panda",
+      "Boba U4T",
+      "Durock T1"
+    ],
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0871/4849/5197/files/CherryMXBrownHyperglide_917509f0-2907-421a-b112-e02378e90f31.webp?v=1724270584&width=3840&quality=75",
+    "representativeImage": true
   }
 ]

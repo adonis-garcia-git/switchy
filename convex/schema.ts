@@ -446,6 +446,41 @@ export default defineSchema({
     .index("by_vendorName", ["vendorName"])
     .index("by_isActive", ["isActive"]),
 
+  // ── Nia Intelligence tables ──
+
+  niaCache: defineTable({
+    queryHash: v.string(),
+    result: v.any(),
+    source: v.string(),
+    createdAt: v.number(),
+    expiresAt: v.number(),
+  })
+    .index("by_queryHash", ["queryHash"])
+    .index("by_expiresAt", ["expiresAt"]),
+
+  weeklyDigest: defineTable({
+    weekKey: v.string(),
+    trending: v.any(),
+    newProducts: v.any(),
+    priceChanges: v.any(),
+    groupBuyUpdates: v.any(),
+    generatedAt: v.number(),
+  }).index("by_weekKey", ["weekKey"]),
+
+  productSuggestions: defineTable({
+    source: v.string(),
+    category: v.string(),
+    name: v.string(),
+    brand: v.string(),
+    data: v.any(),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("approved"),
+      v.literal("rejected")
+    ),
+    createdAt: v.number(),
+  }).index("by_status", ["status"]),
+
   buildRequests: defineTable({
     userId: v.optional(v.string()),
     contactEmail: v.string(),

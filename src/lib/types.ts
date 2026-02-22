@@ -316,6 +316,8 @@ export interface StabilizerPreset {
   name: string;
   price: number;
   type: "screw-in" | "clip-in" | "plate-mount";
+  imageUrl?: string;
+  isRepresentativeImage?: boolean;
 }
 
 export interface KeycapSelection {
