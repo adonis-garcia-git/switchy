@@ -1,15 +1,15 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getGuestUserId } from "./guestAuth";
 
 export const listByUser = query({
   args: {},
   returns: v.array(v.any()),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return [];
+    const userId = await getGuestUserId(ctx);
     return await ctx.db
       .query("groupBuys")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .collect();
   },
 });
@@ -18,11 +18,10 @@ export const getStats = query({
   args: {},
   returns: v.any(),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return null;
+    const userId = await getGuestUserId(ctx);
     const entries = await ctx.db
       .query("groupBuys")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .collect();
 
     const active = entries.filter((e) => e.status !== "delivered");
@@ -114,10 +113,9 @@ export const create = mutation({
   },
   returns: v.id("groupBuys"),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     return await ctx.db.insert("groupBuys", {
-      userId: identity.subject,
+      userId,
       ...args,
     });
   },
@@ -154,11 +152,10 @@ export const update = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     const { id, ...fields } = args;
     const existing = await ctx.db.get(id);
-    if (!existing || existing.userId !== identity.subject) {
+    if (!existing || existing.userId !== userId) {
       throw new Error("Not found or not authorized");
     }
     const updates: Record<string, unknown> = {};
@@ -183,10 +180,9 @@ export const remove = mutation({
   args: { id: v.id("groupBuys") },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     const existing = await ctx.db.get(args.id);
-    if (!existing || existing.userId !== identity.subject) {
+    if (!existing || existing.userId !== userId) {
       throw new Error("Not found or not authorized");
     }
     // If this entry was created from a listing, decrement the tracking count
@@ -229,14 +225,13 @@ export const createFromListing = mutation({
   },
   returns: v.id("groupBuys"),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const { listingId, ...fields } = args;
 
     // Create the tracker entry with listing reference
     const id = await ctx.db.insert("groupBuys", {
-      userId: identity.subject,
+      userId,
       listingId,
       ...fields,
     });
@@ -257,11 +252,10 @@ export const getActivityLog = query({
   args: {},
   returns: v.any(),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return [];
+    const userId = await getGuestUserId(ctx);
     const entries = await ctx.db
       .query("groupBuys")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .collect();
 
     const events: Array<{
@@ -316,12 +310,11 @@ export const bulkUpdateStatus = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     for (const id of args.ids) {
       const existing = await ctx.db.get(id);
-      if (!existing || existing.userId !== identity.subject) continue;
+      if (!existing || existing.userId !== userId) continue;
       if (existing.status === args.status) continue;
 
       const history = (existing.statusHistory as Array<{ from: string; to: string; changedAt: number }>) || [];
@@ -342,11 +335,10 @@ export const getTrackedListingIds = query({
   args: {},
   returns: v.array(v.string()),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return [];
+    const userId = await getGuestUserId(ctx);
     const entries = await ctx.db
       .query("groupBuys")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .collect();
     return entries
       .filter((e) => e.listingId !== undefined)

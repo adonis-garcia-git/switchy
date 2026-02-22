@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getGuestUserId } from "./guestAuth";
 
 export const list = query({
   args: {
@@ -229,8 +230,7 @@ export const incrementTrackingCount = mutation({
   args: { id: v.id("groupBuyListings") },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     const listing = await ctx.db.get(args.id);
     if (!listing) throw new Error("Listing not found");
     await ctx.db.patch(args.id, { trackingCount: listing.trackingCount + 1 });
@@ -242,8 +242,7 @@ export const decrementTrackingCount = mutation({
   args: { id: v.id("groupBuyListings") },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     const listing = await ctx.db.get(args.id);
     if (!listing) throw new Error("Listing not found");
     await ctx.db.patch(args.id, {
@@ -257,8 +256,7 @@ export const seed = mutation({
   args: { listings: v.array(v.any()) },
   returns: v.number(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const existing = await ctx.db.query("groupBuyListings").first();
     if (existing) return 0;
@@ -283,8 +281,7 @@ export const cleanAndReseed = mutation({
     added: v.number(),
   }),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const existing = await ctx.db.query("groupBuyListings").collect();
     let deleted = 0;

@@ -2,7 +2,7 @@
 
 import { useState, useCallback, Suspense } from "react";
 import { useQuery } from "convex/react";
-import { useUser, SignInButton } from "@clerk/nextjs";
+import { useUser, SignInButton } from "@/lib/auth";
 import { api } from "../../../convex/_generated/api";
 import { Tabs } from "@/components/ui/Tabs";
 import { GroupBuyDiscover } from "@/components/GroupBuyDiscover";

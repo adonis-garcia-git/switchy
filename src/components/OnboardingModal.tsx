@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
-import { useUser } from "@clerk/nextjs";
+import { useUser } from "@/lib/auth";
 import { api } from "../../convex/_generated/api";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { SignInButton, UserButton, useUser } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { MegaMenuTrigger, SWITCHES_COLUMNS, KEYBOARDS_COLUMNS, KEYCAPS_COLUMNS, ACCESSORIES_COLUMNS } from "@/components/MegaMenu";

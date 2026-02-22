@@ -3,7 +3,7 @@
 import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useUser, SignInButton } from "@clerk/nextjs";
+import { useUser, SignInButton } from "@/lib/auth";
 import { useAction } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useSubscription } from "@/hooks/useSubscription";

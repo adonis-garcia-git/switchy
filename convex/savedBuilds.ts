@@ -1,15 +1,15 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getGuestUserId } from "./guestAuth";
 
 export const listByUser = query({
   args: {},
   returns: v.array(v.any()),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return [];
+    const userId = await getGuestUserId(ctx);
     return await ctx.db
       .query("builds")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .collect();
   },
 });
@@ -85,10 +85,9 @@ export const save = mutation({
   },
   returns: v.id("builds"),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     return await ctx.db.insert("builds", {
-      userId: identity.subject,
+      userId,
       ...args,
     });
   },
@@ -98,10 +97,9 @@ export const togglePublic = mutation({
   args: { id: v.id("builds") },
   returns: v.any(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     const build = await ctx.db.get(args.id);
-    if (!build || build.userId !== identity.subject) {
+    if (!build || build.userId !== userId) {
       throw new Error("Not found or not authorized");
     }
     const isPublic = !build.isPublic;
@@ -117,10 +115,9 @@ export const setImageUrl = mutation({
   args: { id: v.id("builds"), imageUrl: v.string() },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     const build = await ctx.db.get(args.id);
-    if (!build || build.userId !== identity.subject) {
+    if (!build || build.userId !== userId) {
       throw new Error("Not found or not authorized");
     }
     await ctx.db.patch(args.id, { imageUrl: args.imageUrl });
@@ -145,10 +142,9 @@ export const remove = mutation({
   args: { id: v.id("builds") },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     const existing = await ctx.db.get(args.id);
-    if (!existing || existing.userId !== identity.subject) {
+    if (!existing || existing.userId !== userId) {
       throw new Error("Not found or not authorized");
     }
     await ctx.db.delete(args.id);

@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getGuestUserId } from "./guestAuth";
 
 // getActive() - Get active sponsorships, optionally filtered by placement
 export const getActive = query({
@@ -115,8 +116,7 @@ export const create = mutation({
   },
   returns: v.id("sponsorships"),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     return await ctx.db.insert("sponsorships", {
       ...args,
       isActive: true,
@@ -131,8 +131,7 @@ export const seed = mutation({
   args: { sponsorships: v.array(v.any()) },
   returns: v.number(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const existing = await ctx.db.query("sponsorships").collect();
     if (existing.length > 0) return 0;
@@ -149,8 +148,7 @@ export const cleanAndReseed = mutation({
   args: { sponsorships: v.array(v.any()) },
   returns: v.object({ deleted: v.number(), added: v.number() }),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const existing = await ctx.db.query("sponsorships").collect();
     for (const s of existing) {

@@ -4,6 +4,7 @@ import { action } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { v } from "convex/values";
 import Stripe from "stripe";
+import { getGuestUserId } from "./guestAuth";
 
 function getStripe() {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -15,9 +16,7 @@ export const createCheckoutSession = action({
   args: {},
   returns: v.object({ url: v.string() }),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
-    const userId = identity.subject;
+    const userId = await getGuestUserId(ctx);
 
     const priceId = process.env.STRIPE_PRO_PRICE_ID;
     if (!priceId) throw new Error("STRIPE_PRO_PRICE_ID is not set");
@@ -45,9 +44,7 @@ export const createBillingPortalSession = action({
   args: {},
   returns: v.object({ url: v.string() }),
   handler: async (ctx): Promise<{ url: string }> => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
-    const userId = identity.subject;
+    const userId = await getGuestUserId(ctx);
 
     const subscription = await ctx.runQuery(
       internal.internalFunctions.getSubscriptionByUserId,

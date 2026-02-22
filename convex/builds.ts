@@ -24,6 +24,7 @@ import {
   filterComponents,
 } from "./buildFilters";
 import { validateBuild } from "./productValidator";
+import { getGuestUserId } from "./guestAuth";
 
 const ERROR_BUILD = {
   buildName: "Generation Error",
@@ -71,31 +72,12 @@ export const generateBuild = action({
   },
   returns: v.any(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
-
-    const userId = identity.subject;
+    const userId = await getGuestUserId(ctx);
     const now = new Date();
     const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 
-    // Usage gating: check subscription tier
-    const subscription = await ctx.runQuery(
-      internal.internalFunctions.getSubscriptionByUserId,
-      { userId }
-    );
-    const isPro =
-      subscription?.status === "active" &&
-      subscription.currentPeriodEnd > Date.now();
-
-    if (!isPro) {
-      const usageCount = await ctx.runQuery(
-        internal.internalFunctions.getUsageCountForMonth,
-        { userId, monthKey }
-      );
-      if (usageCount >= 3) {
-        throw new Error("FREE_TIER_LIMIT_REACHED");
-      }
-    }
+    // Usage gating bypassed for demo mode
+    const isPro = true;
 
     // Fetch all products
     const allSwitches = await ctx.runQuery(
@@ -266,12 +248,16 @@ export const generateBuild = action({
       niaFallbacks
     );
 
-    // Record usage after successful generation
-    await ctx.runMutation(internal.internalFunctions.insertUsageRecord, {
-      userId,
-      actionType: "generateBuild" as const,
-      monthKey,
-    });
+    // Record usage after successful generation (best-effort for demo mode)
+    try {
+      await ctx.runMutation(internal.internalFunctions.insertUsageRecord, {
+        userId,
+        actionType: "generateBuild" as const,
+        monthKey,
+      });
+    } catch (e) {
+      console.error("Usage recording failed (demo mode):", e);
+    }
 
     return validatedBuild;
   },
@@ -290,31 +276,12 @@ export const generateBuildConversational = action({
     );
     if (!conversation) throw new Error("Conversation not found");
 
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
-
-    const userId = identity.subject;
+    const userId = await getGuestUserId(ctx);
     const now = new Date();
     const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 
-    // Usage gating: check subscription tier
-    const subscription = await ctx.runQuery(
-      internal.internalFunctions.getSubscriptionByUserId,
-      { userId }
-    );
-    const isPro =
-      subscription?.status === "active" &&
-      subscription.currentPeriodEnd > Date.now();
-
-    if (!isPro) {
-      const usageCount = await ctx.runQuery(
-        internal.internalFunctions.getUsageCountForMonth,
-        { userId, monthKey }
-      );
-      if (usageCount >= 3) {
-        throw new Error("FREE_TIER_LIMIT_REACHED");
-      }
-    }
+    // Usage gating bypassed for demo mode
+    const isPro = true;
 
     let preferences = null;
     preferences = await ctx.runQuery(
@@ -469,12 +436,16 @@ export const generateBuildConversational = action({
         niaFallbacks
       );
 
-      // Record usage after successful build generation
-      await ctx.runMutation(internal.internalFunctions.insertUsageRecord, {
-        userId,
-        actionType: "generateBuildConversational" as const,
-        monthKey,
-      });
+      // Record usage after successful build generation (best-effort for demo mode)
+      try {
+        await ctx.runMutation(internal.internalFunctions.insertUsageRecord, {
+          userId,
+          actionType: "generateBuildConversational" as const,
+          monthKey,
+        });
+      } catch (e) {
+        console.error("Usage recording failed (demo mode):", e);
+      }
 
       return {
         type: "build",
@@ -528,11 +499,15 @@ export const generateBuildConversational = action({
             allKeyboards,
             allKeycaps
           );
-          await ctx.runMutation(internal.internalFunctions.insertUsageRecord, {
-            userId,
-            actionType: "generateBuildConversational" as const,
-            monthKey,
-          });
+          try {
+            await ctx.runMutation(internal.internalFunctions.insertUsageRecord, {
+              userId,
+              actionType: "generateBuildConversational" as const,
+              monthKey,
+            });
+          } catch (e) {
+            console.error("Usage recording failed (demo mode):", e);
+          }
           return {
             type: "build",
             data: validatedBuild,

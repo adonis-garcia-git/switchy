@@ -24,6 +24,7 @@ import type * as groupBuyBudgets from "../groupBuyBudgets.js";
 import type * as groupBuyListings from "../groupBuyListings.js";
 import type * as groupBuyPartnerships from "../groupBuyPartnerships.js";
 import type * as groupBuys from "../groupBuys.js";
+import type * as guestAuth from "../guestAuth.js";
 import type * as http from "../http.js";
 import type * as imageGeneration from "../imageGeneration.js";
 import type * as internalFunctions from "../internalFunctions.js";
@@ -72,6 +73,7 @@ declare const fullApi: ApiFromModules<{
   groupBuyListings: typeof groupBuyListings;
   groupBuyPartnerships: typeof groupBuyPartnerships;
   groupBuys: typeof groupBuys;
+  guestAuth: typeof guestAuth;
   http: typeof http;
   imageGeneration: typeof imageGeneration;
   internalFunctions: typeof internalFunctions;

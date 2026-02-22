@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getGuestUserId } from "./guestAuth";
 
 // listActive() - Get active partnerships within date range
 export const listActive = query({
@@ -42,8 +43,7 @@ export const create = mutation({
   },
   returns: v.id("groupBuyPartnerships"),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     return await ctx.db.insert("groupBuyPartnerships", {
       ...args,
       isActive: true,

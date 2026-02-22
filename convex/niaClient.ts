@@ -212,9 +212,13 @@ function normalizeSearchResults(data: unknown): NiaSearchResult[] {
         (item.text as string) ??
         "",
       source:
-        (item.source as string) ??
-        (item.source_name as string) ??
-        (item.repository as string) ??
+        (typeof item.source === "string" ? item.source : undefined) ??
+        (typeof item.source === "object" && item.source !== null
+          ? ((item.source as Record<string, unknown>).display_name as string) ??
+            ((item.source as Record<string, unknown>).document_name as string)
+          : undefined) ??
+        (typeof item.source_name === "string" ? item.source_name : undefined) ??
+        (typeof item.repository === "string" ? item.repository : undefined) ??
         "external",
       url: (item.url as string) ?? (item.link as string) ?? undefined,
       score:

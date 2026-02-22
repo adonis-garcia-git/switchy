@@ -4,6 +4,7 @@ import { action } from "./_generated/server";
 import { v } from "convex/values";
 import { niaUniversalSearch, hashQuery, type NiaSearchResult } from "./niaClient";
 import { internal } from "./_generated/api";
+import { getGuestUserId } from "./guestAuth";
 
 const CACHE_TTL_MS = 4 * 60 * 60 * 1000; // 4 hours for search page
 
@@ -18,8 +19,7 @@ export const universalSearch = action({
   },
   returns: v.any(),
   handler: async (ctx, args): Promise<{ local: unknown[]; external: unknown[] }> => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const limit = args.limit ?? 10;
     const cacheKey = hashQuery(args.query, "search-page");

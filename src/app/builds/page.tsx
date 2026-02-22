@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { useQuery } from "convex/react";
-import { useUser, SignInButton } from "@clerk/nextjs";
+import { useUser, SignInButton } from "@/lib/auth";
 import { api } from "../../../convex/_generated/api";
 import { BuildCardCompact } from "@/components/BuildCardCompact";
 import { BuildDetailModal } from "@/components/BuildDetailModal";

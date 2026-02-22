@@ -1,15 +1,15 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getGuestUserId } from "./guestAuth";
 
 export const listByUser = query({
   args: {},
   returns: v.array(v.any()),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return [];
+    const userId = await getGuestUserId(ctx);
     return await ctx.db
       .query("conversations")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .order("desc")
       .collect();
   },
@@ -19,10 +19,9 @@ export const getById = query({
   args: { id: v.id("conversations") },
   returns: v.any(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return null;
+    const userId = await getGuestUserId(ctx);
     const conversation = await ctx.db.get(args.id);
-    if (!conversation || conversation.userId !== identity.subject) return null;
+    if (!conversation || conversation.userId !== userId) return null;
     return conversation;
   },
 });
@@ -31,10 +30,9 @@ export const create = mutation({
   args: {},
   returns: v.id("conversations"),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     return await ctx.db.insert("conversations", {
-      userId: identity.subject,
+      userId,
       messages: [],
       createdAt: Date.now(),
     });
@@ -51,11 +49,10 @@ export const addMessage = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     const conversation = await ctx.db.get(args.conversationId);
     if (!conversation) throw new Error("Conversation not found");
-    if (conversation.userId !== identity.subject) throw new Error("Not authorized");
+    if (conversation.userId !== userId) throw new Error("Not authorized");
     const messages = [
       ...conversation.messages,
       {
@@ -76,11 +73,10 @@ export const setActiveBuild = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     const conversation = await ctx.db.get(args.conversationId);
     if (!conversation) throw new Error("Conversation not found");
-    if (conversation.userId !== identity.subject) throw new Error("Not authorized");
+    if (conversation.userId !== userId) throw new Error("Not authorized");
     await ctx.db.patch(args.conversationId, {
       activeBuildResult: args.buildResult,
     });
@@ -92,10 +88,9 @@ export const remove = mutation({
   args: { id: v.id("conversations") },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     const conversation = await ctx.db.get(args.id);
-    if (!conversation || conversation.userId !== identity.subject) {
+    if (!conversation || conversation.userId !== userId) {
       throw new Error("Not found or not authorized");
     }
     await ctx.db.delete(args.id);

@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAction, useMutation } from "convex/react";
-import { useUser, SignInButton } from "@clerk/nextjs";
+import { useUser, SignInButton } from "@/lib/auth";
 import { api } from "../../../convex/_generated/api";
 import { InitialPrompt } from "@/components/builder/InitialPrompt";
 import { QuestionFlow } from "@/components/builder/QuestionFlow";

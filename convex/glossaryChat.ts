@@ -5,6 +5,7 @@ import { internal } from "./_generated/api";
 import { v } from "convex/values";
 import Anthropic from "@anthropic-ai/sdk";
 import { niaUniversalSearch, hashQuery } from "./niaClient";
+import { getGuestUserId } from "./guestAuth";
 
 export const askGlossary = action({
   args: {
@@ -18,8 +19,7 @@ export const askGlossary = action({
   },
   returns: v.string(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    await getGuestUserId(ctx);
 
     // Fetch all glossary terms for context
     const allTerms = await ctx.runQuery(

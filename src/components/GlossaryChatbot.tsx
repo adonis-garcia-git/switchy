@@ -13,7 +13,7 @@ import React, {
   useMemo,
 } from "react";
 import { useAction } from "convex/react";
-import { useUser } from "@clerk/nextjs";
+import { useUser } from "@/lib/auth";
 import { api } from "../../convex/_generated/api";
 import { cn } from "@/lib/utils";
 

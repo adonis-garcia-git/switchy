@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <em>The video was rushed and doesn't do the app justice — we'd highly recommend trying it yourself. No sign-in required — all features are fully unlocked.</em>
+  <em>The video was rushed and doesn't do the app justice — we'd highly recommend trying it yourself.<br/>No sign-in required — you get 3 free AI build credits as a guest to try everything out.</em>
 </p>
 
 <p align="center">

@@ -1,5 +1,6 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { getGuestUserId } from "./guestAuth";
 
 const FREE_LIMIT = 3;
 const PRO_LIMIT = 999;
@@ -20,11 +21,7 @@ export const getMonthlyUsage = query({
     remaining: v.number(),
   }),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      return { count: 0, limit: FREE_LIMIT, tier: "free" as const, remaining: FREE_LIMIT };
-    }
-    const userId = identity.subject;
+    const userId = await getGuestUserId(ctx);
     const monthKey = getCurrentMonthKey();
 
     // Determine tier
@@ -67,9 +64,7 @@ export const recordUsage = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
-    const userId = identity.subject;
+    const userId = await getGuestUserId(ctx);
     const monthKey = getCurrentMonthKey();
 
     await ctx.db.insert("usageRecords", {

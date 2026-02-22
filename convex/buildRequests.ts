@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getGuestUserId } from "./guestAuth";
 
 // submit() - Create a build quote request (auth optional)
 export const submit = mutation({
@@ -13,10 +14,10 @@ export const submit = mutation({
   },
   returns: v.id("buildRequests"),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
+    const userId = await getGuestUserId(ctx);
     const now = Date.now();
     return await ctx.db.insert("buildRequests", {
-      userId: identity?.subject,
+      userId,
       contactEmail: args.contactEmail,
       contactName: args.contactName,
       buildSpecId: args.buildSpecId,
@@ -35,11 +36,10 @@ export const listByUser = query({
   args: {},
   returns: v.array(v.any()),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return [];
+    const userId = await getGuestUserId(ctx);
     return await ctx.db
       .query("buildRequests")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .collect();
   },
 });
@@ -69,8 +69,7 @@ export const updateStatus = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
     const request = await ctx.db.get(args.id);
     if (!request) throw new Error("Build request not found");
     await ctx.db.patch(args.id, {

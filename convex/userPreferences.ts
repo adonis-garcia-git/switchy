@@ -1,16 +1,16 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getGuestUserId } from "./guestAuth";
 
 // get() - Get current user's preferences
 export const get = query({
   args: {},
   returns: v.any(),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return null;
+    const userId = await getGuestUserId(ctx);
     const prefs = await ctx.db
       .query("userPreferences")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .first();
     return prefs;
   },
@@ -26,12 +26,11 @@ export const save = mutation({
   },
   returns: v.any(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const existing = await ctx.db
       .query("userPreferences")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .first();
 
     if (existing) {
@@ -44,7 +43,7 @@ export const save = mutation({
     // extremely unlikely in practice. A unique index on userId would provide a
     // hard guarantee but is managed in schema.ts.
     return await ctx.db.insert("userPreferences", {
-      userId: identity.subject,
+      userId,
       hasCompletedOnboarding: true,
       ...args,
     });
@@ -56,12 +55,11 @@ export const completeOnboarding = mutation({
   args: {},
   returns: v.null(),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const existing = await ctx.db
       .query("userPreferences")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .first();
 
     if (existing) {

@@ -1,15 +1,15 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getGuestUserId } from "./guestAuth";
 
 export const get = query({
   args: {},
   returns: v.any(),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return null;
+    const userId = await getGuestUserId(ctx);
     const budgets = await ctx.db
       .query("groupBuyBudgets")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .collect();
     return budgets[0] ?? null;
   },
@@ -22,12 +22,11 @@ export const set = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const existing = await ctx.db
       .query("groupBuyBudgets")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .collect();
 
     if (existing.length > 0) {
@@ -37,7 +36,7 @@ export const set = mutation({
       });
     } else {
       await ctx.db.insert("groupBuyBudgets", {
-        userId: identity.subject,
+        userId,
         budgetType: args.budgetType,
         amount: args.amount,
       });
@@ -50,12 +49,11 @@ export const remove = mutation({
   args: {},
   returns: v.null(),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const existing = await ctx.db
       .query("groupBuyBudgets")
-      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
       .collect();
 
     for (const budget of existing) {

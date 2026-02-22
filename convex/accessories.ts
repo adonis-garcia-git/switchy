@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { getGuestUserId } from "./guestAuth";
 
 export const list = query({
   args: {
@@ -188,8 +189,7 @@ export const deduplicate = mutation({
     duplicatesRemoved: v.number(),
   }),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const all = await ctx.db.query("accessories").collect();
     const seen = new Set<string>();

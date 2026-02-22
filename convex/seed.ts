@@ -1,5 +1,6 @@
 import { mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { getGuestUserId } from "./guestAuth";
 
 export const seedAll = mutation({
   args: {
@@ -13,8 +14,7 @@ export const seedAll = mutation({
     keyboardsAdded: v.number(),
   }),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     // Check if data already exists (idempotent)
     const existingSwitches = await ctx.db.query("switches").first();
@@ -72,8 +72,7 @@ export const clearAll = mutation({
   args: {},
   returns: v.null(),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const tables = [
       "switches",
@@ -100,8 +99,7 @@ export const clearTable = mutation({
   args: { table: v.string() },
   returns: v.number(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const tableName = args.table as "switches" | "keyboards" | "products" | "vendorLinks";
     const docs = await ctx.db.query(tableName).take(2000);
@@ -119,8 +117,7 @@ export const seedSwitchesBatch = mutation({
   },
   returns: v.number(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const seen = new Set<string>();
     let count = 0;
@@ -149,8 +146,7 @@ export const seedKeyboardsBatch = mutation({
   },
   returns: v.number(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const seen = new Set<string>();
     let count = 0;
@@ -175,8 +171,7 @@ export const seedProductsBatch = mutation({
   },
   returns: v.number(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     let count = 0;
     for (const product of args.products) {
@@ -196,8 +191,7 @@ export const cleanAndReseedSwitches = mutation({
     added: v.number(),
   }),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     // Delete all existing switches
     const existing = await ctx.db.query("switches").collect();
@@ -241,8 +235,7 @@ export const cleanAndReseedKeyboards = mutation({
     added: v.number(),
   }),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const existing = await ctx.db.query("keyboards").collect();
     for (const kb of existing) {
@@ -273,8 +266,7 @@ export const seedVendorLinksBatch = mutation({
   },
   returns: v.number(),
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     let count = 0;
     for (const link of args.links) {
@@ -292,8 +284,7 @@ export const deduplicateKeyboards = mutation({
     duplicatesRemoved: v.number(),
   }),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    const userId = await getGuestUserId(ctx);
 
     const all = await ctx.db.query("keyboards").collect();
     const seen = new Set<string>();

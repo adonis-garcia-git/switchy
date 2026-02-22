@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useMutation } from "convex/react";
-import { useUser } from "@clerk/nextjs";
+import { useUser } from "@/lib/auth";
 import { api } from "../../../convex/_generated/api";
 import { ComponentCard } from "./ComponentCard";
 import { Badge } from "@/components/ui/Badge";
