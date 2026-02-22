@@ -78,5 +78,5 @@ export const KEYCAP_PROFILE_MULTIPLIERS: Record<string, number[]> = {
   oem: [1.1, 1.05, 1.0, 1.0, 0.95],
   kat: [1.15, 1.1, 1.05, 1.05, 1.0],
   xda: [0.85, 0.85, 0.85, 0.85, 0.85],
-  circular: [0.9, 0.9, 0.9, 0.9, 0.9],
+  circular: [1.2, 1.2, 1.2, 1.2, 1.2],
 };

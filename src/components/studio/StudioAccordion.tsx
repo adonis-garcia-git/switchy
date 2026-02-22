@@ -39,7 +39,7 @@ export function StudioAccordion({
   }, [open]);
 
   return (
-    <div className="border-b border-white/[0.06] last:border-b-0">
+    <div className="border-b border-border-subtle last:border-b-0">
       <button
         onClick={() => setOpen(!open)}
         className={cn(

@@ -381,22 +381,132 @@ function generateLayout(size: KeyboardViewerConfig["size"]): KeyDef[] {
   return keys;
 }
 
-// ─── Selection Ring ─────────────────────────────────────────────────
+// ─── Selection Indicator (shape-matched outline) ────────────────────
 
-function SelectionRing({ width, depth, height }: { width: number; depth: number; height: number }) {
-  const ringRef = useRef<THREE.Mesh>(null);
+const SELECTION_EMISSIVE_COLOR = "#00d4ff";
+
+// Geometry cache keyed by dimensions to avoid recreating per frame
+const outlineGeometryCache = new Map<string, THREE.ShapeGeometry>();
+
+function createRoundedRectShape(w: number, h: number, r: number): THREE.Shape {
+  const shape = new THREE.Shape();
+  const hw = w / 2;
+  const hh = h / 2;
+  r = Math.min(r, hw, hh);
+  shape.moveTo(-hw + r, -hh);
+  shape.lineTo(hw - r, -hh);
+  shape.quadraticCurveTo(hw, -hh, hw, -hh + r);
+  shape.lineTo(hw, hh - r);
+  shape.quadraticCurveTo(hw, hh, hw - r, hh);
+  shape.lineTo(-hw + r, hh);
+  shape.quadraticCurveTo(-hw, hh, -hw, hh - r);
+  shape.lineTo(-hw, -hh + r);
+  shape.quadraticCurveTo(-hw, -hh, -hw + r, -hh);
+  return shape;
+}
+
+function createStadiumShape(w: number, h: number): THREE.Shape {
+  const shape = new THREE.Shape();
+  const hw = w / 2;
+  const r = h / 2; // semicircle radius = half the short side
+  // Right semicircle
+  shape.moveTo(hw - r, -r);
+  shape.absarc(hw - r, 0, r, -Math.PI / 2, Math.PI / 2, false);
+  // Top edge
+  shape.lineTo(-(hw - r), r);
+  // Left semicircle
+  shape.absarc(-(hw - r), 0, r, Math.PI / 2, -Math.PI / 2, false);
+  shape.lineTo(hw - r, -r);
+  return shape;
+}
+
+function createCircleShape(radius: number): THREE.Shape {
+  const shape = new THREE.Shape();
+  shape.absarc(0, 0, radius, 0, Math.PI * 2, false);
+  return shape;
+}
+
+function createOutlineGeometry(
+  widthU: number,
+  keycapShape: "standard" | "circular" | undefined,
+  keyWidth: number,
+  keyDepth: number,
+): THREE.ShapeGeometry {
+  const border = 0.04;
+  const cacheKey = `${widthU.toFixed(2)}-${keycapShape || "standard"}-${keyWidth.toFixed(3)}-${keyDepth.toFixed(3)}`;
+  const cached = outlineGeometryCache.get(cacheKey);
+  if (cached) return cached;
+
+  let outer: THREE.Shape;
+  let inner: THREE.Shape;
+
+  const isCircular = keycapShape === "circular";
+  const isWide = widthU > 1.25;
+
+  if (isCircular && !isWide) {
+    // Circle for round 1u keys
+    const r = keyDepth * 0.5;
+    outer = createCircleShape(r + border);
+    inner = createCircleShape(r);
+  } else if (isCircular && isWide) {
+    // Stadium/capsule for wide circular keys
+    const ow = keyWidth + border * 2;
+    const oh = keyDepth + border * 2;
+    outer = createStadiumShape(ow, oh);
+    inner = createStadiumShape(keyWidth, keyDepth);
+  } else {
+    // Rounded rectangle for all standard keys
+    const cornerRadius = 0.12;
+    const ow = keyWidth + border * 2;
+    const oh = keyDepth + border * 2;
+    outer = createRoundedRectShape(ow, oh, cornerRadius + border);
+    inner = createRoundedRectShape(keyWidth, keyDepth, cornerRadius);
+  }
+
+  // Punch inner hole (reverse winding)
+  outer.holes.push(new THREE.Path(inner.getPoints(32)));
+
+  const geo = new THREE.ShapeGeometry(outer, 32);
+  outlineGeometryCache.set(cacheKey, geo);
+  return geo;
+}
+
+function SelectionIndicator({
+  width,
+  depth,
+  height,
+  keycapShape,
+  widthU,
+}: {
+  width: number;
+  depth: number;
+  height: number;
+  keycapShape?: "standard" | "circular";
+  widthU: number;
+}) {
+  const meshRef = useRef<THREE.Mesh>(null);
+
+  const geometry = useMemo(
+    () => createOutlineGeometry(widthU, keycapShape, width * 0.95, depth * 0.95),
+    [widthU, keycapShape, width, depth],
+  );
 
   useFrame(({ clock }) => {
-    if (!ringRef.current) return;
-    const mat = ringRef.current.material as THREE.MeshBasicMaterial;
-    // Breathing opacity animation
-    mat.opacity = 0.25 + Math.sin(clock.getElapsedTime() * 3) * 0.12;
+    if (!meshRef.current) return;
+    const mat = meshRef.current.material as THREE.MeshBasicMaterial;
+    mat.opacity = 0.45 + Math.sin(clock.getElapsedTime() * 3) * 0.1;
   });
 
   return (
-    <mesh ref={ringRef} position={[0, height / 2 + 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-      <ringGeometry args={[Math.max(width, depth) * 0.48, Math.max(width, depth) * 0.54, 32]} />
-      <meshBasicMaterial color="#E8590C" transparent opacity={0.3} depthWrite={false} side={THREE.DoubleSide} />
+    <mesh ref={meshRef} position={[0, height / 2 + 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <primitive object={geometry} attach="geometry" />
+      <meshBasicMaterial
+        color={SELECTION_EMISSIVE_COLOR}
+        transparent
+        opacity={0.45}
+        depthWrite={false}
+        side={THREE.DoubleSide}
+      />
     </mesh>
   );
 }
@@ -578,6 +688,7 @@ function Keycap({
   const pressOffset = useRef(0);
   const targetOffset = useRef(0);
   const flashIntensity = useRef(0);
+  const selectionGlow = useRef(0);
   const prevColor = useRef(color);
 
   // Detect color change for flash effect
@@ -624,8 +735,8 @@ function Keycap({
   const currentColor = useRef(new THREE.Color(color));
   const targetColor = useMemo(() => new THREE.Color(color), [color]);
 
-  // Spring animation for key press + color lerp + flash decay
-  useFrame(() => {
+  // Spring animation for key press + color lerp + flash/selection-glow priority chain
+  useFrame(({ clock }) => {
     if (!groupRef.current) return;
 
     // Smooth press animation
@@ -635,16 +746,43 @@ function Keycap({
     // Color lerp — snappier for customization
     currentColor.current.lerp(targetColor, 0.12);
 
-    // Flash effect decay
-    if (flashIntensity.current > 0.01 && meshRef.current) {
-      flashIntensity.current *= 0.88; // 200ms-ish decay
+    // Emissive priority chain: flash > selection glow > rest
+    if (meshRef.current) {
       const mat = meshRef.current.material as THREE.MeshPhysicalMaterial;
-      mat.emissiveIntensity = flashIntensity.current;
+
+      if (flashIntensity.current > 0.01) {
+        // Flash effect takes priority — fast decay
+        flashIntensity.current *= 0.88;
+        mat.emissive.set(color);
+        mat.emissiveIntensity = flashIntensity.current;
+      } else if (selected) {
+        // Selection glow — breathing animation
+        const targetGlow = 0.12 + Math.sin(clock.getElapsedTime() * 3) * 0.06;
+        selectionGlow.current += (targetGlow - selectionGlow.current) * 0.15;
+        mat.emissive.set(SELECTION_EMISSIVE_COLOR);
+        mat.emissiveIntensity = selectionGlow.current;
+      } else {
+        // Smooth fade-out when deselected
+        if (selectionGlow.current > 0.005) {
+          selectionGlow.current *= 0.85;
+          mat.emissive.set(SELECTION_EMISSIVE_COLOR);
+          mat.emissiveIntensity = selectionGlow.current;
+        } else {
+          selectionGlow.current = 0;
+          mat.emissiveIntensity = 0;
+        }
+      }
     }
   });
 
   const handlePointerDown = useCallback((e: THREE.Event) => {
     (e as { stopPropagation?: () => void }).stopPropagation?.();
+
+    // Paint mode: apply color on click (overrides selection)
+    if (paintMode && onPaint) {
+      onPaint(keyId);
+      return;
+    }
 
     // Selection mode takes priority
     if (onSelect) {
@@ -655,7 +793,7 @@ function Keycap({
     if (!interactive) return;
     targetOffset.current = -0.08;
     onPress?.(index, legend || "");
-  }, [interactive, onPress, onSelect, index, legend, keyId]);
+  }, [interactive, onPress, onSelect, index, legend, keyId, paintMode, onPaint]);
 
   const handlePointerUp = useCallback(() => {
     if (!interactive || onSelect) return;
@@ -721,13 +859,25 @@ function Keycap({
         <meshPhysicalMaterial {...matProps} />
       </mesh>
 
-      {/* Selection ring */}
-      {selected && <SelectionRing width={width} depth={KEYCAP_SIZE} height={height} />}
+      {/* Selection indicator (shape-matched outline) */}
+      {selected && (
+        <SelectionIndicator
+          width={width}
+          depth={KEYCAP_SIZE}
+          height={height}
+          keycapShape={keycapShape}
+          widthU={widthU}
+        />
+      )}
 
-      {/* Hover highlight overlay */}
+      {/* Hover highlight overlay — circular for round 1u keycaps, plane for others */}
       {hovered && (interactive || onSelect) && (
         <mesh position={[0, height / 2 + 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[width * 0.95, KEYCAP_SIZE * 0.95]} />
+          {keycapShape === "circular" && widthU <= 1.25 ? (
+            <circleGeometry args={[KEYCAP_SIZE * 0.42, 32]} />
+          ) : (
+            <planeGeometry args={[width * 0.95, KEYCAP_SIZE * 0.95]} />
+          )}
           <meshBasicMaterial color="#ffffff" transparent opacity={0.08} depthWrite={false} />
         </mesh>
       )}

@@ -16,7 +16,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1601445638532-3c6f6c3aa1d6?w=600",
     "tags": ["GMK", "Cherry profile", "ABS", "doubleshot"],
     "trackingCount": 412,
-    "isFeatured": true
+    "isFeatured": true,
+    "estimatedWaitMonths": 13
   },
   {
     "name": "Mode Envoy",
@@ -35,7 +36,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600",
     "tags": ["65%", "gasket-mount", "aluminum", "hot-swap"],
     "trackingCount": 387,
-    "isFeatured": true
+    "isFeatured": true,
+    "estimatedWaitMonths": 7
   },
   {
     "name": "PBTfans Midnight Circuit",
@@ -54,7 +56,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=600",
     "tags": ["PBT", "Cherry profile", "doubleshot"],
     "trackingCount": 256,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 6
   },
   {
     "name": "Owlab Jelly Epoch SE",
@@ -72,7 +75,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1595225476474-87563907a212?w=600",
     "tags": ["75%", "gasket-mount", "polycarbonate", "aluminum"],
     "trackingCount": 498,
-    "isFeatured": true
+    "isFeatured": true,
+    "estimatedWaitMonths": 8
   },
   {
     "name": "Gateron Baby Kangaroo V3",
@@ -90,7 +94,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1544652478-6653e09f18a2?w=600",
     "tags": ["tactile", "Gateron", "factory-lubed"],
     "trackingCount": 189,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 4
   },
   {
     "name": "GMK Dolch R5",
@@ -109,7 +114,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1622037022824-0c71d511ef3c?w=600",
     "tags": ["GMK", "Cherry profile", "ABS", "doubleshot"],
     "trackingCount": 345,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 11
   },
   {
     "name": "Cannonkeys Chimera65",
@@ -127,7 +133,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600",
     "tags": ["65%", "aluminum", "top-mount"],
     "trackingCount": 274,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 6
   },
   {
     "name": "SP Star Polaris V2",
@@ -145,7 +152,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?w=600",
     "tags": ["linear", "SP Star", "long-pole"],
     "trackingCount": 167,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 4
   },
   {
     "name": "ePBT Kavala",
@@ -164,7 +172,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=600",
     "tags": ["ePBT", "Cherry profile", "PBT", "dye-sub"],
     "trackingCount": 198,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 9
   },
   {
     "name": "Wuque Studio Mammoth75 HE",
@@ -182,7 +191,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=600",
     "tags": ["75%", "gasket-mount", "aluminum", "hall-effect"],
     "trackingCount": 312,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 5
   },
   {
     "name": "KineticLabs Hippo V2 Stabilizers",
@@ -200,7 +210,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1561112078-7d24e04c3407?w=600",
     "tags": ["stabilizer", "screw-in", "pre-lubed"],
     "trackingCount": 143,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 3
   },
   {
     "name": "MiTo Laser R3",
@@ -219,7 +230,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1626958390898-162d3577f293?w=600",
     "tags": ["GMK", "Cherry profile", "ABS", "doubleshot"],
     "trackingCount": 467,
-    "isFeatured": true
+    "isFeatured": true,
+    "estimatedWaitMonths": 12
   },
   {
     "name": "Milkyway Onyx75",
@@ -235,7 +247,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600",
     "tags": ["75%", "gasket-mount", "aluminum", "hot-swap"],
     "trackingCount": 203,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 7
   },
   {
     "name": "GMK Metropolis R2",
@@ -253,7 +266,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1615869442320-fd02a129c77c?w=600",
     "tags": ["GMK", "Cherry profile", "ABS", "doubleshot"],
     "trackingCount": 389,
-    "isFeatured": true
+    "isFeatured": true,
+    "estimatedWaitMonths": 14
   },
   {
     "name": "JWK Quartz V2",
@@ -270,7 +284,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1592840496694-26d035b52b48?w=600",
     "tags": ["linear", "JWK", "UHMWPE"],
     "trackingCount": 145,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 5
   },
   {
     "name": "Mode Sonnet",
@@ -287,7 +302,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=600",
     "tags": ["TKL", "gasket-mount", "aluminum", "hot-swap"],
     "trackingCount": 278,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 9
   },
   {
     "name": "Dangkeebs Silicone Dampener Kit",
@@ -304,7 +320,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=600",
     "tags": ["dampener", "silicone", "sound-mod"],
     "trackingCount": 87,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 3
   },
   {
     "name": "PBTfans Noel R2",
@@ -322,7 +339,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1630794180018-433d915c34ac?w=600",
     "tags": ["PBT", "Cherry profile", "doubleshot"],
     "trackingCount": 312,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 8
   },
   {
     "name": "TTC Flame Red V2",
@@ -339,7 +357,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=600",
     "tags": ["linear", "TTC", "budget"],
     "trackingCount": 98,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 6
   },
   {
     "name": "NovelKeys Coiled Aviator Cable",
@@ -356,7 +375,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1674027444485-cec3da58eef4?w=600",
     "tags": ["cable", "USB-C", "coiled"],
     "trackingCount": 134,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 3
   },
   {
     "name": "GMK Botanical R2",
@@ -375,7 +395,9 @@
     "imageUrl": "https://images.unsplash.com/photo-1696446702183-cbd13d78e1e7?w=600",
     "tags": ["GMK", "Cherry profile", "ABS", "doubleshot"],
     "trackingCount": 423,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 12,
+    "aftermarketUrl": "https://www.reddit.com/r/mechmarket/search?q=GMK+Botanical"
   },
   {
     "name": "Owlab Spring",
@@ -393,7 +415,9 @@
     "imageUrl": "https://images.unsplash.com/photo-1563191911-e65f8655ebf9?w=600",
     "tags": ["TKL", "gasket-mount", "aluminum"],
     "trackingCount": 356,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 9,
+    "aftermarketUrl": "https://www.reddit.com/r/mechmarket/search?q=Owlab+Spring"
   },
   {
     "name": "ePBT Grand Tour",
@@ -412,7 +436,9 @@
     "imageUrl": "https://images.unsplash.com/photo-1707345512638-997d31a10eaa?w=600",
     "tags": ["ePBT", "Cherry profile", "PBT", "dye-sub"],
     "trackingCount": 287,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 9,
+    "aftermarketUrl": "https://www.reddit.com/r/mechmarket/search?q=ePBT+Grand+Tour"
   },
   {
     "name": "Cannonkeys Bakeneko75",
@@ -430,7 +456,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600",
     "tags": ["75%", "o-ring mount", "aluminum", "hot-swap"],
     "trackingCount": 298,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 8
   },
   {
     "name": "Gateron Oil King V2",
@@ -448,7 +475,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1544652478-6653e09f18a2?w=600",
     "tags": ["linear", "Gateron", "factory-lubed"],
     "trackingCount": 234,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 5
   },
   {
     "name": "Wuque Studio Deskmat Collection",
@@ -466,7 +494,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=600",
     "tags": ["deskmat", "stitched-edge"],
     "trackingCount": 176,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 5
   },
   {
     "name": "GMK Olivia R3",
@@ -485,7 +514,9 @@
     "imageUrl": "https://images.unsplash.com/photo-1601445638532-3c6f6c3aa1d6?w=600",
     "tags": ["GMK", "Cherry profile", "ABS", "doubleshot"],
     "trackingCount": 489,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 12,
+    "aftermarketUrl": "https://www.reddit.com/r/mechmarket/search?q=GMK+Olivia"
   },
   {
     "name": "KBDfans Tiger80 Lite V2",
@@ -503,7 +534,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=600",
     "tags": ["TKL", "gasket-mount", "polycarbonate", "hot-swap"],
     "trackingCount": 267,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 6
   },
   {
     "name": "ePBT Dreamscape",
@@ -522,7 +554,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=600",
     "tags": ["ePBT", "Cherry profile", "PBT", "dye-sub"],
     "trackingCount": 193,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 8
   },
   {
     "name": "KineticLabs Polaris Plate Foam",
@@ -540,7 +573,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1561112078-7d24e04c3407?w=600",
     "tags": ["foam", "PE", "sound-mod"],
     "trackingCount": 112,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 3
   },
   {
     "name": "Drop + MiTo DCX Godspeed",
@@ -550,7 +584,7 @@
     "vendorUrl": "https://drop.com",
     "description": "Godspeed colorway reimagined in Drop's DCX profile with dye-sub PBT construction.",
     "productType": "keycaps",
-    "status": "shipped",
+    "status": "fulfilled",
     "priceMin": 110,
     "priceMax": 155,
     "startDate": "2025-06-01",
@@ -559,7 +593,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1626958390898-162d3577f293?w=600",
     "tags": ["DCX", "PBT", "dye-sub"],
     "trackingCount": 378,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 7
   },
   {
     "name": "Cannonkeys Stacked75",
@@ -568,7 +603,7 @@
     "vendorUrl": "https://cannonkeys.com",
     "description": "Stacked acrylic 75% keyboard with RGB underglow and gasket mount.",
     "productType": "keyboard",
-    "status": "shipped",
+    "status": "fulfilled",
     "priceMin": 185,
     "priceMax": 235,
     "startDate": "2025-05-01",
@@ -577,7 +612,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600",
     "tags": ["75%", "gasket-mount", "acrylic", "hot-swap"],
     "trackingCount": 241,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 7
   },
   {
     "name": "JWK Tungsten V2",
@@ -595,7 +631,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1629131726692-1accd0c53ce0?w=600",
     "tags": ["tactile", "JWK", "long-pole"],
     "trackingCount": 198,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 5
   },
   {
     "name": "Alexotos Stream Deskmat",
@@ -614,7 +651,8 @@
     "imageUrl": "https://images.unsplash.com/photo-1674027444485-cec3da58eef4?w=600",
     "tags": ["deskmat", "collab"],
     "trackingCount": 267,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 5
   },
   {
     "name": "GMK Umbra R2",
@@ -633,6 +671,245 @@
     "imageUrl": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600",
     "tags": ["GMK", "Cherry profile", "ABS", "doubleshot"],
     "trackingCount": 334,
-    "isFeatured": false
+    "isFeatured": false,
+    "estimatedWaitMonths": 9
+  },
+  {
+    "name": "GMK Bushido",
+    "slug": "gmk-bushido-ic",
+    "designer": "Rensuya",
+    "vendor": "Cannonkeys",
+    "vendorUrl": "https://cannonkeys.com",
+    "description": "Samurai-inspired keycap set with deep crimson and matte black colorway, featuring kanji novelties and matching deskmat.",
+    "productType": "keycaps",
+    "status": "ic",
+    "priceMin": 140,
+    "priceMax": 190,
+    "startDate": "2026-02-01",
+    "endDate": "2026-03-15",
+    "estimatedShipDate": "2027-06-01",
+    "imageUrl": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600",
+    "tags": ["GMK", "Cherry profile", "ABS", "doubleshot"],
+    "trackingCount": 287,
+    "isFeatured": false,
+    "estimatedWaitMonths": 16,
+    "icUrl": "https://geekhack.org/index.php?topic=120001.0",
+    "moqTarget": 500,
+    "moqCurrent": 342
+  },
+  {
+    "name": "Parallel Sequence 65",
+    "slug": "parallel-sequence-65-ic",
+    "designer": "Parallel Limited",
+    "vendor": "Parallel Limited",
+    "vendorUrl": "https://parallel.limited",
+    "description": "65% with unique side-mounted daughterboard design, internal brass weight, and leaf-spring mount system.",
+    "productType": "keyboard",
+    "status": "ic",
+    "priceMin": 399,
+    "priceMax": 549,
+    "startDate": "2026-01-15",
+    "endDate": "2026-03-01",
+    "estimatedShipDate": "2027-01-01",
+    "imageUrl": "https://images.unsplash.com/photo-1595225476474-87563907a212?w=600",
+    "tags": ["65%", "leaf-spring", "aluminum", "brass weight"],
+    "trackingCount": 412,
+    "isFeatured": true,
+    "estimatedWaitMonths": 12,
+    "icUrl": "https://geekhack.org/index.php?topic=120042.0",
+    "moqTarget": 300,
+    "moqCurrent": 278
+  },
+  {
+    "name": "SA Dreameater",
+    "slug": "sa-dreameater-ic",
+    "designer": "NCKiiMEOW",
+    "vendor": "Signature Plastics",
+    "vendorUrl": "https://pimpmykeyboard.com",
+    "description": "SA profile keycap set in deep purple and electric green, inspired by sleep paralysis demon folklore.",
+    "productType": "keycaps",
+    "status": "ic",
+    "priceMin": 150,
+    "priceMax": 210,
+    "startDate": "2026-02-10",
+    "endDate": "2026-04-01",
+    "estimatedShipDate": "2027-08-01",
+    "imageUrl": "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=600",
+    "tags": ["SA", "doubleshot", "ABS"],
+    "trackingCount": 156,
+    "isFeatured": false,
+    "estimatedWaitMonths": 18,
+    "icUrl": "https://www.reddit.com/r/mechmarket/comments/example_dreameater",
+    "moqTarget": 250,
+    "moqCurrent": 89
+  },
+  {
+    "name": "Monokei Kei R2",
+    "slug": "monokei-kei-r2-ic",
+    "designer": "Monokei",
+    "vendor": "Monokei",
+    "vendorUrl": "https://monokei.co",
+    "description": "Second revision of the Kei TKL with improved gasket tabs, new colorways, and USB-C daughterboard.",
+    "productType": "keyboard",
+    "status": "ic",
+    "priceMin": 450,
+    "priceMax": 599,
+    "startDate": "2026-02-05",
+    "endDate": "2026-03-20",
+    "estimatedShipDate": "2027-03-01",
+    "imageUrl": "https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=600",
+    "tags": ["TKL", "gasket-mount", "aluminum", "brass"],
+    "trackingCount": 345,
+    "isFeatured": false,
+    "estimatedWaitMonths": 13,
+    "icUrl": "https://geekhack.org/index.php?topic=120088.0",
+    "moqTarget": 400,
+    "moqCurrent": 312
+  },
+  {
+    "name": "KAM Superuser",
+    "slug": "kam-superuser-ic",
+    "designer": "janglad",
+    "vendor": "NovelKeys",
+    "vendorUrl": "https://novelkeys.com",
+    "description": "Terminal-inspired KAM profile set with monospaced legends and retro green-on-black colorway.",
+    "productType": "keycaps",
+    "status": "ic",
+    "priceMin": 95,
+    "priceMax": 140,
+    "startDate": "2026-01-20",
+    "endDate": "2026-03-10",
+    "estimatedShipDate": "2027-02-01",
+    "imageUrl": "https://images.unsplash.com/photo-1622037022824-0c71d511ef3c?w=600",
+    "tags": ["KAM", "PBT", "dye-sub"],
+    "trackingCount": 198,
+    "isFeatured": false,
+    "estimatedWaitMonths": 12,
+    "icUrl": "https://geekhack.org/index.php?topic=120112.0",
+    "moqTarget": 350,
+    "moqCurrent": 167
+  },
+  {
+    "name": "Rebult Boards Foundation60",
+    "slug": "rebult-foundation60-ic",
+    "designer": "Rebult",
+    "vendor": "Rebult Boards",
+    "description": "Entry-level 60% with stacked acrylic case and hotswap PCB. Designed for newcomers to the hobby.",
+    "productType": "keyboard",
+    "status": "ic",
+    "priceMin": 89,
+    "priceMax": 129,
+    "startDate": "2026-02-15",
+    "endDate": "2026-04-15",
+    "estimatedShipDate": "2026-10-01",
+    "imageUrl": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600",
+    "tags": ["60%", "acrylic", "hot-swap", "beginner"],
+    "trackingCount": 134,
+    "isFeatured": false,
+    "estimatedWaitMonths": 8,
+    "icUrl": "https://www.reddit.com/r/mechmarket/comments/example_foundation",
+    "moqTarget": 200,
+    "moqCurrent": 78
+  },
+  {
+    "name": "ePBT Zen Garden",
+    "slug": "epbt-zen-garden-ic",
+    "designer": "ai03",
+    "vendor": "KBDfans",
+    "vendorUrl": "https://kbdfans.com",
+    "description": "Japanese rock garden inspired PBT set with sand-beige alphas and stone-grey modifiers.",
+    "productType": "keycaps",
+    "status": "ic",
+    "priceMin": 85,
+    "priceMax": 130,
+    "startDate": "2026-02-20",
+    "endDate": "2026-04-10",
+    "estimatedShipDate": "2027-01-01",
+    "imageUrl": "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=600",
+    "tags": ["ePBT", "Cherry profile", "PBT", "dye-sub"],
+    "trackingCount": 223,
+    "isFeatured": false,
+    "estimatedWaitMonths": 11,
+    "icUrl": "https://geekhack.org/index.php?topic=120156.0",
+    "moqTarget": 400,
+    "moqCurrent": 201
+  },
+  {
+    "name": "Geon F2-84 Extras",
+    "slug": "geon-f2-84-extras",
+    "designer": "Geon",
+    "vendor": "Geon Works",
+    "vendorUrl": "https://geon.works",
+    "description": "Leftover units from the F2-84 group buy. Limited colorways available: Black, Silver, Navy.",
+    "productType": "keyboard",
+    "status": "extras",
+    "priceMin": 420,
+    "priceMax": 520,
+    "startDate": "2026-02-10",
+    "endDate": "2026-03-10",
+    "imageUrl": "https://images.unsplash.com/photo-1563191911-e65f8655ebf9?w=600",
+    "tags": ["TKL", "gasket-mount", "aluminum"],
+    "trackingCount": 267,
+    "isFeatured": false,
+    "estimatedWaitMonths": 1,
+    "extrasUrl": "https://geon.works/products/f2-84-extras"
+  },
+  {
+    "name": "NK65 EE Extras",
+    "slug": "nk65-ee-extras",
+    "vendor": "NovelKeys",
+    "vendorUrl": "https://novelkeys.com",
+    "description": "Entry Edition extras in Blumen, Fire, and Watermelon colorways. Ships within 2 weeks.",
+    "productType": "keyboard",
+    "status": "extras",
+    "priceMin": 95,
+    "priceMax": 95,
+    "startDate": "2026-02-01",
+    "endDate": "2026-03-15",
+    "imageUrl": "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600",
+    "tags": ["65%", "aluminum", "hot-swap", "budget"],
+    "trackingCount": 189,
+    "isFeatured": false,
+    "estimatedWaitMonths": 1,
+    "extrasUrl": "https://novelkeys.com/products/nk65-entry-edition"
+  },
+  {
+    "name": "GMK Mizu R2 Extras",
+    "slug": "gmk-mizu-r2-extras",
+    "designer": "Rensuya",
+    "vendor": "Cannonkeys",
+    "vendorUrl": "https://cannonkeys.com",
+    "description": "Limited extras of the beloved water-inspired keycap set. Base and novelty kits available.",
+    "productType": "keycaps",
+    "status": "extras",
+    "priceMin": 145,
+    "priceMax": 195,
+    "startDate": "2026-02-05",
+    "endDate": "2026-02-28",
+    "imageUrl": "https://images.unsplash.com/photo-1615869442320-fd02a129c77c?w=600",
+    "tags": ["GMK", "Cherry profile", "ABS", "doubleshot"],
+    "trackingCount": 534,
+    "isFeatured": true,
+    "estimatedWaitMonths": 1,
+    "extrasUrl": "https://cannonkeys.com/products/gmk-mizu-r2-extras"
+  },
+  {
+    "name": "Owlab Mr.Suit R3 Extras",
+    "slug": "owlab-mr-suit-r3-extras",
+    "vendor": "Owlab",
+    "vendorUrl": "https://owlab.co",
+    "description": "Extra units from the third round of the iconic Mr.Suit TKL. WK and WKL layouts available.",
+    "productType": "keyboard",
+    "status": "extras",
+    "priceMin": 380,
+    "priceMax": 450,
+    "startDate": "2026-01-25",
+    "endDate": "2026-03-01",
+    "imageUrl": "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=600",
+    "tags": ["TKL", "gasket-mount", "aluminum", "polycarbonate"],
+    "trackingCount": 312,
+    "isFeatured": false,
+    "estimatedWaitMonths": 1,
+    "extrasUrl": "https://owlab.co/products/mr-suit-r3-extras"
   }
 ]

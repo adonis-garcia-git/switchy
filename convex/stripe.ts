@@ -30,7 +30,7 @@ export const createCheckoutSession = action({
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${origin}/pricing?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${origin}/account?upgraded=true`,
       cancel_url: `${origin}/pricing`,
       client_reference_id: userId,
       metadata: { userId },
@@ -60,7 +60,7 @@ export const createBillingPortalSession = action({
 
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: subscription.stripeCustomerId,
-      return_url: `${origin}/pricing`,
+      return_url: `${origin}/account`,
     });
 
     return { url: portalSession.url };

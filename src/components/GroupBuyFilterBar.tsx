@@ -3,7 +3,13 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { GROUP_BUY_LISTING_STATUS_COLORS, GROUP_BUY_PRODUCT_TYPES } from "@/lib/constants";
+import { GroupBuyGlossaryTip } from "@/components/GroupBuyGlossaryTip";
 import type { GroupBuyListingFilterState } from "@/lib/types";
+
+const STATUS_GLOSSARY_TERMS: Record<string, string> = {
+  ic: "IC",
+  extras: "Extras",
+};
 
 interface GroupBuyFilterBarProps {
   filters: GroupBuyListingFilterState;
@@ -51,11 +57,13 @@ function RadioOption({
   active,
   onClick,
   colorDot,
+  glossaryTerm,
 }: {
   label: string;
   active: boolean;
   onClick: () => void;
   colorDot?: string;
+  glossaryTerm?: string;
 }) {
   return (
     <button
@@ -75,7 +83,9 @@ function RadioOption({
           style={{ backgroundColor: colorDot }}
         />
       )}
-      <span className="truncate">{label}</span>
+      <span className="truncate">
+        {glossaryTerm ? <GroupBuyGlossaryTip term={glossaryTerm}>{label}</GroupBuyGlossaryTip> : label}
+      </span>
       {active && (
         <svg className="w-3.5 h-3.5 ml-auto text-accent flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -91,10 +101,13 @@ export function GroupBuyFilterBar({ filters, onChange }: GroupBuyFilterBarProps)
   };
 
   const statusColors: Record<string, string> = {
+    ic: "#38BDF8",
     upcoming: "#3B82F6",
     live: "#10B981",
     ended: "#71717A",
+    fulfilled: "#8B5CF6",
     shipped: "#A855F7",
+    extras: "#2DD4BF",
   };
 
   const hasActiveFilters =
@@ -154,17 +167,21 @@ export function GroupBuyFilterBar({ filters, onChange }: GroupBuyFilterBarProps)
           onClick={() => update({ status: null })}
         />
         {(Object.entries(GROUP_BUY_LISTING_STATUS_COLORS) as [string, { label: string }][]).map(
-          ([key, val]) => (
-            <RadioOption
-              key={key}
-              label={val.label}
-              active={filters.status === key}
-              onClick={() =>
-                update({ status: filters.status === key ? null : key })
-              }
-              colorDot={statusColors[key]}
-            />
-          )
+          ([key, val]) => {
+            const glossaryTerm = STATUS_GLOSSARY_TERMS[key];
+            return (
+              <RadioOption
+                key={key}
+                label={val.label}
+                active={filters.status === key}
+                onClick={() =>
+                  update({ status: filters.status === key ? null : key })
+                }
+                colorDot={statusColors[key]}
+                glossaryTerm={glossaryTerm}
+              />
+            );
+          }
         )}
       </FilterSection>
 

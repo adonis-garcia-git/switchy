@@ -21,6 +21,8 @@ interface GroupBuyListingCardProps {
     tags?: string[];
     trackingCount: number;
     isFeatured?: boolean;
+    estimatedWaitMonths?: number;
+    estimatedShipDate?: string;
   };
   isTracked?: boolean;
   onTrackThis?: () => void;
@@ -36,9 +38,22 @@ export function GroupBuyListingCard({
   const statusConfig = GROUP_BUY_LISTING_STATUS_COLORS[listing.status];
   const endingDays = listing.endDate ? daysUntil(listing.endDate) : null;
   const startingDays = listing.startDate ? daysUntil(listing.startDate) : null;
-  const isEndingSoon = listing.status === "live" && endingDays !== null && endingDays >= 0 && endingDays <= 7;
+  const isEndingSoon = (listing.status === "live" || listing.status === "ic") && endingDays !== null && endingDays >= 0 && endingDays <= 7;
+
+  // Calculate wait months
+  const waitMonths = listing.estimatedWaitMonths ?? (
+    listing.estimatedShipDate
+      ? Math.max(0, Math.round((new Date(listing.estimatedShipDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24 * 30)))
+      : null
+  );
 
   const getDateLabel = () => {
+    if (listing.status === "ic" && endingDays !== null) {
+      if (endingDays < 0) return "IC Ended";
+      if (endingDays === 0) return "IC ends today";
+      if (endingDays === 1) return "IC ends tomorrow";
+      return `IC ends in ${endingDays} days`;
+    }
     if (listing.status === "live" && endingDays !== null) {
       if (endingDays < 0) return "Ended";
       if (endingDays === 0) return "Ends today";
@@ -50,12 +65,16 @@ export function GroupBuyListingCard({
       if (startingDays === 1) return "Starts tomorrow";
       return `Starts in ${startingDays} days`;
     }
+    if (listing.status === "extras") return "Extras Available";
     if (listing.status === "ended") return "Ended";
+    if (listing.status === "fulfilled") return "Fulfilled";
     if (listing.status === "shipped") return "Shipped";
     return null;
   };
 
   const dateLabel = getDateLabel();
+
+  const trackButtonLabel = listing.status === "ic" ? "Follow IC" : "Track This";
 
   return (
     <div
@@ -153,7 +172,7 @@ export function GroupBuyListingCard({
           </div>
         )}
 
-        {/* Price + Date */}
+        {/* Price + Date + Wait */}
         <div className="flex items-end justify-between pt-3 border-t border-border-subtle">
           <div>
             <span className="text-lg font-bold font-[family-name:var(--font-mono)] text-accent">
@@ -165,13 +184,21 @@ export function GroupBuyListingCard({
               </span>
             )}
           </div>
-          <div className="text-right">
+          <div className="text-right space-y-0.5">
             {dateLabel && (
               <p className={cn(
                 "text-xs font-medium",
                 isEndingSoon ? "text-amber-400" : "text-text-muted"
               )}>
                 {dateLabel}
+              </p>
+            )}
+            {waitMonths !== null && waitMonths > 0 && listing.status !== "extras" && listing.status !== "fulfilled" && listing.status !== "shipped" && (
+              <p className={cn(
+                "text-[10px] font-semibold",
+                waitMonths > 18 ? "text-red-400" : waitMonths > 12 ? "text-amber-400" : "text-text-muted"
+              )}>
+                ~{waitMonths} month wait
               </p>
             )}
           </div>
@@ -213,7 +240,7 @@ export function GroupBuyListingCard({
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
-              Track This
+              {trackButtonLabel}
             </button>
           )}
         </div>

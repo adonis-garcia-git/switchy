@@ -7,6 +7,8 @@ import { GroupBuyFilterBar } from "@/components/GroupBuyFilterBar";
 import { GroupBuyListingCard } from "@/components/GroupBuyListingCard";
 import { GroupBuyListingDetail } from "@/components/GroupBuyListingDetail";
 import { GroupBuyEndingSoon } from "@/components/GroupBuyEndingSoon";
+import { GroupBuyNewcomerGuide } from "@/components/GroupBuyNewcomerGuide";
+import { GroupBuyResourceLinks } from "@/components/GroupBuyResourceLinks";
 import { Badge } from "@/components/ui/Badge";
 import { Pagination } from "@/components/ui/Pagination";
 import { GridViewToggle } from "@/components/ui/GridViewToggle";
@@ -77,10 +79,13 @@ export function GroupBuyDiscover({ onTrackThis, trackedListingIds }: GroupBuyDis
       <aside className="hidden lg:block w-64 flex-shrink-0 border-r border-border-subtle">
         <div className="h-full overflow-y-auto p-5">
           {!searchQuery.trim() && (
-            <GroupBuyFilterBar
-              filters={filters}
-              onChange={handleFilterChange}
-            />
+            <>
+              <GroupBuyFilterBar
+                filters={filters}
+                onChange={handleFilterChange}
+              />
+              <GroupBuyResourceLinks />
+            </>
           )}
         </div>
       </aside>
@@ -164,6 +169,9 @@ export function GroupBuyDiscover({ onTrackThis, trackedListingIds }: GroupBuyDis
             />
           </div>
         </div>
+
+        {/* Newcomer Guide */}
+        {!searchQuery.trim() && <GroupBuyNewcomerGuide />}
 
         {/* Ending Soon Banner */}
         {!searchQuery.trim() && endingSoon && endingSoon.length > 0 && (

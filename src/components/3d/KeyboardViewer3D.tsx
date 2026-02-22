@@ -135,7 +135,7 @@ export function KeyboardViewer3D({
         />
 
         {/* Interaction hint */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 text-[10px] text-white/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-overlay backdrop-blur-sm border border-border-default text-[10px] text-text-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
           {interactive ? "Click keys \u00b7 Drag to rotate \u00b7 Scroll to zoom" : "Drag to rotate \u00b7 Scroll to zoom"}
         </div>
       </div>

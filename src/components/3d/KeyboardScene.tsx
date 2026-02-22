@@ -71,9 +71,7 @@ const KEYBOARD_FILM_OFFSET = -3;
 
 // Camera positions
 const INTRO_POSITION = new THREE.Vector3(0, 14, 24);   // starts zoomed in
-const DEFAULT_TARGET = new THREE.Vector3(0, 0, 0);
 const DEFAULT_POSITION = new THREE.Vector3(0, 20, 38);
-const CUSTOMIZE_TARGET = new THREE.Vector3(5, 0, 0);
 const CUSTOMIZE_POSITION = new THREE.Vector3(5, 22, 42);
 
 /**
@@ -146,17 +144,16 @@ function IntroAnimation({
 
 /**
  * One-shot camera transition that animates to a goal, then releases control.
- * If the user drags/scrolls mid-animation, the animation cancels immediately.
+ * Uses the same animation style as CameraController (position-only lerp at
+ * matching speed) so the movement feels identical to preset/design changes.
+ * If the user drags/scrolls mid-animation, it cancels immediately.
  */
 function CustomizeModeController({
   active,
-  controlsRef,
 }: {
   active: boolean;
-  controlsRef: React.RefObject<any>;
 }) {
   const { camera, gl } = useThree();
-  const targetGoal = useRef(DEFAULT_TARGET.clone());
   const positionGoal = useRef(DEFAULT_POSITION.clone());
   const animating = useRef(false);
   const prevActive = useRef(active);
@@ -168,10 +165,8 @@ function CustomizeModeController({
       animating.current = true;
 
       if (active) {
-        targetGoal.current.copy(CUSTOMIZE_TARGET);
         positionGoal.current.copy(CUSTOMIZE_POSITION);
       } else {
-        targetGoal.current.copy(DEFAULT_TARGET);
         positionGoal.current.copy(DEFAULT_POSITION);
       }
     }
@@ -191,22 +186,12 @@ function CustomizeModeController({
 
   useFrame(() => {
     if (!animating.current) return;
-    const controls = controlsRef.current;
-    if (!controls) return;
 
-    const lerpFactor = 0.04;
+    camera.position.lerp(positionGoal.current, 0.06);
 
-    controls.target.lerp(targetGoal.current, lerpFactor);
-    camera.position.lerp(positionGoal.current, lerpFactor);
-    controls.update();
-
-    // Stop once close enough (< 0.05 units on both)
-    const targetDist = controls.target.distanceTo(targetGoal.current);
-    const posDist = camera.position.distanceTo(positionGoal.current);
-    if (targetDist < 0.05 && posDist < 0.05) {
-      controls.target.copy(targetGoal.current);
+    // Stop once close enough
+    if (camera.position.distanceTo(positionGoal.current) < 0.05) {
       camera.position.copy(positionGoal.current);
-      controls.update();
       animating.current = false;
     }
   });
@@ -299,7 +284,7 @@ export function KeyboardScene({
       <IntroAnimation controlsRef={controlsRef} />
 
       {/* Smooth camera transition for customize mode */}
-      <CustomizeModeController active={customizeMode} controlsRef={controlsRef} />
+      <CustomizeModeController active={customizeMode} />
 
       <OrbitControls
         ref={controlsRef}

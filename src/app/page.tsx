@@ -71,68 +71,58 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* ── Section 1: Editorial Hero ── */}
-      <section className="relative bg-bg-primary overflow-hidden">
-        <div className="grain" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-12 lg:pt-20 pb-8">
-          {/* Giant "Switchy" display text */}
+      {/* ── Section 1: Full-Bleed Hero ── */}
+      <section className="relative -mt-16 min-h-[100svh] flex flex-col justify-end overflow-hidden">
+        {/* Background layers */}
+        <div className="absolute inset-0 hero-keyboard-bg" />
+        <div className="absolute inset-0 hero-overlay" />
+        <div className="absolute inset-0 grain" />
+
+        {/* Content — anchored to bottom-left */}
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-8 pb-12 lg:pb-20">
+          {/* Title */}
           <h1
-            className="font-[family-name:var(--font-display)] font-extrabold tracking-[-0.04em] leading-[0.9] select-none"
+            className="hero-animate-in font-[family-name:var(--font-display)] font-extrabold tracking-[-0.04em] leading-[0.9] select-none text-white"
             style={{ fontSize: "clamp(4rem, 12vw, 10rem)" }}
           >
             Switch<span className="text-accent">y</span>
           </h1>
 
-          {/* Horizontal divider with accent edge */}
-          <div className="relative w-full h-px bg-border-default my-8 lg:my-10">
+          {/* Divider */}
+          <div className="hero-animate-in -delay-1 relative w-full h-px bg-white/20 my-8 lg:my-10">
             <div className="absolute left-0 top-0 h-full w-24 bg-accent" />
           </div>
 
-          {/* Two-column: subtitle + hero image */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Left: text + CTAs */}
-            <div>
-              <p className="text-lg sm:text-xl text-text-secondary leading-[1.7] max-w-lg mb-8">
-                Your AI-powered mechanical keyboard build advisor. Describe the
-                sound and feel you want — get a complete, compatible build with
-                real products and real prices.
-              </p>
-              <div className="flex flex-wrap gap-3 mb-10">
-                <Link
-                  href="/wizard"
-                  className="inline-flex items-center px-6 py-3 rounded-lg bg-accent text-bg-primary font-semibold text-base hover:bg-accent-hover active:scale-[0.97] transition-[background-color,transform] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary shadow-accent-sm"
-                >
-                  Start Building
-                </Link>
-                <Link
-                  href="/switches"
-                  className="inline-flex items-center px-6 py-3 rounded-lg bg-transparent border border-border-default text-text-secondary font-semibold text-base hover:text-text-primary hover:border-border-accent transition-[color,border-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
-                >
-                  Browse Switches
-                </Link>
-              </div>
-
-              {/* Stats row */}
-              <div className="flex items-center gap-4 text-xs text-text-muted font-mono tracking-wider uppercase">
-                <span>{switchCount}+ Switches</span>
-                <span className="text-border-default">/</span>
-                <span>{keyboardCount}+ Keyboards</span>
-                <span className="text-border-default">/</span>
-                <span>AI Powered</span>
-              </div>
+          {/* Text + CTAs */}
+          <div className="hero-animate-in -delay-2 max-w-lg">
+            <p className="text-lg sm:text-xl text-white/70 leading-[1.7] mb-8">
+              Your AI-powered mechanical keyboard build advisor. Describe the
+              sound and feel you want — get a complete, compatible build with
+              real products and real prices.
+            </p>
+            <div className="flex flex-wrap gap-3 mb-10">
+              <Link
+                href="/wizard"
+                className="inline-flex items-center px-6 py-3 rounded-lg bg-accent text-white font-semibold text-base hover:bg-accent-hover active:scale-[0.97] transition-[background-color,transform] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent shadow-accent-sm"
+              >
+                Start Building
+              </Link>
+              <Link
+                href="/switches"
+                className="inline-flex items-center px-6 py-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white/80 font-semibold text-base hover:text-white hover:bg-white/15 hover:border-white/30 transition-[color,background-color,border-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
+              >
+                Browse Switches
+              </Link>
             </div>
+          </div>
 
-            {/* Right: featured keyboard image */}
-            {featuredKeyboard?.imageUrl && (
-              <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-bg-surface">
-                <img
-                  src={featuredKeyboard.imageUrl}
-                  alt={featuredKeyboard.name ?? "Featured keyboard"}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-              </div>
-            )}
+          {/* Stats row */}
+          <div className="hero-animate-in -delay-3 flex items-center gap-4 text-xs text-white/40 font-mono tracking-wider uppercase">
+            <span>{switchCount}+ Switches</span>
+            <span className="text-white/20">/</span>
+            <span>{keyboardCount}+ Keyboards</span>
+            <span className="text-white/20">/</span>
+            <span>AI Powered</span>
           </div>
         </div>
       </section>
@@ -300,27 +290,17 @@ export default function Home() {
               className="group block rounded-xl overflow-hidden border border-border-subtle bg-bg-primary hover:border-border-accent transition-[border-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
             >
               <div className="relative aspect-[16/9] bg-bg-elevated overflow-hidden">
-                {firstGroupBuyImage?.imageUrl ? (
-                  <>
-                    <img
-                      src={firstGroupBuyImage.imageUrl}
-                      alt="Group Buy"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                  </>
-                ) : secondKeyboard?.imageUrl ? (
-                  <>
-                    <img
-                      src={secondKeyboard.imageUrl}
-                      alt="Group Buys"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                  </>
-                ) : (
-                  <div className="w-full h-full bg-bg-elevated" />
-                )}
+                <img
+                  src="/images/feature-group-buys.webp"
+                  alt="Group Buy"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  onError={(e) => {
+                    const fallback = firstGroupBuyImage?.imageUrl || secondKeyboard?.imageUrl;
+                    if (fallback) (e.target as HTMLImageElement).src = fallback;
+                    else (e.target as HTMLImageElement).style.display = "none";
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>
               <div className="p-5">
                 <span className="inline-block text-[10px] font-bold text-accent uppercase tracking-[0.15em] font-mono mb-2">
@@ -343,18 +323,17 @@ export default function Home() {
               className="group block rounded-xl overflow-hidden border border-border-subtle bg-bg-primary hover:border-border-accent transition-[border-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
             >
               <div className="relative aspect-[16/9] bg-bg-elevated overflow-hidden">
-                {secondKeyboard?.imageUrl ? (
-                  <>
-                    <img
-                      src={secondKeyboard.imageUrl}
-                      alt="Build Wizard"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                  </>
-                ) : (
-                  <div className="w-full h-full bg-bg-elevated" />
-                )}
+                <img
+                  src="/images/feature-build-wizard.webp"
+                  alt="Build Wizard"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  onError={(e) => {
+                    const fallback = secondKeyboard?.imageUrl;
+                    if (fallback) (e.target as HTMLImageElement).src = fallback;
+                    else (e.target as HTMLImageElement).style.display = "none";
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>
               <div className="p-5">
                 <span className="inline-block text-[10px] font-bold text-accent uppercase tracking-[0.15em] font-mono mb-2">
@@ -375,18 +354,17 @@ export default function Home() {
               className="group block rounded-xl overflow-hidden border border-border-subtle bg-bg-primary hover:border-border-accent transition-[border-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
             >
               <div className="relative aspect-[16/9] bg-bg-elevated overflow-hidden">
-                {keycapImage?.imageUrl ? (
-                  <>
-                    <img
-                      src={keycapImage.imageUrl}
-                      alt="Glossary"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                  </>
-                ) : (
-                  <div className="w-full h-full bg-bg-elevated" />
-                )}
+                <img
+                  src="/images/feature-glossary.webp"
+                  alt="Glossary"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  onError={(e) => {
+                    const fallback = keycapImage?.imageUrl;
+                    if (fallback) (e.target as HTMLImageElement).src = fallback;
+                    else (e.target as HTMLImageElement).style.display = "none";
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>
               <div className="p-5">
                 <span className="inline-block text-[10px] font-bold text-accent uppercase tracking-[0.15em] font-mono mb-2">
@@ -406,18 +384,17 @@ export default function Home() {
 
       {/* ── Section 5: Full-Width Image Section ── */}
       <section className="relative overflow-hidden">
-        {thirdKeyboard?.imageUrl ? (
-          <>
-            <img
-              src={thirdKeyboard.imageUrl}
-              alt="Keyboard maintenance"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-bg-primary/95 via-bg-primary/70 to-transparent" />
-          </>
-        ) : (
-          <div className="absolute inset-0 bg-bg-elevated" />
-        )}
+        <img
+          src="/images/feature-tips-mods.webp"
+          alt="Keyboard maintenance"
+          className="absolute inset-0 w-full h-full object-cover"
+          onError={(e) => {
+            const fallback = thirdKeyboard?.imageUrl;
+            if (fallback) (e.target as HTMLImageElement).src = fallback;
+            else (e.target as HTMLImageElement).style.display = "none";
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-bg-primary/95 via-bg-primary/70 to-transparent" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-32">
           <div className="max-w-lg">
             <span className="inline-block text-[10px] font-bold text-accent uppercase tracking-[0.15em] font-mono mb-4">

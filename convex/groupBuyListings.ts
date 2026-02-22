@@ -13,10 +13,13 @@ export const list = query({
     ),
     status: v.optional(
       v.union(
+        v.literal("ic"),
         v.literal("upcoming"),
         v.literal("live"),
         v.literal("ended"),
-        v.literal("shipped")
+        v.literal("fulfilled"),
+        v.literal("shipped"),
+        v.literal("extras")
       )
     ),
     minPrice: v.optional(v.number()),
@@ -58,9 +61,11 @@ export const list = query({
 
     if (sortBy === "endingSoon") {
       results.sort((a, b) => {
-        // Live first, then upcoming, then ended/shipped
-        const statusOrder: Record<string, number> = { live: 0, upcoming: 1, ended: 2, shipped: 3 };
-        const aDiff = (statusOrder[a.status] ?? 2) - (statusOrder[b.status] ?? 2);
+        // IC first, then live, upcoming, extras, ended, fulfilled, shipped
+        const statusOrder: Record<string, number> = {
+          ic: 0, live: 1, upcoming: 2, extras: 3, ended: 4, fulfilled: 5, shipped: 6,
+        };
+        const aDiff = (statusOrder[a.status] ?? 4) - (statusOrder[b.status] ?? 4);
         if (aDiff !== 0) return aDiff;
         // Within same status, sort by end date ascending
         if (a.endDate && b.endDate) {
@@ -121,12 +126,22 @@ export const getEndingSoon = query({
   handler: async (ctx) => {
     const now = new Date();
     const sevenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-    const listings = await ctx.db
+
+    // Include live listings ending soon
+    const liveListings = await ctx.db
       .query("groupBuyListings")
       .withIndex("by_status", (q) => q.eq("status", "live"))
       .collect();
 
-    return listings
+    // Include IC listings ending soon
+    const icListings = await ctx.db
+      .query("groupBuyListings")
+      .withIndex("by_status", (q) => q.eq("status", "ic"))
+      .collect();
+
+    const allListings = [...liveListings, ...icListings];
+
+    return allListings
       .filter((l) => {
         if (!l.endDate) return false;
         const endDate = new Date(l.endDate);
@@ -160,6 +175,12 @@ export const getRecommendations = query({
       (args.excludeNames ?? []).map((n) => n.toLowerCase())
     );
 
+    // Fetch IC listings
+    const ic = await ctx.db
+      .query("groupBuyListings")
+      .withIndex("by_status", (q) => q.eq("status", "ic"))
+      .collect();
+
     // Fetch live listings
     const live = await ctx.db
       .query("groupBuyListings")
@@ -172,7 +193,13 @@ export const getRecommendations = query({
       .withIndex("by_status", (q) => q.eq("status", "upcoming"))
       .collect();
 
-    let candidates = [...live, ...upcoming].filter(
+    // Fetch extras listings
+    const extras = await ctx.db
+      .query("groupBuyListings")
+      .withIndex("by_status", (q) => q.eq("status", "extras"))
+      .collect();
+
+    let candidates = [...ic, ...live, ...upcoming, ...extras].filter(
       (l) => !excludeSet.has(l.name.toLowerCase())
     );
 

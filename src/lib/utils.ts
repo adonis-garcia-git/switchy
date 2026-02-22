@@ -30,3 +30,10 @@ export function generateGoogleSearchUrl(brand: string, name: string, type: "swit
   const query = encodeURIComponent(`${brand} ${name} mechanical ${type} buy`);
   return `https://www.google.com/search?q=${query}`;
 }
+
+export function monthsUntil(dateStr: string): number {
+  const target = new Date(dateStr);
+  const now = new Date();
+  const months = (target.getFullYear() - now.getFullYear()) * 12 + (target.getMonth() - now.getMonth());
+  return Math.max(0, months);
+}

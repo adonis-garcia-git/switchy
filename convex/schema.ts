@@ -207,10 +207,13 @@ export default defineSchema({
       v.literal("accessories")
     ),
     status: v.union(
+      v.literal("ic"),
       v.literal("upcoming"),
       v.literal("live"),
       v.literal("ended"),
-      v.literal("shipped")
+      v.literal("fulfilled"),
+      v.literal("shipped"),
+      v.literal("extras")
     ),
     priceMin: v.number(),
     priceMax: v.optional(v.number()),
@@ -221,6 +224,12 @@ export default defineSchema({
     tags: v.optional(v.array(v.string())),
     trackingCount: v.number(),
     isFeatured: v.optional(v.boolean()),
+    icUrl: v.optional(v.string()),
+    moqTarget: v.optional(v.number()),
+    moqCurrent: v.optional(v.number()),
+    aftermarketUrl: v.optional(v.string()),
+    extrasUrl: v.optional(v.string()),
+    estimatedWaitMonths: v.optional(v.number()),
   })
     .index("by_status", ["status"])
     .index("by_productType", ["productType"])

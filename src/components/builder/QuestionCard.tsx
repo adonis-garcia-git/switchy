@@ -160,44 +160,91 @@ export function QuestionCard({ question, onAnswer, isActive }: QuestionCardProps
       )}
 
       {/* Slider */}
-      {question.type === "slider" && question.sliderConfig && (
-        <div className="space-y-6">
-          <div className="text-center">
-            <span className="text-4xl font-bold font-[family-name:var(--font-mono)] text-accent">
-              {question.sliderConfig.unit}{sliderValue}
-            </span>
-          </div>
-          <div className="relative px-2">
-            <input
-              type="range"
-              min={question.sliderConfig.min}
-              max={question.sliderConfig.max}
-              step={question.sliderConfig.step}
-              value={sliderValue}
-              onChange={(e) => setSliderValue(Number(e.target.value))}
-              className="w-full h-2 rounded-full appearance-none bg-bg-elevated cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-bg-primary [&::-webkit-slider-thumb]:shadow-[0_0_12px_rgba(232,89,12,0.4)] [&::-webkit-slider-thumb]:cursor-pointer"
-            />
-            {question.sliderConfig.labels && (
-              <div className="flex justify-between mt-3 px-1">
-                {question.sliderConfig.labels.map((label) => (
-                  <div key={label.value} className="text-center">
-                    <p className="text-[10px] text-text-muted font-mono">{question.sliderConfig!.unit}{label.value}</p>
-                    <p className="text-[10px] text-text-muted">{label.label}</p>
-                  </div>
-                ))}
+      {question.type === "slider" && question.sliderConfig && (() => {
+        const { min, max, step, unit, labels } = question.sliderConfig;
+        const range = max - min;
+        const fillPercent = ((sliderValue - min) / range) * 100;
+
+        // Find the active tier label based on current value
+        const activeTier = labels
+          ?.slice()
+          .reverse()
+          .find((l) => sliderValue >= l.value);
+
+        return (
+          <div className="space-y-5">
+            {/* Value display */}
+            <div className="flex flex-col items-center gap-1.5">
+              <span className="text-4xl font-bold font-[family-name:var(--font-mono)] text-accent tabular-nums tracking-tight">
+                {unit}{sliderValue}
+              </span>
+              {activeTier && (
+                <span className="text-xs font-medium text-text-secondary uppercase tracking-wider">
+                  {activeTier.label}
+                </span>
+              )}
+            </div>
+
+            {/* Track + slider */}
+            <div className="relative px-1">
+              {/* Custom filled track behind the native input */}
+              <div className="absolute top-1/2 left-1 right-1 -translate-y-1/2 h-2 rounded-full bg-bg-elevated pointer-events-none">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-accent/70 to-accent transition-[width] duration-75"
+                  style={{ width: `${fillPercent}%` }}
+                />
               </div>
-            )}
+              <input
+                type="range"
+                min={min}
+                max={max}
+                step={step}
+                value={sliderValue}
+                onChange={(e) => setSliderValue(Number(e.target.value))}
+                className="relative w-full h-2 rounded-full appearance-none bg-transparent cursor-pointer z-[1] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-bg-primary [&::-webkit-slider-thumb]:shadow-[0_0_12px_rgba(232,89,12,0.4)] [&::-webkit-slider-thumb]:cursor-pointer"
+              />
+
+              {/* Labels positioned at their actual values along the track */}
+              {labels && labels.length > 0 && (
+                <div className="relative w-full mt-4 h-8">
+                  {labels.map((label) => {
+                    const pct = ((label.value - min) / range) * 100;
+                    return (
+                      <div
+                        key={label.value}
+                        className="absolute flex flex-col items-center -translate-x-1/2"
+                        style={{ left: `${pct}%` }}
+                      >
+                        <span className="text-[10px] text-text-muted font-[family-name:var(--font-mono)] whitespace-nowrap">
+                          {unit}{label.value}
+                        </span>
+                        <span className="text-[10px] text-text-muted whitespace-nowrap">
+                          {label.label}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Min / max range indicators */}
+            <div className="flex justify-between px-1 -mt-2">
+              <span className="text-[10px] text-text-muted/50 font-[family-name:var(--font-mono)]">{unit}{min}</span>
+              <span className="text-[10px] text-text-muted/50 font-[family-name:var(--font-mono)]">{unit}{max}</span>
+            </div>
+
+            <div className="text-center pt-1">
+              <button
+                onClick={handleSliderConfirm}
+                className="px-6 py-2.5 rounded-xl font-semibold text-sm bg-accent text-bg-primary hover:bg-accent-hover transition-[background-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
+              >
+                Continue
+              </button>
+            </div>
           </div>
-          <div className="text-center">
-            <button
-              onClick={handleSliderConfirm}
-              className="px-6 py-2.5 rounded-xl font-semibold text-sm bg-accent text-bg-primary hover:bg-accent-hover transition-[background-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
-            >
-              Continue
-            </button>
-          </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }

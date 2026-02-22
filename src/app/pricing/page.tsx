@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useAction } from "convex/react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "../../../convex/_generated/api";
@@ -48,11 +49,9 @@ export default function PricingPage() {
   const { isSignedIn } = useUser();
   const { isPro, isLoading } = useSubscription();
   const [loadingCheckout, setLoadingCheckout] = useState(false);
-  const [loadingPortal, setLoadingPortal] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const createCheckout = useAction(api.stripe.createCheckoutSession);
-  const createPortal = useAction(api.stripe.createBillingPortalSession);
 
   const handleUpgrade = async () => {
     setLoadingCheckout(true);
@@ -62,17 +61,6 @@ export default function PricingPage() {
     } catch (err) {
       console.error("Failed to create checkout:", err);
       setLoadingCheckout(false);
-    }
-  };
-
-  const handleManage = async () => {
-    setLoadingPortal(true);
-    try {
-      const { url } = await createPortal({});
-      window.location.href = url;
-    } catch (err) {
-      console.error("Failed to open billing portal:", err);
-      setLoadingPortal(false);
     }
   };
 
@@ -165,14 +153,11 @@ export default function PricingPage() {
             </ul>
 
             {!isLoading && isPro ? (
-              <Button
-                variant="secondary"
-                className="w-full"
-                onClick={handleManage}
-                loading={loadingPortal}
-              >
-                Manage Subscription
-              </Button>
+              <Link href="/account">
+                <Button variant="secondary" className="w-full">
+                  Manage Subscription
+                </Button>
+              </Link>
             ) : (
               <Button
                 className="w-full"
@@ -292,9 +277,11 @@ export default function PricingPage() {
             </p>
             <div className="mt-6">
               {!isLoading && isPro ? (
-                <Button variant="secondary" onClick={handleManage} loading={loadingPortal}>
-                  Manage Subscription
-                </Button>
+                <Link href="/account">
+                  <Button variant="secondary">
+                    Manage Subscription
+                  </Button>
+                </Link>
               ) : (
                 <Button onClick={isSignedIn ? handleUpgrade : undefined} loading={loadingCheckout}>
                   {isSignedIn ? "Get Started with Pro" : "Sign in to get started"}

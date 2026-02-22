@@ -39,7 +39,7 @@ export function StudioPresetGallery({ activeColorway, onApply }: StudioPresetGal
               "hover:scale-[1.04] active:scale-[0.97]",
               activeColorway === key
                 ? "border-accent/50 bg-accent/[0.06] shadow-[0_0_12px_rgba(232,89,12,0.12)]"
-                : "border-white/[0.06] hover:border-white/[0.12] bg-white/[0.02]"
+                : "border-border-subtle hover:border-border-default bg-bg-tint"
             )}
             title={colorway.name}
           >
@@ -110,7 +110,7 @@ export function StudioPresetGalleryFull({ activeColorway, onApply }: StudioPrese
           placeholder="Search colorways..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-8 pr-3 py-2 text-xs bg-white/[0.04] border border-white/[0.08] rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent/40 transition-colors duration-150"
+          className="w-full pl-8 pr-3 py-2 text-xs bg-bg-tint border border-border-default rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent/40 transition-colors duration-150"
         />
       </div>
 
@@ -126,7 +126,7 @@ export function StudioPresetGalleryFull({ activeColorway, onApply }: StudioPrese
               "hover:scale-[1.03] active:scale-[0.97]",
               activeColorway === key
                 ? "border-accent/50 bg-accent/[0.08] shadow-[0_0_16px_rgba(232,89,12,0.15)]"
-                : "border-white/[0.06] hover:border-white/[0.12] bg-white/[0.02]"
+                : "border-border-subtle hover:border-border-default bg-bg-tint"
             )}
             title={colorway.name}
           >

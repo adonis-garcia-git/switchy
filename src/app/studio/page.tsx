@@ -8,6 +8,7 @@ import { StudioActionBar } from "@/components/studio/StudioActionBar";
 import { StudioMobileDrawer } from "@/components/studio/StudioMobileDrawer";
 import { StudioControls } from "@/components/studio/StudioControls";
 import { StudioPresetGalleryFull } from "@/components/studio/StudioPresetGallery";
+import { StudioSceneOverlay } from "@/components/studio/StudioSceneOverlay";
 import { ToastContainer } from "@/components/ui/Toast";
 import { Tabs } from "@/components/ui/Tabs";
 import { useToast } from "@/hooks/useToast";
@@ -107,11 +108,13 @@ function StudioPageInner() {
 
       {/* ── Desktop: radial vignette for sidebar readability ── */}
       <div
-        className="hidden lg:block absolute inset-0 pointer-events-none"
-        style={{
-          background: `radial-gradient(ellipse 50% 70% at 20% 50%, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.25) 55%, transparent 100%)`,
-        }}
+        className="hidden lg:block absolute inset-0 pointer-events-none studio-vignette"
       />
+
+      {/* ── Desktop: Scene overlay (top-right) ── */}
+      <div className="hidden lg:block absolute top-4 right-5 z-20">
+        <StudioSceneOverlay config={config} onUpdate={handleConfigUpdate} />
+      </div>
 
       {/* ── Desktop: Sidebar (floats above 3D scene) ── */}
       <div className="hidden lg:flex flex-col relative z-10 w-[320px] h-full px-5 py-5">
@@ -126,7 +129,7 @@ function StudioPageInner() {
         </div>
 
         {/* Desktop action bar */}
-        <div className="shrink-0 pt-4 border-t border-white/[0.06]">
+        <div className="shrink-0 pt-4 border-t border-border-subtle">
           <StudioActionBar
             config={config}
             onShareToast={() => showToast({ message: "Link copied to clipboard!", variant: "success" })}
@@ -156,7 +159,7 @@ function StudioPageInner() {
               ]}
               activeTab={studioMode}
               onChange={(v) => handleModeChange(v as StudioMode)}
-              className="bg-black/20 border-white/[0.08]"
+              className="bg-bg-tint border-border-default"
             />
           </div>
 

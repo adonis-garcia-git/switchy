@@ -47,8 +47,8 @@ export function StudioActionBar({
         onClick={handleShare}
         className={cn(
           "flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold",
-          "bg-white/[0.06] border border-white/[0.1] text-text-primary backdrop-blur-md",
-          "hover:bg-white/[0.1] hover:border-white/[0.16] active:scale-[0.97]",
+          "bg-bg-tint border border-border-default text-text-primary backdrop-blur-md",
+          "hover:bg-bg-tint-strong hover:border-border-default active:scale-[0.97]",
           "transition-[background-color,border-color,transform] duration-150",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
         )}

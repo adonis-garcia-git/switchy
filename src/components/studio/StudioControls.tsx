@@ -27,7 +27,7 @@ export function StudioColorPicker({ label, value, onChange }: StudioColorPickerP
         {label}
       </label>
       <div className="flex items-center gap-2">
-        <label className="relative w-8 h-8 rounded-lg overflow-hidden border border-white/10 cursor-pointer group shrink-0">
+        <label className="relative w-8 h-8 rounded-lg overflow-hidden border border-border-default cursor-pointer group shrink-0">
           <input
             type="color"
             value={value}
@@ -35,7 +35,7 @@ export function StudioColorPicker({ label, value, onChange }: StudioColorPickerP
             className="absolute inset-0 w-full h-full cursor-pointer opacity-0"
           />
           <div className="w-full h-full" style={{ backgroundColor: value }} />
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-white/10 transition-opacity duration-150" />
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-bg-tint-strong transition-opacity duration-150" />
         </label>
         <input
           type="text"
@@ -52,7 +52,7 @@ export function StudioColorPicker({ label, value, onChange }: StudioColorPickerP
               setTextValue(value);
             }
           }}
-          className="flex-1 px-2.5 py-1.5 text-xs font-mono bg-white/[0.04] border border-white/[0.08] rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent/40 transition-colors duration-150"
+          className="flex-1 px-2.5 py-1.5 text-xs font-mono bg-bg-tint border border-border-default rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:border-accent/40 transition-colors duration-150"
           placeholder="#000000"
           maxLength={7}
         />
@@ -77,7 +77,7 @@ export function StudioSelect({ label, value, options, onChange }: StudioSelectPr
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-2.5 py-1.5 text-xs font-medium bg-white/[0.04] border border-white/[0.08] rounded-lg text-text-primary focus:outline-none focus:border-accent/40 transition-colors duration-150 cursor-pointer appearance-none"
+        className="w-full px-2.5 py-1.5 text-xs font-medium bg-bg-tint border border-border-default rounded-lg text-text-primary focus:outline-none focus:border-accent/40 transition-colors duration-150 cursor-pointer appearance-none"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`,
           backgroundRepeat: "no-repeat",
@@ -119,7 +119,7 @@ export function StudioPillGroup({ label, value, options, onChange }: StudioPillG
               "active:scale-[0.96]",
               value === opt.value
                 ? "bg-accent/15 text-accent border border-accent/30"
-                : "bg-white/[0.04] text-text-secondary border border-white/[0.06] hover:bg-white/[0.08] hover:text-text-primary"
+                : "bg-bg-tint text-text-secondary border border-border-subtle hover:bg-bg-tint-strong hover:text-text-primary"
             )}
           >
             {opt.label}
@@ -159,9 +159,9 @@ export function StudioSlider({ label, value, min, max, step, onChange, formatVal
         step={step}
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="w-full h-1.5 rounded-full appearance-none cursor-pointer accent-accent bg-white/[0.08]"
+        className="w-full h-1.5 rounded-full appearance-none cursor-pointer accent-accent bg-bg-tint-strong"
         style={{
-          background: `linear-gradient(to right, var(--color-accent) 0%, var(--color-accent) ${percent}%, rgba(255,255,255,0.08) ${percent}%, rgba(255,255,255,0.08) 100%)`,
+          background: `linear-gradient(to right, var(--color-accent) 0%, var(--color-accent) ${percent}%, var(--color-bg-tint-strong) ${percent}%, var(--color-bg-tint-strong) 100%)`,
         }}
       />
     </div>
@@ -186,7 +186,7 @@ export function StudioToggle({ label, value, onChange }: StudioToggleProps) {
       <div
         className={cn(
           "relative w-8 h-[18px] rounded-full transition-colors duration-200 shrink-0",
-          value ? "bg-accent" : "bg-white/[0.12]"
+          value ? "bg-accent" : "bg-bg-tint-strong"
         )}
       >
         <div
@@ -246,13 +246,6 @@ const IconRGB = () => (
   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-full h-full">
     <circle cx="8" cy="8" r="5.5" />
     <path d="M8 2.5v2M8 11.5v2M2.5 8h2M11.5 8h2" />
-  </svg>
-);
-
-const IconScene = () => (
-  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-full h-full">
-    <circle cx="8" cy="6" r="3" />
-    <path d="M2 13l3-4 2 2 3-3.5 4 5.5" />
   </svg>
 );
 
@@ -476,72 +469,6 @@ export function StudioControls({ config, onUpdate }: StudioControlsProps) {
               step={0.05}
               onChange={(v) => update("rgbBrightness", v)}
               formatValue={(v) => `${Math.round(v * 100)}%`}
-            />
-          </div>
-        )}
-      </StudioAccordion>
-
-      {/* Scene */}
-      <StudioAccordion title="Scene" icon={<IconScene />}>
-        <StudioPillGroup
-          label="Environment"
-          value={config.environment || "studio"}
-          options={[
-            { value: "studio", label: "Studio" },
-            { value: "city", label: "City" },
-            { value: "sunset", label: "Sunset" },
-            { value: "dawn", label: "Dawn" },
-            { value: "apartment", label: "Apartment" },
-            { value: "warehouse", label: "Warehouse" },
-          ]}
-          onChange={(v) => update("environment", v as KeyboardViewerConfig["environment"])}
-        />
-        <StudioPillGroup
-          label="Camera"
-          value={config.cameraPreset || "default"}
-          options={[
-            { value: "default", label: "Default" },
-            { value: "top-down", label: "Top Down" },
-            { value: "hero", label: "Hero" },
-            { value: "side", label: "Side" },
-            { value: "closeup", label: "Closeup" },
-            { value: "freeform", label: "Freeform" },
-          ]}
-          onChange={(v) => update("cameraPreset", v as KeyboardViewerConfig["cameraPreset"])}
-        />
-        <StudioSlider
-          label="Typing Angle"
-          value={config.typingAngle ?? 6}
-          min={0}
-          max={12}
-          step={1}
-          onChange={(v) => update("typingAngle", v)}
-          formatValue={(v) => `${v}°`}
-        />
-        <StudioToggle
-          label="Show Desk"
-          value={config.showDesk ?? false}
-          onChange={(v) => update("showDesk", v)}
-        />
-        {config.showDesk && (
-          <div className="space-y-3 mt-1">
-            <StudioColorPicker
-              label="Desk Color"
-              value={config.deskColor || "#3d3d3d"}
-              onChange={(v) => update("deskColor", v)}
-            />
-            <StudioPillGroup
-              label="Desk Material"
-              value={config.deskMaterial || "wood"}
-              options={[
-                { value: "wood", label: "Wood" },
-                { value: "marble", label: "Marble" },
-                { value: "leather", label: "Leather" },
-                { value: "concrete", label: "Concrete" },
-                { value: "fabric", label: "Fabric" },
-                { value: "metal", label: "Metal" },
-              ]}
-              onChange={(v) => update("deskMaterial", v as KeyboardViewerConfig["deskMaterial"])}
             />
           </div>
         )}

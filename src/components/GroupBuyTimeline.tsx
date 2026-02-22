@@ -28,20 +28,44 @@ const TYPE_PILL_STYLES: Record<string, string> = {
 
 const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+type ZoomLevel = 6 | 12 | 18 | 0;
+
+const ZOOM_OPTIONS: { value: ZoomLevel; label: string }[] = [
+  { value: 6, label: "6mo" },
+  { value: 12, label: "12mo" },
+  { value: 18, label: "18mo" },
+  { value: 0, label: "All" },
+];
+
 export function GroupBuyTimeline({ entries }: { entries: TimelineEntry[] }) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [zoom, setZoom] = useState<ZoomLevel>(0);
 
   const activeEntries = useMemo(
     () => entries.filter((e) => e.status !== "delivered"),
     [entries]
   );
 
+  // Determine how many months to show based on zoom level and data
+  const monthCount = useMemo(() => {
+    if (zoom !== 0) return zoom;
+    // Auto: determine from data range
+    const now = new Date();
+    let maxMonths = 6;
+    for (const entry of activeEntries) {
+      const shipDate = new Date(entry.estimatedShipDate);
+      const diffMonths = (shipDate.getFullYear() - now.getFullYear()) * 12 + (shipDate.getMonth() - now.getMonth()) + 1;
+      if (diffMonths > maxMonths) maxMonths = diffMonths;
+    }
+    return Math.min(24, Math.max(6, maxMonths));
+  }, [activeEntries, zoom]);
+
   const { months, positioned, todayPct } = useMemo(() => {
     const now = new Date();
     const startMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const months: { label: string; start: Date; end: Date }[] = [];
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < monthCount; i++) {
       const m = new Date(startMonth.getFullYear(), startMonth.getMonth() + i, 1);
       const mEnd = new Date(m.getFullYear(), m.getMonth() + 1, 0);
       months.push({
@@ -74,27 +98,66 @@ export function GroupBuyTimeline({ entries }: { entries: TimelineEntry[] }) {
     });
 
     return { months, positioned, todayPct };
-  }, [activeEntries]);
+  }, [activeEntries, monthCount]);
 
   if (activeEntries.length === 0) return null;
 
+  // At wider ranges, compress labels (show every other)
+  const showEveryOther = monthCount > 12;
+
   return (
     <div className="rounded-xl border border-border-subtle bg-bg-surface p-5 mb-6">
-      <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-5">
-        Delivery Timeline
-      </h3>
+      <div className="flex items-center justify-between mb-5">
+        <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider">
+          Delivery Timeline
+        </h3>
+        {/* Zoom controls */}
+        <div className="flex items-center gap-1">
+          {ZOOM_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => setZoom(opt.value)}
+              className={cn(
+                "text-[10px] font-semibold px-2 py-1 rounded-md transition-colors duration-150",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                "active:scale-[0.95]",
+                zoom === opt.value
+                  ? "bg-accent/15 text-accent border border-accent/25"
+                  : "text-text-muted hover:text-text-secondary hover:bg-bg-elevated border border-transparent"
+              )}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="relative">
         {/* Month grid */}
-        <div className="flex border-b border-border-subtle mb-6">
-          {months.map((m, i) => (
-            <div
-              key={i}
-              className="flex-1 text-center pb-2 border-l border-border-subtle first:border-l-0"
-            >
-              <span className="text-[10px] text-text-muted font-medium">{m.label}</span>
-            </div>
-          ))}
+        <div className="flex border-b border-border-subtle mb-6 overflow-hidden">
+          {months.map((m, i) => {
+            if (showEveryOther && i % 2 !== 0) {
+              return (
+                <div
+                  key={i}
+                  className="flex-1 text-center pb-2 border-l border-border-subtle"
+                >
+                  <span className="text-[10px] text-transparent select-none">.</span>
+                </div>
+              );
+            }
+            return (
+              <div
+                key={i}
+                className={cn(
+                  "text-center pb-2 border-l border-border-subtle first:border-l-0",
+                  showEveryOther ? "flex-[2]" : "flex-1"
+                )}
+              >
+                <span className="text-[10px] text-text-muted font-medium">{m.label}</span>
+              </div>
+            );
+          })}
         </div>
 
         {/* Track */}

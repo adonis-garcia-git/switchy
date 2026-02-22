@@ -8,6 +8,7 @@ interface EndingSoonListing {
   vendor: string;
   endDate?: string;
   imageUrl?: string;
+  status?: string;
 }
 
 interface GroupBuyEndingSoonProps {
@@ -52,7 +53,12 @@ export function GroupBuyEndingSoon({ listings, trackedIds, onTrackThis }: GroupB
                 </p>
                 <p className="text-xs text-text-muted truncate mt-0.5">{listing.vendor}</p>
                 {days !== null && (
-                  <div className="mt-1.5">
+                  <div className="mt-1.5 flex items-center gap-1.5">
+                    {listing.status === "ic" && (
+                      <span className="text-[9px] font-bold uppercase tracking-wider text-sky-400 bg-sky-400/10 px-1.5 py-0.5 rounded-md whitespace-nowrap">
+                        IC
+                      </span>
+                    )}
                     <span className={cn(
                       "text-[10px] font-bold uppercase tracking-wider whitespace-nowrap px-2 py-0.5 rounded-md",
                       days <= 2

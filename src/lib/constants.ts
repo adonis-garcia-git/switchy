@@ -58,10 +58,13 @@ export const KEYCAP_MATERIALS = [
 ] as const;
 
 export const GROUP_BUY_LISTING_STATUS_COLORS = {
+  ic: { bg: "bg-sky-500/15", text: "text-sky-400", border: "border-sky-500/25", label: "Interest Check" },
   upcoming: { bg: "bg-blue-500/15", text: "text-blue-400", border: "border-blue-500/25", label: "Upcoming" },
   live: { bg: "bg-emerald-500/15", text: "text-emerald-400", border: "border-emerald-500/25", label: "Live" },
   ended: { bg: "bg-zinc-500/15", text: "text-zinc-400", border: "border-zinc-500/25", label: "Ended" },
+  fulfilled: { bg: "bg-violet-500/15", text: "text-violet-400", border: "border-violet-500/25", label: "Fulfilled" },
   shipped: { bg: "bg-purple-500/15", text: "text-purple-400", border: "border-purple-500/25", label: "Shipped" },
+  extras: { bg: "bg-teal-500/15", text: "text-teal-400", border: "border-teal-500/25", label: "Extras Available" },
 } as const;
 
 export const GROUP_BUY_PRODUCT_TYPES = [

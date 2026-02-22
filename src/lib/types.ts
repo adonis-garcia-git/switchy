@@ -341,7 +341,7 @@ export interface CustomBuildSelections {
 }
 
 // Group Buy Listing types
-export type GroupBuyListingStatus = "upcoming" | "live" | "ended" | "shipped";
+export type GroupBuyListingStatus = "ic" | "upcoming" | "live" | "ended" | "fulfilled" | "shipped" | "extras";
 export type GroupBuyListingProductType = "keyboard" | "switches" | "keycaps" | "accessories";
 
 export interface GroupBuyListingData {
@@ -363,6 +363,12 @@ export interface GroupBuyListingData {
   tags?: string[];
   trackingCount: number;
   isFeatured?: boolean;
+  icUrl?: string;
+  moqTarget?: number;
+  moqCurrent?: number;
+  aftermarketUrl?: string;
+  extrasUrl?: string;
+  estimatedWaitMonths?: number;
 }
 
 export interface GroupBuyListingFilterState {

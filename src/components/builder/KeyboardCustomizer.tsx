@@ -30,12 +30,13 @@ interface KeyboardCustomizerProps {
 }
 
 // Row counts per layout for quick-select
+// Must match actual key counts from generateLayout() in KeyboardModel.tsx
 const ROW_COUNTS: Record<string, number[]> = {
   "60": [14, 14, 13, 12, 8],
   "65": [15, 14, 13, 13, 9],
   "75": [14, 15, 14, 13, 13, 9],
-  "tkl": [13, 17, 17, 16, 15, 12],
-  "full": [17, 21, 21, 19, 19, 15],
+  "tkl": [13, 18, 17, 16, 16, 9],
+  "full": [17, 22, 20, 20, 18, 9],
 };
 
 // Legend arrays for zone lookup
@@ -84,6 +85,21 @@ export function KeyboardCustomizer({
   const [paintMode, setPaintMode] = useState(false);
   const [activeTab, setActiveTab] = useState("colors");
   const [activeColor, setActiveColor] = useState("#E8590C");
+
+  // Mode change handler — "all" immediately selects every key
+  const handleModeChange = useCallback((mode: SelectionMode) => {
+    setSelectionMode(mode);
+    if (mode === "all") {
+      const allKeys = new Set<string>();
+      const rowCounts = ROW_COUNTS[viewerConfig.size] || ROW_COUNTS["65"];
+      rowCounts.forEach((count, rowIdx) => {
+        for (let k = 0; k < count; k++) {
+          allKeys.add(makeKeyId(rowIdx, k));
+        }
+      });
+      setSelectedKeys(allKeys);
+    }
+  }, [viewerConfig.size]);
 
   const {
     state: overrides,
@@ -284,7 +300,7 @@ export function KeyboardCustomizer({
         {/* Selection toolbar */}
         <KeySelectionToolbar
           mode={selectionMode}
-          onModeChange={setSelectionMode}
+          onModeChange={handleModeChange}
           selectedCount={selectedKeys.size}
           onUndo={handleUndo}
           onRedo={handleRedo}
@@ -323,7 +339,7 @@ export function KeyboardCustomizer({
         <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10">
           <KeySelectionToolbar
             mode={selectionMode}
-            onModeChange={setSelectionMode}
+            onModeChange={handleModeChange}
             selectedCount={selectedKeys.size}
             onUndo={handleUndo}
             onRedo={handleRedo}

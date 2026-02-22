@@ -83,7 +83,7 @@ export function StudioMobileDrawer({ children, actionBar }: StudioMobileDrawerPr
     <div
       ref={containerRef}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-20 bg-bg-surface/95 backdrop-blur-xl border-t border-white/[0.08] rounded-t-2xl shadow-floating",
+        "fixed inset-x-0 bottom-0 z-20 bg-bg-surface/95 backdrop-blur-xl border-t border-border-default rounded-t-2xl shadow-floating",
         !dragging && "transition-transform duration-300 ease-out"
       )}
       style={{
@@ -100,7 +100,7 @@ export function StudioMobileDrawer({ children, actionBar }: StudioMobileDrawerPr
         onPointerCancel={handlePointerUp}
         onClick={toggleSnap}
       >
-        <div className="w-10 h-1 rounded-full bg-white/20" />
+        <div className="w-10 h-1 rounded-full bg-text-muted" />
       </div>
 
       {/* Action bar (always visible) */}

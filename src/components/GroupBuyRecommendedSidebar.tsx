@@ -62,9 +62,13 @@ function RecommendationCard({
             "absolute top-2 left-2 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md backdrop-blur-sm",
             listing.status === "live"
               ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/20"
+              : listing.status === "ic"
+              ? "bg-sky-500/20 text-sky-300 border border-sky-400/20"
+              : listing.status === "extras"
+              ? "bg-teal-500/20 text-teal-300 border border-teal-400/20"
               : "bg-amber-500/20 text-amber-300 border border-amber-400/20"
           )}>
-            {listing.status === "live" ? "Live" : "Upcoming"}
+            {listing.status === "live" ? "Live" : listing.status === "ic" ? "IC" : listing.status === "extras" ? "Extras" : "Upcoming"}
           </span>
         </div>
 
@@ -138,9 +142,13 @@ function RecommendationCard({
           "absolute top-2.5 left-2.5 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md backdrop-blur-sm",
           listing.status === "live"
             ? "bg-emerald-500/25 text-emerald-300 border border-emerald-400/25"
+            : listing.status === "ic"
+            ? "bg-sky-500/25 text-sky-300 border border-sky-400/25"
+            : listing.status === "extras"
+            ? "bg-teal-500/25 text-teal-300 border border-teal-400/25"
             : "bg-amber-500/25 text-amber-300 border border-amber-400/25"
         )}>
-          {listing.status === "live" ? "Live Now" : "Upcoming"}
+          {listing.status === "live" ? "Live Now" : listing.status === "ic" ? "Interest Check" : listing.status === "extras" ? "Extras" : "Upcoming"}
         </span>
         {/* Tracking count badge */}
         {listing.trackingCount > 0 && (

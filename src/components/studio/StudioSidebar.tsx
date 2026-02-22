@@ -45,7 +45,7 @@ export function StudioSidebar({
           ]}
           activeTab={studioMode}
           onChange={(v) => onModeChange(v as StudioMode)}
-          className="bg-black/20 border-white/[0.08]"
+          className="bg-bg-tint border-border-default"
         />
       </div>
 
