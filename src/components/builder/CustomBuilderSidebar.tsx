@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { cn, formatPriceWhole } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
+import { SIZE_DISPLAY_LABELS } from "@/lib/constants";
 import type { CustomBuildSelections, CustomBuilderStep, ComponentData } from "@/lib/types";
 
 interface CustomBuilderSidebarProps {
@@ -37,7 +38,9 @@ function isStepComplete(step: CustomBuilderStep, selections: CustomBuildSelectio
 function getStepSummary(step: CustomBuilderStep, selections: CustomBuildSelections, switchCount: number): string | null {
   switch (step) {
     case "keyboard":
-      return selections.keyboard ? `${selections.keyboard.brand} ${selections.keyboard.name}` : null;
+      return selections.keyboard
+        ? `${selections.keyboard.brand} ${selections.keyboard.name} (${SIZE_DISPLAY_LABELS[selections.keyboard.size] || selections.keyboard.size})`
+        : null;
     case "switches":
       return selections.switches ? `${selections.switches.brand} ${selections.switches.name} (${switchCount}x)` : null;
     case "keycaps":
@@ -61,7 +64,7 @@ function getStepSummary(step: CustomBuilderStep, selections: CustomBuildSelectio
 export function getSwitchCount(size: string): number {
   const sizeMap: Record<string, number> = {
     "60%": 61, "65%": 68, "75%": 84, "TKL": 87, "80%": 87,
-    "Full-size": 104, "100%": 104, "96%": 99, "40%": 47,
+    "Full-size": 104, "100%": 104, "96%": 99, "1800": 99, "40%": 47,
   };
   return sizeMap[size] || 70;
 }

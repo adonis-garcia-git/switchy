@@ -89,7 +89,7 @@ export function SwitchPicker({ selected, onSelect, switchCount }: SwitchPickerPr
         {filtered.length} switch{filtered.length !== 1 ? "es" : ""} found
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[calc(100vh-26rem)] overflow-y-auto pr-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {filtered.map((sw) => {
           const totalPrice = sw.pricePerSwitch * switchCount;
           return (
@@ -97,6 +97,8 @@ export function SwitchPicker({ selected, onSelect, switchCount }: SwitchPickerPr
               key={sw._id}
               selected={selected?._id === sw._id}
               onClick={() => onSelect(sw)}
+              imageUrl={sw.imageUrl}
+              imageAlt={`${sw.brand} ${sw.name}`}
             >
               <div className="pr-6">
                 <div className="flex items-center gap-2 mb-1">

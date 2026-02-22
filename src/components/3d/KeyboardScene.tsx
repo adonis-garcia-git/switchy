@@ -2,7 +2,7 @@
 
 import { Suspense, useMemo, useEffect } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
 import { EffectComposer, N8AO, Bloom, ToneMapping } from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
@@ -68,15 +68,8 @@ export function KeyboardScene({
   onKeySelect,
   onKeyPaint,
 }: KeyboardSceneProps) {
-  // Continuous rendering when RGB is animating or interactive
-  const needsAnimation = useMemo(() => {
-    if (interactive || selectionMode) return true;
-    if (config.hasRGB && config.rgbMode && config.rgbMode !== "static") return true;
-    if (config.cameraPreset && config.cameraPreset !== "default") return true;
-    return false;
-  }, [interactive, selectionMode, config.hasRGB, config.rgbMode, config.cameraPreset]);
-
-  const frameloop = needsAnimation || autoRotate ? "always" : "demand";
+  // Always animate — idle floating, RGB, interactions all need continuous rendering
+  const frameloop = "always" as const;
 
   return (
     <Canvas
@@ -106,6 +99,17 @@ export function KeyboardScene({
           cameraPreset={config.cameraPreset || "default"}
         />
       </Suspense>
+
+      {/* ── Contact Shadows for natural grounding ── */}
+      <ContactShadows
+        position={[0, -1.3, 0]}
+        opacity={0.4}
+        blur={2.5}
+        scale={40}
+        far={4}
+        resolution={256}
+        color="#000000"
+      />
 
       {/* ── Post-Processing Pipeline (Phase 1) ── */}
       {compactMode ? (

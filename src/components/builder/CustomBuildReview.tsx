@@ -13,6 +13,7 @@ import {
   predictSoundProfile,
   predictDifficulty,
 } from "./CustomBuilderSidebar";
+import { SIZE_DISPLAY_LABELS } from "@/lib/constants";
 import type { CustomBuildSelections, BuildData } from "@/lib/types";
 
 interface CustomBuildReviewProps {
@@ -47,7 +48,7 @@ function assembleBuildData(
   const stabName = selections.stabilizer?.name || "No stabilizer selected";
 
   return {
-    buildName: `Custom ${selections.keyboard?.size || ""} Build`.trim(),
+    buildName: `Custom ${selections.keyboard ? (SIZE_DISPLAY_LABELS[selections.keyboard.size] || selections.keyboard.size) : ""} Build`.trim(),
     summary: `Hand-picked build with ${swName} switches in a ${kbName} kit, ${keycapName} keycaps.`,
     components: {
       keyboardKit: {
@@ -205,9 +206,11 @@ export function CustomBuildReview({
           price={build.components.keyboardKit.price}
           reason={
             selections.keyboard
-              ? `${selections.keyboard.size} / ${selections.keyboard.caseMaterial}${selections.keyboard.hotSwap ? " / Hot-swap" : ""}`
+              ? `${SIZE_DISPLAY_LABELS[selections.keyboard.size] || selections.keyboard.size}${selections.keyboard.caseMaterial && selections.keyboard.caseMaterial !== "Unknown" ? ` / ${selections.keyboard.caseMaterial}` : ""}${selections.keyboard.hotSwap ? " / Hot-swap" : ""}`
               : "Not selected"
           }
+          imageUrl={selections.keyboard?.imageUrl}
+          productUrl={selections.keyboard?.productUrl}
         />
         <ComponentCard
           type="switches"
@@ -220,6 +223,8 @@ export function CustomBuildReview({
           }
           quantity={build.components.switches.quantity}
           priceEach={build.components.switches.priceEach}
+          imageUrl={selections.switches?.imageUrl}
+          productUrl={selections.switches?.productUrl}
         />
         <ComponentCard
           type="keycaps"

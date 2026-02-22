@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
-export type KeycapProfile = "cherry" | "sa" | "dsa" | "mt3";
+export type KeycapProfile = "cherry" | "sa" | "dsa" | "mt3" | "oem" | "kat" | "xda";
 
 interface ProfileParams {
   dishType: "cylindrical" | "spherical";
@@ -37,6 +37,24 @@ const PROFILES: Record<KeycapProfile, ProfileParams> = {
     dishDepth: [0.11, 0.10, 0.09, 0.08, 0.07], // deep with steep taper
     draftAngle: 0.122,    // ~7 degrees
     topScale: 0.78,
+  },
+  oem: {
+    dishType: "cylindrical",
+    dishDepth: [0.07, 0.06, 0.05, 0.05, 0.04],
+    draftAngle: 0.04,     // ~2.3 degrees
+    topScale: 0.86,
+  },
+  kat: {
+    dishType: "spherical",
+    dishDepth: [0.08, 0.07, 0.06, 0.06, 0.05],
+    draftAngle: 0.06,     // ~3.4 degrees
+    topScale: 0.83,
+  },
+  xda: {
+    dishType: "spherical",
+    dishDepth: [0.03, 0.03, 0.03, 0.03, 0.03], // uniform flat
+    draftAngle: 0.035,    // ~2 degrees
+    topScale: 0.87,
   },
 };
 
@@ -74,9 +92,9 @@ export function createSculptedKeycap(
   const d = keycapSize;
   const h = keycapHeight;
 
-  // Subdivisions
+  // Subdivisions (6 vertical for smoother chamfer silhouette)
   const segW = 8;
-  const segH = 4;
+  const segH = 6;
   const segD = 8;
 
   const geo = new THREE.BoxGeometry(w, h, d, segW, segH, segD);
@@ -130,14 +148,20 @@ export function createSculptedKeycap(
       y -= depression;
     }
 
-    // ── Edge rounding ──
-    // Smooth-step on corners to round sharp edges
-    if (t > 0.7) {
-      const edgeT = (t - 0.7) / 0.3;
+    // ── Edge rounding + chamfer bevel ──
+    // Enhanced smooth-step on corners to round sharp edges
+    // with wider chamfer zone for rim lighting catch
+    if (t > 0.6) {
+      const edgeT = (t - 0.6) / 0.4;
       const cornerDist = Math.max(Math.abs(x) / halfW, Math.abs(posArray[i * 3 + 2]) / halfD);
-      if (cornerDist > 0.85) {
-        const roundFactor = smoothstep(0.85, 1.0, cornerDist) * edgeT * 0.06;
+      if (cornerDist > 0.8) {
+        // More aggressive rounding for chamfer effect
+        const roundFactor = smoothstep(0.8, 1.0, cornerDist) * edgeT * 0.09;
         y -= roundFactor;
+        // Push edges slightly inward for bevel geometry
+        const inwardPush = smoothstep(0.85, 1.0, cornerDist) * edgeT * 0.015;
+        x *= (1 - inwardPush);
+        posArray[i * 3 + 2] = posArray[i * 3 + 2] * (1 - inwardPush);
       }
     }
 
@@ -147,6 +171,43 @@ export function createSculptedKeycap(
 
   pos.needsUpdate = true;
   geo.computeVertexNormals();
+
+  // ── Chamfer normal adjustment ──
+  // Tilt normals outward at keycap edges to create a bevel that catches rim lighting
+  const normals = geo.attributes.normal as THREE.BufferAttribute;
+  const normArray = normals.array as Float32Array;
+
+  for (let i = 0; i < pos.count; i++) {
+    const x = posArray[i * 3];
+    const y = posArray[i * 3 + 1];
+    const z = posArray[i * 3 + 2];
+
+    const t = (y + halfH) / h;
+    if (t < 0.6) continue;
+
+    const edgeDist = Math.max(Math.abs(x) / halfW, Math.abs(z) / halfD);
+    if (edgeDist > 0.75) {
+      const chamferStrength = smoothstep(0.75, 1.0, edgeDist) * 0.35;
+      // Tilt normal outward from center
+      const outX = x / (halfW + 0.001);
+      const outZ = z / (halfD + 0.001);
+      normArray[i * 3] += outX * chamferStrength;
+      normArray[i * 3 + 1] += 0.1 * chamferStrength; // slight upward bias
+      normArray[i * 3 + 2] += outZ * chamferStrength;
+
+      // Re-normalize
+      const nx = normArray[i * 3];
+      const ny = normArray[i * 3 + 1];
+      const nz = normArray[i * 3 + 2];
+      const len = Math.sqrt(nx * nx + ny * ny + nz * nz);
+      if (len > 0) {
+        normArray[i * 3] /= len;
+        normArray[i * 3 + 1] /= len;
+        normArray[i * 3 + 2] /= len;
+      }
+    }
+  }
+  normals.needsUpdate = true;
 
   geometryCache.set(key, geo);
   return geo;

@@ -45,6 +45,11 @@ export interface KeyboardViewerConfig {
   selectionMode?: SelectionMode;
   selectedKeys?: Set<string>;
   paintMode?: boolean;
+  // ─── Phase 10: Sophisticated upgrades ──
+  caseFinish?: "glossy" | "matte" | "satin";
+  connectionType?: "wired" | "wireless" | "bluetooth";
+  cableColor?: string;
+  switchStemColor?: string;
 }
 
 const MATERIAL_KEYWORDS: Record<string, KeyboardViewerConfig["caseMaterial"]> = {

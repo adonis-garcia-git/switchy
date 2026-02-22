@@ -99,3 +99,23 @@ export const SUGGESTION_ROTATION_MS = 4000;
 export const AI_MAX_TOKENS = 2000;
 export const DEFAULT_PAGE_LIMIT = 200;
 export const VENDOR_LINKS_PAGE_LIMIT = 500;
+
+// ── Keyboard size ordering & display labels ──
+
+export const SIZE_SORT_ORDER = [
+  "40%", "60%", "65%", "75%", "TKL", "96%", "1800", "100%",
+] as const;
+
+export const SIZE_DISPLAY_LABELS: Record<string, string> = {
+  "1800": "1800 Compact",
+  "100%": "Full-size",
+};
+
+/** Sort keyboard sizes in logical order (small → large) */
+export function sortSizes(sizes: string[]): string[] {
+  return [...sizes].sort((a, b) => {
+    const ai = SIZE_SORT_ORDER.indexOf(a as (typeof SIZE_SORT_ORDER)[number]);
+    const bi = SIZE_SORT_ORDER.indexOf(b as (typeof SIZE_SORT_ORDER)[number]);
+    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+  });
+}

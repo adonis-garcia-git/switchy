@@ -3,9 +3,11 @@
 import { useMemo } from "react";
 import * as THREE from "three";
 import { RoundedBox } from "@react-three/drei";
-import type { MaterialPreset } from "./materialPresets";
+import type { MaterialPreset, CaseFinishModifier } from "./materialPresets";
+import { CASE_FINISHES } from "./materialPresets";
 import type { NormalMapType } from "./proceduralTextures";
 import { getNormalMap } from "./proceduralTextures";
+import { CableGeometry, WirelessSwitch, BluetoothLED } from "./CableGeometry";
 
 export type MountingStyle = "gasket" | "top-mount" | "tray-mount" | "plate-mount";
 
@@ -20,6 +22,9 @@ interface CaseGeometryProps {
   mountingStyle?: MountingStyle;
   hasRGB: boolean;
   rgbColor: string;
+  caseFinish?: "glossy" | "matte" | "satin";
+  connectionType?: "wired" | "wireless" | "bluetooth";
+  cableColor?: string;
 }
 
 export function CaseGeometry({
@@ -33,14 +38,33 @@ export function CaseGeometry({
   mountingStyle = "gasket",
   hasRGB,
   rgbColor,
+  caseFinish = "glossy",
+  connectionType,
+  cableColor,
 }: CaseGeometryProps) {
   const normalMap = useMemo(() => getNormalMap(normalMapType), [normalMapType]);
+
+  // Apply case finish modifier to material properties
+  const finishMod: CaseFinishModifier = CASE_FINISHES[caseFinish] || CASE_FINISHES.glossy;
+
   const normalScale = useMemo(() => {
-    if (normalMapType === "brushed-aluminum") return new THREE.Vector2(0.3, 0.3);
-    if (normalMapType === "brass") return new THREE.Vector2(0.25, 0.25);
-    if (normalMapType === "wood-grain") return new THREE.Vector2(0.5, 0.5);
-    return new THREE.Vector2(0.15, 0.15);
-  }, [normalMapType]);
+    let base: [number, number];
+    if (normalMapType === "brushed-aluminum") base = [0.3, 0.3];
+    else if (normalMapType === "brass") base = [0.25, 0.25];
+    else if (normalMapType === "wood-grain") base = [0.5, 0.5];
+    else base = [0.15, 0.15];
+    return new THREE.Vector2(
+      base[0] * finishMod.normalScaleMultiplier,
+      base[1] * finishMod.normalScaleMultiplier
+    );
+  }, [normalMapType, finishMod.normalScaleMultiplier]);
+
+  // Compute finish-adjusted material values
+  const caseMetalness = materialPreset.metalness * finishMod.metalnessMultiplier;
+  const caseRoughness = finishMod.roughnessOverride ?? materialPreset.roughness;
+  const caseClearcoat = finishMod.clearcoat || (materialPreset.clearcoat || 0);
+  const caseClearcoatRoughness = finishMod.clearcoatRoughness || (materialPreset.clearcoatRoughness || 0);
+  const caseEnvMapIntensity = finishMod.envMapIntensity;
 
   const bezelWidth = width + 0.3;
   const bezelDepth = depth + 0.2;
@@ -59,6 +83,8 @@ export function CaseGeometry({
   // Rear feet slightly taller for typing angle
   const rearFeetExtraHeight = 0.08;
 
+  const usbPortZ = -depth / 2;
+
   return (
     <group>
       {/* ── Main Case Body ── */}
@@ -70,12 +96,12 @@ export function CaseGeometry({
       >
         <meshPhysicalMaterial
           color={color}
-          metalness={materialPreset.metalness}
-          roughness={materialPreset.roughness}
-          clearcoat={materialPreset.clearcoat || 0}
-          clearcoatRoughness={materialPreset.clearcoatRoughness || 0}
+          metalness={caseMetalness}
+          roughness={caseRoughness}
+          clearcoat={caseClearcoat}
+          clearcoatRoughness={caseClearcoatRoughness}
           reflectivity={materialPreset.reflectivity || 0.5}
-          envMapIntensity={0.8}
+          envMapIntensity={caseEnvMapIntensity}
           normalMap={normalMap}
           normalScale={normalScale}
         />
@@ -90,10 +116,10 @@ export function CaseGeometry({
       >
         <meshPhysicalMaterial
           color={color}
-          metalness={materialPreset.metalness}
-          roughness={materialPreset.roughness + 0.05}
-          clearcoat={materialPreset.clearcoat || 0}
-          envMapIntensity={0.6}
+          metalness={caseMetalness}
+          roughness={caseRoughness + 0.05}
+          clearcoat={caseClearcoat}
+          envMapIntensity={caseEnvMapIntensity * 0.75}
           normalMap={normalMap}
           normalScale={normalScale}
         />
@@ -114,24 +140,8 @@ export function CaseGeometry({
         />
       </RoundedBox>
 
-      {/* ── USB-C Port ── */}
-      <mesh position={[0, -height * 0.35, -depth / 2 - 0.01]}>
-        <boxGeometry args={[0.9, 0.35, 0.3]} />
-        <meshPhysicalMaterial
-          color="#1a1a1a"
-          metalness={0.4}
-          roughness={0.6}
-        />
-      </mesh>
-      {/* USB-C metal housing */}
-      <mesh position={[0, -height * 0.35, -depth / 2 + 0.05]}>
-        <boxGeometry args={[1.1, 0.5, 0.15]} />
-        <meshPhysicalMaterial
-          color="#888888"
-          metalness={0.9}
-          roughness={0.2}
-        />
-      </mesh>
+      {/* ── Enhanced USB-C Port ── */}
+      <EnhancedUSBCPort height={height} depth={depth} />
 
       {/* ── Rubber Feet ── */}
       {feetPositions.map((pos, i) => {
@@ -173,8 +183,137 @@ export function CaseGeometry({
         </mesh>
       )}
 
+      {/* ── Bottom Case Screws ── */}
+      <BottomScrews width={width} depth={depth} height={height} />
+
       {/* ── RGB Underglow Strips ── */}
       {hasRGB && <UnderglowStrips width={width} depth={depth} height={height} color={rgbColor} />}
+
+      {/* ── Cable / Wireless Toggle ── */}
+      {connectionType === "wired" && (
+        <CableGeometry
+          caseWidth={width}
+          caseDepth={depth}
+          caseHeight={height}
+          cableColor={cableColor}
+          usbPortZ={usbPortZ}
+        />
+      )}
+      {(connectionType === "wireless" || connectionType === "bluetooth") && (
+        <WirelessSwitch caseWidth={width} caseHeight={height} caseDepth={depth} />
+      )}
+      {connectionType === "bluetooth" && (
+        <BluetoothLED caseWidth={width} caseHeight={height} caseDepth={depth} />
+      )}
+    </group>
+  );
+}
+
+// ─── Enhanced USB-C Port ─────────────────────────────────────────────
+
+function EnhancedUSBCPort({ height, depth }: { height: number; depth: number }) {
+  const y = -height * 0.35;
+  const z = -depth / 2;
+
+  return (
+    <group position={[0, y, z]}>
+      {/* Outer metallic housing */}
+      <mesh position={[0, 0, 0.05]}>
+        <boxGeometry args={[1.2, 0.55, 0.2]} />
+        <meshPhysicalMaterial
+          color="#999999"
+          metalness={0.92}
+          roughness={0.15}
+          reflectivity={0.8}
+        />
+      </mesh>
+
+      {/* Inner dark cavity */}
+      <mesh position={[0, 0, -0.02]}>
+        <boxGeometry args={[0.85, 0.32, 0.25]} />
+        <meshPhysicalMaterial
+          color="#0a0a0a"
+          metalness={0.2}
+          roughness={0.8}
+        />
+      </mesh>
+
+      {/* Center tongue / pin block (USB-C characteristic) */}
+      <mesh position={[0, -0.02, -0.03]}>
+        <boxGeometry args={[0.65, 0.08, 0.2]} />
+        <meshPhysicalMaterial
+          color="#c9a84c"
+          metalness={0.95}
+          roughness={0.1}
+          reflectivity={0.9}
+        />
+      </mesh>
+
+      {/* 5 individual gold contact pins */}
+      {[-0.24, -0.12, 0, 0.12, 0.24].map((xOff, i) => (
+        <mesh key={`pin-${i}`} position={[xOff, 0.04, -0.04]}>
+          <boxGeometry args={[0.06, 0.03, 0.12]} />
+          <meshPhysicalMaterial
+            color="#d4af37"
+            metalness={0.95}
+            roughness={0.08}
+          />
+        </mesh>
+      ))}
+
+      {/* Port chamfer ring */}
+      <mesh position={[0, 0, -0.05]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.48, 0.03, 6, 16]} />
+        <meshPhysicalMaterial
+          color="#777777"
+          metalness={0.85}
+          roughness={0.2}
+        />
+      </mesh>
+    </group>
+  );
+}
+
+// ─── Bottom Case Screws (Phillips-head) ──────────────────────────────
+
+function BottomScrews({ width, depth, height }: { width: number; depth: number; height: number }) {
+  const y = -height + 0.02;
+  const positions: [number, number][] = [
+    [-width * 0.35, -depth * 0.35],
+    [width * 0.35, -depth * 0.35],
+    [-width * 0.35, depth * 0.35],
+    [width * 0.35, depth * 0.35],
+    [0, -depth * 0.38],
+    [0, depth * 0.38],
+    [-width * 0.18, 0],
+    [width * 0.18, 0],
+  ];
+
+  return (
+    <group>
+      {positions.map(([x, z], i) => (
+        <group key={`bscrew-${i}`} position={[x, y, z]}>
+          {/* Screw head body */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]}>
+            <cylinderGeometry args={[0.15, 0.15, 0.06, 10]} />
+            <meshPhysicalMaterial
+              color="#555555"
+              metalness={0.9}
+              roughness={0.25}
+            />
+          </mesh>
+          {/* Phillips cross slot - horizontal bar */}
+          <mesh position={[0, -0.025, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <boxGeometry args={[0.18, 0.03, 0.02]} />
+            <meshPhysicalMaterial color="#333333" metalness={0.7} roughness={0.4} />
+          </mesh>
+          {/* Phillips cross slot - vertical bar */}
+          <mesh position={[0, -0.025, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <boxGeometry args={[0.03, 0.18, 0.02]} />
+            <meshPhysicalMaterial color="#333333" metalness={0.7} roughness={0.4} />
+          </mesh>
+        </group>
+      ))}
     </group>
   );
 }

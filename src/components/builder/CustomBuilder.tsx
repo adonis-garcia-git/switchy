@@ -225,7 +225,7 @@ export function CustomBuilder({ onViewerUpdate, viewerConfig, onCustomizerPropsC
       if (onViewerUpdate) {
         const sizeMap: Record<string, "60" | "65" | "75" | "tkl" | "full"> = {
           "60%": "60", "65%": "65", "75%": "75", "TKL": "tkl", "80%": "tkl",
-          "Full-size": "full", "100%": "full",
+          "Full-size": "full", "100%": "full", "1800": "full", "96%": "full",
         };
         onViewerUpdate({
           size: sizeMap[kb.size] || "65",

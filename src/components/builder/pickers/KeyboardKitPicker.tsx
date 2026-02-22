@@ -7,6 +7,7 @@ import { SelectableItemCard } from "../SelectableItemCard";
 import { FilterBar } from "../FilterBar";
 import { Badge } from "@/components/ui/Badge";
 import { cn, formatPriceWhole } from "@/lib/utils";
+import { sortSizes, SIZE_DISPLAY_LABELS } from "@/lib/constants";
 import type { KeyboardData } from "@/lib/types";
 
 interface KeyboardKitPickerProps {
@@ -37,7 +38,7 @@ export function KeyboardKitPicker({ selected, onSelect }: KeyboardKitPickerProps
 
   const sizes = useMemo(() => {
     if (!keyboards) return [];
-    return [...new Set(keyboards.map((k) => k.size))].sort();
+    return sortSizes([...new Set(keyboards.map((k) => k.size))]);
   }, [keyboards]);
 
   if (!keyboards) {
@@ -62,7 +63,11 @@ export function KeyboardKitPicker({ selected, onSelect }: KeyboardKitPickerProps
         filters={[
           {
             label: "Size",
-            chips: sizes.map((s) => ({ label: s, value: s, active: sizeFilter === s })),
+            chips: sizes.map((s) => ({
+              label: SIZE_DISPLAY_LABELS[s] || s,
+              value: s,
+              active: sizeFilter === s,
+            })),
             onChange: setSizeFilter,
           },
           {
@@ -84,19 +89,21 @@ export function KeyboardKitPicker({ selected, onSelect }: KeyboardKitPickerProps
         {filtered.length} kit{filtered.length !== 1 ? "s" : ""} found
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[calc(100vh-22rem)] overflow-y-auto pr-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {filtered.map((kb) => (
           <SelectableItemCard
             key={kb._id}
             selected={selected?._id === kb._id}
             onClick={() => onSelect(kb)}
+            imageUrl={kb.imageUrl}
+            imageAlt={`${kb.brand} ${kb.name}`}
           >
             <div className="pr-6">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-[10px] text-text-muted uppercase tracking-wider font-medium">
                   {kb.brand}
                 </span>
-                <Badge size="sm">{kb.size}</Badge>
+                <Badge size="sm">{SIZE_DISPLAY_LABELS[kb.size] || kb.size}</Badge>
               </div>
               <h4 className="font-semibold text-sm text-text-primary font-[family-name:var(--font-outfit)] leading-tight mb-2">
                 {kb.name}
@@ -117,7 +124,7 @@ export function KeyboardKitPicker({ selected, onSelect }: KeyboardKitPickerProps
                     RGB
                   </span>
                 )}
-                {kb.caseMaterial && (
+                {kb.caseMaterial && kb.caseMaterial !== "Unknown" && (
                   <span className="text-[10px] px-1.5 py-0.5 rounded bg-bg-elevated text-text-muted border border-border-subtle">
                     {kb.caseMaterial}
                   </span>

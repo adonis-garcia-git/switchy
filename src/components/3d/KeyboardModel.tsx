@@ -28,9 +28,31 @@ const ROW_HEIGHTS = [0.9, 0.85, 0.8, 0.78, 0.75];
 
 const legendTextureCache = new Map<string, THREE.CanvasTexture | null>();
 
-function legendCacheKey(legend: string, keycapColor: string, legendColor?: string): string {
-  return `${legend}|${keycapColor}|${legendColor || "auto"}`;
+function legendCacheKey(legend: string, keycapColor: string, legendColor?: string, widthU?: number): string {
+  return `${legend}|${keycapColor}|${legendColor || "auto"}|${(widthU || 1).toFixed(2)}`;
 }
+
+// ─── Sub-legend Mappings (shifted character above base) ──────────────
+const SUB_LEGENDS: Record<string, [string, string]> = {
+  "`": ["~", "`"],
+  "1": ["!", "1"], "2": ["@", "2"], "3": ["#", "3"], "4": ["$", "4"],
+  "5": ["%", "5"], "6": ["^", "6"], "7": ["&", "7"], "8": ["*", "8"],
+  "9": ["(", "9"], "0": [")", "0"],
+  "-": ["_", "-"], "=": ["+", "="],
+  "[": ["{", "["], "]": ["}", "]"], "\\": ["|", "\\"],
+  ";": [":", ";"], "'": ["\"", "'"],
+  ",": ["<", ","], ".": [">", "."], "/": ["?", "/"],
+};
+
+// ─── Modifier Symbol Font Sizes ──────────────────────────────────────
+const MODIFIER_FONT_SIZES: Record<string, number> = {
+  "\u21E7": 36, // ⇧ Shift
+  "\u23CE": 34, // ⏎ Enter
+  "\u21EA": 28, // ⇪ Caps Lock
+  "\u232B": 30, // ⌫ Backspace
+  "\u21E5": 28, // ⇥ Tab
+  "\u2318": 30, // ⌘ Command
+};
 
 // ─── QWERTY Legends ────────────────────────────────────────────────
 
@@ -93,22 +115,30 @@ function getLegendForKey(keyIndex: number, rowIndex: number, size: KeyboardViewe
   return "";
 }
 
-function createLegendTexture(legend: string, keycapColor: string, legendColorOverride?: string): THREE.CanvasTexture | null {
+function createLegendTexture(
+  legend: string,
+  keycapColor: string,
+  legendColorOverride?: string,
+  widthU: number = 1,
+): THREE.CanvasTexture | null {
   if (!legend || legend === " ") return null;
 
-  // Check cache first
-  const key = legendCacheKey(legend, keycapColor, legendColorOverride);
+  // Check cache first — key includes widthU for aspect-correct textures
+  const key = legendCacheKey(legend, keycapColor, legendColorOverride, widthU);
   const cached = legendTextureCache.get(key);
   if (cached !== undefined) return cached;
 
-  const size = 128;
+  // Non-square canvas for wide keys to prevent horizontal stretch
+  const baseSize = 128;
+  const canvasW = Math.round(baseSize * Math.max(widthU, 1));
+  const canvasH = baseSize;
   const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
+  canvas.width = canvasW;
+  canvas.height = canvasH;
   const ctx = canvas.getContext("2d");
   if (!ctx) return null;
 
-  ctx.clearRect(0, 0, size, size);
+  ctx.clearRect(0, 0, canvasW, canvasH);
 
   let textColor: string;
   if (legendColorOverride) {
@@ -122,12 +152,53 @@ function createLegendTexture(legend: string, keycapColor: string, legendColorOve
   }
 
   ctx.fillStyle = textColor;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
 
-  const fontSize = legend.length === 1 ? 48 : legend.length <= 3 ? 32 : 22;
-  ctx.font = `600 ${fontSize}px system-ui, -apple-system, sans-serif`;
-  ctx.fillText(legend, size / 2, size / 2);
+  // Check for sub-legend (dual-character keys like `~/`, 1/!, etc.)
+  const subLegend = SUB_LEGENDS[legend];
+  if (subLegend && widthU <= 1.25) {
+    // Dual-character rendering: secondary (shifted) at top, primary at bottom
+    const [secondary, primary] = subLegend;
+    const priSize = 38;
+    const secSize = 30;
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    // Secondary (shifted) character at ~30% height
+    ctx.font = `500 ${secSize}px system-ui, -apple-system, sans-serif`;
+    ctx.fillText(secondary, canvasW / 2, canvasH * 0.30);
+
+    // Primary character at ~65% height
+    ctx.font = `600 ${priSize}px system-ui, -apple-system, sans-serif`;
+    ctx.fillText(primary, canvasW / 2, canvasH * 0.65);
+  } else {
+    // Single legend rendering
+    const isModifierSymbol = MODIFIER_FONT_SIZES[legend] !== undefined;
+    const isTextModifier = widthU >= 1.5 && legend.length >= 2 && !isModifierSymbol;
+
+    let fontSize: number;
+    if (isModifierSymbol) {
+      fontSize = MODIFIER_FONT_SIZES[legend];
+    } else if (isTextModifier) {
+      // Text modifiers (Ctrl, Alt, Fn) render bottom-left aligned at smaller size
+      fontSize = 18;
+    } else {
+      fontSize = legend.length === 1 ? 48 : legend.length <= 3 ? 32 : 22;
+    }
+
+    ctx.font = `600 ${fontSize}px system-ui, -apple-system, sans-serif`;
+
+    if (isTextModifier) {
+      // Bottom-left aligned for text modifiers on wide keys (like real keycaps)
+      ctx.textAlign = "left";
+      ctx.textBaseline = "bottom";
+      ctx.fillText(legend, canvasW * 0.12, canvasH * 0.85);
+    } else {
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(legend, canvasW / 2, canvasH / 2);
+    }
+  }
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.needsUpdate = true;
@@ -280,6 +351,119 @@ function SelectionRing({ width, depth, height }: { width: number; depth: number;
   );
 }
 
+// ─── Stabilizer Wire (Cherry-style for wide keys) ──────────────────
+
+function StabilizerWire({ width, plateY }: { width: number; plateY: number }) {
+  // Cherry-style: wire connecting two insertion points, positioned below keycap
+  const wireRadius = 0.025;
+  const stemSpacing = width * 0.5; // distance between stems
+  const wireY = plateY - 0.08;
+  const wireDropY = wireY - 0.12;
+
+  return (
+    <group>
+      {/* Horizontal bar */}
+      <mesh position={[0, wireDropY, 0]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[wireRadius, wireRadius, stemSpacing, 6]} />
+        <meshPhysicalMaterial color="#c0c0c0" metalness={0.9} roughness={0.2} />
+      </mesh>
+      {/* Left vertical stem */}
+      <mesh position={[-stemSpacing / 2, (wireY + wireDropY) / 2, 0]}>
+        <cylinderGeometry args={[wireRadius, wireRadius, wireY - wireDropY, 6]} />
+        <meshPhysicalMaterial color="#c0c0c0" metalness={0.9} roughness={0.2} />
+      </mesh>
+      {/* Right vertical stem */}
+      <mesh position={[stemSpacing / 2, (wireY + wireDropY) / 2, 0]}>
+        <cylinderGeometry args={[wireRadius, wireRadius, wireY - wireDropY, 6]} />
+        <meshPhysicalMaterial color="#c0c0c0" metalness={0.9} roughness={0.2} />
+      </mesh>
+    </group>
+  );
+}
+
+// ─── Switch Stem (+ shaped cross at plate level) ────────────────────
+
+function SwitchStem({ plateY, stemColor }: { plateY: number; stemColor: string }) {
+  const armLength = 0.2;
+  const armThick = 0.06;
+  const armHeight = 0.12;
+  const y = plateY + armHeight / 2 - 0.02;
+
+  return (
+    <group position={[0, y, 0]}>
+      {/* Horizontal arm */}
+      <mesh>
+        <boxGeometry args={[armLength, armHeight, armThick]} />
+        <meshPhysicalMaterial color={stemColor} roughness={0.5} metalness={0} />
+      </mesh>
+      {/* Vertical arm */}
+      <mesh>
+        <boxGeometry args={[armThick, armHeight, armLength]} />
+        <meshPhysicalMaterial color={stemColor} roughness={0.5} metalness={0} />
+      </mesh>
+    </group>
+  );
+}
+
+// ─── Key Press Ripple Effect ────────────────────────────────────────
+
+function PressRipple({
+  active,
+  width,
+  height,
+  color,
+}: {
+  active: boolean;
+  width: number;
+  height: number;
+  color: string;
+}) {
+  const ringRef = useRef<THREE.Mesh>(null);
+  const scaleRef = useRef(0);
+  const opacityRef = useRef(0);
+  const wasActive = useRef(false);
+
+  useFrame(() => {
+    if (!ringRef.current) return;
+
+    // Trigger on press start
+    if (active && !wasActive.current) {
+      scaleRef.current = 0.3;
+      opacityRef.current = 0.6;
+    }
+    wasActive.current = active;
+
+    // Animate: expand + fade
+    if (opacityRef.current > 0.01) {
+      scaleRef.current += 0.08;
+      opacityRef.current *= 0.92;
+    }
+
+    ringRef.current.scale.set(scaleRef.current, scaleRef.current, 1);
+    const mat = ringRef.current.material as THREE.MeshBasicMaterial;
+    mat.opacity = opacityRef.current;
+    ringRef.current.visible = opacityRef.current > 0.01;
+  });
+
+  return (
+    <mesh
+      ref={ringRef}
+      position={[0, height / 2 + 0.03, 0]}
+      rotation={[-Math.PI / 2, 0, 0]}
+      visible={false}
+    >
+      <ringGeometry args={[Math.max(width, KEYCAP_SIZE) * 0.4, Math.max(width, KEYCAP_SIZE) * 0.48, 24]} />
+      <meshBasicMaterial
+        color={color}
+        transparent
+        opacity={0}
+        depthWrite={false}
+        side={THREE.DoubleSide}
+      />
+    </mesh>
+  );
+}
+
 // ─── Interactive Keycap ─────────────────────────────────────────────
 
 function Keycap({
@@ -304,6 +488,10 @@ function Keycap({
   onPaint,
   paintMode,
   artisan,
+  isPressed,
+  rippleColor,
+  switchStemColor,
+  plateY,
 }: {
   position: [number, number, number];
   width: number;
@@ -326,6 +514,10 @@ function Keycap({
   onPaint?: (keyId: string) => void;
   paintMode?: boolean;
   artisan?: string;
+  isPressed?: boolean;
+  rippleColor?: string;
+  switchStemColor?: string;
+  plateY?: number;
 }) {
   const preset = KEYCAP_MATERIALS[material] || KEYCAP_MATERIALS.pbt;
   const groupRef = useRef<THREE.Group>(null);
@@ -366,12 +558,12 @@ function Keycap({
     [preset.normalScale],
   );
 
-  // Legend texture (skip for artisans)
+  // Legend texture (skip for artisans) — pass widthU for aspect-correct textures
   const texture = useMemo(() => {
     if (artisan) return null;
     if (!showLegend || !legend) return null;
-    return createLegendTexture(legend, color, legendColor);
-  }, [showLegend, legend, color, legendColor, artisan]);
+    return createLegendTexture(legend, color, legendColor, widthU);
+  }, [showLegend, legend, color, legendColor, artisan, widthU]);
 
   // Color lerp for smooth transitions
   const currentColor = useRef(new THREE.Color(color));
@@ -485,12 +677,32 @@ function Keycap({
         </mesh>
       )}
 
-      {/* Legend overlay */}
+      {/* Legend overlay — aspect-matched to canvas texture */}
       {texture && (
         <mesh position={[0, height / 2 + 0.005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[width * 0.85, KEYCAP_SIZE * 0.85]} />
+          <planeGeometry args={[width * 0.88, KEYCAP_SIZE * 0.88]} />
           <meshBasicMaterial map={texture} transparent depthWrite={false} polygonOffset polygonOffsetFactor={-1} />
         </mesh>
+      )}
+
+      {/* Stabilizer wire for wide keys (2u+) */}
+      {widthU >= 2 && plateY !== undefined && (
+        <StabilizerWire width={width} plateY={plateY} />
+      )}
+
+      {/* Switch stem visible at plate level */}
+      {switchStemColor && plateY !== undefined && (
+        <SwitchStem plateY={plateY} stemColor={switchStemColor} />
+      )}
+
+      {/* Key press ripple effect */}
+      {interactive && rippleColor && (
+        <PressRipple
+          active={!!isPressed}
+          width={width}
+          height={height}
+          color={rippleColor}
+        />
       )}
     </group>
   );
@@ -519,6 +731,38 @@ export function KeyboardModel({
 }: KeyboardModelProps) {
   const groupRef = useRef<THREE.Group>(null);
   const [pressedKeys, setPressedKeys] = useState<Set<number>>(new Set());
+
+  // ─── Idle Floating Animation ──────────────────────
+  const lastInteraction = useRef(Date.now());
+  const idleFloat = useRef({ y: 0, tilt: 0 });
+
+  // Track user interaction
+  const markInteraction = useCallback(() => {
+    lastInteraction.current = Date.now();
+  }, []);
+
+  useFrame(({ clock }) => {
+    if (!groupRef.current) return;
+
+    const timeSinceInteraction = (Date.now() - lastInteraction.current) / 1000;
+    const isIdle = timeSinceInteraction > 2;
+    const t = clock.getElapsedTime();
+
+    if (isIdle) {
+      // Gentle breathing: 0.03 unit amplitude at 0.8 Hz
+      const targetY = Math.sin(t * 0.8 * Math.PI * 2) * 0.03;
+      const targetTilt = Math.sin(t * 0.8 * Math.PI * 2 + 0.5) * 0.001;
+      idleFloat.current.y += (targetY - idleFloat.current.y) * 0.03;
+      idleFloat.current.tilt += (targetTilt - idleFloat.current.tilt) * 0.03;
+    } else {
+      // Lerp back to rest
+      idleFloat.current.y *= 0.9;
+      idleFloat.current.tilt *= 0.9;
+    }
+
+    groupRef.current.position.y = idleFloat.current.y;
+    groupRef.current.rotation.x = 0.15 + idleFloat.current.tilt;
+  });
 
   const layout = useMemo(() => generateLayout(config.size), [config.size]);
 
@@ -578,8 +822,20 @@ export function KeyboardModel({
   const isCustomizing = !!selectionMode;
   const paintMode = config.paintMode || false;
 
+  // Resolve switch stem color
+  const switchStemColor = config.switchStemColor || "#c0392b";
+
+  // Ripple color — accent or RGB color
+  const rippleColor = config.rgbColor || config.keycapAccentColor;
+
   return (
-    <group ref={groupRef} position={[-caseWidth / 2, 0, -caseDepth / 2]} rotation={[0.15, 0, 0]}>
+    <group
+      ref={groupRef}
+      position={[-caseWidth / 2, 0, -caseDepth / 2]}
+      rotation={[0.15, 0, 0]}
+      onPointerDown={markInteraction}
+      onPointerMove={markInteraction}
+    >
       {/* ── Detailed Case (Phase 3) ── */}
       <group position={[caseWidth / 2, 0, caseDepth / 2]}>
         <CaseGeometry
@@ -593,6 +849,9 @@ export function KeyboardModel({
           mountingStyle={config.mountingStyle || "gasket"}
           hasRGB={config.hasRGB}
           rgbColor={config.rgbColor}
+          caseFinish={config.caseFinish}
+          connectionType={config.connectionType}
+          cableColor={config.cableColor}
         />
       </group>
 
@@ -669,6 +928,10 @@ export function KeyboardModel({
             onPaint={isCustomizing && paintMode ? onKeyPaint : undefined}
             paintMode={isCustomizing && paintMode}
             artisan={override?.artisan}
+            isPressed={pressedKeys.has(i)}
+            rippleColor={rippleColor}
+            switchStemColor={switchStemColor}
+            plateY={plateThickness / 2}
           />
         );
       })}
