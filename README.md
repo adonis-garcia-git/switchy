@@ -29,6 +29,22 @@
 
 ---
 
+## Powered by Nia
+
+Nia was instrumental to both building and running Switchy. During development, we relied on Nia to index and search the Convex, Clerk, Anthropic, and Next.js docs — it became our primary way to navigate unfamiliar APIs and resolve integration issues quickly across the stack.
+
+In production, Nia is deeply embedded in the product itself:
+
+- **Build intelligence** — Before Claude generates a build recommendation, Nia's universal search enriches the AI context with community reviews, Reddit sentiment, and real vendor pricing. Recommendations are grounded in what the community actually thinks, not just spec sheets.
+- **Product validation** — When the AI suggests a product outside our local database, Nia verifies it exists, finds a vendor URL, and extracts pricing. This is how we guarantee zero hallucinated products.
+- **Cross-catalog search** — The `/search` page runs Nia universal search across local products and external community sources in a single query, with 24-hour caching and query deduplication.
+- **Glossary chatbot** — When users ask follow-up questions about keyboard terminology, Nia surfaces relevant community explanations and source material to augment the AI response.
+- **Automated weekly intelligence** — Nia Oracle runs as a cron job that researches new product releases, trending picks from Reddit and YouTube, and group buy status updates — feeding directly into our weekly digest so the platform stays current without manual curation.
+
+Nia gave us something we couldn't have built ourselves in a hackathon: a bridge between a static product database and the living knowledge of an entire hobbyist community.
+
+---
+
 ## The Problem
 
 The mechanical keyboard hobby has a notoriously steep learning curve. New enthusiasts face a maze of 100+ switch types, incompatible parts, inconsistent vendor inventories, and community jargon ("gasket mount", "POM plate", "thocky") that makes entry daunting. Existing resources are scattered across Reddit threads, Discord servers, and spreadsheets — there's no single place where someone can go from curiosity to a complete, compatible build.
