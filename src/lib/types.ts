@@ -5,6 +5,10 @@ export interface BuildComponentDetail {
   reason: string;
   quantity?: number;
   priceEach?: number;
+  matchedId?: string;
+  imageUrl?: string;
+  detailUrl?: string;    // internal link: /switches/{id} or /keyboards/{id}
+  productUrl?: string;   // external vendor link
 }
 
 export interface BuildComponents {
@@ -233,4 +237,56 @@ export interface BuilderState {
   currentQuestionIndex: number;
   buildResult: BuildData | null;
   isGenerating: boolean;
+}
+
+// Custom Builder types
+export type CustomBuilderStep =
+  | "keyboard"
+  | "switches"
+  | "keycaps"
+  | "stabilizers"
+  | "mods"
+  | "review";
+
+export interface StabilizerPreset {
+  name: string;
+  price: number;
+  type: "screw-in" | "clip-in" | "plate-mount";
+}
+
+export interface KeycapSelection {
+  profile: string | null;
+  material: string | null;
+  setName: string;
+  price: number;
+}
+
+export interface StabilizerSelection {
+  name: string;
+  price: number;
+  isCustom: boolean;
+}
+
+export interface CustomBuildSelections {
+  keyboard: KeyboardData | null;
+  switches: SwitchData | null;
+  keycaps: KeycapSelection;
+  stabilizer: StabilizerSelection | null;
+  mods: ComponentData[];
+}
+
+export type CustomBuilderAction =
+  | { type: "SET_STEP"; step: CustomBuilderStep }
+  | { type: "SELECT_KEYBOARD"; keyboard: KeyboardData }
+  | { type: "SELECT_SWITCHES"; switches: SwitchData }
+  | { type: "SELECT_KEYCAP_PROFILE"; profile: string }
+  | { type: "SELECT_KEYCAP_MATERIAL"; material: string }
+  | { type: "SET_KEYCAP_DETAILS"; setName: string; price: number }
+  | { type: "SET_STABILIZER"; stabilizer: StabilizerSelection }
+  | { type: "TOGGLE_MOD"; mod: ComponentData }
+  | { type: "RESET" };
+
+export interface CustomBuilderState {
+  step: CustomBuilderStep;
+  selections: CustomBuildSelections;
 }

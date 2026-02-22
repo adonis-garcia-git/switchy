@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Environment, ContactShadows } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import * as THREE from "three";
 
 // ─── Environment Presets ────────────────────────────────────────────
@@ -152,15 +152,6 @@ export function SceneEnvironment({
         environmentIntensity={tuning.environmentIntensity}
       />
 
-      {/* Contact Shadows */}
-      <ContactShadows
-        position={[0, -1.2, 0]}
-        opacity={0.35}
-        scale={30}
-        blur={2}
-        far={4}
-        color="#000000"
-      />
 
       {/* Desk Surface */}
       {showDesk && <DeskSurface color={deskColor} />}

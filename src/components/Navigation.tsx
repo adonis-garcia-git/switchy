@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { MegaMenuTrigger, SWITCHES_COLUMNS, KEYBOARDS_COLUMNS } from "@/components/MegaMenu";
 
 const ACCESSORIES_ITEMS = [
   { href: "/glossary", label: "Glossary" },
@@ -18,6 +19,8 @@ export function Navigation() {
   const { isSignedIn } = useUser();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [accessoriesOpen, setAccessoriesOpen] = useState(false);
+  const [switchesMobileExpanded, setSwitchesMobileExpanded] = useState(false);
+  const [keyboardsMobileExpanded, setKeyboardsMobileExpanded] = useState(false);
   const accessoriesRef = useRef<HTMLDivElement>(null);
 
   // Close accessories dropdown when clicking outside
@@ -30,6 +33,13 @@ export function Navigation() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+    setSwitchesMobileExpanded(false);
+    setKeyboardsMobileExpanded(false);
+  }, [pathname]);
 
   const isNavActive = (href: string) =>
     pathname === href || (href !== "/" && pathname.startsWith(href));
@@ -49,31 +59,21 @@ export function Navigation() {
 
             {/* Desktop Nav Links */}
             <nav className="hidden lg:flex items-center gap-1.5 font-[family-name:var(--font-outfit)]">
-              {/* Switches */}
-              <Link
+              {/* Switches — Mega Menu */}
+              <MegaMenuTrigger
+                label="Switches"
                 href="/switches"
-                className={cn(
-                  "px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color,transform] duration-150",
-                  isNavActive("/switches")
-                    ? "bg-accent-dim border border-accent/20 text-accent"
-                    : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white active:scale-[0.97]"
-                )}
-              >
-                Switches
-              </Link>
+                columns={SWITCHES_COLUMNS}
+                isActive={isNavActive("/switches")}
+              />
 
-              {/* Keyboards */}
-              <Link
+              {/* Keyboards — Mega Menu */}
+              <MegaMenuTrigger
+                label="Keyboards"
                 href="/keyboards"
-                className={cn(
-                  "px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color,transform] duration-150",
-                  isNavActive("/keyboards")
-                    ? "bg-accent-dim border border-accent/20 text-accent"
-                    : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white active:scale-[0.97]"
-                )}
-              >
-                Keyboards
-              </Link>
+                columns={KEYBOARDS_COLUMNS}
+                isActive={isNavActive("/keyboards")}
+              />
 
               {/* Accessories Dropdown */}
               <div
@@ -204,37 +204,117 @@ export function Navigation() {
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-40 pt-16">
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <div className="relative bg-neutral-900 border-b border-white/10 shadow-floating">
+          <div className="relative bg-neutral-900 border-b border-white/10 shadow-floating max-h-[calc(100vh-4rem)] overflow-y-auto">
             <nav className="max-w-[1440px] mx-auto px-4 py-3 space-y-0.5 font-[family-name:var(--font-outfit)]">
-              {/* Switches */}
-              <Link
-                href="/switches"
-                onClick={() => setMobileOpen(false)}
-                className={cn(
-                  "flex items-center px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color] duration-150",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
-                  isNavActive("/switches")
-                    ? "text-accent bg-accent-dim border border-accent/20"
-                    : "text-white/60 hover:text-white hover:bg-white/10"
+              {/* Switches — Expandable */}
+              <div>
+                <button
+                  onClick={() => setSwitchesMobileExpanded(!switchesMobileExpanded)}
+                  className={cn(
+                    "flex items-center justify-between w-full px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color] duration-150",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
+                    isNavActive("/switches")
+                      ? "text-accent bg-accent-dim border border-accent/20"
+                      : "text-white/60 hover:text-white hover:bg-white/10"
+                  )}
+                >
+                  Switches
+                  <svg
+                    className={cn(
+                      "w-3.5 h-3.5 transition-transform duration-150",
+                      switchesMobileExpanded && "rotate-180"
+                    )}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {switchesMobileExpanded && (
+                  <div className="ml-3 mt-1 mb-2">
+                    <Link
+                      href="/switches"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center px-5 py-2 rounded-xl text-sm font-medium text-accent hover:bg-white/5 transition-colors duration-150"
+                    >
+                      View all switches &rarr;
+                    </Link>
+                    {SWITCHES_COLUMNS.map((col) => (
+                      <div key={col.heading} className="mt-2">
+                        <p className="px-5 text-[10px] text-white/40 uppercase tracking-wider font-semibold mb-1">
+                          {col.heading}
+                        </p>
+                        {col.links.map((link) => (
+                          <Link
+                            key={link.href}
+                            href={link.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="flex items-center px-5 py-1.5 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/5 transition-colors duration-150"
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
                 )}
-              >
-                Switches
-              </Link>
+              </div>
 
-              {/* Keyboards */}
-              <Link
-                href="/keyboards"
-                onClick={() => setMobileOpen(false)}
-                className={cn(
-                  "flex items-center px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color] duration-150",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
-                  isNavActive("/keyboards")
-                    ? "text-accent bg-accent-dim border border-accent/20"
-                    : "text-white/60 hover:text-white hover:bg-white/10"
+              {/* Keyboards — Expandable */}
+              <div>
+                <button
+                  onClick={() => setKeyboardsMobileExpanded(!keyboardsMobileExpanded)}
+                  className={cn(
+                    "flex items-center justify-between w-full px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color] duration-150",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
+                    isNavActive("/keyboards")
+                      ? "text-accent bg-accent-dim border border-accent/20"
+                      : "text-white/60 hover:text-white hover:bg-white/10"
+                  )}
+                >
+                  Keyboards
+                  <svg
+                    className={cn(
+                      "w-3.5 h-3.5 transition-transform duration-150",
+                      keyboardsMobileExpanded && "rotate-180"
+                    )}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {keyboardsMobileExpanded && (
+                  <div className="ml-3 mt-1 mb-2">
+                    <Link
+                      href="/keyboards"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center px-5 py-2 rounded-xl text-sm font-medium text-accent hover:bg-white/5 transition-colors duration-150"
+                    >
+                      View all keyboards &rarr;
+                    </Link>
+                    {KEYBOARDS_COLUMNS.map((col) => (
+                      <div key={col.heading} className="mt-2">
+                        <p className="px-5 text-[10px] text-white/40 uppercase tracking-wider font-semibold mb-1">
+                          {col.heading}
+                        </p>
+                        {col.links.map((link) => (
+                          <Link
+                            key={link.href}
+                            href={link.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="flex items-center px-5 py-1.5 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/5 transition-colors duration-150"
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
                 )}
-              >
-                Keyboards
-              </Link>
+              </div>
 
               {/* Accessories Section */}
               <div className="pt-3 pb-1">

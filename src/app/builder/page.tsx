@@ -9,11 +9,15 @@ import { InitialPrompt } from "@/components/builder/InitialPrompt";
 import { QuestionFlow } from "@/components/builder/QuestionFlow";
 import { GeneratingState } from "@/components/builder/GeneratingState";
 import { BuildResult } from "@/components/builder/BuildResult";
+import { CustomBuilder } from "@/components/builder/CustomBuilder";
 import { KeyboardViewer3D } from "@/components/3d/KeyboardViewer3D";
+import { Tabs } from "@/components/ui/Tabs";
 import { DEFAULT_VIEWER_CONFIG } from "@/lib/keyboard3d";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
 import type { BuilderPhase, BuilderQuestion, BuilderAnswer, BuildData } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
+type BuilderMode = "ai" | "custom";
 
 export default function BuilderPage() {
   return (
@@ -26,6 +30,10 @@ export default function BuilderPage() {
 function BuilderPageInner() {
   const { isSignedIn } = useUser();
   const searchParams = useSearchParams();
+
+  // Mode toggle
+  const initialMode = searchParams.get("mode") === "custom" ? "custom" : "ai";
+  const [mode, setMode] = useState<BuilderMode>(initialMode);
 
   // Phase state
   const [phase, setPhase] = useState<BuilderPhase>("landing");
@@ -89,11 +97,11 @@ function BuilderPageInner() {
   const [autoSubmitted, setAutoSubmitted] = useState(false);
   useEffect(() => {
     const q = searchParams.get("q");
-    if (q && !autoSubmitted && phase === "landing") {
+    if (q && !autoSubmitted && phase === "landing" && mode === "ai") {
       setAutoSubmitted(true);
       handleInitialSubmit(q);
     }
-  }, [searchParams, autoSubmitted, phase, handleInitialSubmit]);
+  }, [searchParams, autoSubmitted, phase, handleInitialSubmit, mode]);
 
   // Phase 2: Handle question answer
   const handleAnswer = useCallback(async (questionId: string, value: string | string[] | number) => {
@@ -194,58 +202,99 @@ function BuilderPageInner() {
     setViewerConfig({ ...DEFAULT_VIEWER_CONFIG });
   }, []);
 
+  // Show mode tabs only when AI mode is at landing, or always in custom mode
+  const showModeTabs = mode === "custom" || phase === "landing";
+
   return (
     <div className="relative min-h-[calc(100vh-4rem)]">
       {/* Background: 3D viewer fills entire area */}
       <div className="absolute inset-0 z-0">
         <KeyboardViewer3D config={viewerConfig} height="100%" autoRotate className="rounded-none border-0 bg-transparent" />
-        {/* Readability gradient — opacity varies by phase */}
+        {/* Readability gradient — heavier for custom mode since it has more content */}
         <div className={cn(
           "absolute inset-0 bg-gradient-to-b from-bg-primary/40 via-bg-primary/60 to-bg-primary/80",
-          phase === "landing" && "from-bg-primary/20 via-bg-primary/40 to-bg-primary/70",
-          phase === "result" && "from-bg-primary/50 via-bg-primary/70 to-bg-primary/90"
+          mode === "ai" && phase === "landing" && "from-bg-primary/20 via-bg-primary/40 to-bg-primary/70",
+          mode === "ai" && phase === "result" && "from-bg-primary/50 via-bg-primary/70 to-bg-primary/90",
+          mode === "custom" && "from-bg-primary/60 via-bg-primary/80 to-bg-primary/95"
         )} />
       </div>
+
       {/* Content overlay */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] px-4 sm:px-6 pb-12">
-        {/* Phase 1: Landing */}
-        {phase === "landing" && (
-          <InitialPrompt onSubmit={handleInitialSubmit} loading={loadingQuestions} />
-        )}
-
-        {/* Phase 2: Questions */}
-        {phase === "questions" && questions.length > 0 && (
-          <QuestionFlow
-            questions={questions}
-            currentIndex={currentQuestionIndex}
-            answers={answers}
-            onAnswer={handleAnswer}
-            onViewerUpdate={handleViewerUpdate}
-          />
-        )}
-
-        {/* Loading questions state */}
-        {phase === "questions" && questions.length === 0 && loadingQuestions && (
-          <div className="flex flex-col items-center justify-center py-16">
-            <div className="w-10 h-10 border-2 border-accent/30 border-t-accent rounded-full animate-spin mb-4" />
-            <p className="text-sm text-text-secondary">Crafting your questions...</p>
+      <div className={cn(
+        "relative z-10 min-h-[calc(100vh-4rem)]",
+        mode === "ai" && "flex flex-col items-center justify-center px-4 sm:px-6 pb-12",
+        mode === "custom" && "px-4 sm:px-6 pt-6 pb-12"
+      )}>
+        {/* Mode tabs */}
+        {showModeTabs && (
+          <div className={cn(
+            "flex justify-center",
+            mode === "ai" && "mb-8",
+            mode === "custom" && "mb-6"
+          )}>
+            <Tabs
+              tabs={[
+                { label: "AI Advisor", value: "ai" },
+                { label: "Custom Build", value: "custom" },
+              ]}
+              activeTab={mode}
+              onChange={(v) => {
+                setMode(v as BuilderMode);
+                if (v === "ai") handleReset();
+              }}
+              className="backdrop-blur-md bg-bg-surface/60"
+            />
           </div>
         )}
 
-        {/* Phase 3: Generating */}
-        {phase === "generating" && <GeneratingState />}
+        {/* AI Advisor mode */}
+        {mode === "ai" && (
+          <>
+            {/* Phase 1: Landing */}
+            {phase === "landing" && (
+              <InitialPrompt onSubmit={handleInitialSubmit} loading={loadingQuestions} />
+            )}
 
-        {/* Phase 4: Build Result */}
-        {phase === "result" && buildResult && (
-          <BuildResult
-            build={buildResult}
-            onSave={isSignedIn ? handleSave : undefined}
-            onTweak={handleTweak}
-            onReset={handleReset}
-            saving={saving}
-            saved={saved}
-            tweaking={tweaking}
-          />
+            {/* Phase 2: Questions */}
+            {phase === "questions" && questions.length > 0 && (
+              <QuestionFlow
+                questions={questions}
+                currentIndex={currentQuestionIndex}
+                answers={answers}
+                onAnswer={handleAnswer}
+                onViewerUpdate={handleViewerUpdate}
+              />
+            )}
+
+            {/* Loading questions state */}
+            {phase === "questions" && questions.length === 0 && loadingQuestions && (
+              <div className="flex flex-col items-center justify-center py-16">
+                <div className="w-10 h-10 border-2 border-accent/30 border-t-accent rounded-full animate-spin mb-4" />
+                <p className="text-sm text-text-secondary">Crafting your questions...</p>
+              </div>
+            )}
+
+            {/* Phase 3: Generating */}
+            {phase === "generating" && <GeneratingState />}
+
+            {/* Phase 4: Build Result */}
+            {phase === "result" && buildResult && (
+              <BuildResult
+                build={buildResult}
+                onSave={isSignedIn ? handleSave : undefined}
+                onTweak={handleTweak}
+                onReset={handleReset}
+                saving={saving}
+                saved={saved}
+                tweaking={tweaking}
+              />
+            )}
+          </>
+        )}
+
+        {/* Custom Build mode */}
+        {mode === "custom" && (
+          <CustomBuilder onViewerUpdate={handleViewerUpdate} />
         )}
       </div>
     </div>

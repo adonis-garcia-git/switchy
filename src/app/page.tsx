@@ -121,10 +121,7 @@ export default function Home() {
                   rows={3}
                   className="w-full bg-transparent px-5 py-4 text-base text-text-primary placeholder:text-text-muted/50 resize-none focus:outline-none"
                 />
-                <div className="flex items-center justify-between px-5 pb-4">
-                  <span className="text-[10px] text-text-muted font-mono uppercase tracking-wider">
-                    Powered by Claude Sonnet 4.6
-                  </span>
+                <div className="flex items-center justify-end px-5 pb-4">
                   <button
                     type="submit"
                     disabled={!query.trim()}

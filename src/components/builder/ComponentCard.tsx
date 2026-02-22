@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { cn, formatPrice, formatPriceWhole } from "@/lib/utils";
 
 interface ComponentCardProps {
@@ -11,6 +12,7 @@ interface ComponentCardProps {
   priceEach?: number;
   imageUrl?: string;
   productUrl?: string;
+  detailUrl?: string;
 }
 
 const TYPE_LABELS: Record<string, string> = {
@@ -36,6 +38,7 @@ export function ComponentCard({
   priceEach,
   imageUrl,
   productUrl,
+  detailUrl,
 }: ComponentCardProps) {
   const placeholderImg = imageUrl || `https://placehold.co/200x200/181818/E8590C?text=${encodeURIComponent(TYPE_LABELS[type] || type)}`;
 
@@ -62,9 +65,18 @@ export function ComponentCard({
                 </svg>
                 {TYPE_LABELS[type] || type}
               </p>
-              <h4 className="font-semibold text-sm text-text-primary font-[family-name:var(--font-outfit)] truncate">
-                {name}
-              </h4>
+              {detailUrl ? (
+                <Link
+                  href={detailUrl}
+                  className="font-semibold text-sm text-text-primary font-[family-name:var(--font-outfit)] truncate block hover:text-accent transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded"
+                >
+                  {name}
+                </Link>
+              ) : (
+                <h4 className="font-semibold text-sm text-text-primary font-[family-name:var(--font-outfit)] truncate">
+                  {name}
+                </h4>
+              )}
             </div>
             <div className="text-right shrink-0">
               <p className="text-sm font-bold font-[family-name:var(--font-mono)] text-accent">

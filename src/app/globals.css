@@ -166,3 +166,16 @@ html.light .glow-accent-strong {
 html.light ::-webkit-scrollbar-track { background: #FAFAFA; }
 html.light ::-webkit-scrollbar-thumb { background: #D4D4D4; }
 html.light ::-webkit-scrollbar-thumb:hover { background: #A3A3A3; }
+
+/* Mega menu entrance animation */
+@keyframes mega-menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes mega-menu-in {
+    from { opacity: 1; transform: none; }
+    to { opacity: 1; transform: none; }
+  }
+}

@@ -9,6 +9,7 @@
  */
 
 import type * as buildAdvisor from "../buildAdvisor.js";
+import type * as buildFilters from "../buildFilters.js";
 import type * as builds from "../builds.js";
 import type * as components_ from "../components.js";
 import type * as conversations from "../conversations.js";
@@ -17,7 +18,9 @@ import type * as groupBuys from "../groupBuys.js";
 import type * as imageGeneration from "../imageGeneration.js";
 import type * as internalFunctions from "../internalFunctions.js";
 import type * as keyboards from "../keyboards.js";
+import type * as productValidator from "../productValidator.js";
 import type * as products from "../products.js";
+import type * as prompts from "../prompts.js";
 import type * as savedBuilds from "../savedBuilds.js";
 import type * as seed from "../seed.js";
 import type * as switches from "../switches.js";
@@ -32,6 +35,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   buildAdvisor: typeof buildAdvisor;
+  buildFilters: typeof buildFilters;
   builds: typeof builds;
   components: typeof components_;
   conversations: typeof conversations;
@@ -40,7 +44,9 @@ declare const fullApi: ApiFromModules<{
   imageGeneration: typeof imageGeneration;
   internalFunctions: typeof internalFunctions;
   keyboards: typeof keyboards;
+  productValidator: typeof productValidator;
   products: typeof products;
+  prompts: typeof prompts;
   savedBuilds: typeof savedBuilds;
   seed: typeof seed;
   switches: typeof switches;

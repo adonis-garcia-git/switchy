@@ -88,6 +88,9 @@ export function BuildResult({
             name={build.components.keyboardKit.name}
             price={build.components.keyboardKit.price}
             reason={build.components.keyboardKit.reason}
+            imageUrl={build.components.keyboardKit.imageUrl}
+            productUrl={build.components.keyboardKit.productUrl}
+            detailUrl={build.components.keyboardKit.detailUrl}
           />
         )}
         {build.components.switches && (
@@ -98,6 +101,9 @@ export function BuildResult({
             reason={build.components.switches.reason}
             quantity={build.components.switches.quantity}
             priceEach={build.components.switches.priceEach}
+            imageUrl={build.components.switches.imageUrl}
+            productUrl={build.components.switches.productUrl}
+            detailUrl={build.components.switches.detailUrl}
           />
         )}
         {build.components.keycaps && (
@@ -106,6 +112,9 @@ export function BuildResult({
             name={build.components.keycaps.name}
             price={build.components.keycaps.price}
             reason={build.components.keycaps.reason}
+            imageUrl={build.components.keycaps.imageUrl}
+            productUrl={build.components.keycaps.productUrl}
+            detailUrl={build.components.keycaps.detailUrl}
           />
         )}
         {build.components.stabilizers && (
@@ -114,6 +123,9 @@ export function BuildResult({
             name={build.components.stabilizers.name}
             price={build.components.stabilizers.price}
             reason={build.components.stabilizers.reason}
+            imageUrl={build.components.stabilizers.imageUrl}
+            productUrl={build.components.stabilizers.productUrl}
+            detailUrl={build.components.stabilizers.detailUrl}
           />
         )}
       </div>

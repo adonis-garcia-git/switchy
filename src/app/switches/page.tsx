@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
@@ -10,24 +10,20 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Id } from "../../../convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
+import { useFilterParams } from "@/hooks/useFilterParams";
+import {
+  DEFAULT_SWITCH_FILTERS,
+  parseSwitchParams,
+  switchFiltersToParams,
+} from "@/lib/filterParams";
 
-const DEFAULT_FILTERS: FilterState = {
-  type: null,
-  soundCharacter: null,
-  soundPitch: null,
-  soundVolume: null,
-  minForce: 20,
-  maxForce: 100,
-  minPrice: 0,
-  maxPrice: 2,
-  brand: null,
-  sortBy: "communityRating",
-  sortOrder: "desc",
-};
-
-export default function SwitchesPage() {
+function SwitchesContent() {
   const router = useRouter();
-  const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
+  const [filters, setFilters] = useFilterParams<FilterState>(
+    DEFAULT_SWITCH_FILTERS,
+    parseSwitchParams,
+    switchFiltersToParams
+  );
   const [compareMode, setCompareMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState("");
@@ -252,5 +248,42 @@ export default function SwitchesPage() {
         </div>
       )}
     </div>
+  );
+}
+
+function SwitchesLoading() {
+  return (
+    <div className="min-h-screen px-4 lg:px-8 py-6">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="h-8 w-48 bg-bg-elevated rounded animate-pulse" />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+        {Array.from({ length: 9 }).map((_, i) => (
+          <div
+            key={i}
+            className="rounded-xl border border-border-subtle bg-bg-surface p-4 animate-pulse"
+          >
+            <div className="flex justify-between mb-3">
+              <div>
+                <div className="h-2.5 w-16 bg-bg-elevated rounded mb-2" />
+                <div className="h-4 w-32 bg-bg-elevated rounded" />
+              </div>
+              <div className="h-5 w-14 bg-bg-elevated rounded" />
+            </div>
+            <div className="h-px bg-border-subtle mb-3" />
+            <div className="h-3 w-24 bg-bg-elevated rounded mb-3" />
+            <div className="h-3 w-20 bg-bg-elevated rounded" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function SwitchesPage() {
+  return (
+    <Suspense fallback={<SwitchesLoading />}>
+      <SwitchesContent />
+    </Suspense>
   );
 }
