@@ -87,7 +87,7 @@ function AccessoriesContent() {
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { view, setView, gridClassName, skeletonCount, itemsPerPage, isList } = useGridView();
+  const { view, setView, gridClassName, skeletonCount, itemsPerPage } = useGridView();
 
   const brands = useQuery(api.accessories.getAllBrands, {}) ?? [];
 

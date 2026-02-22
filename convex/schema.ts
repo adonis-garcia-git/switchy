@@ -180,6 +180,17 @@ export default defineSchema({
     trackingNumber: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
     listingId: v.optional(v.id("groupBuyListings")),
+    statusHistory: v.optional(v.array(v.object({
+      from: v.string(),
+      to: v.string(),
+      changedAt: v.number(),
+    }))),
+  }).index("by_userId", ["userId"]),
+
+  groupBuyBudgets: defineTable({
+    userId: v.string(),
+    budgetType: v.union(v.literal("monthly"), v.literal("total")),
+    amount: v.number(),
   }).index("by_userId", ["userId"]),
 
   groupBuyListings: defineTable({

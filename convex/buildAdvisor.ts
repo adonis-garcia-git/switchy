@@ -33,6 +33,7 @@ interface QuestionDef {
     label: string;
     description?: string;
     color?: string;
+    viewerUpdate?: Record<string, unknown>;
   }[];
   sliderConfig?: {
     min: number;
@@ -76,26 +77,31 @@ const ALL_QUESTIONS: QuestionDef[] = [
         id: "thocky",
         label: "Thocky",
         description: "Deep, muted, satisfying bass",
+        viewerUpdate: { environment: "warehouse", rgbMode: "breathing", rgbColor: "#ff6b35", rgbBrightness: 1.5, hasRGB: true },
       },
       {
         id: "clacky",
         label: "Clacky",
         description: "Sharp, bright, crisp highs",
+        viewerUpdate: { environment: "studio", rgbMode: "reactive", rgbColor: "#00bcd4", rgbBrightness: 2, hasRGB: true },
       },
       {
         id: "creamy",
         label: "Creamy",
         description: "Smooth, buttery, refined",
+        viewerUpdate: { environment: "dawn", rgbMode: "wave", rgbColor: "#f5f0e1", rgbBrightness: 1, hasRGB: true },
       },
       {
         id: "poppy",
         label: "Poppy",
         description: "Snappy, crisp, bouncy",
+        viewerUpdate: { environment: "city", rgbMode: "rainbow", rgbBrightness: 2.5, hasRGB: true },
       },
       {
         id: "silent",
         label: "Silent",
         description: "As quiet as possible",
+        viewerUpdate: { environment: "apartment", hasRGB: false },
       },
     ],
     detectedBy: (c) => !!c.soundPreference,
@@ -163,16 +169,19 @@ const ALL_QUESTIONS: QuestionDef[] = [
         id: "pbt",
         label: "PBT",
         description: "Textured, durable, deeper sound",
+        viewerUpdate: { keycapMaterial: "pbt" },
       },
       {
         id: "abs",
         label: "ABS",
         description: "Smooth, vibrant colors, higher-pitched",
+        viewerUpdate: { keycapMaterial: "abs" },
       },
       {
         id: "pom",
         label: "POM",
         description: "Ultra-smooth, unique feel, rare",
+        viewerUpdate: { keycapMaterial: "pom" },
       },
       {
         id: "no-preference",
@@ -265,6 +274,9 @@ export const generateBuildFromAnswers = action({
     const allKeyboards: Record<string, unknown>[] = await ctx.runQuery(
       internal.internalFunctions.getAllKeyboards
     );
+    const allKeycaps: Record<string, unknown>[] = await ctx.runQuery(
+      internal.internalFunctions.getAllKeycaps
+    );
 
     // Merge criteria from prompt + questionnaire answers
     const promptCriteria = extractCriteriaFromPrompt(args.initialPrompt);
@@ -344,7 +356,8 @@ export const generateBuildFromAnswers = action({
         const { validatedBuild } = validateBuild(
           buildData,
           allSwitches,
-          allKeyboards
+          allKeyboards,
+          allKeycaps
         );
 
         // Record usage after successful generation

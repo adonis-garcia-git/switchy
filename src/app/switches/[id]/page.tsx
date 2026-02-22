@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use } from "react";
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
@@ -9,16 +9,118 @@ import { SoundProfile } from "@/components/SoundProfile";
 import { VendorLinksSection } from "@/components/VendorLinks";
 import { PurchaseButton } from "@/components/PurchaseButton";
 import { Badge } from "@/components/ui/Badge";
-import { Tabs } from "@/components/ui/Tabs";
 import { cn, formatPrice } from "@/lib/utils";
 import { CompleteYourBuild } from "@/components/CompleteYourBuild";
 import { VendorPartnerSection } from "@/components/VendorPartnerSection";
+import { Breadcrumb } from "@/components/detail/Breadcrumb";
+import { BuildAdvisorCTA } from "@/components/detail/BuildAdvisorCTA";
+import {
+  SimilarProducts,
+  SimilarProductItem,
+} from "@/components/detail/SimilarProducts";
+import { SwitchCard } from "@/components/SwitchCard";
 
-const DETAIL_TABS = [
-  { label: "Overview", value: "overview" },
-  { label: "Sound", value: "sound" },
-  { label: "Where to Buy", value: "buy" },
-];
+/* ------------------------------------------------------------------ */
+/*  Sub-component: resolves a single compared switch name via search  */
+/* ------------------------------------------------------------------ */
+
+function ComparedSwitchItem({ name }: { name: string }) {
+  const results = useQuery(api.switches.search, { query: name });
+
+  // Still loading
+  if (results === undefined) {
+    return (
+      <div className="h-20 w-full rounded-lg bg-bg-elevated animate-pulse" />
+    );
+  }
+
+  // Try to find an exact-ish match (case-insensitive name match first, else first result)
+  const match =
+    results.find(
+      (s: any) => s.name.toLowerCase() === name.toLowerCase()
+    ) ?? (results.length > 0 ? results[0] : null);
+
+  if (!match) {
+    // Fallback: plain text badge
+    return (
+      <span className="px-3 py-1.5 rounded-lg text-sm bg-bg-elevated text-text-secondary border border-border-subtle">
+        {name}
+      </span>
+    );
+  }
+
+  return (
+    <Link
+      href={`/switches/${match._id}`}
+      className="flex items-center gap-3 rounded-xl border border-border-subtle bg-bg-primary/30 p-3 hover:border-border-accent transition-[border-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 group"
+    >
+      {match.imageUrl && (
+        <div className="w-14 h-14 rounded-lg overflow-hidden bg-bg-elevated shrink-0 relative">
+          <img
+            src={match.imageUrl}
+            alt={match.name}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        </div>
+      )}
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-semibold text-text-primary truncate group-hover:text-accent transition-colors duration-150">
+          {match.name}
+        </p>
+        <div className="flex items-center gap-2 mt-0.5">
+          <Badge
+            variant={match.type as "linear" | "tactile" | "clicky"}
+            size="sm"
+          >
+            {match.type}
+          </Badge>
+          <span className="text-xs font-mono text-accent font-medium">
+            {formatPrice(match.pricePerSwitch)}
+          </span>
+        </div>
+      </div>
+      <svg
+        className="w-4 h-4 text-text-muted shrink-0 group-hover:text-accent transition-colors duration-150"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 5l7 7-7 7"
+        />
+      </svg>
+    </Link>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Sub-component: renders up to 4 compared switches                  */
+/* ------------------------------------------------------------------ */
+
+function ComparedSwitches({
+  names,
+}: {
+  names: string[];
+}) {
+  // Limit to 4 to keep hook count deterministic
+  const limited = names.slice(0, 4);
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {limited.map((name) => (
+        <ComparedSwitchItem key={name} name={name} />
+      ))}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Main page component                                                */
+/* ------------------------------------------------------------------ */
 
 export default function SwitchDetailPage({
   params,
@@ -26,10 +128,21 @@ export default function SwitchDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const [activeTab, setActiveTab] = useState("overview");
   const sw = useQuery(api.switches.getById, {
     id: id as Id<"switches">,
   });
+
+  // Query similar switches by type (always called, will filter client-side)
+  const similarRaw = useQuery(
+    api.switches.list,
+    sw ? { type: sw.type as "linear" | "tactile" | "clicky" } : "skip"
+  );
+
+  const similarSwitches = similarRaw
+    ? similarRaw
+        .filter((s: any) => s._id !== id)
+        .slice(0, 6)
+    : [];
 
   if (sw === undefined) {
     return (
@@ -44,11 +157,13 @@ export default function SwitchDetailPage({
             </div>
             <div className="h-6 w-16 bg-bg-elevated rounded animate-pulse" />
           </div>
-          <div className="h-10 w-64 bg-bg-elevated rounded-lg mb-8 animate-pulse" />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-4">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="h-12 bg-bg-surface rounded-lg animate-pulse" />
+                <div
+                  key={i}
+                  className="h-12 bg-bg-surface rounded-lg animate-pulse"
+                />
               ))}
             </div>
             <div className="h-48 bg-bg-surface rounded-xl animate-pulse" />
@@ -77,16 +192,14 @@ export default function SwitchDetailPage({
   return (
     <div className="min-h-screen">
       <main className="max-w-5xl mx-auto px-4 lg:px-8 py-8">
-        {/* Back link */}
-        <Link
-          href="/switches"
-          className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-accent transition-colors duration-150 mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded"
-        >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to Switches
-        </Link>
+        {/* Breadcrumb */}
+        <Breadcrumb
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Switches", href: "/switches" },
+            { label: sw.name },
+          ]}
+        />
 
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
@@ -98,7 +211,10 @@ export default function SwitchDetailPage({
               {sw.name}
             </h1>
           </div>
-          <Badge variant={sw.type as "linear" | "tactile" | "clicky"} size="md">
+          <Badge
+            variant={sw.type as "linear" | "tactile" | "clicky"}
+            size="md"
+          >
             {sw.type}
           </Badge>
         </div>
@@ -107,136 +223,136 @@ export default function SwitchDetailPage({
         {sw.imageUrl && (
           <div className="mb-6 max-w-md mx-auto">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-bg-elevated relative">
-              <img src={sw.imageUrl} alt={`${sw.brand} ${sw.name}`} className="w-full h-full object-cover" />
+              <img
+                src={sw.imageUrl}
+                alt={`${sw.brand} ${sw.name}`}
+                className="w-full h-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </div>
           </div>
         )}
 
-        {/* Tabs */}
-        <div className="mb-8">
-          <Tabs tabs={DETAIL_TABS} activeTab={activeTab} onChange={setActiveTab} />
-        </div>
-
-        {/* Content */}
+        {/* 2-column layout: main content + sticky sidebar */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main content area */}
-          <div className="lg:col-span-2">
-            {activeTab === "overview" && (
-              <div className="space-y-6">
-                {/* Specifications */}
-                <div className="rounded-xl border border-border-default bg-bg-surface p-5">
-                  <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">
-                    Specifications
-                  </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border-subtle rounded-lg overflow-hidden">
-                    {([
-                      ["Actuation Force", `${sw.actuationForceG}g`],
-                      sw.bottomOutForceG != null && ["Bottom Out Force", `${sw.bottomOutForceG}g`],
-                      ["Actuation Point", `${sw.actuationMm}mm`],
-                      ["Total Travel", `${sw.totalTravelMm}mm`],
-                      sw.stemMaterial && ["Stem Material", sw.stemMaterial],
-                      sw.housingMaterial && ["Housing Material", sw.housingMaterial],
-                      sw.springType && ["Spring Type", sw.springType],
-                      sw.factoryLubed != null && ["Factory Lubed", sw.factoryLubed ? "Yes" : "No"],
-                      sw.longPole != null && ["Long Pole", sw.longPole ? "Yes" : "No"],
-                    ].filter(Boolean) as [string, string][]).map(([label, value], idx) => (
-                      <div
-                        key={label}
-                        className={cn(
-                          "flex justify-between items-center py-3 px-4",
-                          idx % 2 === 0 ? "bg-bg-surface" : "bg-bg-surface",
-                          "bg-bg-primary/30"
-                        )}
-                      >
-                        <span className="text-xs text-text-muted uppercase tracking-wider">
-                          {label}
-                        </span>
-                        <span className="text-sm font-mono text-text-primary font-medium">
-                          {value}
-                        </span>
-                      </div>
-                    ))}
+          {/* Main content area — all sections visible */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Specifications */}
+            <div className="rounded-xl border border-border-default bg-bg-surface p-5">
+              <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">
+                Specifications
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border-subtle rounded-lg overflow-hidden">
+                {(
+                  [
+                    ["Actuation Force", `${sw.actuationForceG}g`],
+                    sw.bottomOutForceG != null && [
+                      "Bottom Out Force",
+                      `${sw.bottomOutForceG}g`,
+                    ],
+                    ["Actuation Point", `${sw.actuationMm}mm`],
+                    ["Total Travel", `${sw.totalTravelMm}mm`],
+                    sw.stemMaterial && ["Stem Material", sw.stemMaterial],
+                    sw.housingMaterial && [
+                      "Housing Material",
+                      sw.housingMaterial,
+                    ],
+                    sw.springType && ["Spring Type", sw.springType],
+                    sw.factoryLubed != null && [
+                      "Factory Lubed",
+                      sw.factoryLubed ? "Yes" : "No",
+                    ],
+                    sw.longPole != null && [
+                      "Long Pole",
+                      sw.longPole ? "Yes" : "No",
+                    ],
+                  ].filter(Boolean) as [string, string][]
+                ).map(([label, value], idx) => (
+                  <div
+                    key={label}
+                    className={cn(
+                      "flex justify-between items-center py-3 px-4",
+                      idx % 2 === 0 ? "bg-bg-surface" : "bg-bg-surface",
+                      "bg-bg-primary/30"
+                    )}
+                  >
+                    <span className="text-xs text-text-muted uppercase tracking-wider">
+                      {label}
+                    </span>
+                    <span className="text-sm font-mono text-text-primary font-medium">
+                      {value}
+                    </span>
                   </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Sound Profile */}
+            <div className="rounded-xl border border-border-default bg-bg-surface p-5">
+              <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-6">
+                Sound Profile
+              </h2>
+              {sw.soundPitch && sw.soundVolume && sw.soundCharacter ? (
+                <SoundProfile
+                  pitch={sw.soundPitch as "low" | "mid" | "high"}
+                  volume={sw.soundVolume as "quiet" | "medium" | "loud"}
+                  character={sw.soundCharacter}
+                />
+              ) : (
+                <p className="text-sm text-text-muted">
+                  Sound profile data not available for this switch.
+                </p>
+              )}
+            </div>
+
+            {/* Popular For */}
+            {sw.popularFor && sw.popularFor.length > 0 && (
+              <div className="rounded-xl border border-border-default bg-bg-surface p-5">
+                <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
+                  Popular For
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  {sw.popularFor.map((tag: string) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1.5 rounded-lg text-sm bg-accent-dim/40 text-accent border border-border-accent font-medium"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-
-                {/* Popular For */}
-                {sw.popularFor && sw.popularFor.length > 0 && (
-                  <div className="rounded-xl border border-border-default bg-bg-surface p-5">
-                    <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-                      Popular For
-                    </h2>
-                    <div className="flex flex-wrap gap-2">
-                      {sw.popularFor.map((tag: string) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1.5 rounded-lg text-sm bg-accent-dim/40 text-accent border border-border-accent font-medium"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Notes */}
-                {sw.notes && (
-                  <div className="rounded-xl border border-border-default bg-bg-surface p-5">
-                    <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-                      Community Notes
-                    </h2>
-                    <p className="text-sm text-text-secondary leading-relaxed">
-                      {sw.notes}
-                    </p>
-                  </div>
-                )}
-
-                {/* Commonly Compared To */}
-                {sw.commonlyComparedTo && sw.commonlyComparedTo.length > 0 && (
-                  <div className="rounded-xl border border-border-default bg-bg-surface p-5">
-                    <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-                      Commonly Compared To
-                    </h2>
-                    <div className="flex flex-wrap gap-2">
-                      {sw.commonlyComparedTo.map((name: string) => (
-                        <span
-                          key={name}
-                          className="px-3 py-1.5 rounded-lg text-sm bg-bg-elevated text-text-secondary border border-border-subtle"
-                        >
-                          {name}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             )}
 
-            {activeTab === "sound" && (
-              <div className="rounded-xl border border-border-default bg-bg-surface p-6">
-                <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-6">
-                  Sound Profile
+            {/* Community Notes */}
+            {sw.notes && (
+              <div className="rounded-xl border border-border-default bg-bg-surface p-5">
+                <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
+                  Community Notes
                 </h2>
-                {sw.soundPitch && sw.soundVolume && sw.soundCharacter ? (
-                  <SoundProfile
-                    pitch={sw.soundPitch as "low" | "mid" | "high"}
-                    volume={sw.soundVolume as "quiet" | "medium" | "loud"}
-                    character={sw.soundCharacter}
-                  />
-                ) : (
-                  <p className="text-sm text-text-muted">Sound profile data not available for this switch.</p>
-                )}
+                <p className="text-sm text-text-secondary leading-relaxed">
+                  {sw.notes}
+                </p>
               </div>
             )}
 
-            {activeTab === "buy" && (
-              <div className="rounded-xl border border-border-default bg-bg-surface p-6">
-                <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">
-                  Where to Buy
+            {/* Commonly Compared To — upgraded with search-backed mini cards */}
+            {sw.commonlyComparedTo && sw.commonlyComparedTo.length > 0 && (
+              <div className="rounded-xl border border-border-default bg-bg-surface p-5">
+                <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
+                  Commonly Compared To
                 </h2>
-                <VendorLinksSection productName={sw.name} />
+                <ComparedSwitches names={sw.commonlyComparedTo} />
               </div>
             )}
+
+            {/* Where to Buy */}
+            <div className="rounded-xl border border-border-default bg-bg-surface p-5">
+              <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">
+                Where to Buy
+              </h2>
+              <VendorLinksSection productName={sw.name} />
+            </div>
           </div>
 
           {/* Sidebar: quick stats */}
@@ -312,7 +428,9 @@ export default function SwitchDetailPage({
                       </p>
                       <SoundProfile
                         pitch={sw.soundPitch as "low" | "mid" | "high"}
-                        volume={sw.soundVolume as "quiet" | "medium" | "loud"}
+                        volume={
+                          sw.soundVolume as "quiet" | "medium" | "loud"
+                        }
                         character={sw.soundCharacter}
                         compact
                       />
@@ -321,7 +439,7 @@ export default function SwitchDetailPage({
                 )}
               </div>
 
-              {/* Buy first - primary */}
+              {/* Buy — primary CTA */}
               <PurchaseButton
                 brand={sw.brand}
                 name={sw.name}
@@ -330,26 +448,37 @@ export default function SwitchDetailPage({
                 size="md"
                 className="w-full justify-center"
               />
-
-              {/* Ask advisor second - secondary */}
-              <Link
-                href={`/builder?q=${encodeURIComponent(`Tell me about the ${sw.brand} ${sw.name} switch`)}`}
-                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl border border-border-default bg-bg-elevated text-text-secondary font-semibold text-sm hover:text-text-primary hover:border-border-accent transition-[border-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
-              >
-                Ask Build Advisor
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </Link>
             </div>
           </div>
         </div>
+
+        {/* ---- Full-width sections below the main grid ---- */}
+
+        {/* Similar Switches */}
+        <SimilarProducts
+          title={`More ${sw.type} Switches`}
+          viewAllHref={`/switches?type=${sw.type}`}
+          isEmpty={similarSwitches.length === 0}
+        >
+          {similarSwitches.map((s: any) => (
+            <SimilarProductItem key={s._id}>
+              <SwitchCard sw={s} />
+            </SimilarProductItem>
+          ))}
+        </SimilarProducts>
 
         {/* Complete Your Build cross-sell */}
         <CompleteYourBuild
           currentType="switch"
           currentName={sw.name}
           currentPrice={sw.pricePerSwitch * 70}
+        />
+
+        {/* Build Advisor CTA */}
+        <BuildAdvisorCTA
+          brand={sw.brand}
+          name={sw.name}
+          productType="switch"
         />
 
         {/* Enhanced vendor section */}

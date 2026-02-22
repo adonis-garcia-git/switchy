@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { useTypewriter } from "@/hooks/useTypewriter";
+import { POPULAR_BUILDS } from "@/data/popularBuilds";
 
 const SUGGESTION_CHIPS = [
   "Thocky 65% under $200",
@@ -20,14 +22,13 @@ interface InitialPromptProps {
 export function InitialPrompt({ onSubmit, loading }: InitialPromptProps) {
   const [value, setValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPlaceholderIndex((i) => (i + 1) % SUGGESTION_CHIPS.length);
-    }, 3500);
-    return () => clearInterval(interval);
-  }, []);
+  const { text: placeholderText } = useTypewriter({
+    strings: SUGGESTION_CHIPS,
+    typeSpeed: 40,
+    pauseBetween: 2500,
+    enabled: !value,
+  });
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -66,7 +67,7 @@ export function InitialPrompt({ onSubmit, loading }: InitialPromptProps) {
             type="text"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder={SUGGESTION_CHIPS[placeholderIndex]}
+            placeholder={placeholderText || "Describe your dream keyboard..."}
             onKeyDown={(e) => {
               if (e.key === "Enter") handleSubmit(value);
             }}
@@ -107,7 +108,7 @@ export function InitialPrompt({ onSubmit, loading }: InitialPromptProps) {
         </div>
       </div>
 
-      {/* Suggestion chips — minimal, transparent */}
+      {/* Suggestion chips — improved visibility */}
       <div className="flex flex-wrap justify-center gap-2 max-w-xl">
         {SUGGESTION_CHIPS.map((chip) => (
           <button
@@ -116,8 +117,8 @@ export function InitialPrompt({ onSubmit, loading }: InitialPromptProps) {
             disabled={loading}
             className={cn(
               "px-4 py-2 rounded-full border text-sm",
-              "border-white/[0.08] bg-black/20 text-white/50",
-              "hover:text-accent hover:border-accent/30 hover:bg-black/30",
+              "border-white/15 bg-black/40 text-white/70 backdrop-blur-sm",
+              "hover:text-accent hover:border-accent/30 hover:bg-black/50",
               "transition-[border-color,color,background-color] duration-150",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
               "active:scale-[0.97]",
@@ -127,6 +128,54 @@ export function InitialPrompt({ onSubmit, loading }: InitialPromptProps) {
             {chip}
           </button>
         ))}
+      </div>
+
+      {/* Popular Templates */}
+      <div className="w-full max-w-xl mt-10">
+        <p
+          className="text-xs text-white/40 uppercase tracking-wider font-medium text-center mb-4"
+          style={{ textShadow: "0 1px 10px rgba(0,0,0,0.8)" }}
+        >
+          Popular Templates
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {POPULAR_BUILDS.map((build) => (
+            <button
+              key={build.id}
+              onClick={() => handleSubmit(build.prompt)}
+              disabled={loading}
+              className={cn(
+                "text-left p-4 rounded-xl border",
+                "bg-black/30 border-white/[0.08] backdrop-blur-sm",
+                "hover:border-accent/30 hover:bg-black/40",
+                "transition-[border-color,background-color] duration-150",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                "active:scale-[0.98]",
+                "disabled:opacity-50 disabled:cursor-not-allowed"
+              )}
+            >
+              <div className="flex items-start justify-between gap-2 mb-1.5">
+                <h3 className="text-sm font-semibold text-white/90 font-[family-name:var(--font-outfit)]">
+                  {build.name}
+                </h3>
+                <span className="text-xs font-bold font-[family-name:var(--font-mono)] text-accent shrink-0">
+                  {build.price}
+                </span>
+              </div>
+              <p className="text-xs text-white/50 mb-2 leading-relaxed">{build.tagline}</p>
+              <div className="flex flex-wrap gap-1.5">
+                {build.keyComponents.map((comp) => (
+                  <span
+                    key={comp}
+                    className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/[0.06] text-white/50 border border-white/[0.06]"
+                  >
+                    {comp}
+                  </span>
+                ))}
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

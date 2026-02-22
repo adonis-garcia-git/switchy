@@ -94,7 +94,7 @@ function KeyboardsContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [compareMode, setCompareMode] = useState(false);
-  const { view, setView, gridClassName, skeletonCount, itemsPerPage, isList } = useGridView();
+  const { view, setView, gridClassName, skeletonCount, itemsPerPage } = useGridView();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   const brands = useQuery(api.keyboards.getAllBrands, {}) ?? [];

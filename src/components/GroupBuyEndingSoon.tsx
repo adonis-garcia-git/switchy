@@ -37,33 +37,39 @@ export function GroupBuyEndingSoon({ listings, trackedIds, onTrackThis }: GroupB
           return (
             <div
               key={listing._id}
-              className="flex-shrink-0 flex items-center gap-3 bg-bg-surface border border-border-subtle rounded-lg px-3.5 py-2.5 min-w-[220px] max-w-[280px]"
+              className="flex-shrink-0 flex items-center gap-3.5 bg-bg-surface border border-border-subtle rounded-xl px-4 py-3.5 min-w-[280px] max-w-[340px]"
             >
               {listing.imageUrl && (
                 <img
                   src={listing.imageUrl}
                   alt={listing.name}
-                  className="w-10 h-10 rounded-lg object-cover border border-border-subtle shrink-0"
+                  className="w-16 h-16 rounded-lg object-cover border border-border-subtle shrink-0"
                 />
               )}
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-text-primary truncate">{listing.name}</p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <p className="text-[11px] text-text-muted truncate">{listing.vendor}</p>
-                  {days !== null && (
+                <p className="text-sm font-semibold text-text-primary truncate font-[family-name:var(--font-outfit)]">
+                  {listing.name}
+                </p>
+                <p className="text-xs text-text-muted truncate mt-0.5">{listing.vendor}</p>
+                {days !== null && (
+                  <div className="mt-1.5">
                     <span className={cn(
-                      "text-[10px] font-bold uppercase tracking-wider whitespace-nowrap",
-                      days <= 2 ? "text-red-400" : "text-amber-400"
+                      "text-[10px] font-bold uppercase tracking-wider whitespace-nowrap px-2 py-0.5 rounded-md",
+                      days <= 2
+                        ? "text-red-400 bg-red-400/10"
+                        : "text-amber-400 bg-amber-400/10"
                     )}>
-                      {days === 0 ? "Today" : days === 1 ? "1 day" : `${days} days`}
+                      {days === 0 ? "Ends today" : days === 1 ? "1 day left" : `${days} days left`}
                     </span>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
               {isTracked ? (
-                <svg className="w-4 h-4 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
-                </svg>
+                <div className="shrink-0 w-8 h-8 rounded-lg bg-emerald-400/10 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
+                  </svg>
+                </div>
               ) : (
                 <button
                   onClick={(e) => {
@@ -71,7 +77,7 @@ export function GroupBuyEndingSoon({ listings, trackedIds, onTrackThis }: GroupB
                     onTrackThis?.(listing);
                   }}
                   className={cn(
-                    "shrink-0 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md",
+                    "shrink-0 text-xs font-bold uppercase tracking-wider px-3.5 py-2 rounded-lg",
                     "bg-accent text-bg-primary",
                     "hover:bg-accent-hover",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",

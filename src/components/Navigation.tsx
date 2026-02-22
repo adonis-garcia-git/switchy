@@ -36,7 +36,7 @@ export function Navigation() {
   return (
     <>
       {/* Top Navigation Bar */}
-      <header className="fixed top-0 left-0 right-0 h-16 bg-black/95 backdrop-blur-xl border-b border-white/10 z-50">
+      <header className="fixed top-0 left-0 right-0 h-16 bg-bg-surface/95 backdrop-blur-xl border-b border-border-subtle z-50">
         <div className="h-full max-w-[1440px] mx-auto px-4 sm:px-6 flex items-center justify-between">
           {/* Left: Logo + Nav Links */}
           <div className="flex items-center gap-6">
@@ -46,7 +46,7 @@ export function Navigation() {
                 alt=""
                 className="h-16 w-16 object-contain drop-shadow-[0_2px_6px_rgba(243,146,28,0.35)] transition-transform duration-200 group-hover:scale-110 group-active:scale-95"
               />
-              <span className="text-2xl font-bold tracking-tight text-white font-[family-name:var(--font-outfit)]">
+              <span className="text-2xl font-bold tracking-tight text-text-primary font-[family-name:var(--font-outfit)]">
                 Switch<span className="text-[#F3921C]">y</span>
               </span>
             </Link>
@@ -93,7 +93,7 @@ export function Navigation() {
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
                   isNavActive("/glossary")
                     ? "bg-accent-dim border border-accent/20 text-accent"
-                    : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white active:scale-[0.97]"
+                    : "bg-bg-tint text-text-secondary hover:bg-bg-tint-strong hover:text-text-primary active:scale-[0.97]"
                 )}
               >
                 Glossary
@@ -107,10 +107,24 @@ export function Navigation() {
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
                   isNavActive("/group-buys")
                     ? "bg-accent-dim border border-accent/20 text-accent"
-                    : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white active:scale-[0.97]"
+                    : "bg-bg-tint text-text-secondary hover:bg-bg-tint-strong hover:text-text-primary active:scale-[0.97]"
                 )}
               >
                 Group Buys
+              </Link>
+
+              {/* Studio — Standalone link */}
+              <Link
+                href="/studio"
+                className={cn(
+                  "px-3.5 py-2 rounded-2xl text-sm font-medium transition-[background-color,color,transform] duration-150",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
+                  isNavActive("/studio")
+                    ? "bg-accent-dim border border-accent/20 text-accent"
+                    : "bg-bg-tint text-text-secondary hover:bg-bg-tint-strong hover:text-text-primary active:scale-[0.97]"
+                )}
+              >
+                Studio
               </Link>
             </nav>
           </div>
@@ -140,7 +154,7 @@ export function Navigation() {
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
                   isNavActive("/builds")
                     ? "bg-accent-dim border border-accent/20 text-accent"
-                    : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white active:scale-[0.97]"
+                    : "bg-bg-tint text-text-secondary hover:bg-bg-tint-strong hover:text-text-primary active:scale-[0.97]"
                 )}
               >
                 My Builds
@@ -172,7 +186,7 @@ export function Navigation() {
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
-              className="lg:hidden p-2 text-white/60 hover:text-white rounded-md hover:bg-white/10 transition-[background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+              className="lg:hidden p-2 text-text-secondary hover:text-text-primary rounded-md hover:bg-bg-tint-strong transition-[background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {mobileOpen ? (
@@ -204,7 +218,7 @@ export function Navigation() {
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-40 pt-16">
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <div className="relative bg-neutral-900 border-b border-white/10 shadow-floating max-h-[calc(100vh-4rem)] overflow-y-auto">
+          <div className="relative bg-bg-surface border-b border-border-subtle shadow-floating max-h-[calc(100vh-4rem)] overflow-y-auto">
             <nav className="max-w-[1440px] mx-auto px-4 py-3 space-y-0.5 font-[family-name:var(--font-outfit)]">
               {/* Switches — Expandable */}
               <MobileExpandableSection
@@ -259,7 +273,7 @@ export function Navigation() {
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
                   isNavActive("/glossary")
                     ? "text-accent bg-accent-dim border border-accent/20"
-                    : "text-white/60 hover:text-white hover:bg-white/10"
+                    : "text-text-secondary hover:text-text-primary hover:bg-bg-tint-strong"
                 )}
               >
                 Glossary
@@ -273,10 +287,24 @@ export function Navigation() {
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
                   isNavActive("/group-buys")
                     ? "text-accent bg-accent-dim border border-accent/20"
-                    : "text-white/60 hover:text-white hover:bg-white/10"
+                    : "text-text-secondary hover:text-text-primary hover:bg-bg-tint-strong"
                 )}
               >
                 Group Buys
+              </Link>
+
+              <Link
+                href="/studio"
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "flex items-center px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color] duration-150",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
+                  isNavActive("/studio")
+                    ? "text-accent bg-accent-dim border border-accent/20"
+                    : "text-text-secondary hover:text-text-primary hover:bg-bg-tint-strong"
+                )}
+              >
+                Studio
               </Link>
 
               {/* Builder CTA */}
@@ -299,7 +327,7 @@ export function Navigation() {
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
                   isNavActive("/pricing")
                     ? "text-accent bg-accent-dim border border-accent/20"
-                    : "text-white/60 hover:text-white hover:bg-white/10"
+                    : "text-text-secondary hover:text-text-primary hover:bg-bg-tint-strong"
                 )}
               >
                 Pricing
@@ -323,7 +351,7 @@ export function Navigation() {
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
                     isNavActive("/builds")
                       ? "text-accent bg-accent-dim border border-accent/20"
-                      : "text-white/60 hover:text-white hover:bg-white/10"
+                      : "text-text-secondary hover:text-text-primary hover:bg-bg-tint-strong"
                   )}
                 >
                   My Builds
@@ -365,7 +393,7 @@ function MobileExpandableSection({
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
           isActive
             ? "text-accent bg-accent-dim border border-accent/20"
-            : "text-white/60 hover:text-white hover:bg-white/10"
+            : "text-text-secondary hover:text-text-primary hover:bg-bg-tint-strong"
         )}
       >
         {label}
@@ -386,13 +414,13 @@ function MobileExpandableSection({
           <Link
             href={href}
             onClick={onClose}
-            className="flex items-center px-5 py-2 rounded-xl text-sm font-medium text-accent hover:bg-white/5 transition-colors duration-150"
+            className="flex items-center px-5 py-2 rounded-xl text-sm font-medium text-accent hover:bg-bg-tint transition-colors duration-150"
           >
             View all {label.toLowerCase()} &rarr;
           </Link>
           {columns.map((col) => (
             <div key={col.heading} className="mt-2">
-              <p className="px-5 text-[10px] text-white/40 uppercase tracking-wider font-semibold mb-1">
+              <p className="px-5 text-[10px] text-text-muted uppercase tracking-wider font-semibold mb-1">
                 {col.heading}
               </p>
               {col.links.map((link) => (
@@ -400,7 +428,7 @@ function MobileExpandableSection({
                   key={link.href + link.label}
                   href={link.href}
                   onClick={onClose}
-                  className="flex items-center px-5 py-1.5 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/5 transition-colors duration-150"
+                  className="flex items-center px-5 py-1.5 rounded-xl text-sm text-text-secondary hover:text-text-primary hover:bg-bg-tint transition-colors duration-150"
                 >
                   {link.label}
                 </Link>

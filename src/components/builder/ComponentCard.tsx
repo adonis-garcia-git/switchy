@@ -22,6 +22,13 @@ const TYPE_LABELS: Record<string, string> = {
   stabilizers: "Stabilizers",
 };
 
+const TYPE_COLORS: Record<string, { border: string; icon: string }> = {
+  keyboardKit: { border: "border-l-blue-400", icon: "text-blue-400" },
+  switches: { border: "border-l-amber-400", icon: "text-amber-400" },
+  keycaps: { border: "border-l-purple-400", icon: "text-purple-400" },
+  stabilizers: { border: "border-l-emerald-400", icon: "text-emerald-400" },
+};
+
 const TYPE_ICONS: Record<string, string> = {
   keyboardKit: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
   switches: "M13 10V3L4 14h7v7l9-11h-7z",
@@ -43,7 +50,10 @@ export function ComponentCard({
   const displayImg = imageUrl;
 
   return (
-    <div className="rounded-xl border border-border-subtle bg-bg-surface p-4 group hover:border-border-accent hover:glow-accent transition-[border-color,box-shadow] duration-200">
+    <div className={cn(
+      "rounded-xl border border-border-subtle bg-bg-surface p-4 group hover:border-border-accent hover:glow-accent transition-[border-color,box-shadow] duration-200 border-l-2",
+      TYPE_COLORS[type]?.border || "border-l-text-muted"
+    )}>
       <div className="flex gap-4">
         {/* Image */}
         {displayImg ? (
@@ -68,7 +78,7 @@ export function ComponentCard({
           <div className="flex items-start justify-between gap-2 mb-1">
             <div className="min-w-0">
               <p className="text-[10px] text-text-muted uppercase tracking-wider font-medium flex items-center gap-1.5">
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={cn("w-3 h-3", TYPE_COLORS[type]?.icon)} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={TYPE_ICONS[type] || TYPE_ICONS.stabilizers} />
                 </svg>
                 {TYPE_LABELS[type] || type}

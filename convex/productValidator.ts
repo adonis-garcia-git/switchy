@@ -1,5 +1,6 @@
 // Validate AI-recommended products against the actual database.
-// Fuzzy-matches names, corrects prices, and attaches real product IDs for deep linking.
+// Fuzzy-matches names, corrects prices, and attaches real product IDs,
+// imageUrls, productUrls, and detailUrls for deep linking.
 
 interface ProductMatch {
   originalName: string;
@@ -64,18 +65,20 @@ function findBestMatch(
 
 /**
  * Validate a build recommendation against real database products.
- * Corrects names and prices for keyboard kits and switches.
- * Returns the validated build + match metadata.
+ * Corrects names and prices for keyboard kits, switches, and keycaps.
+ * Attaches imageUrl, productUrl, and detailUrl from matched DB records.
  */
 export function validateBuild(
   build: Record<string, unknown>,
   switches: Record<string, unknown>[],
-  keyboards: Record<string, unknown>[]
+  keyboards: Record<string, unknown>[],
+  keycaps?: Record<string, unknown>[]
 ): {
   validatedBuild: Record<string, unknown>;
   matches: {
     keyboard: ProductMatch | null;
     switches: ProductMatch | null;
+    keycaps: ProductMatch | null;
   };
 } {
   const components = build.components as Record<
@@ -86,6 +89,7 @@ export function validateBuild(
   const matches = {
     keyboard: null as ProductMatch | null,
     switches: null as ProductMatch | null,
+    keycaps: null as ProductMatch | null,
   };
 
   // Validate keyboard kit
@@ -106,25 +110,28 @@ export function validateBuild(
         confidence: match.score,
       };
 
-      // Correct name and price for high-confidence matches
       if (match.score >= 0.6) {
         const realPrice = Number(k.priceUsd);
+        const patchFields: Record<string, unknown> = {
+          ...components.keyboardKit,
+          name: matchedName,
+          matchedId: String(k._id),
+          detailUrl: `/keyboards/${String(k._id)}`,
+        };
+
+        // Attach image and product URLs from DB if available
+        if (k.imageUrl) patchFields.imageUrl = k.imageUrl;
+        if (k.productUrl) patchFields.productUrl = k.productUrl;
+
         if (
           realPrice &&
           Math.abs(realPrice - Number(components.keyboardKit.price)) > 5
         ) {
           matches.keyboard.priceCorrection = realPrice;
-          validatedComponents.keyboardKit = {
-            ...components.keyboardKit,
-            name: matchedName,
-            price: realPrice,
-          };
-        } else {
-          validatedComponents.keyboardKit = {
-            ...components.keyboardKit,
-            name: matchedName,
-          };
+          patchFields.price = realPrice;
         }
+
+        validatedComponents.keyboardKit = patchFields;
       }
     }
   }
@@ -149,22 +156,70 @@ export function validateBuild(
 
       if (match.score >= 0.6) {
         const realPrice = Number(s.pricePerSwitch);
+        const patchFields: Record<string, unknown> = {
+          ...components.switches,
+          name: matchedName,
+          matchedId: String(s._id),
+          detailUrl: `/switches/${String(s._id)}`,
+        };
+
+        // Attach image and product URLs from DB if available
+        if (s.imageUrl) patchFields.imageUrl = s.imageUrl;
+        if (s.productUrl) patchFields.productUrl = s.productUrl;
+
         if (
           realPrice &&
           Math.abs(realPrice - Number(components.switches.priceEach)) > 0.05
         ) {
           matches.switches.priceCorrection = realPrice;
-          validatedComponents.switches = {
-            ...components.switches,
-            name: matchedName,
-            priceEach: realPrice,
-          };
-        } else {
-          validatedComponents.switches = {
-            ...components.switches,
-            name: matchedName,
-          };
+          patchFields.priceEach = realPrice;
         }
+
+        validatedComponents.switches = patchFields;
+      }
+    }
+  }
+
+  // Validate keycaps
+  if (components.keycaps?.name && keycaps && keycaps.length > 0) {
+    const keycapName = String(components.keycaps.name);
+    const match = findBestMatch(
+      keycapName,
+      keycaps,
+      (kc) => `${kc.brand} ${kc.name}`
+    );
+    if (match) {
+      const kc = match.product;
+      const matchedName = `${kc.brand} ${kc.name}`;
+      matches.keycaps = {
+        originalName: keycapName,
+        matchedName,
+        matchedId: String(kc._id),
+        confidence: match.score,
+      };
+
+      if (match.score >= 0.6) {
+        const realPrice = Number(kc.priceUsd);
+        const patchFields: Record<string, unknown> = {
+          ...components.keycaps,
+          name: matchedName,
+          matchedId: String(kc._id),
+          detailUrl: `/keycaps/${String(kc._id)}`,
+        };
+
+        // Attach image and product URLs from DB if available
+        if (kc.imageUrl) patchFields.imageUrl = kc.imageUrl;
+        if (kc.productUrl) patchFields.productUrl = kc.productUrl;
+
+        if (
+          realPrice &&
+          Math.abs(realPrice - Number(components.keycaps.price)) > 5
+        ) {
+          matches.keycaps.priceCorrection = realPrice;
+          patchFields.price = realPrice;
+        }
+
+        validatedComponents.keycaps = patchFields;
       }
     }
   }

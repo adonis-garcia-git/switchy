@@ -53,23 +53,31 @@ function GroupBuysContent() {
   };
 
   return (
-    <div className="min-h-screen">
-      <main className="max-w-[1400px] mx-auto">
-        {/* Header */}
-        <div className="px-4 lg:px-8 pt-6 pb-4">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold font-[family-name:var(--font-outfit)] tracking-tight text-text-primary">
+    <div className="flex flex-col h-[calc(100vh-4rem)]">
+      {/* Header strip */}
+      <div className="flex-shrink-0 border-b border-border-subtle bg-bg-surface/60 backdrop-blur-sm">
+        <div className="px-4 lg:px-8 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-5">
+            <h1 className="text-xl font-bold font-[family-name:var(--font-outfit)] tracking-tight text-text-primary">
               Group Buys
             </h1>
+            <Tabs
+              tabs={TABS}
+              activeTab={activeTab}
+              onChange={setActiveTab}
+            />
           </div>
-          <Tabs
-            tabs={TABS}
-            activeTab={activeTab}
-            onChange={setActiveTab}
-          />
+          <div className="hidden sm:flex items-center gap-2 text-[11px] text-text-muted">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-bg-elevated border border-border-subtle">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Live Updates
+            </span>
+          </div>
         </div>
+      </div>
 
-        {/* Tab content */}
+      {/* Tab content — fills remaining height */}
+      <div className="flex-1 min-h-0 overflow-hidden">
         {activeTab === "discover" && (
           <GroupBuyDiscover
             onTrackThis={handleTrackThis}
@@ -78,55 +86,70 @@ function GroupBuysContent() {
         )}
 
         {activeTab === "tracker" && (
-          <div className="max-w-5xl mx-auto px-4 pb-8">
-            {isSignedIn ? (
-              <GroupBuyTracker
-                prefillData={prefillData}
-                onClearPrefill={handleClearPrefill}
-              />
-            ) : (
-              <div className="text-center py-16">
-                <div className="max-w-sm mx-auto">
-                  <svg className="w-12 h-12 text-text-muted/40 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                  </svg>
-                  <h2 className="text-lg font-semibold text-text-primary mb-2 font-[family-name:var(--font-outfit)]">
-                    Sign in to track group buys
-                  </h2>
-                  <p className="text-sm text-text-secondary mb-6 leading-relaxed">
-                    Track your pending group buy orders, see spending stats, and get delivery estimates.
-                  </p>
-                  <SignInButton mode="modal">
-                    <Button>Sign In</Button>
-                  </SignInButton>
+          <div className="h-full overflow-y-auto">
+            <div className="max-w-5xl mx-auto px-4 lg:px-8 py-6">
+              {isSignedIn ? (
+                <GroupBuyTracker
+                  prefillData={prefillData}
+                  onClearPrefill={handleClearPrefill}
+                />
+              ) : (
+                <div className="text-center py-24">
+                  <div className="max-w-sm mx-auto">
+                    <div className="w-16 h-16 rounded-2xl bg-bg-elevated border border-border-subtle flex items-center justify-center mx-auto mb-5">
+                      <svg className="w-7 h-7 text-text-muted/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-lg font-semibold text-text-primary mb-2 font-[family-name:var(--font-outfit)]">
+                      Sign in to track group buys
+                    </h2>
+                    <p className="text-sm text-text-secondary mb-6 leading-relaxed">
+                      Track your pending group buy orders, see spending stats, and get delivery estimates.
+                    </p>
+                    <SignInButton mode="modal">
+                      <Button>Sign In</Button>
+                    </SignInButton>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         )}
-      </main>
+      </div>
     </div>
   );
 }
 
 function GroupBuysLoading() {
   return (
-    <div className="min-h-screen">
-      <div className="max-w-[1400px] mx-auto px-4 lg:px-8 pt-6">
-        <div className="h-8 w-48 bg-bg-elevated rounded animate-pulse mb-4" />
-        <div className="h-10 w-64 bg-bg-elevated rounded animate-pulse mb-6" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="rounded-xl border border-border-subtle bg-bg-surface overflow-hidden animate-pulse">
-              <div className="aspect-[4/3] bg-bg-elevated" />
-              <div className="p-5">
-                <div className="h-3 w-20 bg-bg-elevated rounded mb-2" />
-                <div className="h-4 w-40 bg-bg-elevated rounded mb-3" />
-                <div className="h-px bg-border-subtle mb-3" />
-                <div className="h-5 w-16 bg-bg-elevated rounded" />
-              </div>
-            </div>
+    <div className="flex flex-col h-[calc(100vh-4rem)]">
+      <div className="flex-shrink-0 border-b border-border-subtle bg-bg-surface/60 backdrop-blur-sm">
+        <div className="px-4 lg:px-8 py-3 flex items-center gap-5">
+          <div className="h-6 w-28 bg-bg-elevated rounded animate-pulse" />
+          <div className="h-10 w-56 bg-bg-elevated rounded-lg animate-pulse" />
+        </div>
+      </div>
+      <div className="flex-1 flex min-h-0">
+        <aside className="hidden lg:block w-64 flex-shrink-0 border-r border-border-subtle p-5 space-y-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-5 bg-bg-elevated rounded animate-pulse" style={{ width: `${60 + Math.random() * 30}%` }} />
           ))}
+        </aside>
+        <div className="flex-1 p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="rounded-xl border border-border-subtle bg-bg-surface overflow-hidden animate-pulse">
+                <div className="aspect-[4/3] bg-bg-elevated" />
+                <div className="p-5">
+                  <div className="h-3 w-20 bg-bg-elevated rounded mb-2" />
+                  <div className="h-4 w-40 bg-bg-elevated rounded mb-3" />
+                  <div className="h-px bg-border-subtle mb-3" />
+                  <div className="h-5 w-16 bg-bg-elevated rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

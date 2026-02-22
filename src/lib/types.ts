@@ -268,6 +268,7 @@ export interface BuilderQuestionOption {
   description?: string;
   icon?: string;
   color?: string;
+  viewerUpdate?: Partial<import("./keyboard3d").KeyboardViewerConfig>;
 }
 
 export interface BuilderQuestion {

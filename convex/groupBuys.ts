@@ -26,7 +26,9 @@ export const getStats = query({
       .collect();
 
     const active = entries.filter((e) => e.status !== "delivered");
+    const delivered = entries.filter((e) => e.status === "delivered");
     const totalPending = active.reduce((sum, e) => sum + e.cost, 0);
+    const totalSpentAllTime = entries.reduce((sum, e) => sum + e.cost, 0);
     const now = new Date();
     const overdue = active.filter((e) => new Date(e.estimatedShipDate) < now);
     const avgWaitDays = active.length > 0
@@ -36,10 +38,38 @@ export const getStats = query({
         }, 0) / active.length)
       : 0;
 
+    // Delivered this month
+    const thisMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+    const deliveredThisMonth = delivered.filter((e) => {
+      const history = e.statusHistory as Array<{ from: string; to: string; changedAt: number }> | undefined;
+      if (history) {
+        const deliveryEvent = history.find((h) => h.to === "delivered");
+        if (deliveryEvent) {
+          const d = new Date(deliveryEvent.changedAt);
+          return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}` === thisMonth;
+        }
+      }
+      return false;
+    }).length;
+
+    // Longest active wait
+    const longestWait = active.length > 0
+      ? Math.round(Math.max(...active.map((e) => {
+          const ordered = new Date(e.orderDate).getTime();
+          return (now.getTime() - ordered) / (1000 * 60 * 60 * 24);
+        })))
+      : 0;
+
     // Spending by product type
     const spendingByType: Record<string, number> = {};
     for (const e of entries) {
       spendingByType[e.productType] = (spendingByType[e.productType] || 0) + e.cost;
+    }
+
+    // Spending by vendor
+    const spendingByVendor: Record<string, number> = {};
+    for (const e of entries) {
+      spendingByVendor[e.vendor] = (spendingByVendor[e.vendor] || 0) + e.cost;
     }
 
     return {
@@ -49,7 +79,11 @@ export const getStats = query({
       overdueCount: overdue.length,
       totalEntries: entries.length,
       deliveredCount: entries.length - active.length,
+      totalSpentAllTime,
+      deliveredThisMonth,
+      longestWait,
       spendingByType,
+      spendingByVendor,
     };
   },
 });
@@ -130,6 +164,15 @@ export const update = mutation({
     const updates: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(fields)) {
       if (value !== undefined) updates[key] = value;
+    }
+    // Record status change in history
+    if (args.status && args.status !== existing.status) {
+      const history = (existing.statusHistory as Array<{ from: string; to: string; changedAt: number }>) || [];
+      updates.statusHistory = [...history, {
+        from: existing.status,
+        to: args.status,
+        changedAt: Date.now(),
+      }];
     }
     await ctx.db.patch(id, updates);
     return null;

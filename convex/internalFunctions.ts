@@ -156,6 +156,14 @@ export const getSubscriptionByStripeSubscriptionId = internalQuery({
   },
 });
 
+export const getAllKeycaps = internalQuery({
+  args: {},
+  returns: v.array(v.any()),
+  handler: async (ctx) => {
+    return await ctx.db.query("keycaps").collect();
+  },
+});
+
 export const getAllGlossaryTerms = internalQuery({
   args: {},
   returns: v.array(v.any()),

@@ -12,11 +12,14 @@ import { BuildResult } from "@/components/builder/BuildResult";
 import { CustomBuilder } from "@/components/builder/CustomBuilder";
 import { KeyboardViewer3D } from "@/components/3d/KeyboardViewer3D";
 import { Tabs } from "@/components/ui/Tabs";
-import { DEFAULT_VIEWER_CONFIG } from "@/lib/keyboard3d";
+import { ToastContainer } from "@/components/ui/Toast";
+import { useToast } from "@/hooks/useToast";
+import { DEFAULT_VIEWER_CONFIG, buildDataToViewerConfig } from "@/lib/keyboard3d";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
 import type { BuilderPhase, BuilderQuestion, BuilderAnswer, BuildData } from "@/lib/types";
 import type { CustomizerInteractiveProps } from "@/components/builder/KeyboardCustomizer";
 import { cn } from "@/lib/utils";
+import { decodeStudioConfig } from "@/lib/studioShare";
 import { useSubscription } from "@/hooks/useSubscription";
 import { PaywallModal } from "@/components/PaywallModal";
 import { UsageCounter } from "@/components/UsageCounter";
@@ -34,6 +37,9 @@ export default function BuilderPage() {
 function BuilderPageInner() {
   const { isSignedIn } = useUser();
   const searchParams = useSearchParams();
+
+  // Toast notifications
+  const { toasts, showToast, dismissToast } = useToast();
 
   // Mode toggle
   const initialMode = searchParams.get("mode") === "custom" ? "custom" : "ai";
@@ -62,9 +68,14 @@ function BuilderPageInner() {
   const [showPaywall, setShowPaywall] = useState(false);
   const { isPro, isAtLimit, buildsUsed, buildsLimit } = useSubscription();
 
-  // 3D viewer config
-  const [viewerConfig, setViewerConfig] = useState<KeyboardViewerConfig>({
-    ...DEFAULT_VIEWER_CONFIG,
+  // 3D viewer config — seed from ?studio= param if present
+  const [viewerConfig, setViewerConfig] = useState<KeyboardViewerConfig>(() => {
+    const studioParam = searchParams.get("studio");
+    if (studioParam) {
+      const decoded = decodeStudioConfig(studioParam);
+      return { ...DEFAULT_VIEWER_CONFIG, ...decoded };
+    }
+    return { ...DEFAULT_VIEWER_CONFIG };
   });
 
   // Customizer interactive props (from KeyboardCustomizer when on customize step)
@@ -75,6 +86,25 @@ function BuilderPageInner() {
     ? (phase === "landing" || phase === "generating")
     : !customizerProps;
 
+  // Phase-based camera presets for AI mode
+  useEffect(() => {
+    if (mode !== "ai") return;
+    switch (phase) {
+      case "landing":
+        setViewerConfig(prev => ({ ...prev, cameraPreset: "default", environment: "studio" }));
+        break;
+      case "questions":
+        setViewerConfig(prev => ({ ...prev, cameraPreset: "default" }));
+        break;
+      case "generating":
+        setViewerConfig(prev => ({ ...prev, cameraPreset: "closeup" }));
+        break;
+      case "result":
+        // Handled by buildDataToViewerConfig below
+        break;
+    }
+  }, [phase, mode]);
+
   // Convex actions
   const generateQuestions = useAction(api.buildAdvisor.generateQuestions);
   const generateBuildFromAnswers = useAction(api.buildAdvisor.generateBuildFromAnswers);
@@ -83,11 +113,34 @@ function BuilderPageInner() {
 
   // Sign-in prompt state for unauthenticated users
   const [showSignIn, setShowSignIn] = useState(false);
+  const [pendingPrompt, setPendingPrompt] = useState<string | null>(null);
+
+  // Auto-close sign-in modal and resume flow after authentication
+  useEffect(() => {
+    if (isSignedIn && showSignIn) {
+      setShowSignIn(false);
+    }
+  }, [isSignedIn, showSignIn]);
+
+  // After sign-in completes, auto-submit the pending prompt
+  useEffect(() => {
+    if (isSignedIn && pendingPrompt) {
+      const prompt = pendingPrompt;
+      setPendingPrompt(null);
+      // Small delay to let Clerk/Convex auth propagate
+      const timer = setTimeout(() => {
+        handleInitialSubmit(prompt);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSignedIn, pendingPrompt]);
 
   // Phase 1: Handle initial prompt
   const handleInitialSubmit = useCallback(async (prompt: string) => {
     // Require auth before calling Convex actions
     if (!isSignedIn) {
+      setPendingPrompt(prompt);
       setShowSignIn(true);
       return;
     }
@@ -113,13 +166,16 @@ function BuilderPageInner() {
       setGenerating(true);
       try {
         const build = await generateBuild({ query: prompt });
-        setBuildResult(build as unknown as BuildData);
+        const buildData = build as unknown as BuildData;
+        setBuildResult(buildData);
+        setViewerConfig({ ...buildDataToViewerConfig(buildData), cameraPreset: "hero" });
         setPhase("result");
       } catch (buildErr: unknown) {
         if (buildErr instanceof Error && buildErr.message.includes("FREE_TIER_LIMIT_REACHED")) {
           setShowPaywall(true);
           setPhase("landing");
         } else {
+          showToast({ message: "Failed to generate build. Please try again.", variant: "error" });
           setPhase("landing");
         }
       }
@@ -127,7 +183,7 @@ function BuilderPageInner() {
     } finally {
       setLoadingQuestions(false);
     }
-  }, [generateQuestions, generateBuild, isAtLimit, isSignedIn]);
+  }, [generateQuestions, generateBuild, isAtLimit, isSignedIn, showToast]);
 
   // Auto-submit from ?q= query param (e.g. from homepage)
   const [autoSubmitted, setAutoSubmitted] = useState(false);
@@ -161,7 +217,9 @@ function BuilderPageInner() {
             value: a.value,
           })),
         });
-        setBuildResult(result as unknown as BuildData);
+        const resultData = result as unknown as BuildData;
+        setBuildResult(resultData);
+        setViewerConfig({ ...buildDataToViewerConfig(resultData), cameraPreset: "hero" });
         setPhase("result");
       } catch (err: unknown) {
         if (err instanceof Error && err.message.includes("FREE_TIER_LIMIT_REACHED")) {
@@ -172,11 +230,15 @@ function BuilderPageInner() {
           // Fallback to simple query
           try {
             const build = await generateBuild({ query: initialPrompt });
-            setBuildResult(build as unknown as BuildData);
+            const fallbackData = build as unknown as BuildData;
+            setBuildResult(fallbackData);
+            setViewerConfig({ ...buildDataToViewerConfig(fallbackData), cameraPreset: "hero" });
             setPhase("result");
           } catch (fallbackErr: unknown) {
             if (fallbackErr instanceof Error && fallbackErr.message.includes("FREE_TIER_LIMIT_REACHED")) {
               setShowPaywall(true);
+            } else {
+              showToast({ message: "Failed to generate build. Please try again.", variant: "error" });
             }
             setPhase("landing");
           }
@@ -185,12 +247,33 @@ function BuilderPageInner() {
         setGenerating(false);
       }
     }
-  }, [answers, currentQuestionIndex, questions.length, generateBuildFromAnswers, generateBuild, initialPrompt]);
+  }, [answers, currentQuestionIndex, questions.length, generateBuildFromAnswers, generateBuild, initialPrompt, showToast]);
 
   // Handle viewer config updates from questions
   const handleViewerUpdate = useCallback((update: Partial<KeyboardViewerConfig>) => {
     setViewerConfig((prev) => ({ ...prev, ...update }));
   }, []);
+
+  // Back button in question flow
+  const handleBack = useCallback(() => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prev) => prev - 1);
+      setAnswers((prev) => prev.slice(0, -1));
+    }
+  }, [currentQuestionIndex]);
+
+  // Jump to a previous question
+  const handleJumpToQuestion = useCallback((questionIndex: number) => {
+    setCurrentQuestionIndex(questionIndex);
+    setAnswers((prev) => prev.slice(0, questionIndex));
+  }, []);
+
+  // Abort generating
+  const handleAbort = useCallback(() => {
+    setPhase("landing");
+    setGenerating(false);
+    showToast({ message: "Build generation cancelled.", variant: "info" });
+  }, [showToast]);
 
   // Phase 4: Handle save
   const handleSave = useCallback(async () => {
@@ -211,10 +294,11 @@ function BuilderPageInner() {
       setSaved(true);
     } catch (err) {
       console.error("Failed to save build:", err);
+      showToast({ message: "Failed to save build. Please try again.", variant: "error" });
     } finally {
       setSaving(false);
     }
-  }, [buildResult, isSignedIn, saveBuild, initialPrompt]);
+  }, [buildResult, isSignedIn, saveBuild, initialPrompt, showToast]);
 
   // Handle tweak
   const handleTweak = useCallback(async (tweakText: string) => {
@@ -225,18 +309,21 @@ function BuilderPageInner() {
         query: `${initialPrompt}. Modification: ${tweakText}`,
         previousBuild: JSON.stringify(buildResult),
       });
-      setBuildResult(result as unknown as BuildData);
+      const tweakedData = result as unknown as BuildData;
+      setBuildResult(tweakedData);
+      setViewerConfig({ ...buildDataToViewerConfig(tweakedData), cameraPreset: "hero" });
       setSaved(false);
     } catch (err: unknown) {
       if (err instanceof Error && err.message.includes("FREE_TIER_LIMIT_REACHED")) {
         setShowPaywall(true);
       } else {
         console.error("Failed to tweak build:", err);
+        showToast({ message: "Failed to tweak build. Please try again.", variant: "error" });
       }
     } finally {
       setTweaking(false);
     }
-  }, [buildResult, generateBuild, initialPrompt]);
+  }, [buildResult, generateBuild, initialPrompt, showToast]);
 
   // Reset
   const handleReset = useCallback(() => {
@@ -304,7 +391,7 @@ function BuilderPageInner() {
 
       {/* ── Content panel (floats above the 3D scene) ── */}
       <div className={cn(
-        "relative z-10 h-full overflow-y-auto lg:w-[50%] lg:min-w-[480px]",
+        "relative z-10 h-full overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:w-[50%] lg:min-w-[480px]",
         mode === "ai" && (phase === "landing" || phase === "generating" || (phase === "questions" && questions.length === 0))
           ? "flex flex-col items-center justify-center px-4 sm:px-6 lg:px-10 pb-12"
           : "px-4 sm:px-6 lg:px-10 pt-6 pb-12"
@@ -355,6 +442,8 @@ function BuilderPageInner() {
                 answers={answers}
                 onAnswer={handleAnswer}
                 onViewerUpdate={handleViewerUpdate}
+                onBack={handleBack}
+                onJumpToQuestion={handleJumpToQuestion}
               />
             )}
 
@@ -367,7 +456,7 @@ function BuilderPageInner() {
             )}
 
             {/* Phase 3: Generating */}
-            {phase === "generating" && <GeneratingState />}
+            {phase === "generating" && <GeneratingState onAbort={handleAbort} onViewerUpdate={handleViewerUpdate} />}
 
             {/* Phase 4: Build Result */}
             {phase === "result" && buildResult && (
@@ -394,11 +483,14 @@ function BuilderPageInner() {
         )}
       </div>
 
+      {/* Toast notifications */}
+      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
+
       {/* Paywall modal */}
       <PaywallModal isOpen={showPaywall} onClose={() => setShowPaywall(false)} />
 
       {/* Sign-in modal for unauthenticated users */}
-      {showSignIn && (
+      {showSignIn && !isSignedIn && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="bg-bg-surface border border-border rounded-2xl p-8 max-w-sm mx-4 text-center shadow-xl">
             <h3 className="text-lg font-semibold text-text-primary mb-2">Sign in to continue</h3>
@@ -407,7 +499,7 @@ function BuilderPageInner() {
             </p>
             <div className="flex gap-3 justify-center">
               <button
-                onClick={() => setShowSignIn(false)}
+                onClick={() => { setShowSignIn(false); setPendingPrompt(null); }}
                 className="px-4 py-2 text-sm rounded-lg border border-border text-text-secondary hover:bg-bg-elevated transition-colors"
               >
                 Cancel

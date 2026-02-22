@@ -27,7 +27,18 @@ const CATEGORIES = [
   { label: "General", value: "general" },
 ];
 
-const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const ALPHABET = [...("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")), "#"];
+
+const DIFFICULTY_ORDER: Record<string, number> = { beginner: 0, intermediate: 1, advanced: 2 };
+
+/** Compare two terms alphabetically, but push number-prefixed terms after Z. */
+function compareTerms(a: string, b: string): number {
+  const aNum = /^\d/.test(a);
+  const bNum = /^\d/.test(b);
+  if (aNum && !bNum) return 1;
+  if (!aNum && bNum) return -1;
+  return a.localeCompare(b);
+}
 
 const CATEGORY_BAR_COLORS: Record<string, string> = {
   switches: "#EF4444",
@@ -103,6 +114,9 @@ function GlossaryContent() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [difficultyFilter, setDifficultyFilter] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<"az" | "za" | "diff-asc" | "diff-desc">("az");
+  const [explorationFilter, setExplorationFilter] = useState<"all" | "explored" | "unexplored">("all");
+  const [pronunciationOnly, setPronunciationOnly] = useState(false);
   const [exploredTerms, setExploredTerms] = useState<Set<string>>(new Set());
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [selectedTerm, setSelectedTerm] = useState<any>(null);
@@ -148,20 +162,46 @@ function GlossaryContent() {
     if (difficultyFilter) {
       result = result.filter((t) => t.difficulty === difficultyFilter);
     }
+    if (explorationFilter === "explored") {
+      result = result.filter((t) => exploredTerms.has(t._id));
+    } else if (explorationFilter === "unexplored") {
+      result = result.filter((t) => !exploredTerms.has(t._id));
+    }
+    if (pronunciationOnly) {
+      result = result.filter((t) => !!t.pronunciation);
+    }
     return result;
-  }, [terms, search, difficultyFilter]);
+  }, [terms, search, difficultyFilter, explorationFilter, exploredTerms, pronunciationOnly]);
 
   const sorted = useMemo(() => {
     if (!filtered) return null;
-    return [...filtered].sort((a: any, b: any) => a.term.localeCompare(b.term));
-  }, [filtered]);
+    return [...filtered].sort((a: any, b: any) => {
+      switch (sortBy) {
+        case "za": {
+          // Reverse alpha, but numbers still go last
+          const aNum = /^\d/.test(a.term);
+          const bNum = /^\d/.test(b.term);
+          if (aNum && !bNum) return 1;
+          if (!aNum && bNum) return -1;
+          return b.term.localeCompare(a.term);
+        }
+        case "diff-asc":
+          return (DIFFICULTY_ORDER[a.difficulty] ?? 9) - (DIFFICULTY_ORDER[b.difficulty] ?? 9) || compareTerms(a.term, b.term);
+        case "diff-desc":
+          return (DIFFICULTY_ORDER[b.difficulty] ?? 9) - (DIFFICULTY_ORDER[a.difficulty] ?? 9) || compareTerms(a.term, b.term);
+        default:
+          return compareTerms(a.term, b.term);
+      }
+    });
+  }, [filtered, sortBy]);
 
-  // Group terms by first letter
+  // Group terms by first letter; numbers go under "#" at the end
   const grouped = useMemo(() => {
     if (!sorted) return null;
     const groups: Record<string, any[]> = {};
     for (const term of sorted) {
-      const letter = term.term[0].toUpperCase();
+      const first = term.term[0];
+      const letter = /\d/.test(first) ? "#" : first.toUpperCase();
       if (!groups[letter]) groups[letter] = [];
       groups[letter].push(term);
     }
@@ -259,6 +299,118 @@ function GlossaryContent() {
                   </button>
                 ))}
               </nav>
+            </div>
+
+            {/* Sort By */}
+            <div className="pt-4 mt-4 border-t border-border-subtle">
+              <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 px-3">
+                Sort By
+              </p>
+              <nav className="space-y-1">
+                {([
+                  { value: "az", label: "A \u2192 Z", icon: "M3 4h13M3 8h9m-9 4h6" },
+                  { value: "za", label: "Z \u2192 A", icon: "M3 4h13M3 8h9m-9 4h6" },
+                  { value: "diff-asc", label: "Easiest First", icon: "M13 7h8m-8 4h5m-5 4h2" },
+                  { value: "diff-desc", label: "Hardest First", icon: "M13 7h8m-8 4h5m-5 4h2" },
+                ] as const).map((s) => (
+                  <button
+                    key={s.value}
+                    onClick={() => setSortBy(s.value)}
+                    className={cn(
+                      "w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-[background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                      sortBy === s.value
+                        ? "bg-accent-dim text-accent"
+                        : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+                    )}
+                  >
+                    <span className="flex items-center gap-2">
+                      <svg className="w-3.5 h-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d={s.icon} />
+                      </svg>
+                      {s.label}
+                    </span>
+                  </button>
+                ))}
+              </nav>
+            </div>
+
+            {/* Exploration Status */}
+            <div className="pt-4 mt-4 border-t border-border-subtle">
+              <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 px-3">
+                Progress
+              </p>
+              <nav className="space-y-1">
+                {([
+                  { value: "all" as const, label: "All Terms" },
+                  { value: "explored" as const, label: "Explored" },
+                  { value: "unexplored" as const, label: "Not Yet Explored" },
+                ]).map((opt) => (
+                  <button
+                    key={opt.value}
+                    onClick={() => setExplorationFilter(opt.value)}
+                    className={cn(
+                      "w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-[background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                      explorationFilter === opt.value
+                        ? "bg-accent-dim text-accent"
+                        : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+                    )}
+                  >
+                    <span className="flex items-center gap-2">
+                      {opt.value === "explored" && (
+                        <svg className="w-3.5 h-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                      {opt.value === "unexplored" && (
+                        <svg className="w-3.5 h-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01" />
+                        </svg>
+                      )}
+                      {opt.value === "all" && (
+                        <svg className="w-3.5 h-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                      )}
+                      {opt.label}
+                    </span>
+                  </button>
+                ))}
+              </nav>
+            </div>
+
+            {/* Pronunciation Toggle */}
+            <div className="pt-4 mt-4 border-t border-border-subtle">
+              <button
+                onClick={() => setPronunciationOnly(!pronunciationOnly)}
+                className={cn(
+                  "w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-[background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                  pronunciationOnly
+                    ? "bg-accent-dim text-accent"
+                    : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+                )}
+              >
+                <span className="flex items-center gap-2">
+                  <svg className="w-3.5 h-3.5 shrink-0 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                  </svg>
+                  Has Pronunciation
+                  <span
+                    className={cn(
+                      "ml-auto w-8 h-[18px] rounded-full relative transition-colors duration-200",
+                      pronunciationOnly ? "bg-accent" : "bg-bg-elevated border border-border-default"
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "absolute top-[2px] w-[14px] h-[14px] rounded-full transition-[left,background-color] duration-200",
+                        pronunciationOnly
+                          ? "left-[14px] bg-white"
+                          : "left-[2px] bg-text-muted"
+                      )}
+                    />
+                  </span>
+                </span>
+              </button>
             </div>
           </div>
         </aside>
@@ -381,7 +533,7 @@ function GlossaryContent() {
             </div>
           </div>
 
-          <div className="lg:hidden overflow-x-auto mb-6 -mx-6 px-6">
+          <div className="lg:hidden overflow-x-auto mb-4 -mx-6 px-6">
             <div className="flex gap-1.5">
               <button
                 onClick={() => setDifficultyFilter(null)}
@@ -404,6 +556,47 @@ function GlossaryContent() {
                   {d.charAt(0).toUpperCase() + d.slice(1)}
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* Mobile: Sort + Progress + Pronunciation */}
+          <div className="lg:hidden overflow-x-auto mb-6 -mx-6 px-6">
+            <div className="flex gap-1.5">
+              {([
+                { value: "az" as const, label: "A\u2192Z" },
+                { value: "za" as const, label: "Z\u2192A" },
+                { value: "diff-asc" as const, label: "Easy First" },
+                { value: "diff-desc" as const, label: "Hard First" },
+              ]).map((s) => (
+                <button
+                  key={s.value}
+                  onClick={() => setSortBy(s.value)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-[background-color,color] duration-150",
+                    sortBy === s.value ? "bg-accent-dim text-accent" : "bg-bg-surface text-text-secondary border border-border-default"
+                  )}
+                >
+                  {s.label}
+                </button>
+              ))}
+              <button
+                onClick={() => setExplorationFilter(explorationFilter === "unexplored" ? "all" : "unexplored")}
+                className={cn(
+                  "px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-[background-color,color] duration-150",
+                  explorationFilter === "unexplored" ? "bg-accent-dim text-accent" : "bg-bg-surface text-text-secondary border border-border-default"
+                )}
+              >
+                Unexplored
+              </button>
+              <button
+                onClick={() => setPronunciationOnly(!pronunciationOnly)}
+                className={cn(
+                  "px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-[background-color,color] duration-150",
+                  pronunciationOnly ? "bg-accent-dim text-accent" : "bg-bg-surface text-text-secondary border border-border-default"
+                )}
+              >
+                Pronunciation
+              </button>
             </div>
           </div>
 

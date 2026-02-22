@@ -33,7 +33,7 @@ export function GroupBuyDiscover({ onTrackThis, trackedListingIds }: GroupBuyDis
   const [searchQuery, setSearchQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState<any>(null);
-  const { view, setView, gridClassName, skeletonCount, itemsPerPage } = useGridView("grid-3");
+  const { view, setView, gridClassName, skeletonCount, itemsPerPage } = useGridView("grid-4");
 
   const trackedSet = new Set(trackedListingIds);
 
@@ -72,10 +72,10 @@ export function GroupBuyDiscover({ onTrackThis, trackedListingIds }: GroupBuyDis
   }, [resetPage]);
 
   return (
-    <div className="flex">
+    <div className="flex h-full">
       {/* Sidebar - desktop */}
       <aside className="hidden lg:block w-64 flex-shrink-0 border-r border-border-subtle">
-        <div className="sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto p-5">
+        <div className="h-full overflow-y-auto p-5">
           {!searchQuery.trim() && (
             <GroupBuyFilterBar
               filters={filters}
@@ -115,7 +115,7 @@ export function GroupBuyDiscover({ onTrackThis, trackedListingIds }: GroupBuyDis
       )}
 
       {/* Main content */}
-      <main className="flex-1 min-w-0 px-4 lg:px-8 py-6">
+      <main className="flex-1 min-w-0 px-4 lg:px-8 py-6 overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">

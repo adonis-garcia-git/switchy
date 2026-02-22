@@ -5,6 +5,8 @@
   --color-bg-surface: #121212;
   --color-bg-elevated: #181818;
   --color-bg-floating: #202020;
+  --color-bg-tint: rgba(255, 255, 255, 0.05);
+  --color-bg-tint-strong: rgba(255, 255, 255, 0.1);
   --color-border-default: #333333;
   --color-border-subtle: #292929;
   --color-border-accent: rgba(232, 89, 12, 0.3);
@@ -131,6 +133,8 @@ html.light {
   --color-bg-surface: #FFFFFF;
   --color-bg-elevated: #F5F5F5;
   --color-bg-floating: #EBEBEB;
+  --color-bg-tint: rgba(0, 0, 0, 0.04);
+  --color-bg-tint-strong: rgba(0, 0, 0, 0.08);
   --color-border-default: #E0E0E0;
   --color-border-subtle: #EDEDED;
   --color-border-accent: rgba(212, 79, 8, 0.3);

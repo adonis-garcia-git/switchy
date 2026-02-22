@@ -227,7 +227,7 @@ export function MegaMenuTrigger({ label, href, columns, isActive }: MegaMenuTrig
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
           isActive
             ? "bg-accent-dim border border-accent/20 text-accent"
-            : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white active:scale-[0.97]"
+            : "bg-bg-tint text-text-secondary hover:bg-bg-tint-strong hover:text-text-primary active:scale-[0.97]"
         )}
       >
         {label}

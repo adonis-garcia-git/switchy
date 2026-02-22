@@ -2,7 +2,7 @@
 
 import { Suspense, useMemo, useEffect, useRef } from "react";
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
-import { OrbitControls, ContactShadows } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { EffectComposer, N8AO, Bloom, ToneMapping } from "@react-three/postprocessing";
 import { ToneMappingMode } from "postprocessing";
@@ -227,17 +227,6 @@ export function KeyboardScene({
           cameraPreset={config.cameraPreset || "default"}
         />
       </Suspense>
-
-      {/* ── Contact Shadows for natural grounding ── */}
-      <ContactShadows
-        position={[0, -1.3, 0]}
-        opacity={0.4}
-        blur={2.5}
-        scale={40}
-        far={4}
-        resolution={256}
-        color="#000000"
-      />
 
       {/* ── Post-Processing Pipeline (Phase 1) ── */}
       {compactMode ? (

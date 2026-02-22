@@ -23,7 +23,7 @@ export function QuestionCard({ question, onAnswer, isActive }: QuestionCardProps
   const handleSingleSelect = (id: string) => {
     setSelectedSingle(id);
     // Auto-advance after a brief delay for visual feedback
-    setTimeout(() => onAnswer(id), 300);
+    setTimeout(() => onAnswer(id), 600);
   };
 
   const handleMultiToggle = (id: string) => {

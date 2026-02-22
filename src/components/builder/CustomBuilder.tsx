@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer, useMemo, useCallback } from "react";
+import { useReducer, useMemo, useCallback, useEffect } from "react";
 import { cn, formatPriceWhole } from "@/lib/utils";
 import { CustomBuilderSidebar, getSwitchCount, getRunningTotal, predictSoundProfile } from "./CustomBuilderSidebar";
 import { CustomBuildReview } from "./CustomBuildReview";
@@ -21,6 +21,7 @@ import type {
 } from "@/lib/types";
 import type { PerKeyOverrides } from "@/lib/keyCustomization";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
+import { parseKeyword, MATERIAL_KEYWORDS, MOUNTING_KEYWORDS } from "@/lib/keyboard3d";
 
 const INITIAL_STATE: CustomBuilderState = {
   step: "keyboard",
@@ -160,11 +161,11 @@ const STEP_TITLES: Record<CustomBuilderStep, { title: string; subtitle: string }
   },
   mods: {
     title: "Add Modifications",
-    subtitle: "Fine-tune your sound and feel with optional mods.",
+    subtitle: "Fine-tune your sound and feel with optional mods. (Optional)",
   },
   customize: {
     title: "Customize Keycaps",
-    subtitle: "Click individual keys to change colors, add artisans, and personalize your layout.",
+    subtitle: "Click individual keys to change colors, add artisans, and personalize your layout. (Optional)",
   },
   review: {
     title: "Review Your Build",
@@ -227,10 +228,19 @@ export function CustomBuilder({ onViewerUpdate, viewerConfig, onCustomizerPropsC
           "60%": "60", "65%": "65", "75%": "75", "TKL": "tkl", "80%": "tkl",
           "Full-size": "full", "100%": "full", "1800": "full", "96%": "full",
         };
-        onViewerUpdate({
+        const update: Partial<KeyboardViewerConfig> = {
           size: sizeMap[kb.size] || "65",
           hasRGB: kb.rgb,
-        });
+          caseMaterial: parseKeyword(kb.caseMaterial, MATERIAL_KEYWORDS) || "aluminum",
+          connectionType: kb.wireless ? "wireless" : "wired",
+        };
+        if (kb.mountingStyle) {
+          update.mountingStyle = parseKeyword(kb.mountingStyle, MOUNTING_KEYWORDS);
+        }
+        if (kb.plateMaterial) {
+          update.plateColor = kb.plateMaterial.toLowerCase().includes("brass") ? "#b5a642" : "#8a8a8a";
+        }
+        onViewerUpdate(update);
       }
     },
     [onViewerUpdate]
@@ -239,8 +249,20 @@ export function CustomBuilder({ onViewerUpdate, viewerConfig, onCustomizerPropsC
   const handleSwitchSelect = useCallback(
     (sw: SwitchData) => {
       dispatch({ type: "SELECT_SWITCHES", switches: sw });
+      if (onViewerUpdate) {
+        const SWITCH_TYPE_COLORS: Record<string, string> = {
+          linear: "#c0392b",
+          tactile: "#8B4513",
+          clicky: "#2980b9",
+        };
+        onViewerUpdate({
+          switchStemColor: SWITCH_TYPE_COLORS[sw.type] || "#c0392b",
+          hasRGB: true,
+          rgbMode: "reactive",
+        });
+      }
     },
-    []
+    [onViewerUpdate]
   );
 
   // Can advance?
@@ -254,6 +276,44 @@ export function CustomBuilder({ onViewerUpdate, viewerConfig, onCustomizerPropsC
     },
     [onViewerUpdate]
   );
+
+  // ── Sync keycap profile & material to 3D viewer ──
+  useEffect(() => {
+    const updates: Partial<KeyboardViewerConfig> = {};
+    if (selections.keycaps.profile) {
+      const profileMap: Record<string, KeyboardViewerConfig["keycapProfile"]> = {
+        Cherry: "cherry", SA: "sa", DSA: "dsa", MT3: "mt3",
+        OEM: "oem", KAT: "kat", XDA: "xda",
+      };
+      updates.keycapProfile = profileMap[selections.keycaps.profile] || "cherry";
+    }
+    if (selections.keycaps.material) {
+      const matMap: Record<string, KeyboardViewerConfig["keycapMaterial"]> = {
+        PBT: "pbt", ABS: "abs", POM: "pom",
+      };
+      updates.keycapMaterial = matMap[selections.keycaps.material] || "pbt";
+    }
+    if (Object.keys(updates).length > 0) {
+      onViewerUpdate?.(updates);
+    }
+  }, [selections.keycaps.profile, selections.keycaps.material, onViewerUpdate]);
+
+  // ── Stabilizer selection → brass plate tint for premium stabs ──
+  useEffect(() => {
+    if (selections.stabilizer?.isCustom) {
+      onViewerUpdate?.({ plateColor: "#b5a642" });
+    }
+  }, [selections.stabilizer, onViewerUpdate]);
+
+  // ── Mod selection → warm environment for sound mods ──
+  useEffect(() => {
+    const hasSoundMods = selections.mods.some(m =>
+      m.name.toLowerCase().includes("foam") || m.name.toLowerCase().includes("tape")
+    );
+    if (hasSoundMods) {
+      onViewerUpdate?.({ environment: "apartment" });
+    }
+  }, [selections.mods, onViewerUpdate]);
 
   const canAdvance = useMemo(() => {
     switch (step) {
@@ -412,7 +472,11 @@ export function CustomBuilder({ onViewerUpdate, viewerConfig, onCustomizerPropsC
                   onClick={goNext}
                   disabled={!canAdvance && step !== "mods" && step !== "customize"}
                 >
-                  {step === "mods" ? "Customize" : step === "customize" ? "Review" : "Next"}
+                  {step === "mods"
+                    ? (selections.mods.length === 0 ? "Skip" : "Customize")
+                    : step === "customize"
+                      ? (Object.keys(selections.perKeyOverrides).length === 0 ? "Skip" : "Review")
+                      : "Next"}
                   <svg className="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -437,7 +501,11 @@ export function CustomBuilder({ onViewerUpdate, viewerConfig, onCustomizerPropsC
             )}
           </div>
           <Button onClick={goNext} disabled={!canAdvance && step !== "mods" && step !== "customize"}>
-            {step === "mods" ? "Customize Keycaps" : step === "customize" ? "Review Build" : "Continue"}
+            {step === "mods"
+              ? (selections.mods.length === 0 ? "Skip to Customize" : "Customize Keycaps")
+              : step === "customize"
+                ? (Object.keys(selections.perKeyOverrides).length === 0 ? "Skip to Review" : "Review Build")
+                : "Continue"}
             <svg className="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>

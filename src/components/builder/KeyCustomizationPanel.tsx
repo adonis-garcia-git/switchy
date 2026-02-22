@@ -104,7 +104,7 @@ export function KeyCustomizationPanel({
                     "hover:scale-110 active:scale-95",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
                     "disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100",
-                    "border-transparent hover:border-white/30"
+                    "border-transparent hover:border-border-default"
                   )}
                   style={{ backgroundColor: preset.hex }}
                   title={`${preset.name} (${idx + 1 <= 9 ? idx + 1 : ""})`}
@@ -126,7 +126,7 @@ export function KeyCustomizationPanel({
                   className="absolute inset-0 w-full h-full cursor-pointer opacity-0"
                 />
                 <div className="w-full h-full" style={{ backgroundColor: customColor }} />
-                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors duration-150" />
+                <div className="absolute inset-0 bg-transparent group-hover:bg-bg-tint-strong transition-colors duration-150" />
               </label>
               <input
                 type="text"
@@ -198,11 +198,11 @@ export function KeyCustomizationPanel({
               >
                 <div className="flex items-center gap-2 mb-1.5">
                   <div
-                    className="w-5 h-5 rounded-md border border-white/10"
+                    className="w-5 h-5 rounded-md border border-border-subtle"
                     style={{ backgroundColor: preset.primaryColor }}
                   />
                   <div
-                    className="w-5 h-5 rounded-md border border-white/10"
+                    className="w-5 h-5 rounded-md border border-border-subtle"
                     style={{ backgroundColor: preset.secondaryColor }}
                   />
                 </div>

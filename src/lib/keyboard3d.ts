@@ -52,7 +52,7 @@ export interface KeyboardViewerConfig {
   switchStemColor?: string;
 }
 
-const MATERIAL_KEYWORDS: Record<string, KeyboardViewerConfig["caseMaterial"]> = {
+export const MATERIAL_KEYWORDS: Record<string, KeyboardViewerConfig["caseMaterial"]> = {
   aluminum: "aluminum",
   aluminium: "aluminum",
   alu: "aluminum",
@@ -65,7 +65,7 @@ const MATERIAL_KEYWORDS: Record<string, KeyboardViewerConfig["caseMaterial"]> = 
   brass: "brass",
 };
 
-const PLATE_KEYWORDS: Record<string, KeyboardViewerConfig["plateMaterial"]> = {
+export const PLATE_KEYWORDS: Record<string, KeyboardViewerConfig["plateMaterial"]> = {
   aluminum: "aluminum",
   aluminium: "aluminum",
   alu: "aluminum",
@@ -134,7 +134,7 @@ const SIZE_KEYWORDS: Record<string, KeyboardViewerConfig["size"]> = {
   fullsize: "full",
 };
 
-const MOUNTING_KEYWORDS: Record<string, MountingStyle> = {
+export const MOUNTING_KEYWORDS: Record<string, MountingStyle> = {
   gasket: "gasket",
   "gasket-mount": "gasket",
   "top-mount": "top-mount",
@@ -147,7 +147,7 @@ const MOUNTING_KEYWORDS: Record<string, MountingStyle> = {
   "plate mount": "plate-mount",
 };
 
-function parseKeyword<T>(text: string, keywords: Record<string, T>): T | undefined {
+export function parseKeyword<T>(text: string, keywords: Record<string, T>): T | undefined {
   const lower = text.toLowerCase();
   for (const [keyword, value] of Object.entries(keywords)) {
     if (lower.includes(keyword)) return value;

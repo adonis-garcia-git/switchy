@@ -11,41 +11,54 @@ interface GridViewToggleProps {
 const OPTIONS: { value: GridView; label: string; icon: React.ReactNode }[] = [
   {
     value: "grid-4",
-    label: "Dense grid",
+    label: "4×4 grid",
     icon: (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <rect x="1" y="1" width="3" height="3" rx="0.5" fill="currentColor" />
-        <rect x="5.5" y="1" width="3" height="3" rx="0.5" fill="currentColor" />
-        <rect x="10" y="1" width="3" height="3" rx="0.5" fill="currentColor" />
-        <rect x="1" y="5.5" width="3" height="3" rx="0.5" fill="currentColor" />
-        <rect x="5.5" y="5.5" width="3" height="3" rx="0.5" fill="currentColor" />
-        <rect x="10" y="5.5" width="3" height="3" rx="0.5" fill="currentColor" />
-        <rect x="1" y="10" width="3" height="3" rx="0.5" fill="currentColor" />
-        <rect x="5.5" y="10" width="3" height="3" rx="0.5" fill="currentColor" />
-        <rect x="10" y="10" width="3" height="3" rx="0.5" fill="currentColor" />
+        <rect x="1" y="1" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="4.83" y="1" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="8.67" y="1" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="12.5" y="1" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="1" y="4.83" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="4.83" y="4.83" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="8.67" y="4.83" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="12.5" y="4.83" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="1" y="8.67" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="4.83" y="8.67" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="8.67" y="8.67" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="12.5" y="8.67" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="1" y="12.5" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="4.83" y="12.5" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="8.67" y="12.5" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="12.5" y="12.5" width="2.5" height="2.5" rx="0.5" fill="currentColor" />
       </svg>
     ),
   },
   {
     value: "grid-3",
-    label: "Comfortable grid",
+    label: "3×3 grid",
     icon: (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <rect x="1" y="1" width="4.5" height="4.5" rx="0.75" fill="currentColor" />
-        <rect x="7.5" y="1" width="4.5" height="4.5" rx="0.75" fill="currentColor" />
-        <rect x="1" y="7.5" width="4.5" height="4.5" rx="0.75" fill="currentColor" />
-        <rect x="7.5" y="7.5" width="4.5" height="4.5" rx="0.75" fill="currentColor" />
+        <rect x="1" y="1" width="3.33" height="3.33" rx="0.5" fill="currentColor" />
+        <rect x="6.33" y="1" width="3.33" height="3.33" rx="0.5" fill="currentColor" />
+        <rect x="11.67" y="1" width="3.33" height="3.33" rx="0.5" fill="currentColor" />
+        <rect x="1" y="6.33" width="3.33" height="3.33" rx="0.5" fill="currentColor" />
+        <rect x="6.33" y="6.33" width="3.33" height="3.33" rx="0.5" fill="currentColor" />
+        <rect x="11.67" y="6.33" width="3.33" height="3.33" rx="0.5" fill="currentColor" />
+        <rect x="1" y="11.67" width="3.33" height="3.33" rx="0.5" fill="currentColor" />
+        <rect x="6.33" y="11.67" width="3.33" height="3.33" rx="0.5" fill="currentColor" />
+        <rect x="11.67" y="11.67" width="3.33" height="3.33" rx="0.5" fill="currentColor" />
       </svg>
     ),
   },
   {
-    value: "list",
-    label: "List view",
+    value: "grid-2",
+    label: "2×2 grid",
     icon: (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <rect x="1" y="2" width="14" height="2.5" rx="0.5" fill="currentColor" />
-        <rect x="1" y="6.75" width="14" height="2.5" rx="0.5" fill="currentColor" />
-        <rect x="1" y="11.5" width="14" height="2.5" rx="0.5" fill="currentColor" />
+        <rect x="1" y="1" width="5.5" height="5.5" rx="0.75" fill="currentColor" />
+        <rect x="9.5" y="1" width="5.5" height="5.5" rx="0.75" fill="currentColor" />
+        <rect x="1" y="9.5" width="5.5" height="5.5" rx="0.75" fill="currentColor" />
+        <rect x="9.5" y="9.5" width="5.5" height="5.5" rx="0.75" fill="currentColor" />
       </svg>
     ),
   },

@@ -100,6 +100,9 @@ export const generateBuild = action({
     const allKeyboards = await ctx.runQuery(
       internal.internalFunctions.getAllKeyboards
     );
+    const allKeycaps = await ctx.runQuery(
+      internal.internalFunctions.getAllKeycaps
+    );
 
     // Pre-filter based on user prompt
     const criteria = extractCriteriaFromPrompt(args.query);
@@ -193,11 +196,12 @@ export const generateBuild = action({
       return ERROR_BUILD;
     }
 
-    // Validate against real products — correct names, prices, attach IDs
+    // Validate against real products — correct names, prices, attach IDs + images
     const { validatedBuild } = validateBuild(
       buildData,
       allSwitches,
-      allKeyboards
+      allKeyboards,
+      allKeycaps
     );
 
     // Record usage after successful generation
@@ -265,6 +269,9 @@ export const generateBuildConversational = action({
     );
     const allKeyboards = await ctx.runQuery(
       internal.internalFunctions.getAllKeyboards
+    );
+    const allKeycaps = await ctx.runQuery(
+      internal.internalFunctions.getAllKeycaps
     );
 
     // Pre-filter based on full conversation context
@@ -342,7 +349,8 @@ export const generateBuildConversational = action({
       const { validatedBuild } = validateBuild(
         buildData,
         allSwitches,
-        allKeyboards
+        allKeyboards,
+        allKeycaps
       );
 
       // Record usage after successful build generation

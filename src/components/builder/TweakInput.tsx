@@ -10,7 +10,7 @@ interface TweakInputProps {
 
 export function TweakInput({ onSubmit, loading }: TweakInputProps) {
   const [value, setValue] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   if (!isOpen) {
     return (
