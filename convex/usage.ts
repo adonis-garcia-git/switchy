@@ -24,20 +24,9 @@ export const getMonthlyUsage = query({
     const userId = await getGuestUserId(ctx);
     const monthKey = getCurrentMonthKey();
 
-    // Determine tier
-    const subscription = await ctx.db
-      .query("subscriptions")
-      .withIndex("by_userId", (q) => q.eq("userId", userId))
-      .first();
-
-    const tier: "free" | "pro" =
-      subscription &&
-      subscription.status === "active" &&
-      subscription.currentPeriodEnd > Date.now()
-        ? "pro"
-        : "free";
-
-    const limit = tier === "pro" ? PRO_LIMIT : FREE_LIMIT;
+    // DEMO MODE: always treat as pro tier (bypasses usage limits)
+    const tier: "free" | "pro" = "pro";
+    const limit = PRO_LIMIT;
 
     // Count usage for this month
     const records = await ctx.db

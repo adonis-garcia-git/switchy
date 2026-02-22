@@ -12,8 +12,9 @@ export function useSubscription() {
 
   const isLoading = subscription === undefined || usage === undefined;
 
-  const tier: UserTier = usage?.tier ?? "free";
-  const isPro = tier === "pro";
+  // DEMO MODE: always treat as pro (no paywall)
+  const tier: UserTier = "pro";
+  const isPro = true;
 
   const buildsUsed = usage?.count ?? 0;
   const buildsLimit = usage?.limit ?? FREE_LIMIT;
