@@ -51,7 +51,14 @@ export const seedAll = mutation({
     }
 
     if (!existingKeyboards) {
+      const seenKeyboards = new Set<string>();
       for (const kb of args.keyboards) {
+        const dedupKey = `${kb.brand}::${kb.name}`;
+        if (seenKeyboards.has(dedupKey)) {
+          console.warn(`Skipping duplicate keyboard: ${dedupKey}`);
+          continue;
+        }
+        seenKeyboards.add(dedupKey);
         await ctx.db.insert("keyboards", kb);
         keyboardsAdded++;
       }
@@ -145,8 +152,15 @@ export const seedKeyboardsBatch = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
+    const seen = new Set<string>();
     let count = 0;
     for (const kb of args.keyboards) {
+      const key = `${kb.brand}::${kb.name}`;
+      if (seen.has(key)) {
+        console.warn(`Skipping duplicate keyboard: ${key}`);
+        continue;
+      }
+      seen.add(key);
       await ctx.db.insert("keyboards", kb);
       count++;
     }
@@ -235,11 +249,20 @@ export const cleanAndReseedKeyboards = mutation({
       await ctx.db.delete(kb._id);
     }
 
+    const seen = new Set<string>();
+    let added = 0;
     for (const kb of args.keyboards) {
+      const dedupKey = `${kb.brand}::${kb.name}`;
+      if (seen.has(dedupKey)) {
+        console.warn(`Skipping duplicate keyboard: ${dedupKey}`);
+        continue;
+      }
+      seen.add(dedupKey);
       await ctx.db.insert("keyboards", kb);
+      added++;
     }
 
-    return { deleted: existing.length, added: args.keyboards.length };
+    return { deleted: existing.length, added };
   },
 });
 
@@ -259,5 +282,33 @@ export const seedVendorLinksBatch = mutation({
       count++;
     }
     return count;
+  },
+});
+
+export const deduplicateKeyboards = mutation({
+  args: {},
+  returns: v.object({
+    total: v.number(),
+    duplicatesRemoved: v.number(),
+  }),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const all = await ctx.db.query("keyboards").collect();
+    const seen = new Set<string>();
+    let duplicatesRemoved = 0;
+
+    for (const kb of all) {
+      const key = `${kb.brand}::${kb.name}`;
+      if (seen.has(key)) {
+        await ctx.db.delete(kb._id);
+        duplicatesRemoved++;
+      } else {
+        seen.add(key);
+      }
+    }
+
+    return { total: all.length, duplicatesRemoved };
   },
 });

@@ -22,7 +22,6 @@ import {
   keyboardFiltersToParams,
 } from "@/lib/filterParams";
 import { SponsoredCarousel } from "@/components/SponsoredCarousel";
-import { DealBanner } from "@/components/DealBanner";
 import { usePromotedInsert } from "@/hooks/usePromotedInsert";
 import { PromotedProductCard } from "@/components/PromotedProductCard";
 
@@ -116,8 +115,17 @@ function KeyboardsContent() {
 
   const displayKeyboards = searchQuery.trim() ? searchResults : keyboards;
 
+  const featuredNames = useQuery(api.sponsorships.getFeaturedProductNames, {}) ?? [];
+  const featuredSet = new Set(featuredNames);
+
   const sorted = displayKeyboards
     ? [...displayKeyboards].sort((a: any, b: any) => {
+        if (filters.sortBy === "recommended") {
+          const aFeatured = featuredSet.has(a.name) || featuredSet.has(`${a.brand} ${a.name}`) ? 1 : 0;
+          const bFeatured = featuredSet.has(b.name) || featuredSet.has(`${b.brand} ${b.name}`) ? 1 : 0;
+          if (aFeatured !== bFeatured) return bFeatured - aFeatured;
+          return a.name.localeCompare(b.name);
+        }
         if (filters.sortBy === "price-low") return a.priceUsd - b.priceUsd;
         if (filters.sortBy === "price-high") return b.priceUsd - a.priceUsd;
         if (filters.sortBy === "brand") return a.brand.localeCompare(b.brand);
@@ -229,9 +237,6 @@ function KeyboardsContent() {
             </div>
           </div>
 
-          {/* Deal banner */}
-          <DealBanner productType="keyboard" />
-
           {/* Active filter badges */}
           <ActiveFilterBadges filters={filters} setFilters={setFilters} />
 
@@ -277,34 +282,43 @@ function KeyboardsContent() {
           ) : (
             <>
               <div className={gridClassName}>
-                {mergedItems!.map((item: any) =>
-                  item.isPromoted ? (
-                    <PromotedProductCard
-                      key={item._id}
-                      sponsorshipId={item._id.replace("promoted-", "")}
-                      vendorName={item.vendorName}
-                      productName={item.productName}
-                      productUrl={item.productUrl}
-                      imageUrl={item.imageUrl}
-                      priceUsd={item.priceUsd}
-                    />
-                  ) : (
-                    <KeyboardCard
-                      key={item._id}
-                      keyboard={item}
-                      compareMode={compareMode}
-                      isSelected={selectedIds.has(item._id)}
-                      onCompareToggle={(id) => {
-                        setSelectedIds((prev) => {
-                          const next = new Set(prev);
-                          if (next.has(id)) next.delete(id);
-                          else if (next.size < 3) next.add(id);
-                          return next;
-                        });
-                      }}
-                    />
-                  )
-                )}
+                {(() => {
+                  let featuredShown = false;
+                  return mergedItems!.map((item: any) => {
+                    if (item.isPromoted) {
+                      return (
+                        <PromotedProductCard
+                          key={item._id}
+                          sponsorshipId={item._id.replace("promoted-", "")}
+                          vendorName={item.vendorName}
+                          productName={item.productName}
+                          productUrl={item.productUrl}
+                          imageUrl={item.imageUrl}
+                          priceUsd={item.priceUsd}
+                        />
+                      );
+                    }
+                    const isFirst = !featuredShown && page === 1;
+                    if (isFirst) featuredShown = true;
+                    return (
+                      <KeyboardCard
+                        key={item._id}
+                        keyboard={item}
+                        featured={isFirst}
+                        compareMode={compareMode}
+                        isSelected={selectedIds.has(item._id)}
+                        onCompareToggle={(id) => {
+                          setSelectedIds((prev) => {
+                            const next = new Set(prev);
+                            if (next.has(id)) next.delete(id);
+                            else if (next.size < 3) next.add(id);
+                            return next;
+                          });
+                        }}
+                      />
+                    );
+                  });
+                })()}
               </div>
               <Pagination
                 page={page}

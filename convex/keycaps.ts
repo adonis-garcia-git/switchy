@@ -120,10 +120,19 @@ export const seed = mutation({
   handler: async (ctx, args) => {
     const existing = await ctx.db.query("keycaps").take(1);
     if (existing.length > 0) return 0;
+    const seen = new Set<string>();
+    let count = 0;
     for (const keycap of args.keycaps) {
+      const dedupKey = `${keycap.brand}::${keycap.name}`;
+      if (seen.has(dedupKey)) {
+        console.warn(`Skipping duplicate keycap: ${dedupKey}`);
+        continue;
+      }
+      seen.add(dedupKey);
       await ctx.db.insert("keycaps", keycap);
+      count++;
     }
-    return args.keycaps.length;
+    return count;
   },
 });
 
@@ -158,10 +167,47 @@ export const cleanAndReseed = mutation({
       await ctx.db.delete(kc._id);
     }
 
+    const seen = new Set<string>();
+    let added = 0;
     for (const kc of args.keycaps) {
+      const dedupKey = `${kc.brand}::${kc.name}`;
+      if (seen.has(dedupKey)) {
+        console.warn(`Skipping duplicate keycap: ${dedupKey}`);
+        continue;
+      }
+      seen.add(dedupKey);
       await ctx.db.insert("keycaps", kc);
+      added++;
     }
 
-    return { deleted: existing.length, added: args.keycaps.length };
+    return { deleted: existing.length, added };
+  },
+});
+
+export const deduplicate = mutation({
+  args: {},
+  returns: v.object({
+    total: v.number(),
+    duplicatesRemoved: v.number(),
+  }),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const all = await ctx.db.query("keycaps").collect();
+    const seen = new Set<string>();
+    let duplicatesRemoved = 0;
+
+    for (const kc of all) {
+      const key = `${kc.brand}::${kc.name}`;
+      if (seen.has(key)) {
+        await ctx.db.delete(kc._id);
+        duplicatesRemoved++;
+      } else {
+        seen.add(key);
+      }
+    }
+
+    return { total: all.length, duplicatesRemoved };
   },
 });

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { ViewerLoadingState } from "./ViewerLoadingState";
 import { cn } from "@/lib/utils";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
+import type { SelectionMode } from "@/lib/keyCustomization";
 
 const KeyboardScene = dynamic(
   () => import("./KeyboardScene").then((mod) => ({ default: mod.KeyboardScene })),
@@ -59,6 +60,11 @@ interface KeyboardViewer3DProps {
   className?: string;
   interactive?: boolean;
   onKeyPress?: (legend: string) => void;
+  selectionMode?: SelectionMode;
+  selectedKeys?: Set<string>;
+  onKeySelect?: (keyId: string) => void;
+  onKeyPaint?: (keyId: string) => void;
+  customizeMode?: boolean;
 }
 
 export function KeyboardViewer3D({
@@ -69,6 +75,11 @@ export function KeyboardViewer3D({
   className = "",
   interactive = false,
   onKeyPress,
+  selectionMode,
+  selectedKeys,
+  onKeySelect,
+  onKeyPaint,
+  customizeMode,
 }: KeyboardViewer3DProps) {
   const [webglSupported, setWebglSupported] = useState<boolean | null>(null);
 
@@ -116,6 +127,11 @@ export function KeyboardViewer3D({
           compactMode={compactMode}
           interactive={interactive}
           onKeyPress={onKeyPress}
+          selectionMode={selectionMode}
+          selectedKeys={selectedKeys}
+          onKeySelect={onKeySelect}
+          onKeyPaint={onKeyPaint}
+          customizeMode={customizeMode}
         />
 
         {/* Interaction hint */}

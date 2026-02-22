@@ -77,6 +77,7 @@ export function KeyboardFilterBar({ filters, onChange, brands }: KeyboardFilterB
 
       <FilterSection title="Sort">
         {[
+          { value: "recommended", label: "Recommended" },
           { value: "name", label: "Name" },
           { value: "price-low", label: "Price (Low)" },
           { value: "price-high", label: "Price (High)" },

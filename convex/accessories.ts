@@ -121,10 +121,19 @@ export const seed = mutation({
   handler: async (ctx, args) => {
     const existing = await ctx.db.query("accessories").take(1);
     if (existing.length > 0) return 0;
+    const seen = new Set<string>();
+    let count = 0;
     for (const accessory of args.accessories) {
+      const dedupKey = `${accessory.brand}::${accessory.name}`;
+      if (seen.has(dedupKey)) {
+        console.warn(`Skipping duplicate accessory: ${dedupKey}`);
+        continue;
+      }
+      seen.add(dedupKey);
       await ctx.db.insert("accessories", accessory);
+      count++;
     }
-    return args.accessories.length;
+    return count;
   },
 });
 
@@ -155,10 +164,47 @@ export const cleanAndReseed = mutation({
       await ctx.db.delete(acc._id);
     }
 
+    const seen = new Set<string>();
+    let added = 0;
     for (const acc of args.accessories) {
+      const dedupKey = `${acc.brand}::${acc.name}`;
+      if (seen.has(dedupKey)) {
+        console.warn(`Skipping duplicate accessory: ${dedupKey}`);
+        continue;
+      }
+      seen.add(dedupKey);
       await ctx.db.insert("accessories", acc);
+      added++;
     }
 
-    return { deleted: existing.length, added: args.accessories.length };
+    return { deleted: existing.length, added };
+  },
+});
+
+export const deduplicate = mutation({
+  args: {},
+  returns: v.object({
+    total: v.number(),
+    duplicatesRemoved: v.number(),
+  }),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const all = await ctx.db.query("accessories").collect();
+    const seen = new Set<string>();
+    let duplicatesRemoved = 0;
+
+    for (const acc of all) {
+      const key = `${acc.brand}::${acc.name}`;
+      if (seen.has(key)) {
+        await ctx.db.delete(acc._id);
+        duplicatesRemoved++;
+      } else {
+        seen.add(key);
+      }
+    }
+
+    return { total: all.length, duplicatesRemoved };
   },
 });

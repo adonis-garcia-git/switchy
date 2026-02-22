@@ -38,8 +38,8 @@ export function PromotedProductCard({
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick(); }}
       className={cn(
-        "relative rounded-xl border border-dashed border-border-default bg-bg-surface p-5 shadow-surface cursor-pointer group",
-        "hover:border-accent/40 transition-[border-color,box-shadow] duration-200",
+        "relative rounded-xl border-2 border-accent/50 bg-bg-surface p-5 shadow-surface cursor-pointer group glow-accent",
+        "hover:border-accent/80 transition-[border-color,box-shadow] duration-200",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
       )}
     >

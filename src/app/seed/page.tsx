@@ -34,6 +34,9 @@ export default function SeedPage() {
   const cleanSponsorships = useMutation(api.sponsorships.cleanAndReseed);
   const seedGroupBuyListings = useMutation(api.groupBuyListings.seed);
   const cleanGroupBuyListings = useMutation(api.groupBuyListings.cleanAndReseed);
+  const deduplicateKeyboards = useMutation(api.seed.deduplicateKeyboards);
+  const deduplicateKeycaps = useMutation(api.keycaps.deduplicate);
+  const deduplicateAccessories = useMutation(api.accessories.deduplicate);
 
   const handleSeed = async () => {
     setLoading(true);
@@ -308,6 +311,78 @@ export default function SeedPage() {
               disabled={loading}
             >
               Clean &amp; Re-seed Group Buy Listings
+            </Button>
+          </div>
+
+          <div className="flex gap-3 justify-center flex-wrap">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={async () => {
+                setLoading(true);
+                setStatus("Deduplicating keyboards...");
+                try {
+                  const result = await deduplicateKeyboards({});
+                  setStatus(
+                    result.duplicatesRemoved > 0
+                      ? `Removed ${result.duplicatesRemoved} duplicate keyboards (${result.total} total scanned).`
+                      : `No duplicates found among ${result.total - result.duplicatesRemoved} keyboards.`
+                  );
+                } catch (err) {
+                  setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+            >
+              Deduplicate Keyboards
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={async () => {
+                setLoading(true);
+                setStatus("Deduplicating keycaps...");
+                try {
+                  const result = await deduplicateKeycaps({});
+                  setStatus(
+                    result.duplicatesRemoved > 0
+                      ? `Removed ${result.duplicatesRemoved} duplicate keycaps (${result.total} total scanned).`
+                      : `No duplicates found among ${result.total - result.duplicatesRemoved} keycaps.`
+                  );
+                } catch (err) {
+                  setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+            >
+              Deduplicate Keycaps
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={async () => {
+                setLoading(true);
+                setStatus("Deduplicating accessories...");
+                try {
+                  const result = await deduplicateAccessories({});
+                  setStatus(
+                    result.duplicatesRemoved > 0
+                      ? `Removed ${result.duplicatesRemoved} duplicate accessories (${result.total} total scanned).`
+                      : `No duplicates found among ${result.total - result.duplicatesRemoved} accessories.`
+                  );
+                } catch (err) {
+                  setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+            >
+              Deduplicate Accessories
             </Button>
           </div>
 

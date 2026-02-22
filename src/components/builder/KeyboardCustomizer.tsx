@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { KeyboardViewer3D } from "@/components/3d/KeyboardViewer3D";
 import { KeySelectionToolbar } from "./KeySelectionToolbar";
@@ -12,10 +12,21 @@ import { getKeycapZone } from "@/components/3d/colorways";
 import type { SelectionMode, PerKeyOverrides, PerKeyOverride } from "@/lib/keyCustomization";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
 
+export interface CustomizerInteractiveProps {
+  config: KeyboardViewerConfig;
+  selectionMode: SelectionMode;
+  selectedKeys: Set<string>;
+  onKeySelect: (keyId: string) => void;
+  onKeyPaint: (keyId: string) => void;
+  paintMode: boolean;
+}
+
 interface KeyboardCustomizerProps {
   viewerConfig: KeyboardViewerConfig;
   onOverridesChange: (overrides: PerKeyOverrides) => void;
   className?: string;
+  externalViewer?: boolean;
+  onInteractivePropsChange?: (props: CustomizerInteractiveProps | null) => void;
 }
 
 // Row counts per layout for quick-select
@@ -65,6 +76,8 @@ export function KeyboardCustomizer({
   viewerConfig,
   onOverridesChange,
   className,
+  externalViewer = false,
+  onInteractivePropsChange,
 }: KeyboardCustomizerProps) {
   const [selectionMode, setSelectionMode] = useState<SelectionMode>("single");
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
@@ -243,6 +256,65 @@ export function KeyboardCustomizer({
     paintMode,
   }), [viewerConfig, overrides, selectionMode, selectedKeys, paintMode]);
 
+  // Push interactive state up to page-level viewer when in external mode
+  useEffect(() => {
+    if (!externalViewer || !onInteractivePropsChange) return;
+    onInteractivePropsChange({
+      config: mergedConfig,
+      selectionMode,
+      selectedKeys,
+      onKeySelect: handleKeySelect,
+      onKeyPaint: handleKeyPaint,
+      paintMode,
+    });
+  }, [externalViewer, onInteractivePropsChange, mergedConfig, selectionMode, selectedKeys, handleKeySelect, handleKeyPaint, paintMode]);
+
+  // Cleanup: clear interactive props on unmount
+  useEffect(() => {
+    if (!externalViewer || !onInteractivePropsChange) return;
+    return () => {
+      onInteractivePropsChange(null);
+    };
+  }, [externalViewer, onInteractivePropsChange]);
+
+  // External viewer mode: only render toolbar + panel (3D viewer is page-level)
+  if (externalViewer) {
+    return (
+      <div className={cn("flex flex-col gap-4", className)}>
+        {/* Selection toolbar */}
+        <KeySelectionToolbar
+          mode={selectionMode}
+          onModeChange={setSelectionMode}
+          selectedCount={selectedKeys.size}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+          canUndo={canUndo}
+          canRedo={canRedo}
+          onReset={() => {
+            resetOverrides({});
+            onOverridesChange({});
+            setSelectedKeys(new Set());
+          }}
+          paintMode={paintMode}
+          onPaintModeToggle={() => setPaintMode((p) => !p)}
+        />
+
+        {/* Customization panel */}
+        <div className="p-4 rounded-2xl bg-bg-surface/80 backdrop-blur-md border border-border-subtle/50 shadow-surface max-h-[500px] lg:max-h-[calc(100vh-18rem)] overflow-hidden flex flex-col">
+          <KeyCustomizationPanel
+            selectedCount={selectedKeys.size}
+            onApplyOverride={handleApplyOverride}
+            onQuickAction={handleQuickAction}
+            onRemoveArtisan={handleRemoveArtisan}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Standalone mode: full layout with internal 3D viewer
   return (
     <div className={cn("flex flex-col lg:flex-row gap-4 h-full", className)}>
       {/* 3D Viewer */}

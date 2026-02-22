@@ -179,7 +179,7 @@ export function FilterBar({ filters, onChange, brands }: FilterBarProps) {
                 minPrice: 0,
                 maxPrice: 2,
                 brand: null,
-                sortBy: "communityRating",
+                sortBy: "recommended",
                 sortOrder: "desc",
               })
             }
@@ -273,6 +273,7 @@ export function FilterBar({ filters, onChange, brands }: FilterBarProps) {
       {/* Sort */}
       <FilterSection title="Sort">
         {[
+          { value: "recommended", label: "Recommended" },
           { value: "communityRating", label: "Rating" },
           { value: "pricePerSwitch", label: "Price" },
           { value: "actuationForceG", label: "Force" },

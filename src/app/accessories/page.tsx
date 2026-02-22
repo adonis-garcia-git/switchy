@@ -19,7 +19,6 @@ import {
   accessoryFiltersToParams,
 } from "@/lib/filterParams";
 import { SponsoredCarousel } from "@/components/SponsoredCarousel";
-import { DealBanner } from "@/components/DealBanner";
 import { usePromotedInsert } from "@/hooks/usePromotedInsert";
 import { PromotedProductCard } from "@/components/PromotedProductCard";
 
@@ -106,8 +105,17 @@ function AccessoriesContent() {
 
   const displayAccessories = searchQuery.trim() ? searchResults : accessories;
 
+  const featuredNames = useQuery(api.sponsorships.getFeaturedProductNames, {}) ?? [];
+  const featuredSet = new Set(featuredNames);
+
   const sorted = displayAccessories
     ? [...displayAccessories].sort((a: any, b: any) => {
+        if (filters.sortBy === "recommended") {
+          const aFeatured = featuredSet.has(a.name) || featuredSet.has(`${a.brand} ${a.name}`) ? 1 : 0;
+          const bFeatured = featuredSet.has(b.name) || featuredSet.has(`${b.brand} ${b.name}`) ? 1 : 0;
+          if (aFeatured !== bFeatured) return bFeatured - aFeatured;
+          return a.name.localeCompare(b.name);
+        }
         const dir = filters.sortOrder === "asc" ? 1 : -1;
         if (filters.sortBy === "price") return (a.priceUsd - b.priceUsd) * dir;
         if (filters.sortBy === "brand") return a.brand.localeCompare(b.brand) * dir;
@@ -197,9 +205,6 @@ function AccessoriesContent() {
             </div>
           </div>
 
-          {/* Deal banner */}
-          <DealBanner productType="accessory" />
-
           <ActiveFilterBadges filters={filters} setFilters={setFilters} />
 
           <div className="mb-6">
@@ -238,21 +243,29 @@ function AccessoriesContent() {
           ) : (
             <>
               <div className={gridClassName}>
-                {mergedItems!.map((item: any) =>
-                  item.isPromoted ? (
-                    <PromotedProductCard
-                      key={item._id}
-                      sponsorshipId={item._id.replace("promoted-", "")}
-                      vendorName={item.vendorName}
-                      productName={item.productName}
-                      productUrl={item.productUrl}
-                      imageUrl={item.imageUrl}
-                      priceUsd={item.priceUsd}
-                    />
-                  ) : (
-                    <AccessoryCard key={item._id} accessory={item} />
-                  )
-                )}
+                {(() => {
+                  let featuredShown = false;
+                  return mergedItems!.map((item: any) => {
+                    if (item.isPromoted) {
+                      return (
+                        <PromotedProductCard
+                          key={item._id}
+                          sponsorshipId={item._id.replace("promoted-", "")}
+                          vendorName={item.vendorName}
+                          productName={item.productName}
+                          productUrl={item.productUrl}
+                          imageUrl={item.imageUrl}
+                          priceUsd={item.priceUsd}
+                        />
+                      );
+                    }
+                    const isFirst = !featuredShown && page === 1;
+                    if (isFirst) featuredShown = true;
+                    return (
+                      <AccessoryCard key={item._id} accessory={item} featured={isFirst} />
+                    );
+                  });
+                })()}
               </div>
               <Pagination
                 page={page}

@@ -42,7 +42,9 @@ export function KeyboardCard({ keyboard, sponsored, compareMode, isSelected, onC
         "hover:border-border-accent hover:glow-accent",
         isSelected
           ? "border-accent glow-accent-strong"
-          : "border-border-subtle"
+          : featured && !sponsored
+            ? "border-emerald-500/40 glow-top-pick hover:border-emerald-500/60"
+            : "border-border-subtle"
       )}>
         {/* Compare selection overlay */}
         {compareMode && (
@@ -99,7 +101,7 @@ export function KeyboardCard({ keyboard, sponsored, compareMode, isSelected, onC
         {/* Featured / hot pick badge */}
         {featured && !sponsored && (
           <div className="absolute top-3 left-3 z-10">
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/25 text-[10px] font-semibold uppercase tracking-wider backdrop-blur-sm">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-semibold uppercase tracking-wider backdrop-blur-sm">
               <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z" />
               </svg>
@@ -132,12 +134,12 @@ export function KeyboardCard({ keyboard, sponsored, compareMode, isSelected, onC
           </Badge>
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs text-text-secondary mb-3">
-          <span>{keyboard.mountingStyle}</span>
-          <span className="text-text-muted/40">|</span>
-          <span>{keyboard.plateMaterial}</span>
-          <span className="text-text-muted/40">|</span>
-          <span>{keyboard.caseMaterial}</span>
+        <div className="flex items-center gap-1.5 text-xs text-text-secondary mb-3 overflow-hidden">
+          <span className="truncate">{keyboard.mountingStyle}</span>
+          <span className="text-text-muted/40 shrink-0">|</span>
+          <span className="truncate">{keyboard.plateMaterial}</span>
+          <span className="text-text-muted/40 shrink-0">|</span>
+          <span className="truncate">{keyboard.caseMaterial}</span>
         </div>
 
         <div className="flex items-center gap-1.5 mb-4">

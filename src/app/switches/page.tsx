@@ -21,7 +21,6 @@ import {
   switchFiltersToParams,
 } from "@/lib/filterParams";
 import { SponsoredCarousel } from "@/components/SponsoredCarousel";
-import { DealBanner } from "@/components/DealBanner";
 import { usePromotedInsert } from "@/hooks/usePromotedInsert";
 import { PromotedProductCard } from "@/components/PromotedProductCard";
 
@@ -40,6 +39,9 @@ function SwitchesContent() {
 
   const brands = useQuery(api.switches.getAllBrands, {}) ?? [];
 
+  const serverSortBy = filters.sortBy === "recommended" ? "communityRating" : filters.sortBy;
+  const serverSortOrder = filters.sortBy === "recommended" ? "desc" : filters.sortOrder;
+
   const switches = useQuery(api.switches.list, {
     type: (filters.type as "linear" | "tactile" | "clicky") || undefined,
     brand: filters.brand || undefined,
@@ -48,8 +50,8 @@ function SwitchesContent() {
     soundVolume: filters.soundVolume || undefined,
     minForce: filters.minForce > 20 ? filters.minForce : undefined,
     maxForce: filters.maxForce < 100 ? filters.maxForce : undefined,
-    sortBy: filters.sortBy,
-    sortOrder: filters.sortOrder,
+    sortBy: serverSortBy,
+    sortOrder: serverSortOrder,
   });
 
   const searchResults = useQuery(
@@ -57,7 +59,21 @@ function SwitchesContent() {
     searchQuery.trim() ? { query: searchQuery.trim() } : "skip"
   );
 
-  const displaySwitches = searchQuery.trim() ? searchResults : switches;
+  const featuredNames = useQuery(api.sponsorships.getFeaturedProductNames, {}) ?? [];
+  const featuredSet = new Set(featuredNames);
+
+  const rawDisplaySwitches = searchQuery.trim() ? searchResults : switches;
+
+  // For "recommended" sort, bubble featured products to the top
+  const displaySwitches = rawDisplaySwitches
+    ? filters.sortBy === "recommended"
+      ? [...rawDisplaySwitches].sort((a: any, b: any) => {
+          const aFeatured = featuredSet.has(a.name) || featuredSet.has(`${a.brand} ${a.name}`) ? 1 : 0;
+          const bFeatured = featuredSet.has(b.name) || featuredSet.has(`${b.brand} ${b.name}`) ? 1 : 0;
+          return bFeatured - aFeatured;
+        })
+      : rawDisplaySwitches
+    : null;
 
   const promotedSponsorships = useQuery(api.sponsorships.getActiveByType, {
     placement: "promoted_search",
@@ -181,9 +197,6 @@ function SwitchesContent() {
             </div>
           </div>
 
-          {/* Deal banner */}
-          <DealBanner productType="switch" />
-
           {/* Search bar */}
           <div className="mb-6">
             <div className="relative">
@@ -249,27 +262,36 @@ function SwitchesContent() {
           ) : (
             <>
               <div className={gridClassName}>
-                {mergedItems!.map((item: any) =>
-                  item.isPromoted ? (
-                    <PromotedProductCard
-                      key={item._id}
-                      sponsorshipId={item._id.replace("promoted-", "")}
-                      vendorName={item.vendorName}
-                      productName={item.productName}
-                      productUrl={item.productUrl}
-                      imageUrl={item.imageUrl}
-                      priceUsd={item.priceUsd}
-                    />
-                  ) : (
-                    <SwitchCard
-                      key={item._id}
-                      sw={item}
-                      compareMode={compareMode}
-                      isSelected={selectedIds.has(item._id)}
-                      onCompareToggle={handleCompareToggle}
-                    />
-                  )
-                )}
+                {(() => {
+                  let featuredShown = false;
+                  return mergedItems!.map((item: any) => {
+                    if (item.isPromoted) {
+                      return (
+                        <PromotedProductCard
+                          key={item._id}
+                          sponsorshipId={item._id.replace("promoted-", "")}
+                          vendorName={item.vendorName}
+                          productName={item.productName}
+                          productUrl={item.productUrl}
+                          imageUrl={item.imageUrl}
+                          priceUsd={item.priceUsd}
+                        />
+                      );
+                    }
+                    const isFirst = !featuredShown && page === 1;
+                    if (isFirst) featuredShown = true;
+                    return (
+                      <SwitchCard
+                        key={item._id}
+                        sw={item}
+                        compareMode={compareMode}
+                        isSelected={selectedIds.has(item._id)}
+                        onCompareToggle={handleCompareToggle}
+                        featured={isFirst}
+                      />
+                    );
+                  });
+                })()}
               </div>
               <Pagination
                 page={page}

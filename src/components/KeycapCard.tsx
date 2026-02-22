@@ -21,10 +21,29 @@ interface KeycapCardData {
   tags?: string[];
 }
 
-export function KeycapCard({ keycap }: { keycap: KeycapCardData }) {
+export function KeycapCard({ keycap, featured }: { keycap: KeycapCardData; featured?: boolean }) {
   return (
     <Link href={`/keycaps/${keycap._id}`} className="block group">
-      <div className="relative rounded-xl border border-border-subtle bg-bg-surface p-5 shadow-surface hover:border-border-accent hover:glow-accent transition-[border-color,box-shadow] duration-200">
+      <div className={cn(
+        "relative rounded-xl border bg-bg-surface p-5 shadow-surface",
+        "transition-[border-color,box-shadow] duration-200",
+        "hover:border-border-accent hover:glow-accent",
+        featured
+          ? "border-emerald-500/40 glow-top-pick hover:border-emerald-500/60"
+          : "border-border-subtle"
+      )}>
+        {/* Featured / hot pick badge */}
+        {featured && (
+          <div className="absolute top-3 left-3 z-10">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-semibold uppercase tracking-wider backdrop-blur-sm">
+              <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.532-1.056-3.94-2-5-1.786 3-2.791 3-4 2z" />
+              </svg>
+              Top Pick
+            </span>
+          </div>
+        )}
+
         {/* Product image */}
         <div className="aspect-[4/3] rounded-lg overflow-hidden mb-4 bg-bg-elevated relative -mx-5 -mt-5 rounded-t-xl rounded-b-none">
           <img

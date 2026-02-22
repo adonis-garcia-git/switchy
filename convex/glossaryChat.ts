@@ -46,7 +46,8 @@ export const askGlossary = action({
     const systemPrompt: string = `You are Switchy's glossary assistant — a concise, friendly expert on mechanical keyboard terminology.
 
 Rules:
-- 2-4 sentences max per response. Be concise.
+- Keep responses to 1-3 sentences. Aim for 30-50 words. Never exceed 75 words.
+- When you mention a glossary term by name, use its exact name as written in the glossary so the UI can link it.
 - Reference glossary definitions when available. Quote them accurately.
 - If asked about a term not in the glossary, give a brief general answer and note it's not in the glossary yet.
 - Stay on topic: mechanical keyboards, switches, keycaps, mods, and related terminology.
@@ -72,7 +73,7 @@ ${glossaryBlock}`;
 
     const response: Anthropic.Message = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 300,
+      max_tokens: 180,
       system: systemPrompt,
       messages,
     });

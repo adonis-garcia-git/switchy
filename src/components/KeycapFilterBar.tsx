@@ -82,6 +82,7 @@ export function KeycapFilterBar({ filters, onChange, brands }: KeycapFilterBarPr
 
       <FilterSection title="Sort">
         {[
+          { value: "recommended", label: "Recommended" },
           { value: "name", label: "Name" },
           { value: "price", label: "Price" },
           { value: "brand", label: "Brand" },

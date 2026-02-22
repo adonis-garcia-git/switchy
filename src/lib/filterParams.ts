@@ -11,7 +11,7 @@ export const DEFAULT_SWITCH_FILTERS: FilterState = {
   minPrice: 0,
   maxPrice: 2,
   brand: null,
-  sortBy: "communityRating",
+  sortBy: "recommended",
   sortOrder: "desc",
 };
 
@@ -32,7 +32,7 @@ export const DEFAULT_KEYBOARD_FILTERS: KeyboardFilterState = {
   wirelessOnly: false,
   minPrice: null,
   maxPrice: null,
-  sortBy: "name",
+  sortBy: "recommended",
 };
 
 const VALID_SWITCH_TYPES = ["linear", "tactile", "clicky"];
@@ -88,7 +88,7 @@ export function switchFiltersToParams(filters: FilterState): URLSearchParams {
   if (filters.brand) params.set("brand", filters.brand);
   if (filters.minForce > 20) params.set("minForce", String(filters.minForce));
   if (filters.maxForce < 100) params.set("maxForce", String(filters.maxForce));
-  if (filters.sortBy !== "communityRating") params.set("sort", filters.sortBy);
+  if (filters.sortBy !== "recommended") params.set("sort", filters.sortBy);
   if (filters.sortOrder !== "desc") params.set("order", filters.sortOrder);
   return params;
 }
@@ -131,7 +131,7 @@ export function keyboardFiltersToParams(filters: KeyboardFilterState): URLSearch
   if (filters.wirelessOnly) params.set("wireless", "true");
   if (filters.minPrice != null) params.set("minPrice", String(filters.minPrice));
   if (filters.maxPrice != null) params.set("maxPrice", String(filters.maxPrice));
-  if (filters.sortBy !== "name") params.set("sort", filters.sortBy);
+  if (filters.sortBy !== "recommended") params.set("sort", filters.sortBy);
   return params;
 }
 
@@ -166,7 +166,7 @@ export const DEFAULT_KEYCAP_FILTERS: KeycapFilterState = {
   brand: null,
   minPrice: null,
   maxPrice: null,
-  sortBy: "name",
+  sortBy: "recommended",
   sortOrder: "asc",
 };
 
@@ -196,7 +196,7 @@ export function keycapFiltersToParams(filters: KeycapFilterState): URLSearchPara
   if (filters.brand) params.set("brand", filters.brand);
   if (filters.minPrice != null) params.set("minPrice", String(filters.minPrice));
   if (filters.maxPrice != null) params.set("maxPrice", String(filters.maxPrice));
-  if (filters.sortBy !== "name") params.set("sort", filters.sortBy);
+  if (filters.sortBy !== "recommended") params.set("sort", filters.sortBy);
   if (filters.sortOrder !== "asc") params.set("order", filters.sortOrder);
   return params;
 }
@@ -219,7 +219,7 @@ export const DEFAULT_ACCESSORY_FILTERS: AccessoryFilterState = {
   brand: null,
   minPrice: null,
   maxPrice: null,
-  sortBy: "name",
+  sortBy: "recommended",
   sortOrder: "asc",
 };
 
@@ -246,7 +246,7 @@ export function accessoryFiltersToParams(filters: AccessoryFilterState): URLSear
   if (filters.brand) params.set("brand", filters.brand);
   if (filters.minPrice != null) params.set("minPrice", String(filters.minPrice));
   if (filters.maxPrice != null) params.set("maxPrice", String(filters.maxPrice));
-  if (filters.sortBy !== "name") params.set("sort", filters.sortBy);
+  if (filters.sortBy !== "recommended") params.set("sort", filters.sortBy);
   if (filters.sortOrder !== "asc") params.set("order", filters.sortOrder);
   return params;
 }

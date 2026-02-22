@@ -286,7 +286,7 @@ function GlossaryContent() {
                 </p>
               </div>
             )}
-            <GlossaryChatbot ref={chatbotRef} />
+            <GlossaryChatbot ref={chatbotRef} glossaryTerms={allTerms as any[] | undefined} onTermClick={handleTermClick} />
           </div>
 
           {/* Header */}
@@ -567,7 +567,7 @@ function GlossaryContent() {
 
             {/* Ask Switchy chatbot — fills remaining space */}
             <div className="flex-1 min-h-[240px]">
-              <GlossaryChatbot ref={chatbotRef} />
+              <GlossaryChatbot ref={chatbotRef} glossaryTerms={allTerms as any[] | undefined} onTermClick={handleTermClick} />
             </div>
 
             {/* Category Breakdown */}

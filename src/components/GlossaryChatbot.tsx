@@ -1,25 +1,173 @@
 "use client";
 
-import {
+import React, {
   useState,
   useRef,
   useEffect,
   useCallback,
   forwardRef,
   useImperativeHandle,
+  isValidElement,
+  Children,
+  cloneElement,
+  useMemo,
 } from "react";
 import { useAction } from "convex/react";
 import { useUser } from "@clerk/nextjs";
 import { api } from "../../convex/_generated/api";
 import { cn } from "@/lib/utils";
 
+// ── Types ──
+
 interface ChatMsg {
   role: "user" | "assistant";
   content: string;
 }
 
+export interface GlossaryTermRef {
+  _id: string;
+  term: string;
+  [key: string]: any;
+}
+
+export interface GlossaryChatbotProps {
+  glossaryTerms?: GlossaryTermRef[] | undefined;
+  onTermClick?: (term: any) => void;
+}
+
 export interface GlossaryChatbotHandle {
   askQuestion: (q: string) => void;
+}
+
+// ── Inline markdown + glossary term linker ──
+
+function FormattedMessage({
+  content,
+  terms,
+  onTermClick,
+}: {
+  content: string;
+  terms: GlossaryTermRef[];
+  onTermClick?: (term: GlossaryTermRef) => void;
+}) {
+  const paragraphs = content.split(/\n{2,}/);
+  return (
+    <>
+      {paragraphs.map((para, pi) => (
+        <p key={pi} className={pi > 0 ? "mt-1.5" : undefined}>
+          {para.split("\n").map((line, li, arr) => (
+            <span key={li}>
+              {linkTermsInNodes(formatInline(line), terms, onTermClick, `${pi}-${li}`)}
+              {li < arr.length - 1 && <br />}
+            </span>
+          ))}
+        </p>
+      ))}
+    </>
+  );
+}
+
+function formatInline(text: string): React.ReactNode[] {
+  const parts: React.ReactNode[] = [];
+  const regex = /(\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`)/g;
+  let lastIndex = 0;
+  let match;
+  let key = 0;
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    if (match[2]) {
+      parts.push(<strong key={`b${key++}`} className="font-semibold">{match[2]}</strong>);
+    } else if (match[3]) {
+      parts.push(<em key={`i${key++}`}>{match[3]}</em>);
+    } else if (match[4]) {
+      parts.push(<code key={`c${key++}`} className="px-1 py-0.5 rounded bg-bg-surface text-accent text-[10px]">{match[4]}</code>);
+    }
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+  return parts;
+}
+
+/** Second pass: scan text for glossary term names and wrap in clickable buttons.
+ *  Recurses into JSX children so terms inside <strong>, <em>, etc. are also linked. */
+function linkTermsInNodes(
+  nodes: React.ReactNode[],
+  terms: GlossaryTermRef[],
+  onTermClick?: (term: any) => void,
+  keyPrefix = "",
+): React.ReactNode[] {
+  if (!terms.length || !onTermClick) return nodes;
+
+  // Sort longest-first so "gasket mount" matches before "mount"
+  const sorted = [...terms].sort((a, b) => b.term.length - a.term.length);
+  const termMap = new Map(sorted.map((t) => [t.term.toLowerCase(), t]));
+  const escaped = sorted.map((t) => t.term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const pattern = new RegExp(`\\b(${escaped.join("|")})\\b`, "gi");
+
+  let keyCounter = 0;
+
+  function splitString(text: string): React.ReactNode[] {
+    const parts: React.ReactNode[] = [];
+    let lastIndex = 0;
+    let m;
+    pattern.lastIndex = 0;
+    while ((m = pattern.exec(text)) !== null) {
+      if (m.index > lastIndex) {
+        parts.push(text.slice(lastIndex, m.index));
+      }
+      const termData = termMap.get(m[1].toLowerCase());
+      if (termData) {
+        parts.push(
+          <button
+            key={`t-${keyPrefix}-${keyCounter++}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onTermClick!(termData);
+            }}
+            className="text-accent underline decoration-accent/30 underline-offset-2 hover:decoration-accent transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent/40 rounded-sm"
+          >
+            {m[1]}
+          </button>
+        );
+      } else {
+        parts.push(m[1]);
+      }
+      lastIndex = m.index + m[0].length;
+    }
+    if (lastIndex < text.length) {
+      parts.push(text.slice(lastIndex));
+    }
+    return parts;
+  }
+
+  function processNode(node: React.ReactNode): React.ReactNode | React.ReactNode[] {
+    // String nodes: split on glossary terms
+    if (typeof node === "string") {
+      const parts = splitString(node);
+      return parts.length === 1 ? parts[0] : parts;
+    }
+    // JSX elements: recurse into children
+    if (isValidElement(node)) {
+      const children = node.props.children;
+      if (children == null) return node;
+      const childArray = Children.toArray(children);
+      const processed = childArray.flatMap((child) => {
+        const result = processNode(child);
+        return Array.isArray(result) ? result : [result];
+      });
+      return cloneElement(node, { ...node.props, key: node.key }, ...processed);
+    }
+    return node;
+  }
+
+  return nodes.flatMap((node) => {
+    const result = processNode(node);
+    return Array.isArray(result) ? result : [result];
+  });
 }
 
 const QUICK_QUESTIONS = [
@@ -28,8 +176,8 @@ const QUICK_QUESTIONS = [
   "What does thocky mean?",
 ];
 
-export const GlossaryChatbot = forwardRef<GlossaryChatbotHandle>(
-  function GlossaryChatbot(_, ref) {
+export const GlossaryChatbot = forwardRef<GlossaryChatbotHandle, GlossaryChatbotProps>(
+  function GlossaryChatbot({ glossaryTerms = [], onTermClick }, ref) {
     const { user, isLoaded } = useUser();
     const askGlossary = useAction(api.glossaryChat.askGlossary);
 
@@ -145,7 +293,7 @@ export const GlossaryChatbot = forwardRef<GlossaryChatbotHandle>(
               <p className="text-xs text-text-muted text-center leading-snug">
                 Ask me about any keyboard term
               </p>
-              <div className="flex flex-col gap-1.5 w-full">
+              <div className="flex flex-wrap justify-center gap-1.5">
                 {QUICK_QUESTIONS.map((q) => (
                   <button
                     key={q}
@@ -154,7 +302,7 @@ export const GlossaryChatbot = forwardRef<GlossaryChatbotHandle>(
                     }}
                     disabled={!isSignedIn}
                     className={cn(
-                      "text-xs text-left px-3 py-2 rounded-lg border transition-[background-color,border-color] duration-150",
+                      "text-[11px] text-center px-3 py-1.5 rounded-full border transition-[background-color,border-color] duration-150",
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
                       isSignedIn
                         ? "bg-bg-elevated/60 border-border-subtle text-text-secondary hover:text-accent hover:border-accent/25 hover:bg-accent-dim/40 active:scale-[0.98]"
@@ -187,7 +335,15 @@ export const GlossaryChatbot = forwardRef<GlossaryChatbotHandle>(
                         : "bg-bg-elevated border-l-2 border-accent/50 text-text-primary rounded-xl rounded-bl-sm"
                     )}
                   >
-                    {msg.content}
+                    {msg.role === "assistant" ? (
+                      <FormattedMessage
+                        content={msg.content}
+                        terms={glossaryTerms}
+                        onTermClick={onTermClick}
+                      />
+                    ) : (
+                      msg.content
+                    )}
                   </div>
                 </div>
               ))}

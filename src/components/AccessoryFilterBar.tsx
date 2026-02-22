@@ -69,6 +69,7 @@ export function AccessoryFilterBar({ filters, onChange, brands }: AccessoryFilte
 
       <FilterSection title="Sort">
         {[
+          { value: "recommended", label: "Recommended" },
           { value: "name", label: "Name" },
           { value: "price", label: "Price" },
           { value: "brand", label: "Brand" },

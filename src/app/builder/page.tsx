@@ -283,6 +283,7 @@ function BuilderPageInner() {
           height="100%"
           autoRotate={autoRotateViewer}
           className="rounded-none border-0"
+          customizeMode={!!customizerProps}
           {...(customizerProps ? {
             interactive: true,
             selectionMode: customizerProps.selectionMode,
