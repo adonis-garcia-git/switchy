@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, type ReactNode } from "react";
+import { useState, useRef, useCallback, useEffect, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 type SnapState = "collapsed" | "half" | "full";
@@ -21,13 +21,18 @@ export function StudioMobileDrawer({ children, actionBar }: StudioMobileDrawerPr
   const [snap, setSnap] = useState<SnapState>("collapsed");
   const [dragging, setDragging] = useState(false);
   const [dragTranslate, setDragTranslate] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
   const startY = useRef(0);
   const startTranslate = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const getTranslateForSnap = useCallback((s: SnapState) => {
-    const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-    return (SNAP_POSITIONS[s] / 100) * vh;
+    if (typeof window === "undefined") return 0;
+    return (SNAP_POSITIONS[s] / 100) * window.innerHeight;
   }, []);
 
   const currentTranslate = dragTranslate ?? getTranslateForSnap(snap);
@@ -87,7 +92,9 @@ export function StudioMobileDrawer({ children, actionBar }: StudioMobileDrawerPr
         !dragging && "transition-transform duration-300 ease-out"
       )}
       style={{
-        transform: `translateY(${currentTranslate}px)`,
+        transform: mounted
+          ? `translateY(${currentTranslate}px)`
+          : `translateY(${SNAP_POSITIONS[snap]}vh)`,
         height: "92vh",
       }}
     >

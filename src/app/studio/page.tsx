@@ -43,14 +43,14 @@ function StudioPageInner() {
   });
 
   const [studioMode, setStudioMode] = useState<StudioMode>("design");
-  const [customizerProps, setCustmizerProps] = useState<CustomizerInteractiveProps | null>(null);
+  const [customizerProps, setCustomizerProps] = useState<CustomizerInteractiveProps | null>(null);
 
   const handleConfigUpdate = useCallback((update: Partial<KeyboardViewerConfig>) => {
     setConfig((prev) => ({ ...prev, ...update }));
   }, []);
 
   // Determine auto-rotate: rotate when not in per-key mode and not in freeform
-  const autoRotate = studioMode !== "perkey" && !customizerProps && config.cameraPreset !== "freeform";
+  const autoRotate = !customizerProps && config.cameraPreset !== "freeform";
 
   // Active viewer config: use customizer's merged config when in per-key mode
   const viewerConfig = customizerProps?.config ?? config;
@@ -59,7 +59,7 @@ function StudioPageInner() {
   const handleModeChange = useCallback((mode: StudioMode) => {
     setStudioMode(mode);
     if (mode !== "perkey") {
-      setCustmizerProps(null);
+      setCustomizerProps(null);
     }
   }, []);
 
@@ -77,7 +77,7 @@ function StudioPageInner() {
           height="100%"
           autoRotate={autoRotate}
           className="rounded-none border-0"
-          customizeMode={studioMode === "perkey"}
+          customizeMode={!!customizerProps}
           {...(customizerProps ? {
             interactive: true,
             selectionMode: customizerProps.selectionMode,
@@ -95,7 +95,7 @@ function StudioPageInner() {
           height="100%"
           autoRotate={autoRotate}
           className="rounded-none border-0"
-          customizeMode={studioMode === "perkey"}
+          customizeMode={!!customizerProps}
           {...(customizerProps ? {
             interactive: true,
             selectionMode: customizerProps.selectionMode,
@@ -124,7 +124,7 @@ function StudioPageInner() {
             studioMode={studioMode}
             onModeChange={handleModeChange}
             onConfigUpdate={handleConfigUpdate}
-            onCustomizerPropsChange={setCustmizerProps}
+            onCustomizerPropsChange={setCustomizerProps}
           />
         </div>
 
@@ -177,7 +177,7 @@ function StudioPageInner() {
               viewerConfig={config}
               onOverridesChange={handleMobileOverridesChange}
               externalViewer
-              onInteractivePropsChange={setCustmizerProps}
+              onInteractivePropsChange={setCustomizerProps}
             />
           )}
         </StudioMobileDrawer>
