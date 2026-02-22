@@ -78,7 +78,7 @@ export default function SharedBuildPage() {
 
       <div className="mt-8 flex items-center justify-center gap-4">
         <Button
-          onClick={() => router.push(`/advisor?q=${encodeURIComponent(`Build something similar to: ${build.summary}`)}`)}
+          onClick={() => router.push(`/builder?q=${encodeURIComponent(`Build something similar to: ${build.summary}`)}`)}
         >
           Build Something Like This
         </Button>

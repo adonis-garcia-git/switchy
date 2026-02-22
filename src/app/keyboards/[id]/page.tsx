@@ -7,6 +7,7 @@ import { Id } from "../../../../convex/_generated/dataModel";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { PurchaseButton } from "@/components/PurchaseButton";
 import { formatPriceWhole } from "@/lib/utils";
 
 export default function KeyboardDetailPage() {
@@ -72,18 +73,28 @@ export default function KeyboardDetailPage() {
               <p className="text-3xl font-bold font-[family-name:var(--font-mono)] text-accent">
                 {formatPriceWhole(keyboard.priceUsd)}
               </p>
-              <span className={keyboard.inStock
-                ? "inline-flex items-center gap-1 text-emerald-400 text-sm mt-1"
-                : "text-text-muted text-sm mt-1"
-              }>
-                {keyboard.inStock && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
-                )}
-                {keyboard.inStock ? "In Stock" : "Out of Stock"}
-              </span>
+              <div className="mt-2">
+                <PurchaseButton
+                  brand={keyboard.brand}
+                  name={keyboard.name}
+                  productUrl={keyboard.productUrl}
+                  type="keyboard"
+                  size="sm"
+                />
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Product image */}
+        {keyboard.imageUrl && (
+          <div className="p-6 lg:p-8 pt-0">
+            <div className="aspect-[16/10] rounded-xl overflow-hidden bg-bg-elevated relative max-w-lg">
+              <img src={keyboard.imageUrl} alt={`${keyboard.brand} ${keyboard.name}`} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            </div>
+          </div>
+        )}
 
         {/* Specs Grid */}
         <div className="p-6 lg:p-8">
@@ -120,8 +131,18 @@ export default function KeyboardDetailPage() {
             </div>
           )}
 
+          <PurchaseButton
+            brand={keyboard.brand}
+            name={keyboard.name}
+            productUrl={keyboard.productUrl}
+            type="keyboard"
+            size="md"
+            className="w-full justify-center mb-3"
+          />
+
           <Button
-            onClick={() => router.push(`/advisor?q=${encodeURIComponent(`Build a custom keyboard using the ${keyboard.brand} ${keyboard.name} as the base kit`)}`)}
+            variant="secondary"
+            onClick={() => router.push(`/builder?q=${encodeURIComponent(`Build a custom keyboard using the ${keyboard.brand} ${keyboard.name} as the base kit`)}`)}
           >
             Use in Build Advisor
           </Button>

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme inline {
+@theme {
   --color-bg-primary: #0c0c0c;
   --color-bg-surface: #121212;
   --color-bg-elevated: #181818;
@@ -124,3 +124,45 @@ select:focus {
 .pt-nav {
   padding-top: 4rem;
 }
+
+/* ── Light mode overrides ── */
+html.light {
+  --color-bg-primary: #FAFAFA;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-elevated: #F5F5F5;
+  --color-bg-floating: #EBEBEB;
+  --color-border-default: #E0E0E0;
+  --color-border-subtle: #EDEDED;
+  --color-border-accent: rgba(212, 79, 8, 0.3);
+  --color-accent: #D44F08;
+  --color-accent-dim: rgba(212, 79, 8, 0.1);
+  --color-accent-hover: #E8590C;
+  --color-accent-glow: rgba(212, 79, 8, 0.06);
+  --color-warning: #D97706;
+  --color-text-primary: #171717;
+  --color-text-secondary: #525252;
+  --color-text-muted: #A3A3A3;
+  --color-linear: #DC2626;
+  --color-tactile: #D97706;
+  --color-clicky: #2563EB;
+}
+
+html.light .shadow-surface {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+}
+html.light .shadow-elevated {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 8px 16px rgba(0, 0, 0, 0.06);
+}
+html.light .shadow-floating {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+html.light .grain::before { opacity: 0.02; }
+html.light .glow-accent {
+  box-shadow: 0 0 0 1px rgba(212, 79, 8, 0.12), 0 4px 16px rgba(212, 79, 8, 0.04);
+}
+html.light .glow-accent-strong {
+  box-shadow: 0 0 0 1px rgba(212, 79, 8, 0.2), 0 4px 20px rgba(212, 79, 8, 0.08);
+}
+html.light ::-webkit-scrollbar-track { background: #FAFAFA; }
+html.light ::-webkit-scrollbar-thumb { background: #D4D4D4; }
+html.light ::-webkit-scrollbar-thumb:hover { background: #A3A3A3; }

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { cn, formatPriceWhole } from "@/lib/utils";
+import { cn, formatPriceWhole, generatePurchaseUrl } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 
 interface KeyboardData {
@@ -18,12 +18,24 @@ interface KeyboardData {
   priceUsd: number;
   inStock: boolean;
   notes: string;
+  productUrl?: string;
+  imageUrl?: string;
 }
 
 export function KeyboardCard({ keyboard }: { keyboard: KeyboardData }) {
   return (
     <Link href={`/keyboards/${keyboard._id}`} className="block group">
       <div className="rounded-xl border border-border-subtle bg-bg-surface p-5 shadow-surface hover:border-border-accent hover:glow-accent transition-[border-color,box-shadow] duration-200">
+        {/* Product image */}
+        <div className="aspect-[16/10] rounded-lg overflow-hidden mb-4 bg-bg-elevated relative -mx-5 -mt-5 rounded-t-xl rounded-b-none">
+          <img
+            src={keyboard.imageUrl || `https://placehold.co/640x400/181818/525252?text=${encodeURIComponent(keyboard.name)}`}
+            alt={keyboard.name}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+        </div>
+
         <div className="flex items-start justify-between mb-3">
           <div className="min-w-0">
             <p className="text-[11px] uppercase tracking-wider text-text-muted mb-0.5">
@@ -62,14 +74,27 @@ export function KeyboardCard({ keyboard }: { keyboard: KeyboardData }) {
           <span className="text-lg font-bold font-[family-name:var(--font-mono)] text-accent">
             {formatPriceWhole(keyboard.priceUsd)}
           </span>
-          <span className={cn(
-            "text-xs font-medium px-2 py-0.5 rounded-full",
-            keyboard.inStock
-              ? "text-emerald-400 bg-emerald-500/10"
-              : "text-text-muted bg-bg-elevated"
-          )}>
-            {keyboard.inStock ? "In Stock" : "Out of Stock"}
-          </span>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              window.open(keyboard.productUrl || generatePurchaseUrl(keyboard.brand, keyboard.name, "keyboard"), "_blank", "noopener,noreferrer");
+            }}
+            className={cn(
+              "inline-flex items-center gap-1 text-sm font-bold px-4 py-2 rounded-xl",
+              "bg-accent text-bg-primary shadow-accent-sm",
+              "hover:bg-accent-hover",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+              "active:scale-[0.95]",
+              "transition-[background-color,transform] duration-150",
+              "font-[family-name:var(--font-outfit)]"
+            )}
+          >
+            Buy
+            <svg className="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
+          </button>
         </div>
 
         {keyboard.notes && (

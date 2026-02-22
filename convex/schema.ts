@@ -34,6 +34,7 @@ export default defineSchema({
     imageUrl: v.optional(v.string()),
     productUrl: v.optional(v.string()),
     soundSampleUrl: v.optional(v.string()),
+    fabricated: v.optional(v.boolean()),
   })
     .index("by_type", ["type"])
     .index("by_brand", ["brand"])
@@ -81,6 +82,7 @@ export default defineSchema({
     pollingRate: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
     productUrl: v.optional(v.string()),
+    fabricated: v.optional(v.boolean()),
   })
     .index("by_size", ["size"])
     .index("by_brand", ["brand"])
@@ -221,7 +223,8 @@ export default defineSchema({
     lastVerified: v.optional(v.string()),
   })
     .index("by_productName", ["productName"])
-    .index("by_vendor", ["vendor"]),
+    .index("by_vendor", ["vendor"])
+    .searchIndex("search_productName", { searchField: "productName" }),
 
   soundSamples: defineTable({
     switchName: v.string(),

@@ -20,3 +20,13 @@ export function daysUntil(dateStr: string): number {
 export function getRandomItem<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
+
+export function generatePurchaseUrl(brand: string, name: string, type: "switch" | "keyboard"): string {
+  const query = encodeURIComponent(`${brand} ${name} mechanical ${type}`);
+  return `https://www.amazon.com/s?k=${query}`;
+}
+
+export function generateGoogleSearchUrl(brand: string, name: string, type: "switch" | "keyboard"): string {
+  const query = encodeURIComponent(`${brand} ${name} mechanical ${type} buy`);
+  return `https://www.google.com/search?q=${query}`;
+}

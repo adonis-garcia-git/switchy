@@ -24,7 +24,11 @@ export const seedAll = mutation({
 
     if (!existingSwitches) {
       for (const sw of args.switches) {
-        await ctx.db.insert("switches", sw);
+        const cleaned: Record<string, unknown> = {};
+        for (const [key, value] of Object.entries(sw)) {
+          if (value !== null) cleaned[key] = value;
+        }
+        await ctx.db.insert("switches", cleaned as any);
         switchesAdded++;
       }
     }
@@ -90,7 +94,11 @@ export const seedSwitchesBatch = mutation({
   handler: async (ctx, args) => {
     let count = 0;
     for (const sw of args.switches) {
-      await ctx.db.insert("switches", sw);
+      const cleaned: Record<string, unknown> = {};
+      for (const [key, value] of Object.entries(sw)) {
+        if (value !== null) cleaned[key] = value;
+      }
+      await ctx.db.insert("switches", cleaned as any);
       count++;
     }
     return count;
@@ -126,6 +134,40 @@ export const seedProductsBatch = mutation({
       count++;
     }
     return count;
+  },
+});
+
+export const cleanAndReseedSwitches = mutation({
+  args: {
+    switches: v.array(v.any()),
+  },
+  returns: v.object({
+    deleted: v.number(),
+    added: v.number(),
+  }),
+  handler: async (ctx, args) => {
+    // Delete all existing switches
+    const existing = await ctx.db.query("switches").collect();
+    let deleted = 0;
+    for (const sw of existing) {
+      await ctx.db.delete(sw._id);
+      deleted++;
+    }
+
+    // Re-insert from clean data (strip null values — Convex requires undefined, not null)
+    let added = 0;
+    for (const sw of args.switches) {
+      const cleaned: Record<string, unknown> = {};
+      for (const [key, value] of Object.entries(sw)) {
+        if (value !== null) {
+          cleaned[key] = value;
+        }
+      }
+      await ctx.db.insert("switches", cleaned as any);
+      added++;
+    }
+
+    return { deleted, added };
   },
 });
 

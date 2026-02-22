@@ -72,7 +72,7 @@ function CompareContent() {
             {switches.length > 0 && (
               <div className="mt-10 flex justify-center">
                 <Link
-                  href={`/advisor?q=${encodeURIComponent(
+                  href={`/builder?q=${encodeURIComponent(
                     `I'm choosing between ${switches.map((s) => `${s.brand} ${s.name}`).join(" and ")}. What build would you recommend?`
                   )}`}
                 >

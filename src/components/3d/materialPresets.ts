@@ -27,3 +27,10 @@ export const KEYCAP_MATERIALS: Record<string, MaterialPreset> = {
   abs: { metalness: 0.0, roughness: 0.3 },
   pom: { metalness: 0.0, roughness: 0.2, clearcoat: 0.4, clearcoatRoughness: 0.2 },
 };
+
+export const KEYCAP_PROFILE_MULTIPLIERS: Record<string, number[]> = {
+  cherry: [1.0, 1.0, 1.0, 1.0, 1.0],  // current sculpted heights
+  sa: [1.3, 1.25, 1.2, 1.2, 1.15],     // taller keycaps
+  dsa: [0.9, 0.9, 0.9, 0.9, 0.9],      // uniform height
+  mt3: [1.4, 1.35, 1.3, 1.25, 1.2],    // tall + deeply sculpted
+};

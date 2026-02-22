@@ -15,6 +15,7 @@ export default function SeedPage() {
   const [loading, setLoading] = useState(false);
   const seedAll = useMutation(api.seed.seedAll);
   const clearAll = useMutation(api.seed.clearAll);
+  const cleanSwitches = useMutation(api.seed.cleanAndReseedSwitches);
   const seedGlossary = useMutation(api.glossary.seed);
   const seedVendorLinks = useMutation(api.vendorLinks.seed);
 
@@ -149,6 +150,27 @@ export default function SeedPage() {
               disabled={loading}
             >
               Clear Database
+            </Button>
+          </div>
+
+          <div className="flex gap-4 justify-center">
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                setLoading(true);
+                setStatus("Cleaning & re-seeding switches...");
+                try {
+                  const result = await cleanSwitches({ switches: switchesData });
+                  setStatus(`Done! Deleted ${result.deleted} old switches, added ${result.added} fresh switches.`);
+                } catch (err) {
+                  setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+            >
+              Clean &amp; Re-seed Switches
             </Button>
           </div>
 

@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as buildAdvisor from "../buildAdvisor.js";
 import type * as builds from "../builds.js";
 import type * as components_ from "../components.js";
 import type * as conversations from "../conversations.js";
@@ -30,6 +31,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  buildAdvisor: typeof buildAdvisor;
   builds: typeof builds;
   components: typeof components_;
   conversations: typeof conversations;

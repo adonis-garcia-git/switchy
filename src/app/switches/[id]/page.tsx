@@ -7,6 +7,7 @@ import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { SoundProfile } from "@/components/SoundProfile";
 import { VendorLinksSection } from "@/components/VendorLinks";
+import { PurchaseButton } from "@/components/PurchaseButton";
 import { Badge } from "@/components/ui/Badge";
 import { Tabs } from "@/components/ui/Tabs";
 import { cn, formatPrice } from "@/lib/utils";
@@ -99,6 +100,16 @@ export default function SwitchDetailPage({
             {sw.type}
           </Badge>
         </div>
+
+        {/* Product image hero */}
+        {sw.imageUrl && (
+          <div className="mb-6 max-w-md mx-auto">
+            <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-bg-elevated relative">
+              <img src={sw.imageUrl} alt={`${sw.brand} ${sw.name}`} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            </div>
+          </div>
+        )}
 
         {/* Tabs */}
         <div className="mb-8">
@@ -308,10 +319,20 @@ export default function SwitchDetailPage({
                 )}
               </div>
 
-              {/* Use in advisor CTA */}
+              {/* Buy first - primary */}
+              <PurchaseButton
+                brand={sw.brand}
+                name={sw.name}
+                productUrl={sw.productUrl}
+                type="switch"
+                size="md"
+                className="w-full justify-center"
+              />
+
+              {/* Ask advisor second - secondary */}
               <Link
-                href={`/advisor?q=${encodeURIComponent(`Tell me about the ${sw.brand} ${sw.name} switch`)}`}
-                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-accent text-bg-primary font-semibold text-sm hover:bg-accent-hover transition-colors duration-150 shadow-[0_1px_8px_rgba(232,89,12,0.15)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
+                href={`/builder?q=${encodeURIComponent(`Tell me about the ${sw.brand} ${sw.name} switch`)}`}
+                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl border border-border-default bg-bg-elevated text-text-secondary font-semibold text-sm hover:text-text-primary hover:border-border-accent transition-[border-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
               >
                 Ask Build Advisor
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

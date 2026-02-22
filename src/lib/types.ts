@@ -90,6 +90,7 @@ export interface SwitchData {
   imageUrl?: string;
   productUrl?: string;
   soundSampleUrl?: string;
+  fabricated?: boolean;
 }
 
 export interface KeyboardData {
@@ -116,6 +117,7 @@ export interface KeyboardData {
   qmkVia?: boolean;
   hallEffect?: boolean;
   pollingRate?: string;
+  fabricated?: boolean;
 }
 
 export interface ProductData {
@@ -187,4 +189,48 @@ export interface WizardFormData {
   budget: WizardBudget | null;
   size: WizardSize | null;
   priorities: WizardPriority[];
+}
+
+// Builder types (unified advisor + wizard)
+export type BuilderPhase = "landing" | "questions" | "generating" | "result";
+
+export type BuilderQuestionType = "single-choice" | "multi-choice" | "color-picker" | "slider";
+
+export interface BuilderQuestionOption {
+  id: string;
+  label: string;
+  description?: string;
+  icon?: string;
+  color?: string;
+}
+
+export interface BuilderQuestion {
+  id: string;
+  type: BuilderQuestionType;
+  question: string;
+  subtitle?: string;
+  options?: BuilderQuestionOption[];
+  sliderConfig?: {
+    min: number;
+    max: number;
+    step: number;
+    unit: string;
+    labels?: { value: number; label: string }[];
+  };
+  viewerUpdate?: Partial<import("./keyboard3d").KeyboardViewerConfig>;
+}
+
+export interface BuilderAnswer {
+  questionId: string;
+  value: string | string[] | number;
+}
+
+export interface BuilderState {
+  phase: BuilderPhase;
+  initialPrompt: string;
+  questions: BuilderQuestion[];
+  answers: BuilderAnswer[];
+  currentQuestionIndex: number;
+  buildResult: BuildData | null;
+  isGenerating: boolean;
 }

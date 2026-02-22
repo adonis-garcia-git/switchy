@@ -11,6 +11,13 @@ export interface KeyboardViewerConfig {
   size: "60" | "65" | "75" | "tkl" | "full";
   hasRGB: boolean;
   rgbColor: string;
+  keycapProfile: "cherry" | "sa" | "dsa" | "mt3";
+  showLegends: boolean;
+  userColors?: {
+    case?: string;
+    keycap?: string;
+    accent?: string;
+  };
 }
 
 const MATERIAL_KEYWORDS: Record<string, KeyboardViewerConfig["caseMaterial"]> = {
@@ -123,6 +130,8 @@ export function buildDataToViewerConfig(build: BuildData, keyboard?: KeyboardDat
     size: "65",
     hasRGB: false,
     rgbColor: "#E8590C",
+    keycapProfile: "cherry",
+    showLegends: true,
   };
 
   // Parse from keyboard data if available
@@ -173,4 +182,6 @@ export const DEFAULT_VIEWER_CONFIG: KeyboardViewerConfig = {
   size: "65",
   hasRGB: false,
   rgbColor: "#E8590C",
+  keycapProfile: "cherry",
+  showLegends: true,
 };

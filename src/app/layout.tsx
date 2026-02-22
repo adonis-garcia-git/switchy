@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Outfit } from "next/font/google";
 import { ConvexClientProvider } from "./ConvexClientProvider";
+import { ThemeProvider } from "./ThemeProvider";
 import { Navigation } from "@/components/Navigation";
 import { GlossaryProvider } from "@/components/GlossaryProvider";
 import { OnboardingModal } from "@/components/OnboardingModal";
@@ -34,19 +35,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${outfit.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased bg-bg-primary text-text-primary`}
       >
-        <ConvexClientProvider>
-          <GlossaryProvider>
-            <Navigation />
-            <OnboardingModal />
-            <main className="pt-16 min-h-screen">
-              {children}
-            </main>
-          </GlossaryProvider>
-        </ConvexClientProvider>
+        <ThemeProvider>
+          <ConvexClientProvider>
+            <GlossaryProvider>
+              <Navigation />
+              <OnboardingModal />
+              <main className="pt-16 min-h-screen">
+                {children}
+              </main>
+            </GlossaryProvider>
+          </ConvexClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

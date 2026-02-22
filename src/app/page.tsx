@@ -23,16 +23,16 @@ const CATEGORY_CARDS = [
     image: "https://placehold.co/600x800/181818/333333?text=Keyboards",
   },
   {
-    title: "AI Advisor",
-    desc: "Describe your dream board and get a complete build",
-    href: "/advisor",
-    image: "https://placehold.co/600x800/181818/333333?text=AI+Advisor",
+    title: "AI Builder",
+    desc: "Describe your dream board, answer a few questions, get a complete build",
+    href: "/builder",
+    image: "https://placehold.co/600x800/181818/333333?text=AI+Builder",
   },
   {
-    title: "Build Wizard",
-    desc: "Answer 6 questions for a personalized recommendation",
-    href: "/wizard",
-    image: "https://placehold.co/600x800/181818/333333?text=Wizard",
+    title: "Glossary",
+    desc: "Learn every term in the hobby — from actuation to zealios",
+    href: "/glossary",
+    image: "https://placehold.co/600x800/181818/333333?text=Glossary",
   },
 ];
 
@@ -83,7 +83,7 @@ export default function Home() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-    router.push(`/advisor?q=${encodeURIComponent(query.trim())}`);
+    router.push(`/builder?q=${encodeURIComponent(query.trim())}`);
   };
 
   const quickStarts = [
@@ -142,7 +142,7 @@ export default function Home() {
             {quickStarts.map((qs) => (
               <button
                 key={qs.label}
-                onClick={() => router.push(`/advisor?q=${encodeURIComponent(qs.query)}`)}
+                onClick={() => router.push(`/builder?q=${encodeURIComponent(qs.query)}`)}
                 className="px-4 py-2 rounded-full border border-border-default bg-transparent text-sm text-text-secondary hover:text-accent hover:border-border-accent transition-[color,border-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
               >
                 {qs.label}
@@ -184,7 +184,7 @@ export default function Home() {
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/15 to-transparent" />
                 <div className="absolute inset-0 bg-accent/5 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 {/* Content at bottom */}
                 <div className="absolute bottom-0 left-0 right-0 p-5">
@@ -314,14 +314,14 @@ export default function Home() {
             Ready to Build?
           </h2>
           <p className="text-base text-text-secondary max-w-lg mx-auto mb-10 leading-[1.7]">
-            Start with the guided wizard or dive into the glossary to learn every term in the hobby.
+            Start with the AI builder or dive into the glossary to learn every term in the hobby.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
-              onClick={() => router.push("/wizard")}
+              onClick={() => router.push("/builder")}
               className="px-6 py-3 rounded-lg bg-accent text-bg-primary font-semibold text-base hover:bg-accent-hover active:scale-[0.97] transition-[background-color,transform] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-elevated shadow-accent-sm"
             >
-              Start the Wizard
+              Start Building
             </button>
             <button
               onClick={() => router.push("/glossary")}

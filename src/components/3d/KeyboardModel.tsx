@@ -4,7 +4,7 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { RoundedBox } from "@react-three/drei";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
-import { CASE_MATERIALS, PLATE_MATERIALS, KEYCAP_MATERIALS } from "./materialPresets";
+import { CASE_MATERIALS, PLATE_MATERIALS, KEYCAP_MATERIALS, KEYCAP_PROFILE_MULTIPLIERS } from "./materialPresets";
 
 // Standard MX spacing: 19.05mm = 0.01905m, we work in cm-scale (1 unit = ~1cm)
 const UNIT = 1.905; // 1u in our coordinate system
@@ -14,6 +14,106 @@ const GAP = UNIT - KEYCAP_SIZE;
 
 // Row profiles - slight height variation per row for realism
 const ROW_HEIGHTS = [0.9, 0.85, 0.8, 0.78, 0.75];
+
+// QWERTY legends per row (standard ANSI layout)
+const LEGENDS_ROW0 = ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "\u232B"];
+const LEGENDS_ROW1 = ["\u21E5", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\"];
+const LEGENDS_ROW2 = ["\u21EA", "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'", "\u23CE"];
+const LEGENDS_ROW3 = ["\u21E7", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "\u21E7"];
+const LEGENDS_ROW4 = ["Ctrl", "\u2318", "Alt", " ", "Alt", "\u2318", "Fn", "Ctrl"];
+
+// F-row legends (for 75%, TKL, full)
+const LEGENDS_FROW = ["Esc", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"];
+
+// Additional right-side keys for 65% and larger
+const LEGENDS_65_EXTRA_ROW0 = ["Del"];
+const LEGENDS_65_EXTRA_ROW3 = ["\u2191"];
+const LEGENDS_65_ROW4 = ["Ctrl", "\u2318", "Alt", " ", "Alt", "\u2318", "\u2190", "\u2193", "\u2192"];
+
+// Nav cluster legends (TKL, full)
+const LEGENDS_NAV = ["Ins", "Hm", "PU", "Del", "End", "PD", "", "\u2191", "", "\u2190", "\u2193", "\u2192"];
+
+// Numpad legends (full-size)
+const LEGENDS_NUMPAD_R0 = ["NL", "/", "*", "-"];
+const LEGENDS_NUMPAD_R1 = ["7", "8", "9", "+"];
+const LEGENDS_NUMPAD_R2 = ["4", "5", "6"];
+const LEGENDS_NUMPAD_R3 = ["1", "2", "3", "\u23CE"];
+const LEGENDS_NUMPAD_R4 = ["0", "."];
+
+function getLegendForKey(keyIndex: number, rowIndex: number, size: KeyboardViewerConfig["size"]): string {
+  let rows: string[][];
+
+  if (size === "60") {
+    rows = [LEGENDS_ROW0, LEGENDS_ROW1, LEGENDS_ROW2, LEGENDS_ROW3, LEGENDS_ROW4];
+  } else if (size === "65") {
+    rows = [
+      [...LEGENDS_ROW0, ...LEGENDS_65_EXTRA_ROW0],
+      LEGENDS_ROW1,
+      LEGENDS_ROW2,
+      [...LEGENDS_ROW3.slice(0, -1), "\u21E7", ...LEGENDS_65_EXTRA_ROW3],
+      LEGENDS_65_ROW4,
+    ];
+  } else if (size === "75") {
+    rows = [
+      [...LEGENDS_FROW, "Del"],
+      [...LEGENDS_ROW0, "Del"],
+      LEGENDS_ROW1,
+      LEGENDS_ROW2,
+      [...LEGENDS_ROW3.slice(0, -1), "\u21E7", "\u2191"],
+      LEGENDS_65_ROW4,
+    ];
+  } else {
+    // TKL and full use same base rows
+    rows = [
+      LEGENDS_FROW,
+      LEGENDS_ROW0,
+      LEGENDS_ROW1,
+      LEGENDS_ROW2,
+      LEGENDS_ROW3,
+      LEGENDS_ROW4,
+    ];
+  }
+
+  if (rowIndex < rows.length && keyIndex < rows[rowIndex].length) {
+    return rows[rowIndex][keyIndex];
+  }
+  return "";
+}
+
+function createLegendTexture(legend: string, keycapColor: string): THREE.CanvasTexture | null {
+  if (!legend || legend === " ") return null;
+
+  const size = 128;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+
+  // Transparent background - legend will be overlaid on top face only
+  ctx.clearRect(0, 0, size, size);
+
+  // Auto-detect text color based on luminance
+  const r = parseInt(keycapColor.slice(1, 3), 16) || 128;
+  const g = parseInt(keycapColor.slice(3, 5), 16) || 128;
+  const b = parseInt(keycapColor.slice(5, 7), 16) || 128;
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  const textColor = luminance > 0.5 ? "rgba(0,0,0,0.7)" : "rgba(255,255,255,0.75)";
+
+  // Draw legend
+  ctx.fillStyle = textColor;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  // Adjust font size based on legend length
+  const fontSize = legend.length === 1 ? 48 : legend.length <= 3 ? 32 : 22;
+  ctx.font = `600 ${fontSize}px system-ui, -apple-system, sans-serif`;
+  ctx.fillText(legend, size / 2, size / 2);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
 
 interface KeyDef {
   x: number;
@@ -171,31 +271,47 @@ function Keycap({
   height,
   color,
   material,
+  legend,
+  showLegend,
 }: {
   position: [number, number, number];
   width: number;
   height: number;
   color: string;
   material: KeyboardViewerConfig["keycapMaterial"];
+  legend?: string;
+  showLegend?: boolean;
 }) {
   const preset = KEYCAP_MATERIALS[material] || KEYCAP_MATERIALS.pbt;
 
+  const texture = useMemo(() => {
+    if (!showLegend || !legend) return null;
+    return createLegendTexture(legend, color);
+  }, [showLegend, legend, color]);
+
   return (
-    <RoundedBox
-      args={[width, height, KEYCAP_SIZE]}
-      radius={0.12}
-      smoothness={4}
-      position={position}
-    >
-      <meshPhysicalMaterial
-        color={color}
-        metalness={preset.metalness}
-        roughness={preset.roughness}
-        clearcoat={preset.clearcoat || 0}
-        clearcoatRoughness={preset.clearcoatRoughness || 0}
-        envMapIntensity={0.5}
-      />
-    </RoundedBox>
+    <group position={position}>
+      <RoundedBox
+        args={[width, height, KEYCAP_SIZE]}
+        radius={0.12}
+        smoothness={4}
+      >
+        <meshPhysicalMaterial
+          color={color}
+          metalness={preset.metalness}
+          roughness={preset.roughness}
+          clearcoat={preset.clearcoat || 0}
+          clearcoatRoughness={preset.clearcoatRoughness || 0}
+          envMapIntensity={0.5}
+        />
+      </RoundedBox>
+      {texture && (
+        <mesh position={[0, height / 2 + 0.005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[width * 0.85, KEYCAP_SIZE * 0.85]} />
+          <meshBasicMaterial map={texture} transparent depthWrite={false} polygonOffset polygonOffsetFactor={-1} />
+        </mesh>
+      )}
+    </group>
   );
 }
 
@@ -278,24 +394,43 @@ export function KeyboardModel({ config }: KeyboardModelProps) {
       )}
 
       {/* Keycaps */}
-      {layout.map((key, i) => {
-        const keyWidth = key.w * UNIT - GAP;
-        const rowHeight = ROW_HEIGHTS[key.row] || 0.75;
-        const yPos = plateThickness / 2 + rowHeight / 2;
-        const zPos = key.y * UNIT + UNIT / 2 + UNIT * 0.15;
-        const color = key.isModifier ? config.keycapAccentColor : config.keycapColor;
+      {(() => {
+        // Pre-compute per-row key indices
+        const keyIndicesPerRow: Map<number, number> = new Map();
+        const rowCounts: Map<number, number> = new Map();
+        layout.forEach((key, i) => {
+          const count = rowCounts.get(key.y) || 0;
+          keyIndicesPerRow.set(i, count);
+          rowCounts.set(key.y, count + 1);
+        });
 
-        return (
-          <Keycap
-            key={i}
-            position={[key.x + UNIT * 0.2, yPos, zPos]}
-            width={keyWidth}
-            height={rowHeight}
-            color={color}
-            material={config.keycapMaterial}
-          />
-        );
-      })}
+        const profileMultipliers = KEYCAP_PROFILE_MULTIPLIERS[config.keycapProfile || "cherry"] || KEYCAP_PROFILE_MULTIPLIERS.cherry;
+
+        return layout.map((key, i) => {
+          const keyWidth = key.w * UNIT - GAP;
+          const baseRowHeight = ROW_HEIGHTS[key.row] || 0.75;
+          const profileMult = profileMultipliers[key.row] || 1.0;
+          const rowHeight = baseRowHeight * profileMult;
+          const yPos = plateThickness / 2 + rowHeight / 2;
+          const zPos = key.y * UNIT + UNIT / 2 + UNIT * 0.15;
+          const color = key.isModifier ? config.keycapAccentColor : config.keycapColor;
+          const keyInRow = keyIndicesPerRow.get(i) || 0;
+          const legend = getLegendForKey(keyInRow, key.y, config.size);
+
+          return (
+            <Keycap
+              key={i}
+              position={[key.x + UNIT * 0.2, yPos, zPos]}
+              width={keyWidth}
+              height={rowHeight}
+              color={color}
+              material={config.keycapMaterial}
+              legend={legend}
+              showLegend={config.showLegends !== false}
+            />
+          );
+        });
+      })()}
     </group>
   );
 }

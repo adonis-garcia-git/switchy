@@ -3,6 +3,7 @@
 import { useState, useEffect, Component, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { ViewerLoadingState } from "./ViewerLoadingState";
+import { cn } from "@/lib/utils";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
 
 const KeyboardScene = dynamic(
@@ -95,7 +96,10 @@ export function KeyboardViewer3D({
   return (
     <WebGLErrorBoundary fallback={fallback}>
       <div
-        className={`rounded-xl border border-border-default bg-bg-elevated/30 overflow-hidden relative group ${className}`}
+        className={cn(
+          "overflow-hidden relative group",
+          className || "rounded-xl border border-border-default bg-bg-elevated/30"
+        )}
         style={{ height }}
       >
         <KeyboardScene config={config} autoRotate={autoRotate} />

@@ -26,7 +26,11 @@
       "Gateron Yellow",
       "Gateron Pro 3.0 Red",
       "Akko CS Radiant Red"
-    ]
+    ],
+    "slug": "cherry-mx-red",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0238/7342/1376/files/cherry-mx-red-hero.png?v=1739830146",
+    "productUrl": "https://www.amazon.com/s?k=Cherry%20MX%20Red%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Cherry",
@@ -55,7 +59,11 @@
       "Gateron Pro 3.0 Brown",
       "Boba U4T",
       "Kailh Box Brown"
-    ]
+    ],
+    "slug": "cherry-mx-brown",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0762/2446/3186/products/cherry-mx-brown-switch-560441.png?v=1703674817",
+    "productUrl": "https://www.amazon.com/s?k=Cherry%20MX%20Brown%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Cherry",
@@ -84,7 +92,11 @@
       "Kailh Box White",
       "Kailh Box Jade",
       "Kailh Box Navy"
-    ]
+    ],
+    "slug": "cherry-mx-blue",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/products/cherry-mx-blue-pcb-mount.jpg?v=1658878419",
+    "productUrl": "https://www.amazon.com/s?k=Cherry%20MX%20Blue%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Cherry",
@@ -113,7 +125,11 @@
       "Gateron Ink Black V2",
       "Gateron Oil King",
       "Cherry MX Red"
-    ]
+    ],
+    "slug": "cherry-mx-black",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/cherry-mx-black-clear-top-nixie-linear-switches-735875.webp?v=1685593037",
+    "productUrl": "https://www.amazon.com/s?k=Cherry%20MX%20Black%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Cherry",
@@ -143,7 +159,11 @@
       "Outemu Silent Lemon V3",
       "Boba U4",
       "Kailh Midnight Pro Silent"
-    ]
+    ],
+    "slug": "cherry-mx-silent-red",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/products/EvaiEMSTZybIf52aewfy_0217.jpg?v=1669669415",
+    "productUrl": "https://www.amazon.com/s?k=Cherry%20MX%20Silent%20Red%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Cherry",
@@ -172,7 +192,11 @@
       "Kailh Speed Silver",
       "Gateron G Pro 3.0 Silver",
       "Cherry MX Red"
-    ]
+    ],
+    "slug": "cherry-mx-speed-silver",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/products/cherry-speed-silver-rgb.jpg?v=1764894593",
+    "productUrl": "https://www.amazon.com/s?k=Cherry%20MX%20Speed%20Silver%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Cherry",
@@ -201,7 +225,11 @@
       "Zealios V2 67g",
       "Boba U4T",
       "Durock T1"
-    ]
+    ],
+    "slug": "cherry-mx-clear",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0238/7342/1376/files/cherry-mx-clear-hero.png?v=1739830145",
+    "productUrl": "https://www.amazon.com/s?k=Cherry%20MX%20Clear%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -231,7 +259,11 @@
       "Gateron Milky Yellow Pro",
       "Akko CS Jelly Pink",
       "Cherry MX Red"
-    ]
+    ],
+    "slug": "gateron-yellow",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0064/2560/8282/products/IMG_8232.jpg?v=1602995949",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Yellow%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -261,7 +293,11 @@
       "Gateron Ink Black V2",
       "Gateron CJ",
       "Durock POM Linear"
-    ]
+    ],
+    "slug": "gateron-oil-king",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0238/7342/1376/files/oil-king-hero.png?v=1739830161",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Oil%20King%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -291,7 +327,11 @@
       "Gateron Yellow",
       "Akko V3 Cream Yellow",
       "KTT Kang White V3"
-    ]
+    ],
+    "slug": "gateron-milky-yellow-pro",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/gateron_yellow.png?v=1739584771",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Milky%20Yellow%20Pro%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -321,7 +361,11 @@
       "Cherry MX Red",
       "Akko CS Radiant Red",
       "Gateron Yellow"
-    ]
+    ],
+    "slug": "gateron-pro-3-0-red",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0238/7342/1376/files/Hero_59679b9e-6d47-4acb-b341-57228bea571f.jpg?v=1739830096",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Pro%203.0%20Red%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -350,7 +394,11 @@
       "Cherry MX Brown",
       "Kailh Box Brown",
       "Akko CS Lavender Purple"
-    ]
+    ],
+    "slug": "gateron-pro-3-0-brown",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0238/7342/1376/files/Hero_60276421-14c4-46d3-b2bc-534585be0158.jpg?v=1739830098",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Pro%203.0%20Brown%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -379,7 +427,11 @@
       "Cherry MX Speed Silver",
       "Kailh Speed Silver",
       "Gateron Pro 3.0 Red"
-    ]
+    ],
+    "slug": "gateron-g-pro-3-0-silver",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1473/3902/files/10_8fdb301e-1546-4cae-81fe-ee5471bc8015.jpg?v=1705554774",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20G%20Pro%203.0%20Silver%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -409,7 +461,11 @@
       "Gateron Oil King",
       "Gateron CJ",
       "Cherry MX Black"
-    ]
+    ],
+    "slug": "gateron-ink-black-v2",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/gateron-ink-v2-pro-black-linear-switches-985257.webp?v=1747775310",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Ink%20Black%20V2%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -438,7 +494,11 @@
       "Gateron Ink Black V2",
       "Gateron Oil King",
       "Durock L7"
-    ]
+    ],
+    "slug": "gateron-ink-red-v2",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/4642-X3PKZ-Gateron-Ink-Red-V2-Switches-Linear.jpg?v=1725485574",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Ink%20Red%20V2%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -468,7 +528,11 @@
       "Gateron Oil King",
       "Gateron Ink Black V2",
       "Durock POM Linear"
-    ]
+    ],
+    "slug": "gateron-cj",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0238/7342/1376/files/cj-hero.png?v=1739830179",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20CJ%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -497,7 +561,11 @@
       "Gateron Oil King",
       "Gateron CJ",
       "HMX Xinhai"
-    ]
+    ],
+    "slug": "gateron-north-pole",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/gateron-north-pole-v2-linear-switches-132473.webp?v=1671073908",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20North%20Pole%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -526,7 +594,11 @@
       "Gateron Milky Yellow Pro",
       "Gateron Yellow",
       "Akko V3 Cream Yellow"
-    ]
+    ],
+    "slug": "gateron-cap-v2-yellow",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0238/7342/1376/files/cap-golden-yellow-hero.png?v=1739830177",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Cap%20V2%20Yellow%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -555,7 +627,11 @@
       "Gateron Pro 3.0 Brown",
       "Cherry MX Brown",
       "Kailh Box Brown"
-    ]
+    ],
+    "slug": "gateron-cap-v2-brown",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/14647_636ac84915d79_Gateron-Cap-V2-Milky-Brown-Keyswitch-PCB-Mount-Tactile.jpg?v=1707266345",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Cap%20V2%20Brown%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Kailh",
@@ -585,7 +661,11 @@
       "Kailh Box Navy",
       "Kailh Box White",
       "Cherry MX Blue"
-    ]
+    ],
+    "slug": "kailh-box-jade",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/kailh_box_jade.png?v=1739592236",
+    "productUrl": "https://www.amazon.com/s?k=Kailh%20Box%20Jade%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Kailh",
@@ -614,7 +694,11 @@
       "Kailh Box Jade",
       "Kailh Box White",
       "Cherry MX Blue"
-    ]
+    ],
+    "slug": "kailh-box-navy",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/kailh_box_navy.png?v=1739592225",
+    "productUrl": "https://www.amazon.com/s?k=Kailh%20Box%20Navy%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Kailh",
@@ -643,7 +727,11 @@
       "Kailh Box Jade",
       "Cherry MX Blue",
       "Kailh Box Navy"
-    ]
+    ],
+    "slug": "kailh-box-white",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/kailh_box_white.png?v=1739592339",
+    "productUrl": "https://www.amazon.com/s?k=Kailh%20Box%20White%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Kailh",
@@ -672,7 +760,11 @@
       "Cherry MX Brown",
       "Gateron Pro 3.0 Brown",
       "Akko CS Lavender Purple"
-    ]
+    ],
+    "slug": "kailh-box-brown",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/kailh-box-v2-brown-tactile-switches-174039.webp?v=1654807638",
+    "productUrl": "https://www.amazon.com/s?k=Kailh%20Box%20Brown%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Kailh",
@@ -701,7 +793,11 @@
       "Cherry MX Red",
       "Gateron Pro 3.0 Red",
       "Kailh Speed Silver"
-    ]
+    ],
+    "slug": "kailh-box-red",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0588/1108/9090/products/5_4b82c472-b6a6-4d15-8de4-9c3d1912b7e1.jpg?v=1703477724",
+    "productUrl": "https://www.amazon.com/s?k=Kailh%20Box%20Red%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Kailh",
@@ -730,7 +826,11 @@
       "Cherry MX Speed Silver",
       "Gateron G Pro 3.0 Silver",
       "Kailh Box Red"
-    ]
+    ],
+    "slug": "kailh-speed-silver",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/cherry_speed_silver.png?v=1745726540",
+    "productUrl": "https://www.amazon.com/s?k=Kailh%20Speed%20Silver%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Kailh",
@@ -759,7 +859,11 @@
       "Kailh Speed Silver",
       "Kailh Box Brown",
       "Cherry MX Brown"
-    ]
+    ],
+    "slug": "kailh-speed-copper",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/files/kailh-kk-copper.jpg?v=1687476471",
+    "productUrl": "https://www.amazon.com/s?k=Kailh%20Speed%20Copper%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Kailh",
@@ -789,7 +893,11 @@
       "Cherry MX Silent Red",
       "Boba U4",
       "Outemu Silent Lemon V3"
-    ]
+    ],
+    "slug": "kailh-midnight-pro-silent",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0059/0630/1017/products/Kailh-Midnight-Pro-Slient-Linear-Switch.jpg?v=1728458770",
+    "productUrl": "https://www.amazon.com/s?k=Kailh%20Midnight%20Pro%20Silent%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Durock",
@@ -819,7 +927,11 @@
       "Gateron Oil King",
       "Gateron Ink Black V2",
       "NovelKeys Cream"
-    ]
+    ],
+    "slug": "durock-pom-linear",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0064/2560/8282/products/IMG_9825-3.jpg?v=1612226793",
+    "productUrl": "https://www.amazon.com/s?k=Durock%20POM%20Linear%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Durock",
@@ -848,7 +960,11 @@
       "Boba U4T",
       "Zealios V2 67g",
       "Tecsee Purple Panda"
-    ]
+    ],
+    "slug": "durock-t1",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/durock_t1.png?v=1739583831",
+    "productUrl": "https://www.amazon.com/s?k=Durock%20T1%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Durock",
@@ -877,7 +993,11 @@
       "JWK Black V2",
       "Gateron Ink Black V2",
       "Durock Sunflower"
-    ]
+    ],
+    "slug": "durock-l7",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/products/durock-l7-smokey_1a9b379f-d7f1-4480-9f87-4135ae1b397d.jpg?v=1665556479",
+    "productUrl": "https://www.amazon.com/s?k=Durock%20L7%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Durock",
@@ -906,7 +1026,11 @@
       "Durock POM Linear",
       "Gateron Oil King",
       "Gateron Ink Black V2"
-    ]
+    ],
+    "slug": "durock-sunflower",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/products/durock-sunflower-switches.jpg?v=1652824612",
+    "productUrl": "https://www.amazon.com/s?k=Durock%20Sunflower%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "JWK",
@@ -936,7 +1060,11 @@
       "JWK Lavender",
       "Durock L7",
       "Gateron Ink Black V2"
-    ]
+    ],
+    "slug": "jwk-black-v2",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/jwk-black-t1-tactile-switches-173172.jpg?v=1633956068",
+    "productUrl": "https://www.amazon.com/s?k=JWK%20Black%20V2%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "JWK",
@@ -966,7 +1094,11 @@
       "JWK Black V2",
       "Gateron CJ",
       "Durock L7"
-    ]
+    ],
+    "slug": "jwk-lavender",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/akko-v3-lavender-purple-pro-tactile-switches-485507.webp?v=1698384913",
+    "productUrl": "https://www.amazon.com/s?k=JWK%20Lavender%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "JWK",
@@ -995,7 +1127,11 @@
       "JWK Black V2",
       "JWK Lavender",
       "Gateron Ink Black V2"
-    ]
+    ],
+    "slug": "jwk-durock-daybreak",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0064/2560/8282/products/IMG_0319.jpg?v=1614999523",
+    "productUrl": "https://www.amazon.com/s?k=JWK%20Durock%20Daybreak%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "SP-Star",
@@ -1024,7 +1160,11 @@
       "SP-Star Polaris Gray",
       "JWK Black V2",
       "Gateron Oil King"
-    ]
+    ],
+    "slug": "sp-star-meteor-white",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/sp-star-meteor-white-linear-switches-414631.jpg?v=1640142269",
+    "productUrl": "https://www.amazon.com/s?k=SP-Star%20Meteor%20White%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "SP-Star",
@@ -1053,7 +1193,11 @@
       "SP-Star Meteor White",
       "Gateron Oil King",
       "JWK Black V2"
-    ]
+    ],
+    "slug": "sp-star-polaris-gray",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/sp-star-polaris-gray-linear-switches-731524.jpg?v=1640142278",
+    "productUrl": "https://www.amazon.com/s?k=SP-Star%20Polaris%20Gray%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gazzew",
@@ -1083,7 +1227,11 @@
       "Zealios V2 67g",
       "Durock T1",
       "Tecsee Purple Panda"
-    ]
+    ],
+    "slug": "gazzew-boba-u4t",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0432/9494/9538/products/U4Ttopdown.png?v=1608751573",
+    "productUrl": "https://www.amazon.com/s?k=Gazzew%20Boba%20U4T%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gazzew",
@@ -1113,7 +1261,11 @@
       "Boba U4T",
       "Outemu Silent Cream",
       "Cherry MX Silent Red"
-    ]
+    ],
+    "slug": "gazzew-boba-u4",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0289/9941/7938/products/image_ce5d7daf-fdfd-4901-b7d4-fb08b35b51bf.heic?v=1667530594",
+    "productUrl": "https://www.amazon.com/s?k=Gazzew%20Boba%20U4%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Zeal PC",
@@ -1142,7 +1294,11 @@
       "Zealios V2 67g",
       "Boba U4T",
       "Durock T1"
-    ]
+    ],
+    "slug": "zeal-pc-zealios-v2-62g",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/zeal-zealios-v2-tactile-switches-285139.jpg?v=1637200521",
+    "productUrl": "https://www.amazon.com/s?k=Zeal%20PC%20Zealios%20V2%2062g%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Zeal PC",
@@ -1172,7 +1328,11 @@
       "Zealios V2 62g",
       "Boba U4T",
       "Durock T1"
-    ]
+    ],
+    "slug": "zeal-pc-zealios-v2-67g",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/zeal-zealios-v2-tactile-switches-285139.jpg?v=1637200521",
+    "productUrl": "https://www.amazon.com/s?k=Zeal%20PC%20Zealios%20V2%2067g%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Akko",
@@ -1202,7 +1362,11 @@
       "Cherry MX Brown",
       "Kailh Box Brown",
       "Gateron Pro 3.0 Brown"
-    ]
+    ],
+    "slug": "akko-cs-lavender-purple",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/akko-lavender-purple-tactile-switches-249247.webp?v=1664497852",
+    "productUrl": "https://www.amazon.com/s?k=Akko%20CS%20Lavender%20Purple%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Akko",
@@ -1232,7 +1396,11 @@
       "Cherry MX Red",
       "Gateron Pro 3.0 Red",
       "Akko CS Jelly Pink"
-    ]
+    ],
+    "slug": "akko-cs-radiant-red",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/akko-lavender-purple-tactile-switches-249247.webp?v=1664497852",
+    "productUrl": "https://www.amazon.com/s?k=Akko%20CS%20Radiant%20Red%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Akko",
@@ -1261,7 +1429,11 @@
       "Kailh Speed Silver",
       "Akko CS Radiant Red",
       "Cherry MX Speed Silver"
-    ]
+    ],
+    "slug": "akko-cs-jelly-pink",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/akko-jelly-black-linear-switches-819694.webp?v=1654807586",
+    "productUrl": "https://www.amazon.com/s?k=Akko%20CS%20Jelly%20Pink%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Akko",
@@ -1290,7 +1462,11 @@
       "Gateron Milky Yellow Pro",
       "Gateron Yellow",
       "KTT Kang White V3"
-    ]
+    ],
+    "slug": "akko-v3-cream-yellow",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/akko-cream-yellow-pro-linear-switches-107937.webp?v=1685747106",
+    "productUrl": "https://www.amazon.com/s?k=Akko%20V3%20Cream%20Yellow%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Akko",
@@ -1319,7 +1495,11 @@
       "Akko CS Lavender Purple",
       "Durock T1",
       "Boba U4T"
-    ]
+    ],
+    "slug": "akko-v3-cream-blue",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/akko-cream-blue-pro-tactile-switches-570545.webp?v=1685747105",
+    "productUrl": "https://www.amazon.com/s?k=Akko%20V3%20Cream%20Blue%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Akko",
@@ -1348,7 +1528,11 @@
       "Akko V3 Cream Yellow",
       "Gateron Milky Yellow Pro",
       "Gateron Yellow"
-    ]
+    ],
+    "slug": "akko-v3-matcha-green",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/akko-v3-matcha-green-pro-linear-switches-379767.webp?v=1698384914",
+    "productUrl": "https://www.amazon.com/s?k=Akko%20V3%20Matcha%20Green%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "HMX",
@@ -1378,7 +1562,11 @@
       "HMX Cloud",
       "Gateron North Pole",
       "WS Morandi"
-    ]
+    ],
+    "slug": "hmx-xinhai",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/hmx-xinhai-linear-switches-505022.webp?v=1716952927",
+    "productUrl": "https://www.amazon.com/s?k=HMX%20Xinhai%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "HMX",
@@ -1408,7 +1596,11 @@
       "HMX Xinhai",
       "Gateron North Pole",
       "WS Aurora"
-    ]
+    ],
+    "slug": "hmx-cloud",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/hmx_cloud.png?v=1739338733",
+    "productUrl": "https://www.amazon.com/s?k=HMX%20Cloud%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Tecsee",
@@ -1438,7 +1630,11 @@
       "Boba U4T",
       "Durock T1",
       "Akko V3 Cream Blue"
-    ]
+    ],
+    "slug": "tecsee-purple-panda",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/tecsee-purple-panda-tactile-switches-729800.jpg?v=1631230594",
+    "productUrl": "https://www.amazon.com/s?k=Tecsee%20Purple%20Panda%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Tecsee",
@@ -1467,7 +1663,11 @@
       "Tecsee Purple Panda",
       "Durock T1",
       "Boba U4T"
-    ]
+    ],
+    "slug": "tecsee-sapphire-v2",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/tecsee-sapphire-v2-tactile-switches-856691.jpg?v=1631230596",
+    "productUrl": "https://www.amazon.com/s?k=Tecsee%20Sapphire%20V2%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Tecsee",
@@ -1496,7 +1696,11 @@
       "Durock POM Linear",
       "Gateron Oil King",
       "Tecsee Purple Panda"
-    ]
+    ],
+    "slug": "tecsee-ice-candy-nylon",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/tecsee-ice-candy-linear-switches-962087.jpg?v=1631663247",
+    "productUrl": "https://www.amazon.com/s?k=Tecsee%20Ice%20Candy%20Nylon%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "KTT",
@@ -1526,7 +1730,11 @@
       "KTT Kang White V3",
       "KTT Peach",
       "HMX Xinhai"
-    ]
+    ],
+    "slug": "ktt-strawberry",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/ktt_strawberry.png?v=1739584186",
+    "productUrl": "https://www.amazon.com/s?k=KTT%20Strawberry%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "KTT",
@@ -1555,7 +1763,11 @@
       "KTT Strawberry",
       "Gateron Milky Yellow Pro",
       "Akko V3 Cream Yellow"
-    ]
+    ],
+    "slug": "ktt-kang-white-v3",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/ktt-kang-white-linear-switches-219310.jpg?v=1629500296",
+    "productUrl": "https://www.amazon.com/s?k=KTT%20Kang%20White%20V3%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "KTT",
@@ -1584,7 +1796,11 @@
       "KTT Kang White V3",
       "KTT Strawberry",
       "Gateron Yellow"
-    ]
+    ],
+    "slug": "ktt-peach",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/ktt_peach.png?v=1762130972",
+    "productUrl": "https://www.amazon.com/s?k=KTT%20Peach%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "WS",
@@ -1614,7 +1830,11 @@
       "WS Aurora",
       "HMX Xinhai",
       "Gateron North Pole"
-    ]
+    ],
+    "slug": "ws-morandi",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/wuque-ws-morandi-linear-switches-498852.webp?v=1681812537",
+    "productUrl": "https://www.amazon.com/s?k=WS%20Morandi%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "WS",
@@ -1643,7 +1863,11 @@
       "WS Morandi",
       "HMX Cloud",
       "KTT Strawberry"
-    ]
+    ],
+    "slug": "ws-aurora",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/wuque-ws-aurora-clear-linear-switches-540392.webp?v=1671204145",
+    "productUrl": "https://www.amazon.com/s?k=WS%20Aurora%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Outemu",
@@ -1673,7 +1897,11 @@
       "Boba U4",
       "Cherry MX Silent Red",
       "Outemu Silent Cream"
-    ]
+    ],
+    "slug": "outemu-silent-lemon-v3",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/outemu_silent_lemon.png?v=1739592430",
+    "productUrl": "https://www.amazon.com/s?k=Outemu%20Silent%20Lemon%20V3%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Outemu",
@@ -1702,7 +1930,11 @@
       "Boba U4",
       "Outemu Silent Lemon V3",
       "Kailh Midnight Pro Silent"
-    ]
+    ],
+    "slug": "outemu-silent-cream",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/outemu-butterfly-silent-linear-switches-928731.webp?v=1726731089",
+    "productUrl": "https://www.amazon.com/s?k=Outemu%20Silent%20Cream%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "TTC",
@@ -1731,7 +1963,11 @@
       "TTC Bluish White",
       "Akko CS Radiant Red",
       "Gateron Pro 3.0 Red"
-    ]
+    ],
+    "slug": "ttc-gold-pink-v2",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/ttc-gold-pink-linear-switches-994811.jpg?v=1648880909",
+    "productUrl": "https://www.amazon.com/s?k=TTC%20Gold%20Pink%20V2%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "TTC",
@@ -1760,7 +1996,11 @@
       "TTC Gold Pink V2",
       "Cherry MX Brown",
       "Akko CS Lavender Purple"
-    ]
+    ],
+    "slug": "ttc-bluish-white",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0238/7342/1376/files/bluish-white-hero.png?v=1739830183",
+    "productUrl": "https://www.amazon.com/s?k=TTC%20Bluish%20White%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "TTC",
@@ -1789,7 +2029,11 @@
       "Cherry MX Silent Red",
       "Outemu Silent Lemon V3",
       "Kailh Midnight Pro Silent"
-    ]
+    ],
+    "slug": "ttc-silent-frozen",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/ttc_frozen_silent.png?v=1739594117",
+    "productUrl": "https://www.amazon.com/s?k=TTC%20Silent%20Frozen%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "NovelKeys",
@@ -1819,7 +2063,11 @@
       "Durock POM Linear",
       "Gateron Oil King",
       "NovelKeys Silk Series Yellow"
-    ]
+    ],
+    "slug": "novelkeys-cream",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/nk_cream_arc.png?v=1739584190",
+    "productUrl": "https://www.amazon.com/s?k=NovelKeys%20Cream%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "NovelKeys",
@@ -1848,7 +2096,11 @@
       "NovelKeys Cream",
       "JWK Black V2",
       "Gateron Milky Yellow Pro"
-    ]
+    ],
+    "slug": "novelkeys-silk-series-yellow",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/nk_silk_olivia.png?v=1739615025",
+    "productUrl": "https://www.amazon.com/s?k=NovelKeys%20Silk%20Series%20Yellow%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Everglide",
@@ -1878,7 +2130,11 @@
       "JWK Black V2",
       "Gateron Ink Black V2",
       "Durock L7"
-    ]
+    ],
+    "slug": "everglide-aqua-king-v3",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/products/everglide-aquaking.jpg?v=1654936869",
+    "productUrl": "https://www.amazon.com/s?k=Everglide%20Aqua%20King%20V3%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Wuque Studio",
@@ -1907,7 +2163,11 @@
       "WS Morandi",
       "HMX Xinhai",
       "Gateron North Pole"
-    ]
+    ],
+    "slug": "wuque-studio-ws-onion",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/wuque-ws-onion-linear-switches-791724.webp?v=1671204145",
+    "productUrl": "https://www.amazon.com/s?k=Wuque%20Studio%20WS%20Onion%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Wuque Studio",
@@ -1936,7 +2196,11 @@
       "Boba U4T",
       "Durock T1",
       "Tecsee Purple Panda"
-    ]
+    ],
+    "slug": "wuque-studio-ws-heavy-tactile",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/wuque-ws-heavy-tactile-switches-536726.webp?v=1673504204",
+    "productUrl": "https://www.amazon.com/s?k=Wuque%20Studio%20WS%20Heavy%20Tactile%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "C3 Equalz",
@@ -1965,7 +2229,11 @@
       "JWK Black V2",
       "JWK Lavender",
       "Gateron Ink Black V2"
-    ]
+    ],
+    "slug": "c3-equalz-tangerine-v2",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/c3equalz-x-tkc-tangerine-linear-switches-145416.jpg?v=1634691412",
+    "productUrl": "https://www.amazon.com/s?k=C3%20Equalz%20Tangerine%20V2%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "KS-3",
@@ -1994,7 +2262,11 @@
       "JWK Black V2",
       "JWK Lavender",
       "C3 Equalz Tangerine V2"
-    ]
+    ],
+    "slug": "ks-3-banana-split",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/products/banana-split-switches.jpg?v=1654941948",
+    "productUrl": "https://www.amazon.com/s?k=KS-3%20Banana%20Split%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Drop",
@@ -2023,7 +2295,11 @@
       "Boba U4T",
       "Tecsee Purple Panda",
       "Durock T1"
-    ]
+    ],
+    "slug": "drop-holy-panda-x",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/files/jQqiyHS5RSq1l9uUdV7n_PC.jpg?v=1682649343",
+    "productUrl": "https://www.amazon.com/s?k=Drop%20Holy%20Panda%20X%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Invokeys",
@@ -2053,7 +2329,11 @@
       "WS Morandi",
       "HMX Xinhai",
       "Gateron North Pole"
-    ]
+    ],
+    "slug": "invokeys-matcha-latte",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/ktt_peach.png?v=1762130972",
+    "productUrl": "https://www.amazon.com/s?k=Invokeys%20Matcha%20Latte%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Cherry",
@@ -2082,7 +2362,11 @@
       "Cherry MX Red",
       "Gateron Pro 3.0 Red",
       "Gateron Yellow"
-    ]
+    ],
+    "slug": "cherry-mx-hyperglide-red",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/products/cherry-mx-hyperglide-red.jpg?v=1658879102",
+    "productUrl": "https://www.amazon.com/s?k=Cherry%20MX%20Hyperglide%20Red%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Prevail",
@@ -2111,7 +2395,11 @@
       "HMX Xinhai",
       "WS Morandi",
       "Gateron Oil King"
-    ]
+    ],
+    "slug": "prevail-nebula",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/26811-B2YXR-KTT-Nebula-Magnetic-Linear-Plate-Mount-Switch.jpg?v=1770755406",
+    "productUrl": "https://www.amazon.com/s?k=Prevail%20Nebula%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -2140,7 +2428,11 @@
       "Gateron Ink Black V2",
       "Gateron Oil King",
       "Kailh Box Red"
-    ]
+    ],
+    "slug": "gateron-box-ink-v2-black",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/1473/3902/products/1_26463b7c-7a99-4c84-bb03-83d420625cae.jpg?v=1646033760",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Box%20Ink%20V2%20Black%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Aflion",
@@ -2169,7 +2461,11 @@
       "KTT Peach",
       "HMX Xinhai",
       "WS Morandi"
-    ]
+    ],
+    "slug": "aflion-shadow",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0289/9941/7938/files/Oa3_A01.jpg?v=1714271479",
+    "productUrl": "https://www.amazon.com/s?k=Aflion%20Shadow%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Huano",
@@ -2198,7 +2494,11 @@
       "Boba U4T",
       "Tecsee Purple Panda",
       "Drop Holy Panda X"
-    ]
+    ],
+    "slug": "huano-holy-tom-v2",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/files/jQqiyHS5RSq1l9uUdV7n_PC.jpg?v=1682649343",
+    "productUrl": "https://www.amazon.com/s?k=Huano%20Holy%20Tom%20V2%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Cherry",
@@ -2227,7 +2527,11 @@
       "Cherry MX Silent Red",
       "Outemu Silent Lemon V3",
       "Boba U4"
-    ]
+    ],
+    "slug": "cherry-mx2a-silent-red",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/cherry_silent_red.png?v=1739912414",
+    "productUrl": "https://www.amazon.com/s?k=Cherry%20MX2A%20Silent%20Red%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Ajazz",
@@ -2257,7 +2561,11 @@
       "KTT Strawberry",
       "TTC Gold Pink V2",
       "HMX Cloud"
-    ]
+    ],
+    "slug": "ajazz-diced-fruit",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/ktt_strawberry.png?v=1739584186",
+    "productUrl": "https://www.amazon.com/s?k=Ajazz%20Diced%20Fruit%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "JWICK",
@@ -2286,7 +2594,11 @@
       "Gateron Yellow",
       "KTT Kang White V3",
       "Akko V3 Cream Yellow"
-    ]
+    ],
+    "slug": "jwick-t1",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/durock_t1.png?v=1739583831",
+    "productUrl": "https://www.amazon.com/s?k=JWICK%20T1%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "MMD",
@@ -2315,7 +2627,11 @@
       "KTT Kang White V3",
       "HMX Xinhai",
       "Aflion Shadow"
-    ]
+    ],
+    "slug": "mmd-princess-linear",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/shortcut-studio-princess-ultra-linear-switches-546902.webp?v=1742516422",
+    "productUrl": "https://www.amazon.com/s?k=MMD%20Princess%20Linear%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "YOK",
@@ -2344,7 +2660,11 @@
       "Drop Holy Panda X",
       "Tecsee Purple Panda",
       "Boba U4T"
-    ]
+    ],
+    "slug": "yok-mint-panda",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/files/bsun-mint-panda.jpg?v=1693607145",
+    "productUrl": "https://www.amazon.com/s?k=YOK%20Mint%20Panda%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -2373,7 +2693,11 @@
       "Gateron North Pole",
       "Gateron Oil King",
       "HMX Xinhai"
-    ]
+    ],
+    "slug": "gateron-quinn",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/gateron-quinn-tactile-switches-645174.webp?v=1690264768",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Quinn%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Chosfox",
@@ -2402,7 +2726,11 @@
       "Tecsee Purple Panda",
       "Boba U4T",
       "Durock T1"
-    ]
+    ],
+    "slug": "chosfox-voyager",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0588/1108/9090/files/6ffac0ca3de3225477b2a22fd1413171_2ace982b-5452-47e0-80a4-9cc90afe82c0.png?v=1702452101",
+    "productUrl": "https://www.amazon.com/s?k=Chosfox%20Voyager%20mechanical%20switch",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -2420,7 +2748,7 @@
     "soundPitch": "mid",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 4.2,
     "popularFor": [
       "budget builds",
@@ -2433,9 +2761,11 @@
       "Akko V3 Cream Yellow",
       "KTT Kang White V3"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/gateron_yellow.png?v=1739584771",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Milky%20Yellow%20Pro%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "gateron-milky-yellow-pro",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -2466,9 +2796,11 @@
       "Momoka Frog V3",
       "Cherry MX Black"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0238/7342/1376/files/oil-king-hero.png?v=1739830161",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Oil%20King%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "gateron-oil-king",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -2486,7 +2818,7 @@
     "soundPitch": "low",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.70,
+    "pricePerSwitch": 0.7,
     "communityRating": 4.5,
     "popularFor": [
       "enthusiast builds",
@@ -2499,9 +2831,11 @@
       "Gateron Oil King",
       "SP-Star Polaris Gray"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/14642_636ac8475414f_Gateron-Ink-BOX-V2-Black-Keyswitch-PCB-Mount-Linear.jpg?v=1707266290",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Box%20Ink%20Black%20V2%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "gateron-box-ink-black-v2",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -2519,7 +2853,7 @@
     "soundPitch": "mid",
     "soundCharacter": "creamy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.70,
+    "pricePerSwitch": 0.7,
     "communityRating": 4.4,
     "popularFor": [
       "light linear builds",
@@ -2532,9 +2866,11 @@
       "Gateron Ink Red V2",
       "TTC Gold Pink V2"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0835/9706/6540/files/14643_636ac847bcdd4_Gateron-Ink-BOX-V2-Pink-Keyswitch-PCB-Mount-Linear.jpg?v=1707266290",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20Box%20Ink%20Pink%20V2%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "gateron-box-ink-pink-v2",
+    "fabricated": true
   },
   {
     "brand": "Gateron",
@@ -2552,7 +2888,7 @@
     "soundPitch": "mid",
     "soundCharacter": "creamy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.60,
+    "pricePerSwitch": 0.6,
     "communityRating": 4.5,
     "popularFor": [
       "enthusiast builds",
@@ -2565,9 +2901,11 @@
       "JWK Durock L7",
       "NovelKeys Cream"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0238/7342/1376/files/cj-hero.png?v=1739830179",
+    "productUrl": "https://www.amazon.com/s?k=Gateron%20CJ%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "gateron-cj",
+    "fabricated": true
   },
   {
     "brand": "Akko",
@@ -2585,8 +2923,8 @@
     "soundPitch": "low",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
-    "communityRating": 4.0,
+    "pricePerSwitch": 0.3,
+    "communityRating": 4,
     "popularFor": [
       "budget builds",
       "beginner builds",
@@ -2598,9 +2936,11 @@
       "Gateron Milky Yellow Pro",
       "KTT Strawberry"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/akko-jelly-black-linear-switches-819694.webp?v=1654807586",
+    "productUrl": "https://www.amazon.com/s?k=Akko%20CS%20Jelly%20Black%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "akko-cs-jelly-black",
+    "fabricated": true
   },
   {
     "brand": "Akko",
@@ -2618,7 +2958,7 @@
     "soundPitch": "mid",
     "soundCharacter": "clacky",
     "soundVolume": "loud",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 3.8,
     "popularFor": [
       "typing enthusiasts",
@@ -2631,9 +2971,11 @@
       "Kailh Box White",
       "Kailh Box Jade"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/akko-jelly-black-linear-switches-819694.webp?v=1654807586",
+    "productUrl": "https://www.amazon.com/s?k=Akko%20CS%20Jelly%20Blue%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "akko-cs-jelly-blue",
+    "fabricated": true
   },
   {
     "brand": "Akko",
@@ -2651,7 +2993,7 @@
     "soundPitch": "mid",
     "soundCharacter": "creamy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.30,
+    "pricePerSwitch": 0.3,
     "communityRating": 4.1,
     "popularFor": [
       "light typists",
@@ -2664,9 +3006,11 @@
       "Akko CS Jelly Black",
       "KTT Strawberry"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/akko-jelly-black-linear-switches-819694.webp?v=1654807586",
+    "productUrl": "https://www.amazon.com/s?k=Akko%20CS%20Jelly%20White%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "akko-cs-jelly-white",
+    "fabricated": true
   },
   {
     "brand": "Akko",
@@ -2697,9 +3041,11 @@
       "KTT Kang White V3",
       "HMX Xinhai"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/akko-cream-yellow-pro-linear-switches-107937.webp?v=1685747106",
+    "productUrl": "https://www.amazon.com/s?k=Akko%20V3%20Cream%20Yellow%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "akko-v3-cream-yellow",
+    "fabricated": true
   },
   {
     "brand": "Akko",
@@ -2718,7 +3064,7 @@
     "soundCharacter": "clacky",
     "soundVolume": "medium",
     "pricePerSwitch": 0.33,
-    "communityRating": 4.0,
+    "communityRating": 4,
     "popularFor": [
       "budget builds",
       "typing",
@@ -2730,9 +3076,11 @@
       "Durock T1",
       "Tecsee Purple Panda"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/akko-cream-blue-pro-tactile-switches-570545.webp?v=1685747105",
+    "productUrl": "https://www.amazon.com/s?k=Akko%20V3%20Cream%20Blue%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "akko-v3-cream-blue",
+    "fabricated": true
   },
   {
     "brand": "JWK",
@@ -2763,9 +3111,11 @@
       "Gateron CJ",
       "SP-Star Meteor White"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/products/durock-l7-smokey.jpg?v=1652824264",
+    "productUrl": "https://www.amazon.com/s?k=JWK%20Durock%20L7%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "jwk-durock-l7",
+    "fabricated": true
   },
   {
     "brand": "Durock",
@@ -2796,9 +3146,11 @@
       "Tecsee Purple Panda",
       "Zealios V2 67g"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/durock_t1.png?v=1739583831",
+    "productUrl": "https://www.amazon.com/s?k=Durock%20T1%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "durock-t1",
+    "fabricated": true
   },
   {
     "brand": "Durock",
@@ -2816,7 +3168,7 @@
     "soundPitch": "mid",
     "soundCharacter": "thocky",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.50,
+    "pricePerSwitch": 0.5,
     "communityRating": 4.2,
     "popularFor": [
       "typing",
@@ -2829,9 +3181,11 @@
       "Boba U4T",
       "Wuque Studio WS Morandi"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/products/durock-sunflower-switches.jpg?v=1652824612",
+    "productUrl": "https://www.amazon.com/s?k=Durock%20Sunflower%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "durock-sunflower",
+    "fabricated": true
   },
   {
     "brand": "KTT",
@@ -2862,9 +3216,11 @@
       "HMX Cloud",
       "Ajazz Diced Fruit"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/ktt_strawberry.png?v=1739584186",
+    "productUrl": "https://www.amazon.com/s?k=KTT%20Strawberry%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "ktt-strawberry",
+    "fabricated": true
   },
   {
     "brand": "KTT",
@@ -2895,9 +3251,11 @@
       "Akko V3 Cream Yellow",
       "MMD Princess Linear"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/ktt-kang-white-linear-switches-219310.jpg?v=1629500296",
+    "productUrl": "https://www.amazon.com/s?k=KTT%20Kang%20White%20V3%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "ktt-kang-white-v3",
+    "fabricated": true
   },
   {
     "brand": "KTT",
@@ -2928,9 +3286,11 @@
       "Gateron Yellow",
       "Akko CS Jelly Black"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/ktt_peach.png?v=1762130972",
+    "productUrl": "https://www.amazon.com/s?k=KTT%20Peach%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "ktt-peach",
+    "fabricated": true
   },
   {
     "brand": "KTT",
@@ -2949,7 +3309,7 @@
     "soundCharacter": "creamy",
     "soundVolume": "medium",
     "pricePerSwitch": 0.28,
-    "communityRating": 4.0,
+    "communityRating": 4,
     "popularFor": [
       "budget builds",
       "light linear",
@@ -2961,9 +3321,11 @@
       "KTT Kang White V3",
       "Akko CS Jelly White"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/ktt_seasalt_lemon.png?v=1739592360",
+    "productUrl": "https://www.amazon.com/s?k=KTT%20Sea%20Salt%20Lemon%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "ktt-sea-salt-lemon",
+    "fabricated": true
   },
   {
     "brand": "SP-Star",
@@ -2994,9 +3356,11 @@
       "Gateron CJ",
       "NovelKeys Cream"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/sp-star-meteor-white-linear-switches-414631.jpg?v=1640142269",
+    "productUrl": "https://www.amazon.com/s?k=SP-Star%20Meteor%20White%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "sp-star-meteor-white",
+    "fabricated": true
   },
   {
     "brand": "SP-Star",
@@ -3027,9 +3391,11 @@
       "Gateron Box Ink Black V2",
       "Cherry MX Black"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/sp-star-polaris-gray-linear-switches-731524.jpg?v=1640142278",
+    "productUrl": "https://www.amazon.com/s?k=SP-Star%20Polaris%20Gray%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "sp-star-polaris-gray",
+    "fabricated": true
   },
   {
     "brand": "Outemu",
@@ -3047,7 +3413,7 @@
     "soundPitch": "low",
     "soundCharacter": "muted",
     "soundVolume": "quiet",
-    "pricePerSwitch": 0.20,
+    "pricePerSwitch": 0.2,
     "communityRating": 3.8,
     "popularFor": [
       "silent builds",
@@ -3060,9 +3426,11 @@
       "Boba U4",
       "Kailh Midnight Pro Silent"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/outemu_silent_lemon.png?v=1739592430",
+    "productUrl": "https://www.amazon.com/s?k=Outemu%20Silent%20Lemon%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "outemu-silent-lemon",
+    "fabricated": true
   },
   {
     "brand": "Outemu",
@@ -3093,9 +3461,11 @@
       "Outemu Silent Lemon",
       "Cherry MX Silent Red"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0583/7163/7380/files/outemu-silent-peach-rgb_cf433777-faa8-4e18-ab6c-7a4949eb50c4.jpg?v=1763489859",
+    "productUrl": "https://www.amazon.com/s?k=Outemu%20Silent%20Peach%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "outemu-silent-peach",
+    "fabricated": true
   },
   {
     "brand": "TTC",
@@ -3113,7 +3483,7 @@
     "soundPitch": "high",
     "soundCharacter": "poppy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.40,
+    "pricePerSwitch": 0.4,
     "communityRating": 4.1,
     "popularFor": [
       "light typists",
@@ -3126,9 +3496,11 @@
       "KTT Strawberry",
       "Ajazz Diced Fruit"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/ttc-gold-pink-linear-switches-994811.jpg?v=1648880909",
+    "productUrl": "https://www.amazon.com/s?k=TTC%20Gold%20Pink%20V2%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "ttc-gold-pink-v2",
+    "fabricated": true
   },
   {
     "brand": "TTC",
@@ -3147,7 +3519,7 @@
     "soundCharacter": "crisp",
     "soundVolume": "medium",
     "pricePerSwitch": 0.35,
-    "communityRating": 4.0,
+    "communityRating": 4,
     "popularFor": [
       "typing",
       "budget builds",
@@ -3159,9 +3531,11 @@
       "Akko V3 Cream Blue",
       "Durock T1"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0238/7342/1376/files/bluish-white-hero.png?v=1739830183",
+    "productUrl": "https://www.amazon.com/s?k=TTC%20Bluish%20White%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "ttc-bluish-white",
+    "fabricated": true
   },
   {
     "brand": "TTC",
@@ -3192,9 +3566,11 @@
       "Outemu Silent Peach",
       "Kailh Midnight Pro Silent"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0238/7342/1376/files/bluish-white-hero.png?v=1739830183",
+    "productUrl": "https://www.amazon.com/s?k=TTC%20Silent%20Blueberry%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "ttc-silent-blueberry",
+    "fabricated": true
   },
   {
     "brand": "Cherry",
@@ -3225,9 +3601,11 @@
       "Gateron Pro 3.0 Red",
       "Gateron Milky Yellow Pro"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0064/2560/8282/products/IMG_0874_1ab85c68-ca45-4022-8e84-f28b17cfcb76.jpg?v=1620788646",
+    "productUrl": "https://www.amazon.com/s?k=Cherry%20MX2A%20Red%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "cherry-mx2a-red",
+    "fabricated": true
   },
   {
     "brand": "Cherry",
@@ -3258,9 +3636,11 @@
       "Gateron Pro 3.0 Brown",
       "Akko V3 Cream Blue"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/cherry-mx2a-brown-tactile-switches-409938.webp?v=1704350818",
+    "productUrl": "https://www.amazon.com/s?k=Cherry%20MX2A%20Brown%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "cherry-mx2a-brown",
+    "fabricated": true
   },
   {
     "brand": "Cherry",
@@ -3291,9 +3671,11 @@
       "Kailh Box White",
       "Akko CS Jelly Blue"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0580/1685/8284/files/cherry_blue_25a0c8cf-eb28-45ec-aebd-2449be6c8daa.png?v=1739591176",
+    "productUrl": "https://www.amazon.com/s?k=Cherry%20MX2A%20Blue%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "cherry-mx2a-blue",
+    "fabricated": true
   },
   {
     "brand": "Tecsee",
@@ -3324,9 +3706,11 @@
       "Boba U4T",
       "Durock T1"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/tecsee-purple-panda-tactile-switches-729800.jpg?v=1631230594",
+    "productUrl": "https://www.amazon.com/s?k=Tecsee%20Purple%20Panda%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "tecsee-purple-panda",
+    "fabricated": true
   },
   {
     "brand": "Tecsee",
@@ -3344,7 +3728,7 @@
     "soundPitch": "mid",
     "soundCharacter": "poppy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.40,
+    "pricePerSwitch": 0.4,
     "communityRating": 4.1,
     "popularFor": [
       "enthusiast builds",
@@ -3357,9 +3741,11 @@
       "KTT Strawberry",
       "NovelKeys Cream"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0588/1108/9090/products/1_08009fca-a2fa-4f2c-8651-0cbd1c675f1f.png?v=1680056703",
+    "productUrl": "https://www.amazon.com/s?k=Tecsee%20Ice%20Candy%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "tecsee-ice-candy",
+    "fabricated": true
   },
   {
     "brand": "Tecsee",
@@ -3378,7 +3764,7 @@
     "soundCharacter": "thocky",
     "soundVolume": "medium",
     "pricePerSwitch": 0.45,
-    "communityRating": 4.0,
+    "communityRating": 4,
     "popularFor": [
       "typing",
       "tactile enthusiasts",
@@ -3390,9 +3776,11 @@
       "Tecsee Purple Panda",
       "Boba U4T"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/tecsee-sapphire-v2-tactile-switches-856691.jpg?v=1631230596",
+    "productUrl": "https://www.amazon.com/s?k=Tecsee%20Sapphire%20V2%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "tecsee-sapphire-v2",
+    "fabricated": true
   },
   {
     "brand": "Wuque Studio",
@@ -3410,7 +3798,7 @@
     "soundPitch": "mid",
     "soundCharacter": "creamy",
     "soundVolume": "medium",
-    "pricePerSwitch": 0.60,
+    "pricePerSwitch": 0.6,
     "communityRating": 4.3,
     "popularFor": [
       "enthusiast builds",
@@ -3423,9 +3811,11 @@
       "Durock Sunflower",
       "Boba U4T"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/wuque-ws-morandi-linear-switches-498852.webp?v=1681812537",
+    "productUrl": "https://www.amazon.com/s?k=Wuque%20Studio%20WS%20Morandi%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "wuque-studio-ws-morandi",
+    "fabricated": true
   },
   {
     "brand": "HMX",
@@ -3456,9 +3846,11 @@
       "KTT Kang White V3",
       "Akko V3 Cream Yellow"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/files/hmx-xinhai-linear-switches-505022.webp?v=1716952927",
+    "productUrl": "https://www.amazon.com/s?k=HMX%20Xinhai%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "hmx-xinhai",
+    "fabricated": true
   },
   {
     "brand": "HMX",
@@ -3489,9 +3881,11 @@
       "Gateron Oil King",
       "Momoka Frog V3"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0275/3649/0561/products/hmx-sillyworks-hyacinth-v2-linear-switches-157639.webp?v=1705428258",
+    "productUrl": "https://www.amazon.com/s?k=HMX%20Hyacinth%20V2%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "hmx-hyacinth-v2",
+    "fabricated": true
   },
   {
     "brand": "Momoka",
@@ -3522,9 +3916,11 @@
       "HMX Hyacinth V2",
       "Gateron CJ"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0068/3599/4706/files/DSC02241.png?v=1742983739",
+    "productUrl": "https://www.amazon.com/s?k=Momoka%20Frog%20V3%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "momoka-frog-v3",
+    "fabricated": true
   },
   {
     "brand": "Gazzew",
@@ -3555,8 +3951,10 @@
       "Durock T1",
       "Zealios V2 67g"
     ],
-    "imageUrl": null,
-    "productUrl": null,
-    "soundSampleUrl": null
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0432/9494/9538/products/U4Ttopdown.png?v=1608751573",
+    "productUrl": "https://www.amazon.com/s?k=Gazzew%20Boba%20U4T%20mechanical%20switch",
+    "soundSampleUrl": null,
+    "slug": "gazzew-boba-u4t",
+    "fabricated": true
   }
 ]

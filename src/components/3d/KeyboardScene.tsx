@@ -14,7 +14,7 @@ interface KeyboardSceneProps {
 export function KeyboardScene({ config, autoRotate = false }: KeyboardSceneProps) {
   return (
     <Canvas
-      dpr={[1, 1.5]}
+      dpr={[1, 2]}
       frameloop="demand"
       camera={{ position: [0, 8, 14], fov: 30 }}
       gl={{ antialias: true, alpha: true }}

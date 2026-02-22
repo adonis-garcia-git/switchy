@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { SWITCH_TYPE_COLORS } from "@/lib/constants";
-import { cn, formatPrice } from "@/lib/utils";
+import { cn, formatPrice, generatePurchaseUrl } from "@/lib/utils";
 import { SoundProfile } from "./SoundProfile";
 import { Badge } from "./ui/Badge";
 import { Id } from "../../convex/_generated/dataModel";
@@ -19,6 +19,7 @@ interface SwitchData {
   pricePerSwitch: number;
   communityRating?: number;
   popularFor?: string[];
+  imageUrl?: string;
 }
 
 interface SwitchCardProps {
@@ -107,6 +108,16 @@ export function SwitchCard({
       )}
 
       <Link href={`/switches/${sw._id}`} className="block">
+        {/* Product image */}
+        <div className="aspect-[4/3] rounded-lg overflow-hidden mb-3 bg-bg-elevated relative">
+          <img
+            src={sw.imageUrl || `https://placehold.co/400x300/181818/525252?text=${encodeURIComponent(sw.name)}`}
+            alt={sw.name}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+        </div>
+
         {/* Header: brand + type badge */}
         <div className="flex items-start justify-between mb-3">
           <div className="min-w-0 flex-1 pr-2">
@@ -135,9 +146,32 @@ export function SwitchCard({
               </span>
             </div>
           </div>
-          <span className="font-mono text-sm text-accent font-semibold">
-            {formatPrice(sw.pricePerSwitch)}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-sm text-accent font-semibold">
+              {formatPrice(sw.pricePerSwitch)}
+            </span>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open(generatePurchaseUrl(sw.brand, sw.name, "switch"), "_blank", "noopener,noreferrer");
+              }}
+              className={cn(
+                "inline-flex items-center gap-1 text-xs font-bold px-3.5 py-1.5 rounded-xl",
+                "bg-accent text-bg-primary shadow-accent-sm",
+                "hover:bg-accent-hover",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                "active:scale-[0.95]",
+                "transition-[background-color,color,transform] duration-150",
+                "font-[family-name:var(--font-outfit)]"
+              )}
+            >
+              Buy
+              <svg className="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Sound profile */}
