@@ -152,14 +152,14 @@ function linkTermsInNodes(
     }
     // JSX elements: recurse into children
     if (isValidElement(node)) {
-      const children = node.props.children;
+      const children = (node.props as { children?: React.ReactNode }).children;
       if (children == null) return node;
       const childArray = Children.toArray(children);
       const processed = childArray.flatMap((child) => {
         const result = processNode(child);
         return Array.isArray(result) ? result : [result];
       });
-      return cloneElement(node, { ...node.props, key: node.key }, ...processed);
+      return cloneElement(node, { ...(node.props as Record<string, unknown>), key: node.key }, ...processed);
     }
     return node;
   }

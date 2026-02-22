@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import {
   StudioPillGroup,
@@ -38,7 +38,7 @@ const IconClose = () => (
 );
 
 // Camera preset icons — small visual indicators
-const cameraIcons: Record<string, { label: string; icon: JSX.Element }> = {
+const cameraIcons: Record<string, { label: string; icon: ReactNode }> = {
   default: {
     label: "Default",
     icon: (
