@@ -33,7 +33,7 @@ export function GroupBuyDiscover({ onTrackThis, trackedListingIds }: GroupBuyDis
   const [searchQuery, setSearchQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState<any>(null);
-  const { view, setView, gridClassName, skeletonCount } = useGridView("grid-3");
+  const { view, setView, gridClassName, skeletonCount, itemsPerPage } = useGridView("grid-3");
 
   const trackedSet = new Set(trackedListingIds);
 
@@ -64,7 +64,7 @@ export function GroupBuyDiscover({ onTrackThis, trackedListingIds }: GroupBuyDis
     resetPage,
     rangeStart,
     rangeEnd,
-  } = usePagination(displayListings);
+  } = usePagination(displayListings, itemsPerPage);
 
   const handleFilterChange = useCallback((f: GroupBuyListingFilterState) => {
     setFilters(f);

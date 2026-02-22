@@ -1,8 +1,6 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 
-const ITEMS_PER_PAGE = 12;
-
-export function usePagination<T>(items: T[] | null | undefined, perPage = ITEMS_PER_PAGE) {
+export function usePagination<T>(items: T[] | null | undefined, perPage = 20) {
   const [page, setPage] = useState(1);
 
   const totalItems = items?.length ?? 0;
