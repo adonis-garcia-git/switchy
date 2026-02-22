@@ -232,6 +232,29 @@ export const generateBuildFromAnswers = action({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
+    const userId = identity.subject;
+    const now = new Date();
+    const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+    // Usage gating: check subscription tier
+    const subscription = await ctx.runQuery(
+      internal.internalFunctions.getSubscriptionByUserId,
+      { userId }
+    );
+    const isPro =
+      subscription?.status === "active" &&
+      subscription.currentPeriodEnd > Date.now();
+
+    if (!isPro) {
+      const usageCount = await ctx.runQuery(
+        internal.internalFunctions.getUsageCountForMonth,
+        { userId, monthKey }
+      );
+      if (usageCount >= 3) {
+        throw new Error("FREE_TIER_LIMIT_REACHED");
+      }
+    }
+
     // Fetch all products
     const allSwitches: Record<string, unknown>[] = await ctx.runQuery(
       internal.internalFunctions.getAllSwitches
@@ -323,6 +346,14 @@ export const generateBuildFromAnswers = action({
           allSwitches,
           allKeyboards
         );
+
+        // Record usage after successful generation
+        await ctx.runMutation(internal.internalFunctions.insertUsageRecord, {
+          userId,
+          actionType: "generateBuildFromAnswers" as const,
+          monthKey,
+        });
+
         return validatedBuild;
       }
     }

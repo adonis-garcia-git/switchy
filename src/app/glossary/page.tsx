@@ -1,11 +1,12 @@
 "use client";
 
-import { Suspense, useState, useMemo } from "react";
+import { Suspense, useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Input } from "@/components/ui/Input";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
@@ -29,35 +30,112 @@ const CATEGORY_COLORS: Record<string, string> = {
   general: "bg-bg-elevated text-text-secondary border-border-default",
 };
 
+const DIFFICULTY_COLORS: Record<string, { bg: string; text: string }> = {
+  beginner: { bg: "bg-emerald-500/10 border-emerald-500/20", text: "text-emerald-400" },
+  intermediate: { bg: "bg-amber-500/10 border-amber-500/20", text: "text-amber-400" },
+  advanced: { bg: "bg-red-500/10 border-red-500/20", text: "text-red-400" },
+};
+
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
 function GlossaryContent() {
   const searchParams = useSearchParams();
   const highlightTerm = searchParams.get("term");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
+  const [difficultyFilter, setDifficultyFilter] = useState<string | null>(null);
+  const [exploredTerms, setExploredTerms] = useState<Set<string>>(new Set());
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const terms = useQuery(api.glossary.list, category === "all" ? {} : { category });
+  const termOfDay = useQuery(api.glossary.getTermOfDay, {});
+
+  // Load explored terms from localStorage
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("switchy_explored_terms");
+      if (stored) setExploredTerms(new Set(JSON.parse(stored)));
+    } catch {}
+  }, []);
+
+  // Track explored terms
+  const markExplored = useCallback((termId: string) => {
+    setExploredTerms((prev) => {
+      const next = new Set(prev);
+      next.add(termId);
+      try {
+        localStorage.setItem("switchy_explored_terms", JSON.stringify([...next]));
+      } catch {}
+      return next;
+    });
+  }, []);
 
   const filtered = useMemo(() => {
     if (!terms) return null;
-    if (!search.trim()) return terms;
-    const q = search.toLowerCase();
-    return terms.filter(
-      (t: any) =>
-        t.term.toLowerCase().includes(q) ||
-        t.definition.toLowerCase().includes(q)
-    );
-  }, [terms, search]);
+    let result = terms as any[];
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      result = result.filter(
+        (t) =>
+          t.term.toLowerCase().includes(q) ||
+          t.definition.toLowerCase().includes(q)
+      );
+    }
+    if (difficultyFilter) {
+      result = result.filter((t) => t.difficulty === difficultyFilter);
+    }
+    return result;
+  }, [terms, search, difficultyFilter]);
 
   const sorted = useMemo(() => {
     if (!filtered) return null;
     return [...filtered].sort((a: any, b: any) => a.term.localeCompare(b.term));
   }, [filtered]);
 
+  // Group terms by first letter
+  const grouped = useMemo(() => {
+    if (!sorted) return null;
+    const groups: Record<string, any[]> = {};
+    for (const term of sorted) {
+      const letter = term.term[0].toUpperCase();
+      if (!groups[letter]) groups[letter] = [];
+      groups[letter].push(term);
+    }
+    return groups;
+  }, [sorted]);
+
+  const activeLetters = useMemo(() => {
+    if (!grouped) return new Set<string>();
+    return new Set(Object.keys(grouped));
+  }, [grouped]);
+
+  const scrollToLetter = (letter: string) => {
+    const el = sectionRefs.current[letter];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const handleCopyLink = async (termName: string, termId: string) => {
+    const url = `${window.location.origin}/glossary?term=${encodeURIComponent(termName)}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiedId(termId);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch {}
+  };
+
+  const totalTerms = terms?.length ?? 0;
+  const exploredCount = terms
+    ? (terms as any[]).filter((t: any) => exploredTerms.has(t._id)).length
+    : 0;
+
   return (
     <div className="p-6 lg:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-2xl sm:text-3xl font-bold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight mb-2">
             Glossary
           </h1>
@@ -71,8 +149,76 @@ function GlossaryContent() {
           </p>
         </div>
 
+        {/* Progress bar */}
+        {totalTerms > 0 && (
+          <div className="mb-6 rounded-lg bg-bg-surface border border-border-subtle p-3">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xs text-text-muted">
+                You&apos;ve explored {exploredCount} of {totalTerms} terms
+              </span>
+              <span className="text-xs font-mono text-accent">
+                {totalTerms > 0 ? Math.round((exploredCount / totalTerms) * 100) : 0}%
+              </span>
+            </div>
+            <div className="w-full h-1.5 bg-bg-elevated rounded-full overflow-hidden">
+              <div
+                className="h-full bg-accent rounded-full transition-[width] duration-300"
+                style={{ width: `${totalTerms > 0 ? (exploredCount / totalTerms) * 100 : 0}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Term of the Day */}
+        {termOfDay && (
+          <div className="mb-6 rounded-xl border-2 border-accent/30 bg-accent/5 p-5 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <p className="text-[10px] uppercase tracking-wider text-accent font-semibold mb-2">
+              Term of the Day
+            </p>
+            <h3 className="text-lg font-bold text-text-primary font-[family-name:var(--font-outfit)] mb-1">
+              {termOfDay.term}
+              {termOfDay.pronunciation && (
+                <span className="ml-2 text-sm font-normal text-text-muted italic">
+                  {termOfDay.pronunciation}
+                </span>
+              )}
+            </h3>
+            <p className="text-sm text-text-secondary leading-relaxed">
+              {termOfDay.definition}
+            </p>
+            {termOfDay.example && (
+              <p className="text-xs text-text-muted mt-2 italic border-l-2 border-accent/30 pl-3">
+                {termOfDay.example}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* A-Z Quick Jump Bar */}
+        {grouped && (
+          <div className="mb-6 flex flex-wrap gap-1">
+            {ALPHABET.map((letter) => (
+              <button
+                key={letter}
+                onClick={() => scrollToLetter(letter)}
+                disabled={!activeLetters.has(letter)}
+                className={cn(
+                  "w-8 h-8 rounded-md text-xs font-semibold transition-colors duration-150",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                  activeLetters.has(letter)
+                    ? "bg-bg-surface border border-border-subtle text-text-primary hover:bg-accent-dim hover:text-accent hover:border-accent/20 active:scale-[0.95]"
+                    : "bg-bg-elevated/50 text-text-muted/30 cursor-not-allowed"
+                )}
+              >
+                {letter}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar — categories (desktop) */}
+          {/* Sidebar — categories + difficulty (desktop) */}
           <aside className="hidden lg:block w-56 shrink-0">
             <nav className="sticky top-24 space-y-1">
               <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 px-3">
@@ -92,6 +238,40 @@ function GlossaryContent() {
                   {cat.label}
                 </button>
               ))}
+
+              <div className="pt-4 mt-4 border-t border-border-subtle">
+                <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 px-3">
+                  Difficulty
+                </p>
+                <button
+                  onClick={() => setDifficultyFilter(null)}
+                  className={cn(
+                    "w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-[background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                    difficultyFilter === null
+                      ? "bg-accent-dim text-accent"
+                      : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+                  )}
+                >
+                  All Levels
+                </button>
+                {(["beginner", "intermediate", "advanced"] as const).map((d) => (
+                  <button
+                    key={d}
+                    onClick={() => setDifficultyFilter(difficultyFilter === d ? null : d)}
+                    className={cn(
+                      "w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-[background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                      difficultyFilter === d
+                        ? "bg-accent-dim text-accent"
+                        : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+                    )}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={cn("w-2 h-2 rounded-full", DIFFICULTY_COLORS[d].bg, "border")} />
+                      {d.charAt(0).toUpperCase() + d.slice(1)}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </nav>
           </aside>
 
@@ -104,7 +284,7 @@ function GlossaryContent() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
                 <Input
-                  placeholder="Search terms..."
+                  placeholder="Search terms and definitions..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="pl-10"
@@ -112,8 +292,8 @@ function GlossaryContent() {
               </div>
             </div>
 
-            {/* Mobile category tabs */}
-            <div className="lg:hidden overflow-x-auto mb-6 -mx-6 px-6">
+            {/* Mobile category + difficulty tabs */}
+            <div className="lg:hidden overflow-x-auto mb-4 -mx-6 px-6">
               <div className="flex gap-1.5">
                 {CATEGORIES.map((cat) => (
                   <button
@@ -132,63 +312,151 @@ function GlossaryContent() {
               </div>
             </div>
 
-            {/* Terms list */}
-            {!sorted ? (
+            <div className="lg:hidden overflow-x-auto mb-6 -mx-6 px-6">
+              <div className="flex gap-1.5">
+                <button
+                  onClick={() => setDifficultyFilter(null)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-[background-color,color] duration-150",
+                    !difficultyFilter ? "bg-accent-dim text-accent" : "bg-bg-surface text-text-secondary border border-border-default"
+                  )}
+                >
+                  All Levels
+                </button>
+                {(["beginner", "intermediate", "advanced"] as const).map((d) => (
+                  <button
+                    key={d}
+                    onClick={() => setDifficultyFilter(difficultyFilter === d ? null : d)}
+                    className={cn(
+                      "px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-[background-color,color] duration-150",
+                      difficultyFilter === d ? "bg-accent-dim text-accent" : "bg-bg-surface text-text-secondary border border-border-default"
+                    )}
+                  >
+                    {d.charAt(0).toUpperCase() + d.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Terms list grouped by letter */}
+            {!grouped ? (
               <div className="space-y-3">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <Skeleton key={i} variant="text" className="h-20" />
                 ))}
               </div>
-            ) : sorted.length === 0 ? (
+            ) : Object.keys(grouped).length === 0 ? (
               <div className="text-center py-16">
                 <p className="text-text-muted">No terms found.</p>
               </div>
             ) : (
-              <div className="space-y-2">
-                {sorted.map((term: any) => (
+              <div className="space-y-6">
+                {Object.entries(grouped).map(([letter, letterTerms]) => (
                   <div
-                    key={term._id}
-                    id={term.term.toLowerCase().replace(/\s+/g, "-")}
-                    className={cn(
-                      "rounded-xl border p-5 transition-[border-color,box-shadow] duration-200",
-                      highlightTerm?.toLowerCase() === term.term.toLowerCase()
-                        ? "border-border-accent bg-accent-dim/30 glow-accent"
-                        : "border-border-subtle bg-bg-surface hover:border-border-accent"
-                    )}
+                    key={letter}
+                    ref={(el) => { sectionRefs.current[letter] = el; }}
                   >
-                    <div className="flex items-start justify-between gap-3 mb-2">
-                      <h3 className="font-semibold text-text-primary text-base font-[family-name:var(--font-outfit)]">
-                        {term.term}
-                      </h3>
-                      <span
-                        className={cn(
-                          "text-[10px] px-2 py-0.5 rounded-md font-semibold uppercase tracking-wider border shrink-0",
-                          CATEGORY_COLORS[term.category] || CATEGORY_COLORS.general
-                        )}
-                      >
-                        {term.category}
-                      </span>
+                    <div className="sticky top-16 z-10 bg-bg-primary/95 backdrop-blur-sm py-2 mb-2 border-b border-border-subtle">
+                      <h2 className="text-lg font-bold text-accent font-[family-name:var(--font-outfit)]">
+                        {letter}
+                      </h2>
                     </div>
-                    <p className="text-sm text-text-secondary leading-relaxed mb-3">
-                      {term.definition}
-                    </p>
-                    {term.relatedTerms && term.relatedTerms.length > 0 && (
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="text-xs text-text-muted">Related:</span>
-                        {term.relatedTerms.map((rt: string) => (
-                          <button
-                            key={rt}
-                            onClick={() => {
-                              setSearch(rt);
-                              setCategory("all");
-                            }}
-                            className="text-xs text-accent hover:text-accent-hover transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded px-1"
-                          >
-                            {rt}
-                          </button>
-                        ))}
-                      </div>
-                    )}
+                    <div className="space-y-2">
+                      {letterTerms.map((term: any) => (
+                        <div
+                          key={term._id}
+                          id={term.term.toLowerCase().replace(/\s+/g, "-")}
+                          onClick={() => markExplored(term._id)}
+                          className={cn(
+                            "rounded-xl border p-5 transition-[border-color,box-shadow] duration-200 cursor-default",
+                            highlightTerm?.toLowerCase() === term.term.toLowerCase()
+                              ? "border-border-accent bg-accent-dim/30 glow-accent"
+                              : "border-border-subtle bg-bg-surface hover:border-border-accent"
+                          )}
+                        >
+                          <div className="flex items-start justify-between gap-3 mb-2">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h3 className="font-semibold text-text-primary text-base font-[family-name:var(--font-outfit)]">
+                                {term.term}
+                              </h3>
+                              {term.pronunciation && (
+                                <span className="text-xs text-text-muted italic">{term.pronunciation}</span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              {term.difficulty && (
+                                <span
+                                  className={cn(
+                                    "text-[10px] px-2 py-0.5 rounded-md font-semibold uppercase tracking-wider border",
+                                    DIFFICULTY_COLORS[term.difficulty]?.bg,
+                                    DIFFICULTY_COLORS[term.difficulty]?.text
+                                  )}
+                                >
+                                  {term.difficulty}
+                                </span>
+                              )}
+                              <span
+                                className={cn(
+                                  "text-[10px] px-2 py-0.5 rounded-md font-semibold uppercase tracking-wider border shrink-0",
+                                  CATEGORY_COLORS[term.category] || CATEGORY_COLORS.general
+                                )}
+                              >
+                                {term.category}
+                              </span>
+                            </div>
+                          </div>
+
+                          <p className="text-sm text-text-secondary leading-relaxed mb-2">
+                            {term.definition}
+                          </p>
+
+                          {term.example && (
+                            <p className="text-xs text-text-muted italic border-l-2 border-border-subtle pl-3 mb-3">
+                              {term.example}
+                            </p>
+                          )}
+
+                          <div className="flex items-center justify-between">
+                            {term.relatedTerms && term.relatedTerms.length > 0 && (
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                <span className="text-xs text-text-muted">Related:</span>
+                                {term.relatedTerms.map((rt: string) => (
+                                  <button
+                                    key={rt}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setSearch(rt);
+                                      setCategory("all");
+                                    }}
+                                    className="text-xs text-accent hover:text-accent-hover transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded px-1"
+                                  >
+                                    {rt}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Copy link button */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCopyLink(term.term, term._id);
+                              }}
+                              className="text-xs text-text-muted hover:text-accent transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded px-1.5 py-0.5 ml-auto shrink-0"
+                              title="Copy link to term"
+                            >
+                              {copiedId === term._id ? (
+                                <span className="text-emerald-400">Copied!</span>
+                              ) : (
+                                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                </svg>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>

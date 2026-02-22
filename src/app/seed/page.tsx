@@ -9,6 +9,9 @@ import componentsData from "@/data/components.json";
 import keyboardsData from "@/data/keyboards.json";
 import glossaryData from "@/data/glossary.json";
 import vendorLinksData from "@/data/vendorLinks.json";
+import affiliateConfigData from "@/data/affiliateConfig.json";
+import keycapsData from "@/data/keycaps.json";
+import accessoriesData from "@/data/accessories.json";
 
 export default function SeedPage() {
   const [status, setStatus] = useState<string>("");
@@ -17,7 +20,11 @@ export default function SeedPage() {
   const clearAll = useMutation(api.seed.clearAll);
   const cleanSwitches = useMutation(api.seed.cleanAndReseedSwitches);
   const seedGlossary = useMutation(api.glossary.seed);
+  const cleanGlossary = useMutation(api.glossary.cleanAndReseed);
   const seedVendorLinks = useMutation(api.vendorLinks.seed);
+  const seedAffiliateConfig = useMutation(api.affiliateConfig.seed);
+  const seedKeycaps = useMutation(api.keycaps.seed);
+  const seedAccessories = useMutation(api.accessories.seed);
 
   const handleSeed = async () => {
     setLoading(true);
@@ -32,9 +39,7 @@ export default function SeedPage() {
         `Done! Added ${result.switchesAdded} switches, ${result.componentsAdded} components, ${result.keyboardsAdded} keyboards.`
       );
     } catch (err) {
-      setStatus(
-        `Error: ${err instanceof Error ? err.message : "Unknown error"}`
-      );
+      setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
     } finally {
       setLoading(false);
     }
@@ -44,18 +49,10 @@ export default function SeedPage() {
     setLoading(true);
     setStatus("Seeding glossary terms...");
     try {
-      const count = await seedGlossary({
-        terms: glossaryData,
-      });
-      setStatus(
-        count > 0
-          ? `Done! Added ${count} glossary terms.`
-          : "Glossary terms already exist. No new terms added."
-      );
+      const count = await seedGlossary({ terms: glossaryData as any });
+      setStatus(count > 0 ? `Done! Added ${count} glossary terms.` : "Glossary terms already exist.");
     } catch (err) {
-      setStatus(
-        `Error: ${err instanceof Error ? err.message : "Unknown error"}`
-      );
+      setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
     } finally {
       setLoading(false);
     }
@@ -65,18 +62,49 @@ export default function SeedPage() {
     setLoading(true);
     setStatus("Seeding vendor links...");
     try {
-      const count = await seedVendorLinks({
-        links: vendorLinksData as any,
-      });
-      setStatus(
-        count > 0
-          ? `Done! Added ${count} vendor links.`
-          : "Vendor links already exist. No new links added."
-      );
+      const count = await seedVendorLinks({ links: vendorLinksData as any });
+      setStatus(count > 0 ? `Done! Added ${count} vendor links.` : "Vendor links already exist.");
     } catch (err) {
-      setStatus(
-        `Error: ${err instanceof Error ? err.message : "Unknown error"}`
-      );
+      setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSeedAffiliateConfig = async () => {
+    setLoading(true);
+    setStatus("Seeding affiliate config...");
+    try {
+      const count = await seedAffiliateConfig({ configs: affiliateConfigData });
+      setStatus(count > 0 ? `Done! Added ${count} affiliate configs.` : "Affiliate configs already exist.");
+    } catch (err) {
+      setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSeedKeycaps = async () => {
+    setLoading(true);
+    setStatus("Seeding keycaps...");
+    try {
+      const count = await seedKeycaps({ keycaps: keycapsData as any });
+      setStatus(count > 0 ? `Done! Added ${count} keycap sets.` : "Keycaps already exist.");
+    } catch (err) {
+      setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSeedAccessories = async () => {
+    setLoading(true);
+    setStatus("Seeding accessories...");
+    try {
+      const count = await seedAccessories({ accessories: accessoriesData as any });
+      setStatus(count > 0 ? `Done! Added ${count} accessories.` : "Accessories already exist.");
+    } catch (err) {
+      setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
     } finally {
       setLoading(false);
     }
@@ -91,19 +119,16 @@ export default function SeedPage() {
         components: componentsData,
         keyboards: keyboardsData,
       });
-      const glossaryCount = await seedGlossary({
-        terms: glossaryData,
-      });
-      const vendorLinksCount = await seedVendorLinks({
-        links: vendorLinksData as any,
-      });
+      const glossaryCount = await seedGlossary({ terms: glossaryData as any });
+      const vendorLinksCount = await seedVendorLinks({ links: vendorLinksData as any });
+      const affiliateCount = await seedAffiliateConfig({ configs: affiliateConfigData });
+      const keycapsCount = await seedKeycaps({ keycaps: keycapsData as any });
+      const accessoriesCount = await seedAccessories({ accessories: accessoriesData as any });
       setStatus(
-        `Done! Added ${result.switchesAdded} switches, ${result.componentsAdded} components, ${result.keyboardsAdded} keyboards, ${glossaryCount} glossary terms, ${vendorLinksCount} vendor links.`
+        `Done! Added ${result.switchesAdded} switches, ${result.componentsAdded} components, ${result.keyboardsAdded} keyboards, ${glossaryCount} glossary terms, ${vendorLinksCount} vendor links, ${affiliateCount} affiliate configs, ${keycapsCount} keycaps, ${accessoriesCount} accessories.`
       );
     } catch (err) {
-      setStatus(
-        `Error: ${err instanceof Error ? err.message : "Unknown error"}`
-      );
+      setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
     } finally {
       setLoading(false);
     }
@@ -114,11 +139,9 @@ export default function SeedPage() {
     setStatus("Clearing database...");
     try {
       await clearAll({});
-      setStatus("Database cleared (switches, components, keyboards, glossary terms, vendor links).");
+      setStatus("Database cleared.");
     } catch (err) {
-      setStatus(
-        `Error: ${err instanceof Error ? err.message : "Unknown error"}`
-      );
+      setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
     } finally {
       setLoading(false);
     }
@@ -140,23 +163,15 @@ export default function SeedPage() {
 
         <div className="space-y-4 mb-8">
           <div className="flex gap-4 justify-center">
-            <Button
-              onClick={handleSeedEverything}
-              disabled={loading}
-              loading={loading}
-            >
+            <Button onClick={handleSeedEverything} disabled={loading} loading={loading}>
               Seed Everything
             </Button>
-            <Button
-              variant="danger"
-              onClick={handleClear}
-              disabled={loading}
-            >
+            <Button variant="danger" onClick={handleClear} disabled={loading}>
               Clear Database
             </Button>
           </div>
 
-          <div className="flex gap-4 justify-center">
+          <div className="flex gap-4 justify-center flex-wrap">
             <Button
               variant="secondary"
               onClick={async () => {
@@ -175,32 +190,44 @@ export default function SeedPage() {
             >
               Clean &amp; Re-seed Switches
             </Button>
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                setLoading(true);
+                setStatus("Cleaning & re-seeding glossary...");
+                try {
+                  const result = await cleanGlossary({ terms: glossaryData as any });
+                  setStatus(`Done! Deleted ${result.deleted} old terms, added ${result.added} fresh glossary terms with difficulty levels.`);
+                } catch (err) {
+                  setStatus(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+            >
+              Clean &amp; Re-seed Glossary
+            </Button>
           </div>
 
           <div className="flex gap-3 justify-center flex-wrap">
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={handleSeed}
-              disabled={loading}
-            >
+            <Button variant="secondary" size="sm" onClick={handleSeed} disabled={loading}>
               Seed Core Data
             </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={handleSeedGlossary}
-              disabled={loading}
-            >
+            <Button variant="secondary" size="sm" onClick={handleSeedGlossary} disabled={loading}>
               Seed Glossary
             </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={handleSeedVendorLinks}
-              disabled={loading}
-            >
+            <Button variant="secondary" size="sm" onClick={handleSeedVendorLinks} disabled={loading}>
               Seed Vendor Links
+            </Button>
+            <Button variant="secondary" size="sm" onClick={handleSeedAffiliateConfig} disabled={loading}>
+              Seed Affiliate Config
+            </Button>
+            <Button variant="secondary" size="sm" onClick={handleSeedKeycaps} disabled={loading}>
+              Seed Keycaps
+            </Button>
+            <Button variant="secondary" size="sm" onClick={handleSeedAccessories} disabled={loading}>
+              Seed Accessories
             </Button>
           </div>
         </div>
@@ -229,6 +256,18 @@ export default function SeedPage() {
             <li className="flex items-center justify-between">
               <span>Vendor Links</span>
               <span className="font-mono text-accent text-xs">{vendorLinksData.length}</span>
+            </li>
+            <li className="flex items-center justify-between">
+              <span>Affiliate Configs</span>
+              <span className="font-mono text-accent text-xs">{affiliateConfigData.length}</span>
+            </li>
+            <li className="flex items-center justify-between">
+              <span>Keycaps</span>
+              <span className="font-mono text-accent text-xs">{keycapsData.length}</span>
+            </li>
+            <li className="flex items-center justify-between">
+              <span>Accessories</span>
+              <span className="font-mono text-accent text-xs">{accessoriesData.length}</span>
             </li>
           </ul>
         </div>

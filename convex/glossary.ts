@@ -40,6 +40,51 @@ export const getByTerm = query({
   },
 });
 
+// getTermOfDay() - Deterministic daily term based on date hash
+export const getTermOfDay = query({
+  args: {},
+  returns: v.any(),
+  handler: async (ctx) => {
+    const allTerms = await ctx.db.query("glossaryTerms").collect();
+    if (allTerms.length === 0) return null;
+    // Deterministic hash based on current date
+    const today = new Date();
+    const dateStr = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+    let hash = 0;
+    for (let i = 0; i < dateStr.length; i++) {
+      hash = ((hash << 5) - hash) + dateStr.charCodeAt(i);
+      hash |= 0;
+    }
+    const index = Math.abs(hash) % allTerms.length;
+    return allTerms[index];
+  },
+});
+
+// cleanAndReseed() - Delete all glossary terms and re-insert with latest data
+export const cleanAndReseed = mutation({
+  args: { terms: v.array(v.object({
+    term: v.string(),
+    definition: v.string(),
+    category: v.string(),
+    relatedTerms: v.array(v.string()),
+    difficulty: v.optional(v.union(v.literal("beginner"), v.literal("intermediate"), v.literal("advanced"))),
+    pronunciation: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+    example: v.optional(v.string()),
+  })) },
+  returns: v.object({ deleted: v.number(), added: v.number() }),
+  handler: async (ctx, args) => {
+    const existing = await ctx.db.query("glossaryTerms").collect();
+    for (const term of existing) {
+      await ctx.db.delete(term._id);
+    }
+    for (const term of args.terms) {
+      await ctx.db.insert("glossaryTerms", term);
+    }
+    return { deleted: existing.length, added: args.terms.length };
+  },
+});
+
 // seed() - Bulk insert glossary terms
 export const seed = mutation({
   args: { terms: v.array(v.object({
@@ -47,6 +92,10 @@ export const seed = mutation({
     definition: v.string(),
     category: v.string(),
     relatedTerms: v.array(v.string()),
+    difficulty: v.optional(v.union(v.literal("beginner"), v.literal("intermediate"), v.literal("advanced"))),
+    pronunciation: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+    example: v.optional(v.string()),
   })) },
   returns: v.number(),
   handler: async (ctx, args) => {

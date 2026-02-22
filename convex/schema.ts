@@ -176,6 +176,9 @@ export default defineSchema({
       v.literal("accessories")
     ),
     notes: v.string(),
+    trackingUrl: v.optional(v.string()),
+    trackingNumber: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
   }).index("by_userId", ["userId"]),
 
   conversations: defineTable({
@@ -206,11 +209,58 @@ export default defineSchema({
     hasCompletedOnboarding: v.boolean(),
   }).index("by_userId", ["userId"]),
 
+  keycaps: defineTable({
+    brand: v.string(),
+    name: v.string(),
+    slug: v.optional(v.string()),
+    profile: v.string(),
+    material: v.string(),
+    legendType: v.optional(v.string()),
+    numKeys: v.optional(v.number()),
+    compatibility: v.optional(v.string()),
+    manufacturer: v.optional(v.string()),
+    priceUsd: v.number(),
+    inStock: v.optional(v.boolean()),
+    notes: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+    productUrl: v.optional(v.string()),
+    tags: v.optional(v.array(v.string())),
+    fabricated: v.optional(v.boolean()),
+  })
+    .index("by_profile", ["profile"])
+    .index("by_material", ["material"])
+    .index("by_brand", ["brand"])
+    .index("by_slug", ["slug"])
+    .searchIndex("search_name", { searchField: "name" }),
+
+  accessories: defineTable({
+    brand: v.string(),
+    name: v.string(),
+    slug: v.optional(v.string()),
+    subcategory: v.string(),
+    priceUsd: v.number(),
+    inStock: v.optional(v.boolean()),
+    notes: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+    productUrl: v.optional(v.string()),
+    specs: v.optional(v.any()),
+    tags: v.optional(v.array(v.string())),
+    fabricated: v.optional(v.boolean()),
+  })
+    .index("by_subcategory", ["subcategory"])
+    .index("by_brand", ["brand"])
+    .index("by_slug", ["slug"])
+    .searchIndex("search_name", { searchField: "name" }),
+
   glossaryTerms: defineTable({
     term: v.string(),
     definition: v.string(),
     category: v.string(),
     relatedTerms: v.array(v.string()),
+    difficulty: v.optional(v.union(v.literal("beginner"), v.literal("intermediate"), v.literal("advanced"))),
+    pronunciation: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+    example: v.optional(v.string()),
   })
     .index("by_category", ["category"])
     .searchIndex("search_term", { searchField: "term" }),
@@ -246,4 +296,116 @@ export default defineSchema({
     plateType: v.optional(v.string()),
     recordingNotes: v.optional(v.string()),
   }).index("by_switchName", ["switchName"]),
+
+  // ── Monetization tables ──
+
+  subscriptions: defineTable({
+    userId: v.string(),
+    stripeCustomerId: v.string(),
+    stripeSubscriptionId: v.string(),
+    stripePriceId: v.string(),
+    status: v.union(
+      v.literal("active"),
+      v.literal("canceled"),
+      v.literal("past_due"),
+      v.literal("trialing"),
+      v.literal("incomplete"),
+      v.literal("unpaid")
+    ),
+    currentPeriodStart: v.number(),
+    currentPeriodEnd: v.number(),
+    cancelAtPeriodEnd: v.boolean(),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_userId", ["userId"])
+    .index("by_stripeCustomerId", ["stripeCustomerId"])
+    .index("by_stripeSubscriptionId", ["stripeSubscriptionId"]),
+
+  usageRecords: defineTable({
+    userId: v.string(),
+    actionType: v.union(
+      v.literal("generateBuild"),
+      v.literal("generateBuildConversational"),
+      v.literal("generateBuildFromAnswers")
+    ),
+    monthKey: v.string(),
+    createdAt: v.number(),
+  }).index("by_userId_month", ["userId", "monthKey"]),
+
+  affiliateClicks: defineTable({
+    vendorLinkId: v.id("vendorLinks"),
+    userId: v.optional(v.string()),
+    productName: v.string(),
+    vendor: v.string(),
+    clickedAt: v.number(),
+    referrerPage: v.optional(v.string()),
+  })
+    .index("by_vendorLinkId", ["vendorLinkId"])
+    .index("by_clickedAt", ["clickedAt"]),
+
+  affiliateConfig: defineTable({
+    vendor: v.string(),
+    affiliateTag: v.string(),
+    isActive: v.boolean(),
+  })
+    .index("by_vendor", ["vendor"])
+    .index("by_isActive", ["isActive"]),
+
+  sponsorships: defineTable({
+    vendorName: v.string(),
+    productType: v.optional(v.string()),
+    productName: v.string(),
+    placement: v.union(
+      v.literal("featured_badge"),
+      v.literal("promoted_search"),
+      v.literal("build_recommendation"),
+      v.literal("homepage_spotlight")
+    ),
+    startDate: v.string(),
+    endDate: v.string(),
+    isActive: v.boolean(),
+    impressions: v.number(),
+    clicks: v.number(),
+  })
+    .index("by_isActive", ["isActive"])
+    .index("by_placement", ["placement"])
+    .index("by_productName", ["productName"]),
+
+  groupBuyPartnerships: defineTable({
+    vendorName: v.string(),
+    groupBuyName: v.string(),
+    commissionPercent: v.number(),
+    affiliateUrl: v.string(),
+    startDate: v.string(),
+    endDate: v.string(),
+    isActive: v.boolean(),
+    totalClicks: v.number(),
+  })
+    .index("by_vendorName", ["vendorName"])
+    .index("by_isActive", ["isActive"]),
+
+  buildRequests: defineTable({
+    userId: v.optional(v.string()),
+    contactEmail: v.string(),
+    contactName: v.string(),
+    buildSpecId: v.optional(v.id("builds")),
+    buildSpec: v.optional(v.any()),
+    budget: v.string(),
+    notes: v.optional(v.string()),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("quoted"),
+      v.literal("accepted"),
+      v.literal("declined"),
+      v.literal("completed")
+    ),
+    quoteAmount: v.optional(v.number()),
+    quoteNotes: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_userId", ["userId"])
+    .index("by_status", ["status"])
+    .index("by_createdAt", ["createdAt"]),
 });

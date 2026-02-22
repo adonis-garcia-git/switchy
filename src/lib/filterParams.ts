@@ -1,4 +1,5 @@
 import type { FilterState } from "@/components/FilterBar";
+import type { KeycapFilterState, AccessoryFilterState } from "@/lib/types";
 
 export const DEFAULT_SWITCH_FILTERS: FilterState = {
   type: null,
@@ -155,4 +156,107 @@ export function buildKeyboardUrl(filters: Partial<KeyboardFilterState>): string 
   if (filters.maxPrice != null) params.set("maxPrice", String(filters.maxPrice));
   const qs = params.toString();
   return `/keyboards${qs ? `?${qs}` : ""}`;
+}
+
+// ── Keycap filter params ──
+
+export const DEFAULT_KEYCAP_FILTERS: KeycapFilterState = {
+  profile: null,
+  material: null,
+  brand: null,
+  minPrice: null,
+  maxPrice: null,
+  sortBy: "name",
+  sortOrder: "asc",
+};
+
+export function parseKeycapParams(searchParams: URLSearchParams): Partial<KeycapFilterState> {
+  const filters: Partial<KeycapFilterState> = {};
+  const profile = searchParams.get("profile");
+  if (profile) filters.profile = profile;
+  const material = searchParams.get("material");
+  if (material) filters.material = material;
+  const brand = searchParams.get("brand");
+  if (brand) filters.brand = brand;
+  const minPrice = searchParams.get("minPrice");
+  if (minPrice) { const val = parseInt(minPrice, 10); if (!isNaN(val)) filters.minPrice = val; }
+  const maxPrice = searchParams.get("maxPrice");
+  if (maxPrice) { const val = parseInt(maxPrice, 10); if (!isNaN(val)) filters.maxPrice = val; }
+  const sort = searchParams.get("sort");
+  if (sort) filters.sortBy = sort;
+  const order = searchParams.get("order");
+  if (order === "asc" || order === "desc") filters.sortOrder = order;
+  return filters;
+}
+
+export function keycapFiltersToParams(filters: KeycapFilterState): URLSearchParams {
+  const params = new URLSearchParams();
+  if (filters.profile) params.set("profile", filters.profile);
+  if (filters.material) params.set("material", filters.material);
+  if (filters.brand) params.set("brand", filters.brand);
+  if (filters.minPrice != null) params.set("minPrice", String(filters.minPrice));
+  if (filters.maxPrice != null) params.set("maxPrice", String(filters.maxPrice));
+  if (filters.sortBy !== "name") params.set("sort", filters.sortBy);
+  if (filters.sortOrder !== "asc") params.set("order", filters.sortOrder);
+  return params;
+}
+
+export function buildKeycapUrl(filters: Partial<KeycapFilterState>): string {
+  const params = new URLSearchParams();
+  if (filters.profile) params.set("profile", filters.profile);
+  if (filters.material) params.set("material", filters.material);
+  if (filters.brand) params.set("brand", filters.brand);
+  if (filters.minPrice != null) params.set("minPrice", String(filters.minPrice));
+  if (filters.maxPrice != null) params.set("maxPrice", String(filters.maxPrice));
+  const qs = params.toString();
+  return `/keycaps${qs ? `?${qs}` : ""}`;
+}
+
+// ── Accessory filter params ──
+
+export const DEFAULT_ACCESSORY_FILTERS: AccessoryFilterState = {
+  subcategory: null,
+  brand: null,
+  minPrice: null,
+  maxPrice: null,
+  sortBy: "name",
+  sortOrder: "asc",
+};
+
+export function parseAccessoryParams(searchParams: URLSearchParams): Partial<AccessoryFilterState> {
+  const filters: Partial<AccessoryFilterState> = {};
+  const subcategory = searchParams.get("subcategory");
+  if (subcategory) filters.subcategory = subcategory;
+  const brand = searchParams.get("brand");
+  if (brand) filters.brand = brand;
+  const minPrice = searchParams.get("minPrice");
+  if (minPrice) { const val = parseInt(minPrice, 10); if (!isNaN(val)) filters.minPrice = val; }
+  const maxPrice = searchParams.get("maxPrice");
+  if (maxPrice) { const val = parseInt(maxPrice, 10); if (!isNaN(val)) filters.maxPrice = val; }
+  const sort = searchParams.get("sort");
+  if (sort) filters.sortBy = sort;
+  const order = searchParams.get("order");
+  if (order === "asc" || order === "desc") filters.sortOrder = order;
+  return filters;
+}
+
+export function accessoryFiltersToParams(filters: AccessoryFilterState): URLSearchParams {
+  const params = new URLSearchParams();
+  if (filters.subcategory) params.set("subcategory", filters.subcategory);
+  if (filters.brand) params.set("brand", filters.brand);
+  if (filters.minPrice != null) params.set("minPrice", String(filters.minPrice));
+  if (filters.maxPrice != null) params.set("maxPrice", String(filters.maxPrice));
+  if (filters.sortBy !== "name") params.set("sort", filters.sortBy);
+  if (filters.sortOrder !== "asc") params.set("order", filters.sortOrder);
+  return params;
+}
+
+export function buildAccessoryUrl(filters: Partial<AccessoryFilterState>): string {
+  const params = new URLSearchParams();
+  if (filters.subcategory) params.set("subcategory", filters.subcategory);
+  if (filters.brand) params.set("brand", filters.brand);
+  if (filters.minPrice != null) params.set("minPrice", String(filters.minPrice));
+  if (filters.maxPrice != null) params.set("maxPrice", String(filters.maxPrice));
+  const qs = params.toString();
+  return `/accessories${qs ? `?${qs}` : ""}`;
 }

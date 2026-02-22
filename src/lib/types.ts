@@ -151,6 +151,64 @@ export interface ComponentData {
   compatibilityNotes: string;
 }
 
+// Keycap types
+export interface KeycapData {
+  _id?: string;
+  brand: string;
+  name: string;
+  slug?: string;
+  profile: string;
+  material: string;
+  legendType?: string;
+  numKeys?: number;
+  compatibility?: string;
+  manufacturer?: string;
+  priceUsd: number;
+  inStock?: boolean;
+  notes?: string;
+  imageUrl?: string;
+  productUrl?: string;
+  tags?: string[];
+  fabricated?: boolean;
+}
+
+// Accessory types
+export interface AccessoryData {
+  _id?: string;
+  brand: string;
+  name: string;
+  slug?: string;
+  subcategory: string;
+  priceUsd: number;
+  inStock?: boolean;
+  notes?: string;
+  imageUrl?: string;
+  productUrl?: string;
+  specs?: Record<string, unknown>;
+  tags?: string[];
+  fabricated?: boolean;
+}
+
+// Filter state types
+export interface KeycapFilterState {
+  profile: string | null;
+  material: string | null;
+  brand: string | null;
+  minPrice: number | null;
+  maxPrice: number | null;
+  sortBy: string;
+  sortOrder: "asc" | "desc";
+}
+
+export interface AccessoryFilterState {
+  subcategory: string | null;
+  brand: string | null;
+  minPrice: number | null;
+  maxPrice: number | null;
+  sortBy: string;
+  sortOrder: "asc" | "desc";
+}
+
 // Glossary types
 export interface GlossaryTerm {
   _id?: string;
@@ -158,6 +216,10 @@ export interface GlossaryTerm {
   definition: string;
   category: string;
   relatedTerms: string[];
+  difficulty?: "beginner" | "intermediate" | "advanced";
+  pronunciation?: string;
+  imageUrl?: string;
+  example?: string;
 }
 
 // Vendor link types
@@ -246,6 +308,7 @@ export type CustomBuilderStep =
   | "keycaps"
   | "stabilizers"
   | "mods"
+  | "customize"
   | "review";
 
 export interface StabilizerPreset {
@@ -273,6 +336,66 @@ export interface CustomBuildSelections {
   keycaps: KeycapSelection;
   stabilizer: StabilizerSelection | null;
   mods: ComponentData[];
+  perKeyOverrides: import("./keyCustomization").PerKeyOverrides;
+}
+
+// ── Monetization types ──
+
+export type UserTier = "free" | "pro";
+
+export interface UserSubscription {
+  _id?: string;
+  userId: string;
+  stripeCustomerId: string;
+  stripeSubscriptionId: string;
+  stripePriceId: string;
+  status: "active" | "canceled" | "past_due" | "trialing" | "incomplete" | "unpaid";
+  currentPeriodStart: number;
+  currentPeriodEnd: number;
+  cancelAtPeriodEnd: boolean;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface UsageInfo {
+  count: number;
+  limit: number;
+  tier: UserTier;
+  remaining: number;
+}
+
+export interface AffiliateVendorLink extends VendorLink {
+  affiliateUrl?: string;
+  hasAffiliate?: boolean;
+}
+
+export interface Sponsorship {
+  _id?: string;
+  vendorName: string;
+  productType?: string;
+  productName: string;
+  placement: "featured_badge" | "promoted_search" | "build_recommendation" | "homepage_spotlight";
+  startDate: string;
+  endDate: string;
+  isActive: boolean;
+  impressions: number;
+  clicks: number;
+}
+
+export interface BuildRequest {
+  _id?: string;
+  userId?: string;
+  contactEmail: string;
+  contactName: string;
+  buildSpecId?: string;
+  buildSpec?: Record<string, unknown>;
+  budget: string;
+  notes?: string;
+  status: "pending" | "quoted" | "accepted" | "declined" | "completed";
+  quoteAmount?: number;
+  quoteNotes?: string;
+  createdAt: number;
+  updatedAt: number;
 }
 
 export type CustomBuilderAction =
@@ -284,6 +407,10 @@ export type CustomBuilderAction =
   | { type: "SET_KEYCAP_DETAILS"; setName: string; price: number }
   | { type: "SET_STABILIZER"; stabilizer: StabilizerSelection }
   | { type: "TOGGLE_MOD"; mod: ComponentData }
+  | { type: "SET_KEY_OVERRIDE"; keyId: string; override: import("./keyCustomization").PerKeyOverride }
+  | { type: "SET_KEYS_OVERRIDE"; keyIds: string[]; override: import("./keyCustomization").PerKeyOverride }
+  | { type: "CLEAR_KEY_OVERRIDES"; keyIds?: string[] }
+  | { type: "SET_PER_KEY_OVERRIDES"; overrides: import("./keyCustomization").PerKeyOverrides }
   | { type: "RESET" };
 
 export interface CustomBuilderState {

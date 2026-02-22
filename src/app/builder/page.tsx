@@ -16,6 +16,9 @@ import { DEFAULT_VIEWER_CONFIG } from "@/lib/keyboard3d";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
 import type { BuilderPhase, BuilderQuestion, BuilderAnswer, BuildData } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useSubscription } from "@/hooks/useSubscription";
+import { PaywallModal } from "@/components/PaywallModal";
+import { UsageCounter } from "@/components/UsageCounter";
 
 type BuilderMode = "ai" | "custom";
 
@@ -54,6 +57,10 @@ function BuilderPageInner() {
   const [generating, setGenerating] = useState(false);
   const [tweaking, setTweaking] = useState(false);
 
+  // Paywall state
+  const [showPaywall, setShowPaywall] = useState(false);
+  const { isPro, isAtLimit, buildsUsed, buildsLimit } = useSubscription();
+
   // 3D viewer config
   const [viewerConfig, setViewerConfig] = useState<KeyboardViewerConfig>({
     ...DEFAULT_VIEWER_CONFIG,
@@ -67,6 +74,12 @@ function BuilderPageInner() {
 
   // Phase 1: Handle initial prompt
   const handleInitialSubmit = useCallback(async (prompt: string) => {
+    // Check paywall before generating
+    if (isAtLimit) {
+      setShowPaywall(true);
+      return;
+    }
+
     setInitialPrompt(prompt);
     setLoadingQuestions(true);
     setPhase("questions");
@@ -84,14 +97,19 @@ function BuilderPageInner() {
         const build = await generateBuild({ query: prompt });
         setBuildResult(build as unknown as BuildData);
         setPhase("result");
-      } catch {
-        setPhase("landing");
+      } catch (buildErr: unknown) {
+        if (buildErr instanceof Error && buildErr.message.includes("FREE_TIER_LIMIT_REACHED")) {
+          setShowPaywall(true);
+          setPhase("landing");
+        } else {
+          setPhase("landing");
+        }
       }
       setGenerating(false);
     } finally {
       setLoadingQuestions(false);
     }
-  }, [generateQuestions, generateBuild]);
+  }, [generateQuestions, generateBuild, isAtLimit]);
 
   // Auto-submit from ?q= query param (e.g. from homepage)
   const [autoSubmitted, setAutoSubmitted] = useState(false);
@@ -127,15 +145,23 @@ function BuilderPageInner() {
         });
         setBuildResult(result as unknown as BuildData);
         setPhase("result");
-      } catch (err) {
-        console.error("Failed to generate build:", err);
-        // Fallback to simple query
-        try {
-          const build = await generateBuild({ query: initialPrompt });
-          setBuildResult(build as unknown as BuildData);
-          setPhase("result");
-        } catch {
+      } catch (err: unknown) {
+        if (err instanceof Error && err.message.includes("FREE_TIER_LIMIT_REACHED")) {
+          setShowPaywall(true);
           setPhase("landing");
+        } else {
+          console.error("Failed to generate build:", err);
+          // Fallback to simple query
+          try {
+            const build = await generateBuild({ query: initialPrompt });
+            setBuildResult(build as unknown as BuildData);
+            setPhase("result");
+          } catch (fallbackErr: unknown) {
+            if (fallbackErr instanceof Error && fallbackErr.message.includes("FREE_TIER_LIMIT_REACHED")) {
+              setShowPaywall(true);
+            }
+            setPhase("landing");
+          }
         }
       } finally {
         setGenerating(false);
@@ -183,8 +209,12 @@ function BuilderPageInner() {
       });
       setBuildResult(result as unknown as BuildData);
       setSaved(false);
-    } catch (err) {
-      console.error("Failed to tweak build:", err);
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message.includes("FREE_TIER_LIMIT_REACHED")) {
+        setShowPaywall(true);
+      } else {
+        console.error("Failed to tweak build:", err);
+      }
     } finally {
       setTweaking(false);
     }
@@ -250,6 +280,13 @@ function BuilderPageInner() {
         {/* AI Advisor mode */}
         {mode === "ai" && (
           <>
+            {/* Usage counter for free users */}
+            {phase === "landing" && !isPro && isSignedIn && (
+              <div className="mb-4">
+                <UsageCounter buildsUsed={buildsUsed} buildsLimit={buildsLimit} />
+              </div>
+            )}
+
             {/* Phase 1: Landing */}
             {phase === "landing" && (
               <InitialPrompt onSubmit={handleInitialSubmit} loading={loadingQuestions} />
@@ -294,9 +331,12 @@ function BuilderPageInner() {
 
         {/* Custom Build mode */}
         {mode === "custom" && (
-          <CustomBuilder onViewerUpdate={handleViewerUpdate} />
+          <CustomBuilder onViewerUpdate={handleViewerUpdate} viewerConfig={viewerConfig} />
         )}
       </div>
+
+      {/* Paywall modal */}
+      <PaywallModal isOpen={showPaywall} onClose={() => setShowPaywall(false)} />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { ViewerLoadingState } from "./ViewerLoadingState";
 import { cn } from "@/lib/utils";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
+import type { SelectionMode } from "@/lib/keyCustomization";
 
 const KeyboardScene = dynamic(
   () => import("./KeyboardScene").then((mod) => ({ default: mod.KeyboardScene })),
@@ -59,6 +60,10 @@ interface KeyboardViewer3DProps {
   className?: string;
   interactive?: boolean;
   onKeyPress?: (legend: string) => void;
+  selectionMode?: SelectionMode;
+  selectedKeys?: Set<string>;
+  onKeySelect?: (keyId: string) => void;
+  onKeyPaint?: (keyId: string) => void;
 }
 
 export function KeyboardViewer3D({
@@ -69,6 +74,10 @@ export function KeyboardViewer3D({
   className = "",
   interactive = false,
   onKeyPress,
+  selectionMode,
+  selectedKeys,
+  onKeySelect,
+  onKeyPaint,
 }: KeyboardViewer3DProps) {
   const [webglSupported, setWebglSupported] = useState<boolean | null>(null);
 
@@ -116,11 +125,15 @@ export function KeyboardViewer3D({
           compactMode={compactMode}
           interactive={interactive}
           onKeyPress={onKeyPress}
+          selectionMode={selectionMode}
+          selectedKeys={selectedKeys}
+          onKeySelect={onKeySelect}
+          onKeyPaint={onKeyPaint}
         />
 
         {/* Interaction hint */}
         <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 text-[10px] text-white/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-          {interactive ? "Click keys \u00b7 Drag to rotate \u00b7 Scroll to zoom" : "Drag to rotate \u00b7 Scroll to zoom"}
+          {selectionMode ? "Click to select keys \u00b7 Drag to rotate" : interactive ? "Click keys \u00b7 Drag to rotate \u00b7 Scroll to zoom" : "Drag to rotate \u00b7 Scroll to zoom"}
         </div>
       </div>
     </WebGLErrorBoundary>

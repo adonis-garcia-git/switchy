@@ -1,0 +1,12 @@
+[
+  { "vendor": "Amazon", "affiliateTag": "switchy-20", "isActive": true },
+  { "vendor": "KBDfans", "affiliateTag": "switchy", "isActive": true },
+  { "vendor": "Divinikey", "affiliateTag": "switchy", "isActive": true },
+  { "vendor": "Cannonkeys", "affiliateTag": "switchy", "isActive": true },
+  { "vendor": "Drop", "affiliateTag": "switchy", "isActive": true },
+  { "vendor": "NovelKeys", "affiliateTag": "switchy", "isActive": true },
+  { "vendor": "Keychron", "affiliateTag": "switchy", "isActive": true },
+  { "vendor": "KPRepublic", "affiliateTag": "switchy", "isActive": true },
+  { "vendor": "Epomaker", "affiliateTag": "switchy", "isActive": true },
+  { "vendor": "Akko", "affiliateTag": "switchy", "isActive": true }
+]

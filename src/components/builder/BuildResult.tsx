@@ -6,6 +6,7 @@ import { ComponentCard } from "./ComponentCard";
 import { TweakInput } from "./TweakInput";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { BuildQuoteModal } from "@/components/BuildQuoteModal";
 import type { BuildData } from "@/lib/types";
 
 interface BuildResultProps {
@@ -28,6 +29,7 @@ export function BuildResult({
   tweaking,
 }: BuildResultProps) {
   const [copied, setCopied] = useState(false);
+  const [showQuoteModal, setShowQuoteModal] = useState(false);
 
   const handleCopy = async () => {
     const text = `${build.buildName}\n${build.summary}\n\nComponents:\n- Keyboard: ${build.components.keyboardKit?.name} ($${build.components.keyboardKit?.price})\n- Switches: ${build.components.switches?.name} (${build.components.switches?.quantity}x @ $${build.components.switches?.priceEach})\n- Keycaps: ${build.components.keycaps?.name} ($${build.components.keycaps?.price})\n- Stabilizers: ${build.components.stabilizers?.name} ($${build.components.stabilizers?.price})\n\nTotal: $${build.estimatedTotal}\nSound: ${build.soundProfileExpected}\nDifficulty: ${build.buildDifficulty}`;
@@ -212,6 +214,38 @@ export function BuildResult({
           </Button>
         )}
       </div>
+
+      {/* Have This Built section */}
+      <div className="border-t border-border-subtle/30 pt-5">
+        <div className="text-center">
+          <button
+            onClick={() => setShowQuoteModal(true)}
+            className={cn(
+              "inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold",
+              "bg-bg-elevated border border-border-default text-text-secondary",
+              "hover:border-border-accent hover:text-accent",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+              "active:scale-[0.97]",
+              "transition-[border-color,color,transform] duration-150"
+            )}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17l-5.69 3.29a.75.75 0 01-1.12-.67V4.44a.75.75 0 01.37-.64l5.26-3.04a.75.75 0 01.75 0l5.26 3.04a.75.75 0 01.37.64v13.35a.75.75 0 01-1.12.67l-5.69-3.29a.75.75 0 00-.75 0z" />
+            </svg>
+            Have This Built For Me
+          </button>
+          <p className="text-[10px] text-text-muted mt-2">
+            Get a quote from an expert builder
+          </p>
+        </div>
+      </div>
+
+      {/* Build Quote Modal */}
+      <BuildQuoteModal
+        isOpen={showQuoteModal}
+        onClose={() => setShowQuoteModal(false)}
+        buildSpec={build}
+      />
 
       {/* Tweak input */}
       {onTweak && (

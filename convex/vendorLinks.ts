@@ -1,15 +1,43 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-// getByProduct() - Get all vendor links for a product name
+// getByProduct() - Get all vendor links for a product name, enriched with affiliate URLs
 export const getByProduct = query({
   args: { productName: v.string() },
   returns: v.array(v.any()),
   handler: async (ctx, args) => {
-    return await ctx.db
+    const links = await ctx.db
       .query("vendorLinks")
       .withIndex("by_productName", (q) => q.eq("productName", args.productName))
       .collect();
+
+    // Fetch all active affiliate configs
+    const affiliateConfigs = await ctx.db
+      .query("affiliateConfig")
+      .withIndex("by_isActive", (q) => q.eq("isActive", true))
+      .collect();
+
+    // Build a lookup map by vendor name
+    const configByVendor = new Map(
+      affiliateConfigs.map((c) => [c.vendor, c])
+    );
+
+    // Enrich each link with affiliate URL if config exists
+    return links.map((link) => {
+      const config = configByVendor.get(link.vendor);
+      if (!config) {
+        return { ...link, hasAffiliate: false, affiliateUrl: null };
+      }
+
+      const separator = link.url.includes("?") ? "&" : "?";
+      const isAmazon = link.url.toLowerCase().includes("amazon");
+      const param = isAmazon
+        ? `tag=${config.affiliateTag}`
+        : `ref=${config.affiliateTag}`;
+      const affiliateUrl = `${link.url}${separator}${param}`;
+
+      return { ...link, hasAffiliate: true, affiliateUrl };
+    });
   },
 });
 

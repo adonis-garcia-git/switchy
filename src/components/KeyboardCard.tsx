@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { cn, formatPriceWhole, generatePurchaseUrl } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
+import { SponsoredBadge } from "@/components/SponsoredBadge";
 
 interface KeyboardData {
   _id: string;
@@ -22,10 +23,17 @@ interface KeyboardData {
   imageUrl?: string;
 }
 
-export function KeyboardCard({ keyboard }: { keyboard: KeyboardData }) {
+export function KeyboardCard({ keyboard, sponsored }: { keyboard: KeyboardData; sponsored?: boolean }) {
   return (
     <Link href={`/keyboards/${keyboard._id}`} className="block group">
-      <div className="rounded-xl border border-border-subtle bg-bg-surface p-5 shadow-surface hover:border-border-accent hover:glow-accent transition-[border-color,box-shadow] duration-200">
+      <div className="relative rounded-xl border border-border-subtle bg-bg-surface p-5 shadow-surface hover:border-border-accent hover:glow-accent transition-[border-color,box-shadow] duration-200">
+        {/* Sponsored badge */}
+        {sponsored && (
+          <div className="absolute top-3 left-3 z-10">
+            <SponsoredBadge />
+          </div>
+        )}
+
         {/* Product image */}
         <div className="aspect-[16/10] rounded-lg overflow-hidden mb-4 bg-bg-elevated relative -mx-5 -mt-5 rounded-t-xl rounded-b-none">
           <img

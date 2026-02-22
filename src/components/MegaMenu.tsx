@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { buildSwitchUrl, buildKeyboardUrl } from "@/lib/filterParams";
+import { buildSwitchUrl, buildKeyboardUrl, buildKeycapUrl, buildAccessoryUrl } from "@/lib/filterParams";
 
 interface MegaMenuLink {
   label: string;
@@ -94,6 +94,84 @@ export const KEYBOARDS_COLUMNS: MegaMenuColumnData[] = [
       { label: "Mode", href: buildKeyboardUrl({ brand: "Mode" }) },
       { label: "Monsgeek", href: buildKeyboardUrl({ brand: "Monsgeek" }) },
       { label: "Akko", href: buildKeyboardUrl({ brand: "Akko" }) },
+    ],
+  },
+];
+
+export const KEYCAPS_COLUMNS: MegaMenuColumnData[] = [
+  {
+    heading: "Profile",
+    links: [
+      { label: "Cherry", href: buildKeycapUrl({ profile: "Cherry" }) },
+      { label: "SA", href: buildKeycapUrl({ profile: "SA" }) },
+      { label: "MT3", href: buildKeycapUrl({ profile: "MT3" }) },
+      { label: "DSA", href: buildKeycapUrl({ profile: "DSA" }) },
+      { label: "OEM", href: buildKeycapUrl({ profile: "OEM" }) },
+      { label: "KAT", href: buildKeycapUrl({ profile: "KAT" }) },
+    ],
+  },
+  {
+    heading: "Material",
+    links: [
+      { label: "PBT Dye-Sub", href: buildKeycapUrl({ material: "PBT" }) },
+      { label: "ABS Doubleshot", href: buildKeycapUrl({ material: "ABS" }) },
+      { label: "POM", href: buildKeycapUrl({ material: "POM" }) },
+    ],
+  },
+  {
+    heading: "Budget",
+    links: [
+      { label: "Under $50", href: buildKeycapUrl({ maxPrice: 50 }) },
+      { label: "$50 – $100", href: buildKeycapUrl({ minPrice: 50, maxPrice: 100 }) },
+      { label: "$100 – $200", href: buildKeycapUrl({ minPrice: 100, maxPrice: 200 }) },
+      { label: "$200+", href: buildKeycapUrl({ minPrice: 200 }) },
+    ],
+  },
+  {
+    heading: "Top Brands",
+    links: [
+      { label: "GMK", href: buildKeycapUrl({ brand: "GMK" }) },
+      { label: "Drop", href: buildKeycapUrl({ brand: "Drop" }) },
+      { label: "Akko", href: buildKeycapUrl({ brand: "Akko" }) },
+      { label: "PBTfans", href: buildKeycapUrl({ brand: "PBTfans" }) },
+      { label: "ePBT", href: buildKeycapUrl({ brand: "ePBT" }) },
+      { label: "Osume", href: buildKeycapUrl({ brand: "Osume" }) },
+    ],
+  },
+];
+
+export const ACCESSORIES_COLUMNS: MegaMenuColumnData[] = [
+  {
+    heading: "Essentials",
+    links: [
+      { label: "Stabilizers", href: buildAccessoryUrl({ subcategory: "stabilizer" }) },
+      { label: "Springs", href: buildAccessoryUrl({ subcategory: "spring" }) },
+      { label: "Lubricants", href: buildAccessoryUrl({ subcategory: "lube" }) },
+      { label: "Switch Films", href: buildAccessoryUrl({ subcategory: "film" }) },
+    ],
+  },
+  {
+    heading: "Foam & Mods",
+    links: [
+      { label: "Foam & Dampening", href: buildAccessoryUrl({ subcategory: "foam" }) },
+      { label: "Cables", href: buildAccessoryUrl({ subcategory: "cable" }) },
+      { label: "Desk Mats", href: buildAccessoryUrl({ subcategory: "deskmat" }) },
+    ],
+  },
+  {
+    heading: "Tools",
+    links: [
+      { label: "Switch Openers", href: "/accessories?subcategory=tool" },
+      { label: "Keycap Pullers", href: "/accessories?subcategory=tool" },
+      { label: "Lube Stations", href: "/accessories?subcategory=tool" },
+      { label: "All Tools", href: buildAccessoryUrl({ subcategory: "tool" }) },
+    ],
+  },
+  {
+    heading: "Comfort",
+    links: [
+      { label: "Wrist Rests", href: buildAccessoryUrl({ subcategory: "wrist-rest" }) },
+      { label: "Covers & Cases", href: buildAccessoryUrl({ subcategory: "cover" }) },
     ],
   },
 ];

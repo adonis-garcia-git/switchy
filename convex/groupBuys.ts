@@ -14,6 +14,46 @@ export const listByUser = query({
   },
 });
 
+export const getStats = query({
+  args: {},
+  returns: v.any(),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+    const entries = await ctx.db
+      .query("groupBuys")
+      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .collect();
+
+    const active = entries.filter((e) => e.status !== "delivered");
+    const totalPending = active.reduce((sum, e) => sum + e.cost, 0);
+    const now = new Date();
+    const overdue = active.filter((e) => new Date(e.estimatedShipDate) < now);
+    const avgWaitDays = active.length > 0
+      ? Math.round(active.reduce((sum, e) => {
+          const ordered = new Date(e.orderDate).getTime();
+          return sum + (now.getTime() - ordered) / (1000 * 60 * 60 * 24);
+        }, 0) / active.length)
+      : 0;
+
+    // Spending by product type
+    const spendingByType: Record<string, number> = {};
+    for (const e of entries) {
+      spendingByType[e.productType] = (spendingByType[e.productType] || 0) + e.cost;
+    }
+
+    return {
+      totalPending,
+      activeCount: active.length,
+      avgWaitDays,
+      overdueCount: overdue.length,
+      totalEntries: entries.length,
+      deliveredCount: entries.length - active.length,
+      spendingByType,
+    };
+  },
+});
+
 export const create = mutation({
   args: {
     productName: v.string(),
@@ -34,6 +74,9 @@ export const create = mutation({
       v.literal("accessories")
     ),
     notes: v.string(),
+    trackingUrl: v.optional(v.string()),
+    trackingNumber: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
   },
   returns: v.id("groupBuys"),
   handler: async (ctx, args) => {
@@ -71,6 +114,9 @@ export const update = mutation({
       )
     ),
     notes: v.optional(v.string()),
+    trackingUrl: v.optional(v.string()),
+    trackingNumber: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
   },
   returns: v.null(),
   handler: async (ctx, args) => {

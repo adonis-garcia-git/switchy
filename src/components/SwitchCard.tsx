@@ -5,6 +5,7 @@ import { SWITCH_TYPE_COLORS } from "@/lib/constants";
 import { cn, formatPrice, generatePurchaseUrl } from "@/lib/utils";
 import { SoundProfile } from "./SoundProfile";
 import { Badge } from "./ui/Badge";
+import { SponsoredBadge } from "./SponsoredBadge";
 import { Id } from "../../convex/_generated/dataModel";
 
 interface SwitchData {
@@ -27,6 +28,7 @@ interface SwitchCardProps {
   compareMode?: boolean;
   isSelected?: boolean;
   onCompareToggle?: (id: Id<"switches">) => void;
+  sponsored?: boolean;
 }
 
 function StarRating({ rating }: { rating: number }) {
@@ -59,6 +61,7 @@ export function SwitchCard({
   compareMode,
   isSelected,
   onCompareToggle,
+  sponsored,
 }: SwitchCardProps) {
   return (
     <div
@@ -71,6 +74,13 @@ export function SwitchCard({
           : "border-border-subtle"
       )}
     >
+      {/* Sponsored badge */}
+      {sponsored && (
+        <div className="absolute top-3 left-3 z-10">
+          <SponsoredBadge />
+        </div>
+      )}
+
       {/* Compare checkbox */}
       {compareMode && (
         <button

@@ -9,6 +9,7 @@ import { ToneMappingMode } from "postprocessing";
 import { KeyboardModel } from "./KeyboardModel";
 import { SceneEnvironment } from "./SceneEnvironment";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
+import type { SelectionMode } from "@/lib/keyCustomization";
 
 interface KeyboardSceneProps {
   config: KeyboardViewerConfig;
@@ -16,6 +17,10 @@ interface KeyboardSceneProps {
   compactMode?: boolean;
   interactive?: boolean;
   onKeyPress?: (legend: string) => void;
+  selectionMode?: SelectionMode;
+  selectedKeys?: Set<string>;
+  onKeySelect?: (keyId: string) => void;
+  onKeyPaint?: (keyId: string) => void;
 }
 
 export function KeyboardScene({
@@ -24,14 +29,18 @@ export function KeyboardScene({
   compactMode = false,
   interactive = false,
   onKeyPress,
+  selectionMode,
+  selectedKeys,
+  onKeySelect,
+  onKeyPaint,
 }: KeyboardSceneProps) {
   // Continuous rendering when RGB is animating or interactive
   const needsAnimation = useMemo(() => {
-    if (interactive) return true;
+    if (interactive || selectionMode) return true;
     if (config.hasRGB && config.rgbMode && config.rgbMode !== "static") return true;
     if (config.cameraPreset && config.cameraPreset !== "default") return true;
     return false;
-  }, [interactive, config.hasRGB, config.rgbMode, config.cameraPreset]);
+  }, [interactive, selectionMode, config.hasRGB, config.rgbMode, config.cameraPreset]);
 
   const frameloop = needsAnimation || autoRotate ? "always" : "demand";
 
@@ -49,6 +58,10 @@ export function KeyboardScene({
           config={config}
           interactive={interactive}
           onKeyPress={onKeyPress}
+          selectionMode={selectionMode}
+          selectedKeys={selectedKeys}
+          onKeySelect={onKeySelect}
+          onKeyPaint={onKeyPaint}
         />
 
         {/* Scene environment with lighting, HDRI, desk, camera controller */}

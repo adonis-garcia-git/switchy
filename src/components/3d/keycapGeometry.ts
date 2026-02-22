@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
-export type KeycapProfile = "cherry" | "sa" | "dsa" | "mt3";
+export type KeycapProfile = "cherry" | "sa" | "dsa" | "mt3" | "oem" | "kat" | "xda";
 
 interface ProfileParams {
   dishType: "cylindrical" | "spherical";
@@ -37,6 +37,24 @@ const PROFILES: Record<KeycapProfile, ProfileParams> = {
     dishDepth: [0.11, 0.10, 0.09, 0.08, 0.07], // deep with steep taper
     draftAngle: 0.122,    // ~7 degrees
     topScale: 0.78,
+  },
+  oem: {
+    dishType: "cylindrical",
+    dishDepth: [0.07, 0.06, 0.05, 0.05, 0.04], // cylindrical, slight taper
+    draftAngle: 0.04,     // ~2.3 degrees
+    topScale: 0.86,
+  },
+  kat: {
+    dishType: "spherical",
+    dishDepth: [0.08, 0.07, 0.06, 0.06, 0.05], // spherical, medium scoop
+    draftAngle: 0.065,    // ~3.7 degrees
+    topScale: 0.83,
+  },
+  xda: {
+    dishType: "spherical",
+    dishDepth: [0.03, 0.03, 0.03, 0.03, 0.03], // uniform flat spherical
+    draftAngle: 0.045,    // ~2.6 degrees
+    topScale: 0.87,
   },
 };
 

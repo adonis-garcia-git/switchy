@@ -1,50 +1,37 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { MegaMenuTrigger, SWITCHES_COLUMNS, KEYBOARDS_COLUMNS } from "@/components/MegaMenu";
-
-const ACCESSORIES_ITEMS = [
-  { href: "/glossary", label: "Glossary" },
-  { href: "/group-buys", label: "Group Buys" },
-  { href: "/accessories", label: "Accessories" },
-];
+import { MegaMenuTrigger, SWITCHES_COLUMNS, KEYBOARDS_COLUMNS, KEYCAPS_COLUMNS, ACCESSORIES_COLUMNS } from "@/components/MegaMenu";
+import { useSubscription } from "@/hooks/useSubscription";
+import { ProBadge } from "@/components/ProBadge";
+import { UsageCounter } from "@/components/UsageCounter";
 
 export function Navigation() {
   const pathname = usePathname();
   const { isSignedIn } = useUser();
+  const { isPro, buildsUsed, buildsLimit, isLoading: subLoading } = useSubscription();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [accessoriesOpen, setAccessoriesOpen] = useState(false);
   const [switchesMobileExpanded, setSwitchesMobileExpanded] = useState(false);
   const [keyboardsMobileExpanded, setKeyboardsMobileExpanded] = useState(false);
-  const accessoriesRef = useRef<HTMLDivElement>(null);
-
-  // Close accessories dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (accessoriesRef.current && !accessoriesRef.current.contains(event.target as Node)) {
-        setAccessoriesOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const [keycapsMobileExpanded, setKeycapsMobileExpanded] = useState(false);
+  const [accessoriesMobileExpanded, setAccessoriesMobileExpanded] = useState(false);
 
   // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
     setSwitchesMobileExpanded(false);
     setKeyboardsMobileExpanded(false);
+    setKeycapsMobileExpanded(false);
+    setAccessoriesMobileExpanded(false);
   }, [pathname]);
 
   const isNavActive = (href: string) =>
     pathname === href || (href !== "/" && pathname.startsWith(href));
-
-  const isAccessoriesActive = ACCESSORIES_ITEMS.some((item) => isNavActive(item.href));
 
   return (
     <>
@@ -52,13 +39,13 @@ export function Navigation() {
       <header className="fixed top-0 left-0 right-0 h-16 bg-black/95 backdrop-blur-xl border-b border-white/10 z-50">
         <div className="h-full max-w-[1440px] mx-auto px-4 sm:px-6 flex items-center justify-between">
           {/* Left: Logo + Nav Links */}
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center shrink-0">
               <img src="/logo.png" alt="Switchy" className="h-8 w-auto" />
             </Link>
 
             {/* Desktop Nav Links */}
-            <nav className="hidden lg:flex items-center gap-1.5 font-[family-name:var(--font-outfit)]">
+            <nav className="hidden lg:flex items-center gap-1 font-[family-name:var(--font-outfit)]">
               {/* Switches — Mega Menu */}
               <MegaMenuTrigger
                 label="Switches"
@@ -75,98 +62,104 @@ export function Navigation() {
                 isActive={isNavActive("/keyboards")}
               />
 
-              {/* Accessories Dropdown */}
-              <div
-                ref={accessoriesRef}
-                className="relative"
-                onMouseEnter={() => setAccessoriesOpen(true)}
-                onMouseLeave={() => setAccessoriesOpen(false)}
-              >
-                <button
-                  onClick={() => setAccessoriesOpen(!accessoriesOpen)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Escape') setAccessoriesOpen(false);
-                  }}
-                  className={cn(
-                    "px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color,transform] duration-150 flex items-center gap-1.5",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
-                    isAccessoriesActive
-                      ? "bg-accent-dim border border-accent/20 text-accent"
-                      : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white active:scale-[0.97]"
-                  )}
-                >
-                  Accessories
-                  <svg
-                    className={cn(
-                      "w-3.5 h-3.5 transition-transform duration-150",
-                      accessoriesOpen && "rotate-180"
-                    )}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
+              {/* Keycaps — Mega Menu */}
+              <MegaMenuTrigger
+                label="Keycaps"
+                href="/keycaps"
+                columns={KEYCAPS_COLUMNS}
+                isActive={isNavActive("/keycaps")}
+              />
 
-                {/* Dropdown Panel */}
-                {accessoriesOpen && (
-                  <div className="absolute top-full left-0 mt-2 w-56 rounded-2xl bg-neutral-900 border border-white/10 shadow-floating p-2">
-                    {ACCESSORIES_ITEMS.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setAccessoriesOpen(false)}
-                        className={cn(
-                          "flex items-center px-4 py-2.5 rounded-xl text-sm font-medium transition-[background-color,color] duration-150",
-                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
-                          isNavActive(item.href)
-                            ? "text-accent bg-accent-dim"
-                            : "text-white/60 hover:text-white hover:bg-white/10"
-                        )}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+              {/* Accessories — Mega Menu */}
+              <MegaMenuTrigger
+                label="Accessories"
+                href="/accessories"
+                columns={ACCESSORIES_COLUMNS}
+                isActive={isNavActive("/accessories")}
+              />
 
-              {/* Builder CTA */}
+              {/* Glossary — Standalone link */}
               <Link
-                href="/builder"
+                href="/glossary"
                 className={cn(
-                  "px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color,transform] duration-150",
+                  "px-3.5 py-2 rounded-2xl text-sm font-medium transition-[background-color,color,transform] duration-150",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
-                  isNavActive("/builder")
-                    ? "bg-accent text-bg-primary shadow-accent-sm scale-[0.97]"
-                    : "bg-accent text-bg-primary shadow-accent-sm hover:bg-accent-hover active:scale-[0.97]"
+                  isNavActive("/glossary")
+                    ? "bg-accent-dim border border-accent/20 text-accent"
+                    : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white active:scale-[0.97]"
                 )}
               >
-                Builder
+                Glossary
               </Link>
 
-              {/* My Builds (auth-gated) */}
-              {isSignedIn && (
-                <Link
-                  href="/builds"
-                  className={cn(
-                    "px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color,transform] duration-150",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
-                    isNavActive("/builds")
-                      ? "bg-accent-dim border border-accent/20 text-accent"
-                      : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white active:scale-[0.97]"
-                  )}
-                >
-                  My Builds
-                </Link>
-              )}
+              {/* Group Buys — Standalone link */}
+              <Link
+                href="/group-buys"
+                className={cn(
+                  "px-3.5 py-2 rounded-2xl text-sm font-medium transition-[background-color,color,transform] duration-150",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
+                  isNavActive("/group-buys")
+                    ? "bg-accent-dim border border-accent/20 text-accent"
+                    : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white active:scale-[0.97]"
+                )}
+              >
+                Group Buys
+              </Link>
             </nav>
           </div>
 
-          {/* Right: Auth */}
+          {/* Right: Builder CTA + My Builds + Auth */}
           <div className="flex items-center gap-3">
+            {/* Builder CTA — desktop only */}
+            <Link
+              href="/builder"
+              className={cn(
+                "hidden lg:inline-flex px-4 py-2 rounded-2xl text-sm font-medium transition-[background-color,color,transform] duration-150",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
+                isNavActive("/builder")
+                  ? "bg-accent text-bg-primary shadow-accent-sm scale-[0.97]"
+                  : "bg-accent text-bg-primary shadow-accent-sm hover:bg-accent-hover active:scale-[0.97]"
+              )}
+            >
+              Builder
+            </Link>
+
+            {/* My Builds — desktop only, auth-gated */}
+            {isSignedIn && (
+              <Link
+                href="/builds"
+                className={cn(
+                  "hidden lg:inline-flex px-3.5 py-2 rounded-2xl text-sm font-medium transition-[background-color,color,transform] duration-150",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
+                  isNavActive("/builds")
+                    ? "bg-accent-dim border border-accent/20 text-accent"
+                    : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white active:scale-[0.97]"
+                )}
+              >
+                My Builds
+              </Link>
+            )}
+
             <ThemeToggle />
+
+            {/* Subscription status */}
+            {isSignedIn && !subLoading && (
+              <div className="hidden sm:flex items-center gap-2">
+                {isPro ? (
+                  <ProBadge />
+                ) : (
+                  <>
+                    <UsageCounter compact buildsUsed={buildsUsed} buildsLimit={buildsLimit} />
+                    <Link
+                      href="/pricing"
+                      className="text-[10px] font-semibold text-accent hover:text-accent-hover transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded"
+                    >
+                      Upgrade
+                    </Link>
+                  </>
+                )}
+              </div>
+            )}
 
             {/* Mobile hamburger */}
             <button
@@ -207,137 +200,77 @@ export function Navigation() {
           <div className="relative bg-neutral-900 border-b border-white/10 shadow-floating max-h-[calc(100vh-4rem)] overflow-y-auto">
             <nav className="max-w-[1440px] mx-auto px-4 py-3 space-y-0.5 font-[family-name:var(--font-outfit)]">
               {/* Switches — Expandable */}
-              <div>
-                <button
-                  onClick={() => setSwitchesMobileExpanded(!switchesMobileExpanded)}
-                  className={cn(
-                    "flex items-center justify-between w-full px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color] duration-150",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
-                    isNavActive("/switches")
-                      ? "text-accent bg-accent-dim border border-accent/20"
-                      : "text-white/60 hover:text-white hover:bg-white/10"
-                  )}
-                >
-                  Switches
-                  <svg
-                    className={cn(
-                      "w-3.5 h-3.5 transition-transform duration-150",
-                      switchesMobileExpanded && "rotate-180"
-                    )}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {switchesMobileExpanded && (
-                  <div className="ml-3 mt-1 mb-2">
-                    <Link
-                      href="/switches"
-                      onClick={() => setMobileOpen(false)}
-                      className="flex items-center px-5 py-2 rounded-xl text-sm font-medium text-accent hover:bg-white/5 transition-colors duration-150"
-                    >
-                      View all switches &rarr;
-                    </Link>
-                    {SWITCHES_COLUMNS.map((col) => (
-                      <div key={col.heading} className="mt-2">
-                        <p className="px-5 text-[10px] text-white/40 uppercase tracking-wider font-semibold mb-1">
-                          {col.heading}
-                        </p>
-                        {col.links.map((link) => (
-                          <Link
-                            key={link.href}
-                            href={link.href}
-                            onClick={() => setMobileOpen(false)}
-                            className="flex items-center px-5 py-1.5 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/5 transition-colors duration-150"
-                          >
-                            {link.label}
-                          </Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <MobileExpandableSection
+                label="Switches"
+                href="/switches"
+                columns={SWITCHES_COLUMNS}
+                expanded={switchesMobileExpanded}
+                onToggle={() => setSwitchesMobileExpanded(!switchesMobileExpanded)}
+                isActive={isNavActive("/switches")}
+                onClose={() => setMobileOpen(false)}
+              />
 
               {/* Keyboards — Expandable */}
-              <div>
-                <button
-                  onClick={() => setKeyboardsMobileExpanded(!keyboardsMobileExpanded)}
-                  className={cn(
-                    "flex items-center justify-between w-full px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color] duration-150",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
-                    isNavActive("/keyboards")
-                      ? "text-accent bg-accent-dim border border-accent/20"
-                      : "text-white/60 hover:text-white hover:bg-white/10"
-                  )}
-                >
-                  Keyboards
-                  <svg
-                    className={cn(
-                      "w-3.5 h-3.5 transition-transform duration-150",
-                      keyboardsMobileExpanded && "rotate-180"
-                    )}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {keyboardsMobileExpanded && (
-                  <div className="ml-3 mt-1 mb-2">
-                    <Link
-                      href="/keyboards"
-                      onClick={() => setMobileOpen(false)}
-                      className="flex items-center px-5 py-2 rounded-xl text-sm font-medium text-accent hover:bg-white/5 transition-colors duration-150"
-                    >
-                      View all keyboards &rarr;
-                    </Link>
-                    {KEYBOARDS_COLUMNS.map((col) => (
-                      <div key={col.heading} className="mt-2">
-                        <p className="px-5 text-[10px] text-white/40 uppercase tracking-wider font-semibold mb-1">
-                          {col.heading}
-                        </p>
-                        {col.links.map((link) => (
-                          <Link
-                            key={link.href}
-                            href={link.href}
-                            onClick={() => setMobileOpen(false)}
-                            className="flex items-center px-5 py-1.5 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/5 transition-colors duration-150"
-                          >
-                            {link.label}
-                          </Link>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <MobileExpandableSection
+                label="Keyboards"
+                href="/keyboards"
+                columns={KEYBOARDS_COLUMNS}
+                expanded={keyboardsMobileExpanded}
+                onToggle={() => setKeyboardsMobileExpanded(!keyboardsMobileExpanded)}
+                isActive={isNavActive("/keyboards")}
+                onClose={() => setMobileOpen(false)}
+              />
 
-              {/* Accessories Section */}
-              <div className="pt-3 pb-1">
-                <p className="px-5 text-[10px] text-white/40 uppercase tracking-wider font-semibold">
-                  Accessories
-                </p>
-              </div>
-              {ACCESSORIES_ITEMS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={cn(
-                    "flex items-center px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color] duration-150 ml-2",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
-                    isNavActive(item.href)
-                      ? "text-accent bg-accent-dim border border-accent/20"
-                      : "text-white/60 hover:text-white hover:bg-white/10"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {/* Keycaps — Expandable */}
+              <MobileExpandableSection
+                label="Keycaps"
+                href="/keycaps"
+                columns={KEYCAPS_COLUMNS}
+                expanded={keycapsMobileExpanded}
+                onToggle={() => setKeycapsMobileExpanded(!keycapsMobileExpanded)}
+                isActive={isNavActive("/keycaps")}
+                onClose={() => setMobileOpen(false)}
+              />
+
+              {/* Accessories — Expandable */}
+              <MobileExpandableSection
+                label="Accessories"
+                href="/accessories"
+                columns={ACCESSORIES_COLUMNS}
+                expanded={accessoriesMobileExpanded}
+                onToggle={() => setAccessoriesMobileExpanded(!accessoriesMobileExpanded)}
+                isActive={isNavActive("/accessories")}
+                onClose={() => setMobileOpen(false)}
+              />
+
+              {/* Standalone links */}
+              <Link
+                href="/glossary"
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "flex items-center px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color] duration-150",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
+                  isNavActive("/glossary")
+                    ? "text-accent bg-accent-dim border border-accent/20"
+                    : "text-white/60 hover:text-white hover:bg-white/10"
+                )}
+              >
+                Glossary
+              </Link>
+
+              <Link
+                href="/group-buys"
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "flex items-center px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color] duration-150",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
+                  isNavActive("/group-buys")
+                    ? "text-accent bg-accent-dim border border-accent/20"
+                    : "text-white/60 hover:text-white hover:bg-white/10"
+                )}
+              >
+                Group Buys
+              </Link>
 
               {/* Builder CTA */}
               <div className="pt-2">
@@ -349,6 +282,29 @@ export function Navigation() {
                   Builder
                 </Link>
               </div>
+
+              {/* Pricing */}
+              <Link
+                href="/pricing"
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "flex items-center px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color] duration-150",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
+                  isNavActive("/pricing")
+                    ? "text-accent bg-accent-dim border border-accent/20"
+                    : "text-white/60 hover:text-white hover:bg-white/10"
+                )}
+              >
+                Pricing
+                {isSignedIn && isPro && <span className="ml-2"><ProBadge /></span>}
+              </Link>
+
+              {/* Mobile subscription status */}
+              {isSignedIn && !subLoading && !isPro && (
+                <div className="px-5 py-2">
+                  <UsageCounter buildsUsed={buildsUsed} buildsLimit={buildsLimit} />
+                </div>
+              )}
 
               {/* My Builds (auth-gated) */}
               {isSignedIn && (
@@ -371,5 +327,81 @@ export function Navigation() {
         </div>
       )}
     </>
+  );
+}
+
+// ── Mobile Expandable Section ──
+
+function MobileExpandableSection({
+  label,
+  href,
+  columns,
+  expanded,
+  onToggle,
+  isActive,
+  onClose,
+}: {
+  label: string;
+  href: string;
+  columns: { heading: string; links: { label: string; href: string }[] }[];
+  expanded: boolean;
+  onToggle: () => void;
+  isActive: boolean;
+  onClose: () => void;
+}) {
+  return (
+    <div>
+      <button
+        onClick={onToggle}
+        className={cn(
+          "flex items-center justify-between w-full px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color] duration-150",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
+          isActive
+            ? "text-accent bg-accent-dim border border-accent/20"
+            : "text-white/60 hover:text-white hover:bg-white/10"
+        )}
+      >
+        {label}
+        <svg
+          className={cn(
+            "w-3.5 h-3.5 transition-transform duration-150",
+            expanded && "rotate-180"
+          )}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {expanded && (
+        <div className="ml-3 mt-1 mb-2">
+          <Link
+            href={href}
+            onClick={onClose}
+            className="flex items-center px-5 py-2 rounded-xl text-sm font-medium text-accent hover:bg-white/5 transition-colors duration-150"
+          >
+            View all {label.toLowerCase()} &rarr;
+          </Link>
+          {columns.map((col) => (
+            <div key={col.heading} className="mt-2">
+              <p className="px-5 text-[10px] text-white/40 uppercase tracking-wider font-semibold mb-1">
+                {col.heading}
+              </p>
+              {col.links.map((link) => (
+                <Link
+                  key={link.href + link.label}
+                  href={link.href}
+                  onClick={onClose}
+                  className="flex items-center px-5 py-1.5 rounded-xl text-sm text-white/60 hover:text-white hover:bg-white/5 transition-colors duration-150"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

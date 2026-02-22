@@ -3,564 +3,775 @@
     "term": "Linear Switch",
     "definition": "A switch type that moves straight down without any bump or click. Known for smooth keypresses, making them popular for gaming and fast typing.",
     "category": "switches",
-    "relatedTerms": ["Tactile Switch", "Clicky Switch", "Actuation Force"]
+    "relatedTerms": ["Tactile Switch", "Clicky Switch", "Actuation Force"],
+    "difficulty": "beginner",
+    "example": "I chose Gateron Yellow linear switches for my first build because I wanted a smooth, quiet gaming board."
   },
   {
     "term": "Tactile Switch",
     "definition": "A switch with a noticeable bump partway through the keypress that lets you feel when the key registers. Popular for typing because the bump provides feedback without being noisy.",
     "category": "switches",
-    "relatedTerms": ["Linear Switch", "Clicky Switch", "Actuation Force"]
+    "relatedTerms": ["Linear Switch", "Clicky Switch", "Actuation Force"],
+    "difficulty": "beginner",
+    "example": "I switched to tactile switches for programming because the bump helps me know when a keypress registers without bottoming out."
   },
   {
     "term": "Clicky Switch",
     "definition": "A switch that produces an audible click sound along with a tactile bump when pressed. Satisfying to type on but not recommended for shared or quiet spaces.",
     "category": "switches",
-    "relatedTerms": ["Tactile Switch", "Linear Switch", "Sound Profile"]
+    "relatedTerms": ["Tactile Switch", "Linear Switch", "Sound Profile"],
+    "difficulty": "beginner",
+    "example": "My coworkers asked me to stop using clicky switches in the office because the clicking was driving them nuts."
   },
   {
     "term": "Silent Switch",
     "definition": "A switch with built-in rubber dampeners that reduce noise on the downstroke and upstroke. Ideal for office use and shared spaces where noise is a concern.",
     "category": "switches",
-    "relatedTerms": ["Linear Switch", "Tactile Switch", "Muted"]
+    "relatedTerms": ["Linear Switch", "Tactile Switch", "Muted"],
+    "difficulty": "beginner",
+    "example": "I swapped in Cherry MX Silent Reds because I needed a silent switch for my office."
   },
   {
     "term": "Hall Effect Switch",
     "definition": "A switch that uses magnets and sensors instead of physical metal contacts to register keypresses. Allows adjustable actuation points and has virtually unlimited lifespan since there are no parts that physically touch to wear out.",
     "category": "switches",
-    "relatedTerms": ["Actuation Force", "Travel Distance", "Hot-swap"]
+    "relatedTerms": ["Actuation Force", "Travel Distance", "Hot-swap"],
+    "difficulty": "intermediate",
+    "example": "I got a Hall Effect board so I could set the actuation point to 0.1mm for rapid trigger in competitive FPS games."
   },
   {
     "term": "Stem",
     "definition": "The cross-shaped (+) part of a switch that moves up and down and connects to the keycap. The stem's shape determines whether a switch is linear, tactile, or clicky, and its material affects smoothness and sound.",
     "category": "switches",
-    "relatedTerms": ["Housing", "Spring", "MX-compatible", "Long Pole"]
+    "relatedTerms": ["Housing", "Spring", "MX-compatible", "Long Pole"],
+    "difficulty": "intermediate",
+    "example": "The stem on this switch is made of POM, which gives it a naturally smoother feel than nylon stems."
   },
   {
     "term": "Housing",
     "definition": "The outer shell of a switch, made up of a top and bottom piece, that holds the stem and spring. Housing material (nylon, polycarbonate, etc.) significantly affects the switch's sound and feel.",
     "category": "switches",
-    "relatedTerms": ["Stem", "Spring", "Switch Films"]
+    "relatedTerms": ["Stem", "Spring", "Switch Films"],
+    "difficulty": "intermediate",
+    "example": "I picked switches with nylon housings because they tend to produce a deeper, thockier sound than polycarbonate ones."
   },
   {
     "term": "Spring",
     "definition": "The metal coil inside a switch that provides resistance and pushes the stem back up after a keypress. Spring weight (measured in grams) determines how heavy the keypress feels.",
     "category": "switches",
-    "relatedTerms": ["Actuation Force", "Bottom Out Force", "Spring Swap", "Pingy"]
+    "relatedTerms": ["Actuation Force", "Bottom Out Force", "Spring Swap", "Pingy"],
+    "difficulty": "beginner",
+    "example": "The 62g springs in these switches feel too heavy for me, so I'm going to swap them for 55g ones."
   },
   {
     "term": "Leaf",
     "definition": "A thin metal piece inside the switch that makes contact with the stem to register a keypress. The leaf is what actually sends the electrical signal to your computer when you press a key.",
     "category": "switches",
-    "relatedTerms": ["Contact Point", "Stem", "Housing"]
+    "relatedTerms": ["Contact Point", "Stem", "Housing"],
+    "difficulty": "advanced",
+    "example": "The tactile bump in this switch is created by the shape of the stem leg pressing against the leaf."
   },
   {
     "term": "Contact Point",
     "definition": "The exact point during a keypress where the switch's leaf and stem connect to register the keystroke. This is where the electrical circuit completes and the key input is sent to your computer.",
     "category": "switches",
-    "relatedTerms": ["Leaf", "Actuation Force", "Pre-travel"]
+    "relatedTerms": ["Leaf", "Actuation Force", "Pre-travel"],
+    "difficulty": "advanced",
+    "example": "This switch has a higher contact point, so the key registers earlier in the downstroke."
   },
   {
     "term": "Actuation Force",
     "definition": "The amount of force (measured in grams) needed to press a key far enough to register a keystroke. Lower values (35-45g) feel light and effortless, while higher values (60g+) feel heavier and more deliberate.",
     "category": "switches",
-    "relatedTerms": ["Bottom Out Force", "Spring", "Travel Distance"]
+    "relatedTerms": ["Bottom Out Force", "Spring", "Travel Distance"],
+    "difficulty": "beginner",
+    "example": "The 45g actuation force on these switches is perfect for long typing sessions because my fingers don't get fatigued."
   },
   {
     "term": "Bottom Out Force",
     "definition": "The total force needed to press a key all the way down to the bottom. This is always higher than the actuation force since the spring compresses more. Heavy typists who bottom out keys should pay attention to this spec.",
     "category": "switches",
-    "relatedTerms": ["Actuation Force", "Spring", "Travel Distance"]
+    "relatedTerms": ["Actuation Force", "Spring", "Travel Distance"],
+    "difficulty": "intermediate",
+    "example": "I bottom out every key when I type, so I look at bottom out force rather than actuation force when choosing switches."
   },
   {
     "term": "Travel Distance",
     "definition": "The total distance a key moves from the top of the keystroke to the very bottom, usually measured in millimeters. Standard MX switches have about 4mm of travel. Shorter travel means faster keypresses.",
     "category": "switches",
-    "relatedTerms": ["Pre-travel", "Actuation Force", "Long Pole"]
+    "relatedTerms": ["Pre-travel", "Actuation Force", "Long Pole"],
+    "difficulty": "beginner",
+    "example": "These long pole switches have only 3.5mm of travel instead of the standard 4mm, so bottoming out feels more abrupt."
   },
   {
     "term": "Pre-travel",
     "definition": "The distance a key moves from the resting position to the actuation point where the keystroke registers. Shorter pre-travel means faster input registration, which is popular for gaming.",
     "category": "switches",
-    "relatedTerms": ["Travel Distance", "Actuation Force", "Contact Point"]
+    "relatedTerms": ["Travel Distance", "Actuation Force", "Contact Point"],
+    "difficulty": "intermediate",
+    "example": "Gamers often prefer switches with shorter pre-travel so their inputs register as quickly as possible."
   },
   {
     "term": "Long Pole",
     "definition": "A switch stem with an extended pole on the bottom that hits the housing earlier, shortening total travel and creating a sharper, more defined bottom-out feel and sound. Popular for clacky sound profiles.",
     "category": "switches",
-    "relatedTerms": ["Stem", "Travel Distance", "Clacky", "Sound Profile"]
+    "relatedTerms": ["Stem", "Travel Distance", "Clacky", "Sound Profile"],
+    "difficulty": "advanced",
+    "example": "I love the sharp bottom-out of long pole switches — they give that crisp clack on every keystroke."
   },
   {
     "term": "Factory Lubed",
     "definition": "Switches that come pre-lubed from the manufacturer. Quality varies widely between brands. Factory lube saves time but is rarely as consistent as hand-lubing, which many enthusiasts prefer.",
     "category": "switches",
-    "relatedTerms": ["Lube", "Stem", "Spring"]
+    "relatedTerms": ["Lube", "Stem", "Spring"],
+    "difficulty": "intermediate",
+    "example": "The factory lube on these Gateron switches is actually decent, so I'm not going to re-lube them."
   },
   {
     "term": "Spring Swap",
     "definition": "Replacing the spring inside a switch with one of a different weight or type to change how heavy or light the keypress feels. A common and easy modification that can dramatically alter the typing experience.",
     "category": "switches",
-    "relatedTerms": ["Spring", "Actuation Force", "Stem Swap"]
+    "relatedTerms": ["Spring", "Actuation Force", "Stem Swap"],
+    "difficulty": "intermediate",
+    "example": "I did a spring swap from 67g to 55g on all my switches and it made the board feel completely different."
   },
   {
     "term": "Stem Swap",
     "definition": "Replacing the stem of one switch with a stem from a different switch to combine characteristics from both. This is how famous combinations like the Holy Panda were originally created.",
     "category": "switches",
-    "relatedTerms": ["Stem", "Spring Swap", "Housing"]
+    "relatedTerms": ["Stem", "Spring Swap", "Housing"],
+    "difficulty": "advanced",
+    "example": "I put Halo True stems into Invyr Panda housings to make Holy Pandas — the tactile bump is incredible."
   },
   {
     "term": "MX-compatible",
     "definition": "A switch or keycap that uses the standard Cherry MX cross-shaped (+) stem design. Almost all modern mechanical keyboard switches and keycaps follow this standard, making them interchangeable.",
     "category": "switches",
-    "relatedTerms": ["Stem", "Hot-swap", "Keycap Set"]
+    "relatedTerms": ["Stem", "Hot-swap", "Keycap Set"],
+    "difficulty": "beginner",
+    "example": "Make sure your keycaps are MX-compatible before buying them, or they won't fit your switches."
   },
   {
     "term": "Switch Films",
     "definition": "Thin sheets of material placed between the top and bottom housing of a switch to reduce wobble and change the sound. Films tighten up loose housings, making the switch feel and sound more consistent.",
     "category": "switches",
-    "relatedTerms": ["Housing", "Lube", "Sound Profile"]
+    "relatedTerms": ["Housing", "Lube", "Sound Profile"],
+    "difficulty": "intermediate",
+    "example": "After adding switch films, the top housing wobble disappeared and each keypress sounds noticeably tighter."
   },
   {
     "term": "Thocky",
     "definition": "A deep, low-pitched sound that many keyboard enthusiasts consider the most desirable sound profile. Often described as a satisfying 'thock' on each keypress. Achieved through nylon housings, foam mods, and certain plate materials.",
     "category": "sound",
-    "relatedTerms": ["Clacky", "Sound Profile", "Muted", "Creamy"]
+    "relatedTerms": ["Clacky", "Sound Profile", "Muted", "Creamy"],
+    "difficulty": "beginner",
+    "pronunciation": "/THAH-kee/",
+    "example": "I added case foam and used nylon-housed switches to get that deep, thocky sound I've been chasing."
   },
   {
     "term": "Clacky",
     "definition": "A higher-pitched, sharper sound on each keypress. Often produced by polycarbonate housings, long pole stems, and aluminum or brass plates. Some people prefer clack over thock for its crispness.",
     "category": "sound",
-    "relatedTerms": ["Thocky", "Sound Profile", "Long Pole", "Crisp"]
+    "relatedTerms": ["Thocky", "Sound Profile", "Long Pole", "Crisp"],
+    "difficulty": "beginner",
+    "example": "The aluminum plate and long pole switches give this board an incredibly clacky sound that I love."
   },
   {
     "term": "Creamy",
     "definition": "A smooth, warm sound profile with a slightly muffled quality. Popularized by NovelKeys Cream switches. Often associated with POM housings and nylon materials that produce a pleasing, rounded sound.",
     "category": "sound",
-    "relatedTerms": ["Thocky", "Sound Profile", "Poppy"]
+    "relatedTerms": ["Thocky", "Sound Profile", "Poppy"],
+    "difficulty": "intermediate",
+    "example": "NovelKeys Creams live up to their name — the creamy sound profile is warm and smooth on every keystroke."
   },
   {
     "term": "Poppy",
     "definition": "A lively, bouncy sound with a quick, snappy quality on each keypress. Poppy keyboards feel responsive and energetic. Polycarbonate plates and housings often contribute to this sound.",
     "category": "sound",
-    "relatedTerms": ["Clacky", "Crisp", "Sound Profile"]
+    "relatedTerms": ["Clacky", "Crisp", "Sound Profile"],
+    "difficulty": "intermediate",
+    "example": "The PE foam mod transformed the sound from flat and dull to bright and poppy."
   },
   {
     "term": "Muted",
     "definition": "A very quiet, dampened sound profile with minimal noise on each keypress. Achieved through foam modifications, silent switches, and dampening materials. Ideal for office or shared environments.",
     "category": "sound",
-    "relatedTerms": ["Silent Switch", "Thocky", "Sound Profile", "PE Foam Mod"]
+    "relatedTerms": ["Silent Switch", "Thocky", "Sound Profile", "PE Foam Mod"],
+    "difficulty": "beginner",
+    "example": "I stuffed the case with foam and used silent switches to get the most muted sound profile possible for my office."
   },
   {
     "term": "Crisp",
     "definition": "A clean, sharp sound that is well-defined on each keypress without excess resonance or rattle. Often associated with well-tuned stabilizers and metal plates.",
     "category": "sound",
-    "relatedTerms": ["Clacky", "Poppy", "Sound Profile"]
+    "relatedTerms": ["Clacky", "Poppy", "Sound Profile"],
+    "difficulty": "intermediate",
+    "example": "After tuning my stabilizers, the spacebar went from rattly to perfectly crisp."
   },
   {
     "term": "Pingy",
     "definition": "An unwanted metallic ringing sound produced by the spring inside a switch, especially noticeable after releasing a key. Can be reduced by lubing the spring or using switches with extended springs.",
     "category": "sound",
-    "relatedTerms": ["Spring", "Lube", "Sound Profile"]
+    "relatedTerms": ["Spring", "Lube", "Sound Profile"],
+    "difficulty": "intermediate",
+    "pronunciation": "/PING-ee/",
+    "example": "These stock switches are super pingy — you can hear the spring ring after every keypress."
   },
   {
     "term": "Scratchy",
     "definition": "An undesirable rough or gritty feeling and sound when pressing a switch, caused by friction between the stem and housing. Stock Cherry MX switches are often described as scratchy. Fixed by lubing.",
     "category": "sound",
-    "relatedTerms": ["Lube", "Stem", "Creamy"]
+    "relatedTerms": ["Lube", "Stem", "Creamy"],
+    "difficulty": "beginner",
+    "example": "The stock Cherry MX Blacks felt scratchy out of the box, but after lubing them they became buttery smooth."
   },
   {
     "term": "Sound Profile",
     "definition": "The overall sound character of a keyboard, determined by the combination of switches, plate material, case material, and modifications. Common profiles include thocky, clacky, creamy, and poppy.",
     "category": "sound",
-    "relatedTerms": ["Thocky", "Clacky", "Creamy", "Poppy"]
+    "relatedTerms": ["Thocky", "Clacky", "Creamy", "Poppy"],
+    "difficulty": "beginner",
+    "example": "I'm building this board specifically for a deep thocky sound profile, so I chose nylon switches and a PC plate."
   },
   {
     "term": "Typing Sound Test",
     "definition": "A recording or video demonstrating how a keyboard sounds while typing. Sound tests help buyers understand a keyboard's sound profile before purchasing. Found commonly on YouTube and Reddit.",
     "category": "sound",
-    "relatedTerms": ["Sound Profile", "Thocky", "Clacky"]
+    "relatedTerms": ["Sound Profile", "Thocky", "Clacky"],
+    "difficulty": "beginner",
+    "example": "I watched a dozen typing sound tests on YouTube before deciding which switches to buy."
   },
   {
     "term": "Cherry Profile",
     "definition": "A low-profile keycap shape that is slightly sculpted for each row. The most popular keycap profile in the hobby, offering a comfortable balance between low height and ergonomic sculpting.",
     "category": "keycaps",
-    "relatedTerms": ["SA Profile", "DSA Profile", "Keycap Set"]
+    "relatedTerms": ["SA Profile", "DSA Profile", "Keycap Set"],
+    "difficulty": "intermediate",
+    "example": "Cherry profile keycaps are my go-to because they're low enough for comfortable gaming but still sculpted for typing."
   },
   {
     "term": "SA Profile",
     "definition": "A tall, spherical-top keycap profile with aggressive sculpting between rows. SA keycaps produce a deeper sound due to their height and are loved for their retro aesthetic, though some find them too tall.",
     "category": "keycaps",
-    "relatedTerms": ["Cherry Profile", "MT3 Profile", "Keycap Set"]
+    "relatedTerms": ["Cherry Profile", "MT3 Profile", "Keycap Set"],
+    "difficulty": "intermediate",
+    "pronunciation": "/ess-AY/",
+    "example": "The SA profile keycaps tower over my desk, but the retro look and deep sound are totally worth it."
   },
   {
     "term": "DSA Profile",
     "definition": "A uniform (non-sculpted) spherical-top keycap profile where every row is the same height. This makes keycaps interchangeable between rows, which is useful for non-standard layouts.",
     "category": "keycaps",
-    "relatedTerms": ["XDA Profile", "Cherry Profile", "Keycap Set"]
+    "relatedTerms": ["XDA Profile", "Cherry Profile", "Keycap Set"],
+    "difficulty": "intermediate",
+    "pronunciation": "/dee-ess-AY/",
+    "example": "I used DSA keycaps on my Ortholinear board since every key is the same profile and can go in any position."
   },
   {
     "term": "MT3 Profile",
     "definition": "A tall, deeply sculpted keycap profile designed by Matt3o, inspired by vintage terminal keyboards. Has a scooped top and dramatic row-to-row height changes. Typing on MT3 feels very deliberate and satisfying.",
     "category": "keycaps",
-    "relatedTerms": ["SA Profile", "Cherry Profile", "Keycap Set"]
+    "relatedTerms": ["SA Profile", "Cherry Profile", "Keycap Set"],
+    "difficulty": "intermediate",
+    "pronunciation": "/em-tee-THREE/",
+    "example": "MT3 keycaps have the most aggressive sculpting I've tried — your fingers naturally nestle into each row."
   },
   {
     "term": "XDA Profile",
     "definition": "A uniform (non-sculpted) keycap profile with a flat top surface, slightly taller than DSA. Every key is the same shape, making them versatile for alternative layouts. A popular budget-friendly profile.",
     "category": "keycaps",
-    "relatedTerms": ["DSA Profile", "Cherry Profile", "Keycap Set"]
+    "relatedTerms": ["DSA Profile", "Cherry Profile", "Keycap Set"],
+    "difficulty": "intermediate",
+    "pronunciation": "/ex-dee-AY/",
+    "example": "XDA keycaps are affordable and work great on my split keyboard since I can move keys around freely."
   },
   {
     "term": "OEM Profile",
     "definition": "The most common keycap profile found on prebuilt keyboards. Slightly taller and less sculpted than Cherry profile. If you have used a regular mechanical keyboard, you have likely typed on OEM keycaps.",
     "category": "keycaps",
-    "relatedTerms": ["Cherry Profile", "Keycap Set", "ABS"]
+    "relatedTerms": ["Cherry Profile", "Keycap Set", "ABS"],
+    "difficulty": "beginner",
+    "pronunciation": "/oh-ee-em/",
+    "example": "The stock keycaps on most gaming keyboards are OEM profile, so that's what most people are used to typing on."
   },
   {
     "term": "Dye-sublimation",
     "definition": "A keycap printing method where dye is heat-pressed into the plastic, becoming part of the material itself. Dye-sub legends never wear off or fade. Limited to printing darker colors on lighter keycaps.",
     "category": "keycaps",
-    "relatedTerms": ["Doubleshot", "Legends", "PBT"]
+    "relatedTerms": ["Doubleshot", "Legends", "PBT"],
+    "difficulty": "intermediate",
+    "pronunciation": "/dye-sub-lih-MAY-shun/",
+    "example": "I prefer dye-sublimated PBT keycaps because the legends will never fade no matter how much I type."
   },
   {
     "term": "Doubleshot",
     "definition": "A premium keycap manufacturing method using two layers of plastic molded together to form the legends. The legends can never fade or wear away since they are a separate piece of plastic. Allows any color combination.",
     "category": "keycaps",
-    "relatedTerms": ["Dye-sublimation", "Legends", "ABS"]
+    "relatedTerms": ["Dye-sublimation", "Legends", "ABS"],
+    "difficulty": "intermediate",
+    "example": "These doubleshot ABS keycaps have vibrant legends that will outlast the keyboard itself."
   },
   {
     "term": "PBT",
     "definition": "Polybutylene terephthalate, a type of plastic used for keycaps. PBT keycaps are more durable, resistant to shine (oil buildup), and produce a slightly deeper sound compared to ABS. Most enthusiasts prefer PBT.",
     "category": "keycaps",
-    "relatedTerms": ["ABS", "Dye-sublimation", "Keycap Set"]
+    "relatedTerms": ["ABS", "Dye-sublimation", "Keycap Set"],
+    "difficulty": "intermediate",
+    "pronunciation": "/pee-bee-TEE/",
+    "example": "I always go with PBT keycaps because ABS gets shiny and greasy after a few months of heavy use."
   },
   {
     "term": "ABS",
     "definition": "Acrylonitrile butadiene styrene, a common keycap plastic. ABS is smoother, allows more vibrant colors, and is used for most doubleshot keycaps. The downside is that ABS develops a shiny, greasy look over time from finger oils.",
     "category": "keycaps",
-    "relatedTerms": ["PBT", "Doubleshot", "Keycap Set"]
+    "relatedTerms": ["PBT", "Doubleshot", "Keycap Set"],
+    "difficulty": "intermediate",
+    "pronunciation": "/ay-bee-ess/",
+    "example": "GMK keycaps are made from ABS, which is why they eventually develop that shiny, worn look on the most-used keys."
   },
   {
     "term": "Legends",
     "definition": "The letters, numbers, and symbols printed or molded onto keycaps. Legend quality and durability depend on the production method. Doubleshot and dye-sub legends last the longest, while pad-printed legends wear off quickly.",
     "category": "keycaps",
-    "relatedTerms": ["Doubleshot", "Dye-sublimation", "Keycap Set"]
+    "relatedTerms": ["Doubleshot", "Dye-sublimation", "Keycap Set"],
+    "difficulty": "beginner",
+    "example": "The legends on my cheap keycaps wore off after six months, so I upgraded to doubleshot ones."
   },
   {
     "term": "Keycap Set",
     "definition": "A complete set of keycaps designed to cover an entire keyboard, often with extra keys for different layouts. Sets come in various profiles, materials, and colorways. High-end sets can cost $100-200+.",
     "category": "keycaps",
-    "relatedTerms": ["Cherry Profile", "PBT", "ABS", "Legends"]
+    "relatedTerms": ["Cherry Profile", "PBT", "ABS", "Legends"],
+    "difficulty": "beginner",
+    "example": "I just ordered a GMK keycap set in the Olivia colorway — it took 14 months to arrive from the group buy."
   },
   {
     "term": "Aluminum Case",
     "definition": "A keyboard case machined from aluminum, providing excellent build quality, weight, and a premium feel. Aluminum produces a crisp, slightly higher-pitched sound profile. Most mid-to-high-end custom keyboards use aluminum cases.",
     "category": "cases",
-    "relatedTerms": ["Polycarbonate Case", "Sound Profile", "Gasket Mount"]
+    "relatedTerms": ["Polycarbonate Case", "Sound Profile", "Gasket Mount"],
+    "difficulty": "intermediate",
+    "example": "The aluminum case adds over a pound of weight to the board, but the build quality and sound are worth it."
   },
   {
     "term": "Polycarbonate Case",
     "definition": "A keyboard case made from clear or translucent polycarbonate plastic. PC cases produce a deeper, softer sound compared to aluminum and allow RGB lighting to shine through. Popular for see-through builds.",
     "category": "cases",
-    "relatedTerms": ["Aluminum Case", "Acrylic Case", "Sound Profile"]
+    "relatedTerms": ["Aluminum Case", "Acrylic Case", "Sound Profile"],
+    "difficulty": "intermediate",
+    "pronunciation": "/pah-lee-KAR-buh-nayt/",
+    "example": "I went with a polycarbonate case because the translucent look with RGB underneath is stunning."
   },
   {
     "term": "Acrylic Case",
     "definition": "A keyboard case made from layered sheets of acrylic, often frosted or clear. Acrylic cases diffuse RGB lighting beautifully and produce a hollow, somewhat resonant sound. Common in budget and DIY keyboard kits.",
     "category": "cases",
-    "relatedTerms": ["Polycarbonate Case", "Aluminum Case"]
+    "relatedTerms": ["Polycarbonate Case", "Aluminum Case"],
+    "difficulty": "intermediate",
+    "example": "The frosted acrylic case makes the RGB underglow look like it's glowing from within."
   },
   {
     "term": "Aluminum Plate",
     "definition": "A keyboard plate made from aluminum that sits between the switches and PCB, holding the switches in place. Aluminum plates provide a firm, stiff typing feel with a crisp, bright sound signature.",
     "category": "cases",
-    "relatedTerms": ["PC Plate", "FR4 Plate", "Brass Plate"]
+    "relatedTerms": ["PC Plate", "FR4 Plate", "Brass Plate"],
+    "difficulty": "intermediate",
+    "example": "The aluminum plate gives this build a stiff, no-nonsense typing feel with a sharp sound on every keypress."
   },
   {
     "term": "PC Plate",
     "definition": "A keyboard plate made from polycarbonate that offers more flex than aluminum or brass plates. PC plates produce a deeper, softer sound and a bouncier typing feel, making them popular for gasket mount builds.",
     "category": "cases",
-    "relatedTerms": ["Aluminum Plate", "FR4 Plate", "Flex Cuts"]
+    "relatedTerms": ["Aluminum Plate", "FR4 Plate", "Flex Cuts"],
+    "difficulty": "intermediate",
+    "example": "I chose a PC plate with flex cuts for maximum bounce — the typing feel is almost pillow-like."
   },
   {
     "term": "FR4 Plate",
     "definition": "A keyboard plate made from the same fiberglass material used in PCBs. FR4 plates are lightweight, affordable, and offer moderate flex. They produce a balanced sound between the stiffness of aluminum and softness of PC.",
     "category": "cases",
-    "relatedTerms": ["Aluminum Plate", "PC Plate", "Brass Plate"]
+    "relatedTerms": ["Aluminum Plate", "PC Plate", "Brass Plate"],
+    "difficulty": "intermediate",
+    "pronunciation": "/eff-are-FOUR/",
+    "example": "FR4 is my favorite plate material because it offers a nice middle ground between stiff aluminum and flexy polycarbonate."
   },
   {
     "term": "Brass Plate",
     "definition": "A heavy, dense keyboard plate made from brass that provides a very stiff typing feel with a unique bright, pingy sound. Brass plates add significant weight and have a premium, luxurious feel.",
     "category": "cases",
-    "relatedTerms": ["Aluminum Plate", "PC Plate", "FR4 Plate"]
+    "relatedTerms": ["Aluminum Plate", "PC Plate", "FR4 Plate"],
+    "difficulty": "advanced",
+    "example": "The brass plate adds almost 200g of extra weight and makes every keypress feel incredibly solid and precise."
   },
   {
     "term": "Flex Cuts",
     "definition": "Slots or cuts made in a keyboard plate to allow it to bend more during typing. Flex cuts reduce stiffness and create a softer, bouncier typing feel, especially popular with gasket mount boards.",
     "category": "cases",
-    "relatedTerms": ["FR4 Plate", "PC Plate", "Gasket Mount"]
+    "relatedTerms": ["FR4 Plate", "PC Plate", "Gasket Mount"],
+    "difficulty": "advanced",
+    "example": "The flex cuts in this plate let it bend noticeably when I press down, giving a really satisfying bounce."
   },
   {
     "term": "Gasket Mount",
     "definition": "A mounting style where the plate is suspended between strips of soft gasket material (usually silicone or rubber) sandwiched between the plate and case. This isolates the typing surface for a softer, bouncier feel and reduced case ping.",
     "category": "mounting",
-    "relatedTerms": ["Top Mount", "Tray Mount", "Flex Cuts"]
+    "relatedTerms": ["Top Mount", "Tray Mount", "Flex Cuts"],
+    "difficulty": "intermediate",
+    "example": "The gasket mount on this board gives it a soft, cushioned typing feel that tray mount keyboards can't match."
   },
   {
     "term": "Top Mount",
     "definition": "A mounting style where the plate screws directly to the top part of the case. Provides a firm, consistent typing feel with good sound. Less flex than gasket mount but more than tray mount. A proven, reliable design.",
     "category": "mounting",
-    "relatedTerms": ["Gasket Mount", "Tray Mount", "Sandwich Mount"]
+    "relatedTerms": ["Gasket Mount", "Tray Mount", "Sandwich Mount"],
+    "difficulty": "intermediate",
+    "example": "Top mount boards have a solid, consistent feel across the whole board that I really enjoy for typing."
   },
   {
     "term": "Tray Mount",
     "definition": "The most common and affordable mounting style where the PCB screws into standoffs on the bottom case. Simple and effective but can create uneven flex, with areas near screw points feeling stiffer than others.",
     "category": "mounting",
-    "relatedTerms": ["Top Mount", "Gasket Mount", "PCB"]
+    "relatedTerms": ["Top Mount", "Gasket Mount", "PCB"],
+    "difficulty": "beginner",
+    "example": "My budget board uses tray mount, and you can definitely feel the stiff spots right where the screws are."
   },
   {
     "term": "Sandwich Mount",
     "definition": "A mounting style where the plate is sandwiched between the top and bottom case halves. The plate sits on the bottom case edge and the top case holds it down. Provides a uniform feel across the board.",
     "category": "mounting",
-    "relatedTerms": ["Gasket Mount", "Top Mount", "O-ring Mount"]
+    "relatedTerms": ["Gasket Mount", "Top Mount", "O-ring Mount"],
+    "difficulty": "intermediate",
+    "example": "Sandwich mount is simple and effective — the plate is held firmly between the two case halves with no screws touching it."
   },
   {
     "term": "O-ring Mount",
     "definition": "A mounting style that uses rubber O-rings to cushion and isolate the plate from the case. Similar concept to gasket mount but uses ring-shaped dampeners. Creates a soft, bouncy typing experience.",
     "category": "mounting",
-    "relatedTerms": ["Gasket Mount", "Sandwich Mount", "Top Mount"]
+    "relatedTerms": ["Gasket Mount", "Sandwich Mount", "Top Mount"],
+    "difficulty": "advanced",
+    "example": "The O-ring mount on this board gives it an incredibly bouncy, almost trampoline-like feel when typing."
   },
   {
     "term": "Integrated Plate",
     "definition": "A design where the plate is built directly into the top case as one piece, rather than being a separate component. Common in budget keyboards. Provides a very stiff, rigid typing feel with no flex.",
     "category": "mounting",
-    "relatedTerms": ["Tray Mount", "Top Mount", "Aluminum Plate"]
+    "relatedTerms": ["Tray Mount", "Top Mount", "Aluminum Plate"],
+    "difficulty": "intermediate",
+    "example": "The integrated plate means you can't swap plate materials, but it keeps the cost down on budget boards."
   },
   {
     "term": "Plate Mount",
     "definition": "Refers to switches or stabilizers that clip directly onto the plate rather than the PCB. Plate-mount stabilizers are easier to install but cannot be swapped without removing all nearby switches first.",
     "category": "mounting",
-    "relatedTerms": ["PCB Mount", "Stabilizers", "Hot-swap"]
+    "relatedTerms": ["PCB Mount", "Stabilizers", "Hot-swap"],
+    "difficulty": "intermediate",
+    "example": "I had to desolder half the board to swap the plate-mount stabilizers, which is why I prefer screw-in PCB mount."
   },
   {
     "term": "PCB Mount",
     "definition": "Refers to switches or stabilizers that attach directly to the PCB. PCB-mount (5-pin) switches have two extra plastic legs for stability. PCB-mount (screw-in) stabilizers are preferred by enthusiasts for their stability.",
     "category": "mounting",
-    "relatedTerms": ["Plate Mount", "PCB", "Stabilizers"]
+    "relatedTerms": ["Plate Mount", "PCB", "Stabilizers"],
+    "difficulty": "intermediate",
+    "example": "Always get 5-pin PCB mount switches — you can clip the extra legs off if your board doesn't need them, but you can't add them."
   },
   {
     "term": "Lube",
     "definition": "Applying lubricant (usually Krytox 205g0 for linears or Tribosys 3203 for tactiles) to switch components to reduce friction and noise. Hand-lubing switches is the single most impactful mod for improving smoothness and sound.",
     "category": "mods",
-    "relatedTerms": ["Switch Films", "Factory Lubed", "Scratchy"]
+    "relatedTerms": ["Switch Films", "Factory Lubed", "Scratchy"],
+    "difficulty": "intermediate",
+    "pronunciation": "/LOOB/",
+    "example": "I spent four hours hand-lubing 70 switches, but the difference in smoothness and sound was absolutely worth it."
   },
   {
     "term": "Tape Mod",
     "definition": "Applying layers of painter's tape to the back of the PCB to change the sound profile. The tape reflects sound waves differently, often resulting in a deeper, more muted sound. A simple, free, and reversible mod.",
     "category": "mods",
-    "relatedTerms": ["PE Foam Mod", "Tempest Mod", "Sound Profile"]
+    "relatedTerms": ["PE Foam Mod", "Tempest Mod", "Sound Profile"],
+    "difficulty": "intermediate",
+    "example": "Three layers of painter's tape on the back of the PCB gave this board a noticeably deeper, more marbly sound."
   },
   {
     "term": "PE Foam Mod",
     "definition": "Placing a thin sheet of PE (polyethylene) foam between the PCB and switches. This changes how sound resonates through the board, often creating a poppy, marble-like sound. Very popular and easy to do.",
     "category": "mods",
-    "relatedTerms": ["Tape Mod", "Tempest Mod", "Poppy"]
+    "relatedTerms": ["Tape Mod", "Tempest Mod", "Poppy"],
+    "difficulty": "intermediate",
+    "example": "The PE foam mod completely changed the sound signature from hollow to poppy — one of the best free mods out there."
   },
   {
     "term": "Tempest Mod",
     "definition": "Another name for the tape mod, named after the community member who popularized it. Involves applying masking or painter's tape to the back of the PCB. Often combined with other foam mods for best results.",
     "category": "mods",
-    "relatedTerms": ["Tape Mod", "PE Foam Mod", "Sound Profile"]
+    "relatedTerms": ["Tape Mod", "PE Foam Mod", "Sound Profile"],
+    "difficulty": "intermediate",
+    "example": "I did the Tempest mod along with PE foam and the sound went from tinny to deep and full."
   },
   {
     "term": "Band-Aid Mod",
     "definition": "Placing small strips of fabric bandage material on the PCB under the stabilizer housings to cushion the impact and reduce rattle. An early and simple mod for quieter, better-sounding stabilizers.",
     "category": "mods",
-    "relatedTerms": ["Stabilizers", "Stabilizer Tuning", "Holee Mod"]
+    "relatedTerms": ["Stabilizers", "Stabilizer Tuning", "Holee Mod"],
+    "difficulty": "intermediate",
+    "example": "The Band-Aid mod is old school, but it still works great for cushioning the stabilizer impact on the PCB."
   },
   {
     "term": "Holee Mod",
     "definition": "Wrapping the stabilizer wire with a thin strip of bandage or fabric to eliminate wire rattle and ticking. Named after the community member who popularized it. One of the most effective stabilizer tuning techniques.",
     "category": "mods",
-    "relatedTerms": ["Stabilizers", "Band-Aid Mod", "Stabilizer Tuning"]
+    "relatedTerms": ["Stabilizers", "Band-Aid Mod", "Stabilizer Tuning"],
+    "difficulty": "advanced",
+    "pronunciation": "/HOH-lee/",
+    "example": "The Holee mod finally eliminated the tick sound on my spacebar stabilizer that nothing else could fix."
   },
   {
     "term": "Force Break Mod",
     "definition": "Cutting or removing parts of the plate between certain switch positions to allow sections of the plate to flex independently. Creates a softer, more flexible typing feel in specific areas of the keyboard.",
     "category": "mods",
-    "relatedTerms": ["Flex Cuts", "Gasket Mount", "PC Plate"]
+    "relatedTerms": ["Flex Cuts", "Gasket Mount", "PC Plate"],
+    "difficulty": "advanced",
+    "example": "I did a force break mod on my aluminum plate to add flex where the alphas are — it types much softer now."
   },
   {
     "term": "O-ring Dampening",
     "definition": "Placing small rubber O-rings on keycap stems to shorten key travel and reduce the sound of bottoming out. A cheap, easy mod for quieter typing. Some dislike the mushy feeling it creates.",
     "category": "mods",
-    "relatedTerms": ["Silent Switch", "Muted", "Travel Distance"]
+    "relatedTerms": ["Silent Switch", "Muted", "Travel Distance"],
+    "difficulty": "beginner",
+    "example": "I put O-rings on my keycaps to quiet down the board, but the mushy bottom-out feel wasn't for me."
   },
   {
     "term": "Stabilizer Tuning",
     "definition": "The process of lubing, clipping, and modifying stabilizers to eliminate rattle and create a consistent, smooth feel on larger keys like spacebar, shift, and enter. Well-tuned stabs make a huge difference in sound quality.",
     "category": "mods",
-    "relatedTerms": ["Stabilizers", "Holee Mod", "Band-Aid Mod", "Lube"]
+    "relatedTerms": ["Stabilizers", "Holee Mod", "Band-Aid Mod", "Lube"],
+    "difficulty": "intermediate",
+    "example": "Stabilizer tuning took my spacebar from rattly and mushy to perfectly smooth and consistent."
   },
   {
     "term": "Foam",
     "definition": "Various foam materials (IXPE, Poron, EVA, silicone) placed inside the keyboard case, between the PCB and plate, or under the PCB. Foam reduces hollowness, dampens ping, and helps shape the overall sound profile.",
     "category": "mods",
-    "relatedTerms": ["PE Foam Mod", "Tape Mod", "Sound Profile", "Muted"]
+    "relatedTerms": ["PE Foam Mod", "Tape Mod", "Sound Profile", "Muted"],
+    "difficulty": "beginner",
+    "example": "I filled all the empty space in the case with foam and it completely eliminated the hollow, echoey sound."
   },
   {
     "term": "Hot-swap",
     "definition": "A keyboard PCB with sockets that allow switches to be inserted and removed without soldering. Hot-swap makes it easy to try different switches and is strongly recommended for beginners. Most modern kits offer hot-swap.",
     "category": "general",
-    "relatedTerms": ["Soldered", "PCB", "MX-compatible"]
+    "relatedTerms": ["Soldered", "PCB", "MX-compatible"],
+    "difficulty": "beginner",
+    "example": "I got a hot-swap board so I could try out different switches without having to learn soldering."
   },
   {
     "term": "Soldered",
     "definition": "A keyboard where switches are permanently attached to the PCB using solder. Soldered builds provide a more secure connection and slightly different sound characteristics, but changing switches requires desoldering.",
     "category": "general",
-    "relatedTerms": ["Hot-swap", "PCB"]
+    "relatedTerms": ["Hot-swap", "PCB"],
+    "difficulty": "beginner",
+    "example": "I went with a soldered build for the tighter switch-to-PCB connection, even though I can't easily swap switches."
   },
   {
     "term": "South-facing LEDs",
     "definition": "LED lights positioned on the south (bottom) side of each switch on the PCB. Preferred by enthusiasts because they avoid interference with Cherry-profile keycaps. Most modern custom PCBs use south-facing LEDs.",
     "category": "general",
-    "relatedTerms": ["North-facing LEDs", "PCB", "Cherry Profile"]
+    "relatedTerms": ["North-facing LEDs", "PCB", "Cherry Profile"],
+    "difficulty": "intermediate",
+    "example": "Make sure your PCB has south-facing LEDs if you plan to use Cherry profile keycaps, or you'll get interference."
   },
   {
     "term": "North-facing LEDs",
     "definition": "LED lights positioned on the north (top) side of each switch. Shine through keycap legends better but can cause interference with Cherry-profile keycaps on certain switches, resulting in a 'clack' on the upstroke.",
     "category": "general",
-    "relatedTerms": ["South-facing LEDs", "PCB", "Cherry Profile"]
+    "relatedTerms": ["South-facing LEDs", "PCB", "Cherry Profile"],
+    "difficulty": "intermediate",
+    "example": "My board has north-facing LEDs and Cherry profile keycaps, so I get an annoying clack on the upstroke of some keys."
   },
   {
     "term": "PCB",
     "definition": "Printed Circuit Board - the main electronic board inside a keyboard that registers keypresses and sends signals to your computer. The PCB determines features like hot-swap support, LED placement, and programmability.",
     "category": "general",
-    "relatedTerms": ["Hot-swap", "Soldered", "South-facing LEDs", "QMK"]
+    "relatedTerms": ["Hot-swap", "Soldered", "South-facing LEDs", "QMK"],
+    "difficulty": "beginner",
+    "pronunciation": "/pee-see-bee/",
+    "example": "This PCB supports both hot-swap and QMK, so I can swap switches freely and program any key mapping I want."
   },
   {
     "term": "Group Buy",
     "definition": "A community-organized pre-order where a product is manufactured only after enough orders are collected. Common for keycap sets and high-end keyboards. Delivery often takes 6-18 months. Products are usually cheaper than aftermarket.",
     "category": "general",
-    "relatedTerms": ["In-stock", "Interest Check", "R1/R2 (Rounds)"]
+    "relatedTerms": ["In-stock", "Interest Check", "R1/R2 (Rounds)"],
+    "difficulty": "beginner",
+    "example": "I joined the group buy for GMK Olivia a year ago and my keycaps finally just shipped."
   },
   {
     "term": "In-stock",
     "definition": "A product that is currently available to buy and ship immediately, without waiting for a group buy. Many enthusiasts prefer in-stock items to avoid long wait times, even if they cost slightly more.",
     "category": "general",
-    "relatedTerms": ["Group Buy", "Interest Check"]
+    "relatedTerms": ["Group Buy", "Interest Check"],
+    "difficulty": "beginner",
+    "example": "I'd rather pay a bit more for an in-stock keycap set than wait 12 months for a group buy to deliver."
   },
   {
     "term": "Interest Check",
     "definition": "A survey or post (often abbreviated IC) where a designer gauges community interest before running a group buy. ICs let you vote on colorways, provide feedback on designs, and get notified when the group buy launches.",
     "category": "general",
-    "relatedTerms": ["Group Buy", "R1/R2 (Rounds)"]
+    "relatedTerms": ["Group Buy", "R1/R2 (Rounds)"],
+    "difficulty": "intermediate",
+    "example": "I filled out the interest check for that new keycap set and voted for the dark colorway option."
   },
   {
     "term": "R1/R2 (Rounds)",
     "definition": "Refers to the production round of a group buy product. R1 means first round (initial run), R2 means second round (re-run due to demand). Later rounds may include improvements or new colorways based on community feedback.",
     "category": "general",
-    "relatedTerms": ["Group Buy", "Interest Check", "In-stock"]
+    "relatedTerms": ["Group Buy", "Interest Check", "In-stock"],
+    "difficulty": "intermediate",
+    "example": "I missed R1 of these keycaps, but the designer announced R2 with two new colorways based on community feedback."
   },
   {
     "term": "Stabilizers",
     "definition": "Mechanisms that support wider keys (spacebar, shift, enter, backspace) to keep them level and prevent wobble. Poorly tuned stabilizers cause rattling sounds. Screw-in (PCB-mount) stabilizers are preferred over clip-in for stability.",
     "category": "general",
-    "relatedTerms": ["Stabilizer Tuning", "Holee Mod", "Band-Aid Mod"]
+    "relatedTerms": ["Stabilizer Tuning", "Holee Mod", "Band-Aid Mod"],
+    "difficulty": "beginner",
+    "example": "My spacebar was rattling like crazy until I properly lubed and tuned the stabilizers."
   },
   {
     "term": "60% Layout",
     "definition": "A compact keyboard layout with only the main alphanumeric keys, removing the function row, navigation cluster, and numpad. About 61 keys total. Functions are accessed through key layers. Popular for its minimalist look and desk space savings.",
     "category": "general",
-    "relatedTerms": ["65% Layout", "75% Layout", "TKL"]
+    "relatedTerms": ["65% Layout", "75% Layout", "TKL"],
+    "difficulty": "beginner",
+    "example": "I switched to a 60% layout for the extra desk space, and I got used to using function layers within a week."
   },
   {
     "term": "65% Layout",
     "definition": "A keyboard layout that adds arrow keys and a few navigation keys to a 60% layout, without a function row. About 66-68 keys. Considered the sweet spot between compactness and functionality by many enthusiasts.",
     "category": "general",
-    "relatedTerms": ["60% Layout", "75% Layout", "TKL"]
+    "relatedTerms": ["60% Layout", "75% Layout", "TKL"],
+    "difficulty": "beginner",
+    "example": "The 65% layout is perfect for me because I need dedicated arrow keys but don't miss the function row."
   },
   {
     "term": "75% Layout",
     "definition": "A keyboard layout that includes the function row (F1-F12) and arrow keys in a compact arrangement. About 82-84 keys. The most popular custom keyboard size because it keeps essential keys without taking up too much desk space.",
     "category": "general",
-    "relatedTerms": ["65% Layout", "TKL", "Full-size"]
+    "relatedTerms": ["65% Layout", "TKL", "Full-size"],
+    "difficulty": "beginner",
+    "example": "I went with a 75% layout because I use F-keys for shortcuts at work but still wanted a compact board."
   },
   {
     "term": "TKL",
     "definition": "Tenkeyless - a keyboard layout that removes only the number pad from a full-size keyboard, keeping the function row and navigation cluster. About 87 keys. Great for users who want familiar layout with more desk space for mouse movement.",
     "category": "general",
-    "relatedTerms": ["75% Layout", "Full-size", "60% Layout"]
+    "relatedTerms": ["75% Layout", "Full-size", "60% Layout"],
+    "difficulty": "beginner",
+    "pronunciation": "/tee-kay-ell/",
+    "example": "A TKL gives me all the keys I need for productivity work without the numpad hogging desk space."
   },
   {
     "term": "Full-size",
     "definition": "A keyboard with all standard keys including the number pad, function row, and navigation cluster. About 104 keys. Preferred by users who frequently use the numpad for data entry, accounting, or number-heavy work.",
     "category": "general",
-    "relatedTerms": ["TKL", "75% Layout", "96% Layout"]
+    "relatedTerms": ["TKL", "75% Layout", "96% Layout"],
+    "difficulty": "beginner",
+    "example": "I need a full-size keyboard for accounting because I'm entering numbers on the numpad all day."
   },
   {
     "term": "96% Layout",
     "definition": "A compact layout that fits all the keys of a full-size keyboard (including numpad) into a smaller footprint by eliminating gaps between key clusters. About 99-100 keys. Great for numpad users who want a smaller board.",
     "category": "general",
-    "relatedTerms": ["Full-size", "TKL", "75% Layout"]
+    "relatedTerms": ["Full-size", "TKL", "75% Layout"],
+    "difficulty": "intermediate",
+    "example": "The 96% layout gives me a numpad without the wasted space — all the clusters are pushed together."
   },
   {
     "term": "QMK",
     "definition": "An open-source keyboard firmware that allows deep customization of key mappings, macros, layers, and lighting. QMK is the most powerful firmware option but requires some technical knowledge to configure. Flashed via command line or QMK Toolbox.",
     "category": "general",
-    "relatedTerms": ["VIA", "PCB", "Hot-swap"]
+    "relatedTerms": ["VIA", "PCB", "Hot-swap"],
+    "difficulty": "intermediate",
+    "pronunciation": "/cue-em-kay/",
+    "example": "I use QMK to set up custom layers so my 60% board can access every function key and macro I need."
   },
   {
     "term": "VIA",
     "definition": "A user-friendly graphical tool for customizing keyboards that run QMK firmware. VIA lets you remap keys, create macros, and adjust lighting in real time through a simple web or desktop app. No coding required.",
     "category": "general",
-    "relatedTerms": ["QMK", "PCB"]
+    "relatedTerms": ["QMK", "PCB"],
+    "difficulty": "beginner",
+    "pronunciation": "/VEE-uh/",
+    "example": "VIA makes it dead simple to remap keys — just open the app, click a key, and assign a new function."
   },
   {
     "term": "POM",
     "definition": "Polyoxymethylene (also called Delrin or acetal), a self-lubricating plastic used in switch stems and housings. POM's natural lubricity means switches using it tend to be smoother and require less lube. Produces a deep, thocky sound.",
     "category": "switches",
-    "relatedTerms": ["Stem", "Housing", "UHMWPE", "Nylon"]
+    "relatedTerms": ["Stem", "Housing", "UHMWPE", "Nylon"],
+    "difficulty": "advanced",
+    "pronunciation": "/pahm/",
+    "example": "These POM-stemmed switches feel smooth even without lube thanks to the self-lubricating properties of the material."
   },
   {
     "term": "Nylon",
     "definition": "A common material used for switch housings and keyboard cases. Nylon housings produce a deeper, warmer sound compared to polycarbonate. Many enthusiasts prefer nylon-housed switches for thocky sound profiles.",
     "category": "switches",
-    "relatedTerms": ["Polycarbonate Case", "POM", "Housing", "Thocky"]
+    "relatedTerms": ["Polycarbonate Case", "POM", "Housing", "Thocky"],
+    "difficulty": "intermediate",
+    "example": "I specifically sought out switches with nylon housings because I'm going for a deep, thocky sound."
   },
   {
     "term": "Polycarbonate",
     "definition": "A transparent thermoplastic used for switch housings, keyboard cases, and plates. PC housings produce a higher-pitched, clackier sound than nylon. PC cases allow RGB light diffusion and have a unique acoustic character.",
     "category": "switches",
-    "relatedTerms": ["Nylon", "Polycarbonate Case", "Clacky"]
+    "relatedTerms": ["Nylon", "Polycarbonate Case", "Clacky"],
+    "difficulty": "intermediate",
+    "example": "Polycarbonate switch housings give a brighter, clackier sound that pairs well with an aluminum plate."
   },
   {
     "term": "UHMWPE",
     "definition": "Ultra-high-molecular-weight polyethylene, an extremely smooth and self-lubricating plastic used in premium switch stems and housings. UHMWPE components require minimal lubing and provide exceptional smoothness.",
     "category": "switches",
-    "relatedTerms": ["POM", "Stem", "Housing"]
+    "relatedTerms": ["POM", "Stem", "Housing"],
+    "difficulty": "advanced",
+    "pronunciation": "/you-aitch-em-dub-ul-you-pee-ee/",
+    "example": "UHMWPE stems are insanely smooth even bone-dry — the material practically lubes itself."
   },
   {
     "term": "40% Layout",
     "definition": "The smallest common keyboard layout, removing the number row entirely along with function and navigation keys. About 40-48 keys. Everything is accessed through multiple layers. Requires significant adjustment but offers maximum desk space.",
     "category": "general",
-    "relatedTerms": ["60% Layout", "65% Layout", "QMK"]
+    "relatedTerms": ["60% Layout", "65% Layout", "QMK"],
+    "difficulty": "advanced",
+    "example": "It took me two weeks to get comfortable with my 40% board, but now I type faster because my fingers never leave the home row."
   },
   {
     "term": "1800 Layout",
     "definition": "A compact full-size layout that includes a numpad but reduces spacing between key clusters. Similar to 96% but with a small gap between the main keys and numpad. Found in some vintage keyboards and modern customs.",
     "category": "general",
-    "relatedTerms": ["96% Layout", "Full-size", "TKL"]
+    "relatedTerms": ["96% Layout", "Full-size", "TKL"],
+    "difficulty": "advanced",
+    "pronunciation": "/AY-teen-hundred/",
+    "example": "The 1800 layout is like a 96% but with a tiny gap before the numpad, which makes it easier to find keys by feel."
   },
   {
     "term": "Krytox 205g0",
     "definition": "The most popular switch lubricant in the keyboard hobby, a thick PFPE grease ideal for linear switches. Applied to switch stems, housing rails, and springs for dramatically improved smoothness and sound. Too thick for tactile switches.",
     "category": "mods",
-    "relatedTerms": ["Lube", "Linear Switch", "Scratchy"]
+    "relatedTerms": ["Lube", "Linear Switch", "Scratchy"],
+    "difficulty": "intermediate",
+    "pronunciation": "/CRY-tox two-oh-five-gee-zero/",
+    "example": "Krytox 205g0 on linear switches is a game-changer — the stems glide like butter after a proper application."
   },
   {
     "term": "Tribosys 3203",
     "definition": "A thinner lubricant popular for tactile switches because it improves smoothness without reducing the tactile bump. Less viscous than Krytox 205g0, making it harder to over-apply. Good for beginners who want a safer lube option.",
     "category": "mods",
-    "relatedTerms": ["Lube", "Tactile Switch", "Krytox 205g0"]
+    "relatedTerms": ["Lube", "Tactile Switch", "Krytox 205g0"],
+    "difficulty": "intermediate",
+    "pronunciation": "/TRIB-oh-sis thirty-two-oh-three/",
+    "example": "I used Tribosys 3203 on my tactile switches because it smooths things out without killing the bump."
   }
 ]

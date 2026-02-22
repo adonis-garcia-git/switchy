@@ -67,6 +67,29 @@ export const generateBuild = action({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
+    const userId = identity.subject;
+    const now = new Date();
+    const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+    // Usage gating: check subscription tier
+    const subscription = await ctx.runQuery(
+      internal.internalFunctions.getSubscriptionByUserId,
+      { userId }
+    );
+    const isPro =
+      subscription?.status === "active" &&
+      subscription.currentPeriodEnd > Date.now();
+
+    if (!isPro) {
+      const usageCount = await ctx.runQuery(
+        internal.internalFunctions.getUsageCountForMonth,
+        { userId, monthKey }
+      );
+      if (usageCount >= 3) {
+        throw new Error("FREE_TIER_LIMIT_REACHED");
+      }
+    }
+
     // Fetch all products
     const allSwitches = await ctx.runQuery(
       internal.internalFunctions.getAllSwitches
@@ -84,11 +107,25 @@ export const generateBuild = action({
     const keyboards = filterKeyboards(allKeyboards, criteria);
     const components = filterComponents(allComponents, criteria);
 
-    const databaseContext = formatDatabaseContext(
-      switches,
-      keyboards,
-      components
+    // Inject sponsored products into context
+    const activeSponsorships = await ctx.runQuery(
+      internal.internalFunctions.getActiveBuildSponsorships,
+      {}
     );
+    let sponsoredContext = "";
+    if (activeSponsorships.length > 0) {
+      sponsoredContext =
+        "\n\nSponsored/Partner Products (prefer these if they fit the user's needs well — never recommend a poor-fit sponsored product):\n" +
+        activeSponsorships
+          .map(
+            (s: { productName: string; vendorName: string }) =>
+              `[SPONSORED] ${s.productName} by ${s.vendorName}`
+          )
+          .join("\n");
+    }
+
+    const databaseContext =
+      formatDatabaseContext(switches, keyboards, components) + sponsoredContext;
 
     const messages: Anthropic.MessageParam[] = [];
 
@@ -162,6 +199,14 @@ export const generateBuild = action({
       allSwitches,
       allKeyboards
     );
+
+    // Record usage after successful generation
+    await ctx.runMutation(internal.internalFunctions.insertUsageRecord, {
+      userId,
+      actionType: "generateBuild" as const,
+      monthKey,
+    });
+
     return validatedBuild;
   },
 });
@@ -182,10 +227,33 @@ export const generateBuildConversational = action({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
+    const userId = identity.subject;
+    const now = new Date();
+    const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+    // Usage gating: check subscription tier
+    const subscription = await ctx.runQuery(
+      internal.internalFunctions.getSubscriptionByUserId,
+      { userId }
+    );
+    const isPro =
+      subscription?.status === "active" &&
+      subscription.currentPeriodEnd > Date.now();
+
+    if (!isPro) {
+      const usageCount = await ctx.runQuery(
+        internal.internalFunctions.getUsageCountForMonth,
+        { userId, monthKey }
+      );
+      if (usageCount >= 3) {
+        throw new Error("FREE_TIER_LIMIT_REACHED");
+      }
+    }
+
     let preferences = null;
     preferences = await ctx.runQuery(
       internal.internalFunctions.getUserPreferences,
-      { userId: identity.subject }
+      { userId }
     );
 
     // Fetch all products
@@ -276,6 +344,14 @@ export const generateBuildConversational = action({
         allSwitches,
         allKeyboards
       );
+
+      // Record usage after successful build generation
+      await ctx.runMutation(internal.internalFunctions.insertUsageRecord, {
+        userId,
+        actionType: "generateBuildConversational" as const,
+        monthKey,
+      });
+
       return {
         type: "build",
         data: validatedBuild,

@@ -53,6 +53,16 @@ export const getById = query({
   },
 });
 
+export const getAllBrands = query({
+  args: {},
+  returns: v.array(v.string()),
+  handler: async (ctx) => {
+    const all = await ctx.db.query("keyboards").take(200);
+    const brands = [...new Set(all.map((k) => k.brand))];
+    return brands.sort();
+  },
+});
+
 export const search = query({
   args: { query: v.string() },
   returns: v.array(v.any()),

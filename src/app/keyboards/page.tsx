@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, Suspense } from "react";
+import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { KeyboardCard } from "@/components/KeyboardCard";
-import { Input } from "@/components/ui/Input";
-import { Tabs } from "@/components/ui/Tabs";
-import { Skeleton } from "@/components/ui/Skeleton";
+import { KeyboardFilterBar } from "@/components/KeyboardFilterBar";
 import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Id } from "../../../convex/_generated/dataModel";
+import { cn } from "@/lib/utils";
 import { useFilterParams } from "@/hooks/useFilterParams";
 import {
   KeyboardFilterState,
@@ -15,15 +17,6 @@ import {
   parseKeyboardParams,
   keyboardFiltersToParams,
 } from "@/lib/filterParams";
-
-const SIZE_TABS = [
-  { label: "All", value: "all" },
-  { label: "60%", value: "60%" },
-  { label: "65%", value: "65%" },
-  { label: "75%", value: "75%" },
-  { label: "TKL", value: "TKL" },
-  { label: "Full", value: "full-size" },
-];
 
 function ActiveFilterBadges({
   filters,
@@ -35,32 +28,16 @@ function ActiveFilterBadges({
   const badges: { key: string; label: string; onDismiss: () => void }[] = [];
 
   if (filters.size) {
-    badges.push({
-      key: "size",
-      label: `Size: ${filters.size}`,
-      onDismiss: () => setFilters({ ...filters, size: null }),
-    });
+    badges.push({ key: "size", label: `Size: ${filters.size}`, onDismiss: () => setFilters({ ...filters, size: null }) });
   }
   if (filters.brand) {
-    badges.push({
-      key: "brand",
-      label: `Brand: ${filters.brand}`,
-      onDismiss: () => setFilters({ ...filters, brand: null }),
-    });
+    badges.push({ key: "brand", label: `Brand: ${filters.brand}`, onDismiss: () => setFilters({ ...filters, brand: null }) });
   }
   if (filters.hotSwapOnly) {
-    badges.push({
-      key: "hotswap",
-      label: "Hot-Swap",
-      onDismiss: () => setFilters({ ...filters, hotSwapOnly: false }),
-    });
+    badges.push({ key: "hotswap", label: "Hot-Swap", onDismiss: () => setFilters({ ...filters, hotSwapOnly: false }) });
   }
   if (filters.wirelessOnly) {
-    badges.push({
-      key: "wireless",
-      label: "Wireless",
-      onDismiss: () => setFilters({ ...filters, wirelessOnly: false }),
-    });
+    badges.push({ key: "wireless", label: "Wireless", onDismiss: () => setFilters({ ...filters, wirelessOnly: false }) });
   }
   if (filters.minPrice != null || filters.maxPrice != null) {
     let priceLabel: string;
@@ -71,17 +48,13 @@ function ActiveFilterBadges({
     } else {
       priceLabel = `Under $${filters.maxPrice}`;
     }
-    badges.push({
-      key: "price",
-      label: priceLabel,
-      onDismiss: () => setFilters({ ...filters, minPrice: null, maxPrice: null }),
-    });
+    badges.push({ key: "price", label: priceLabel, onDismiss: () => setFilters({ ...filters, minPrice: null, maxPrice: null }) });
   }
 
   if (badges.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2 mb-4">
       {badges.map(({ key, label, onDismiss }) => (
         <button
           key={key}
@@ -105,12 +78,18 @@ function ActiveFilterBadges({
 }
 
 function KeyboardsContent() {
-  const [search, setSearch] = useState("");
+  const router = useRouter();
   const [filters, setFilters] = useFilterParams<KeyboardFilterState>(
     DEFAULT_KEYBOARD_FILTERS,
     parseKeyboardParams,
     keyboardFiltersToParams
   );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [compareMode, setCompareMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
+  const brands = useQuery(api.keyboards.getAllBrands, {}) ?? [];
 
   const keyboards = useQuery(api.keyboards.list, {
     size: filters.size || undefined,
@@ -123,124 +102,187 @@ function KeyboardsContent() {
 
   const searchResults = useQuery(
     api.keyboards.search,
-    search.trim() ? { query: search.trim() } : "skip"
+    searchQuery.trim() ? { query: searchQuery.trim() } : "skip"
   );
 
-  const displayKeyboards = search.trim() ? searchResults : keyboards;
+  const displayKeyboards = searchQuery.trim() ? searchResults : keyboards;
 
   const sorted = displayKeyboards
     ? [...displayKeyboards].sort((a: any, b: any) => {
         if (filters.sortBy === "price-low") return a.priceUsd - b.priceUsd;
         if (filters.sortBy === "price-high") return b.priceUsd - a.priceUsd;
+        if (filters.sortBy === "brand") return a.brand.localeCompare(b.brand);
         return a.name.localeCompare(b.name);
       })
     : null;
 
   return (
-    <div className="p-6 lg:p-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-8">
-          <h1 className="text-2xl font-bold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight">
-            Keyboard Explorer
-          </h1>
-          <Badge variant="info" size="md">
-            {sorted ? sorted.length : "..."}
-          </Badge>
-        </div>
+    <div className="min-h-screen">
+      <div className="flex">
+        {/* Sidebar - desktop */}
+        <aside className="hidden lg:block w-64 flex-shrink-0 border-r border-border-subtle">
+          <div className="sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto p-5">
+            {!searchQuery.trim() && (
+              <KeyboardFilterBar
+                filters={filters}
+                onChange={setFilters}
+                brands={brands}
+              />
+            )}
+          </div>
+        </aside>
 
-        {/* Active filter badges */}
-        <div className="mb-4">
-          <ActiveFilterBadges filters={filters} setFilters={setFilters} />
-        </div>
-
-        {/* Search + Filters */}
-        <div className="space-y-4 mb-8">
-          <Input
-            placeholder="Search keyboards by name, brand, or feature..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-
-          <div className="flex flex-wrap items-center gap-4">
-            <Tabs
-              tabs={SIZE_TABS}
-              activeTab={filters.size || "all"}
-              onChange={(val) => setFilters({ ...filters, size: val === "all" ? null : val })}
+        {/* Mobile sidebar overlay */}
+        {sidebarOpen && (
+          <>
+            <div
+              className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+              onClick={() => setSidebarOpen(false)}
             />
-
-            <label className="flex items-center gap-2 text-sm text-text-secondary cursor-pointer select-none group">
-              <input
-                type="checkbox"
-                checked={filters.hotSwapOnly}
-                onChange={(e) => setFilters({ ...filters, hotSwapOnly: e.target.checked })}
-                className="w-4 h-4 rounded border-border-default bg-bg-surface accent-accent cursor-pointer"
+            <aside className="fixed inset-y-0 left-0 w-72 bg-bg-surface border-r border-border-default z-50 lg:hidden overflow-y-auto p-5 pt-20">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-primary tracking-tight">
+                  Filters
+                </h2>
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-bg-elevated text-text-muted hover:text-text-primary transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.95]"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <KeyboardFilterBar
+                filters={filters}
+                onChange={setFilters}
+                brands={brands}
               />
-              <span className="group-hover:text-text-primary transition-colors duration-150">
-                Hot-swap only
-              </span>
-            </label>
-
-            <label className="flex items-center gap-2 text-sm text-text-secondary cursor-pointer select-none group">
-              <input
-                type="checkbox"
-                checked={filters.wirelessOnly}
-                onChange={(e) => setFilters({ ...filters, wirelessOnly: e.target.checked })}
-                className="w-4 h-4 rounded border-border-default bg-bg-surface accent-accent cursor-pointer"
-              />
-              <span className="group-hover:text-text-primary transition-colors duration-150">
-                Wireless only
-              </span>
-            </label>
-
-            <select
-              value={filters.sortBy}
-              onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
-              className="bg-bg-surface border border-border-default rounded-lg px-3 py-2 text-sm text-text-primary cursor-pointer hover:border-border-accent focus:border-border-accent focus:outline-none transition-[border-color] duration-150"
-            >
-              <option value="name">Sort: Name</option>
-              <option value="price-low">Sort: Price (Low)</option>
-              <option value="price-high">Sort: Price (High)</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Grid */}
-        {!sorted ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} variant="card" className="h-56" />
-            ))}
-          </div>
-        ) : sorted.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-text-muted text-sm">No keyboards found matching your filters.</p>
-            <p className="text-text-muted/60 text-xs mt-1">Try adjusting your search or filter criteria.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {sorted.map((kb: any) => (
-              <KeyboardCard key={kb._id} keyboard={kb} />
-            ))}
-          </div>
+            </aside>
+          </>
         )}
+
+        {/* Main content */}
+        <main className="flex-1 min-w-0 px-4 lg:px-8 py-6">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <h1 className="font-[family-name:var(--font-outfit)] text-2xl font-bold text-text-primary tracking-tight">
+                Keyboard Explorer
+              </h1>
+              {sorted && (
+                <Badge variant="info" size="sm">
+                  {sorted.length}
+                </Badge>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="lg:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-text-secondary border border-border-subtle hover:border-border-default hover:text-text-primary transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 active:scale-[0.97]"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                </svg>
+                Filters
+              </button>
+              <Button
+                variant={compareMode ? "primary" : "secondary"}
+                size="sm"
+                onClick={() => {
+                  setCompareMode(!compareMode);
+                  if (compareMode) setSelectedIds(new Set());
+                }}
+              >
+                {compareMode ? "Exit Compare" : "Compare"}
+              </Button>
+            </div>
+          </div>
+
+          {/* Active filter badges */}
+          <ActiveFilterBadges filters={filters} setFilters={setFilters} />
+
+          {/* Search bar */}
+          <div className="mb-6">
+            <div className="relative">
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search keyboards by name, brand, or feature..."
+                className="w-full bg-bg-surface border border-border-subtle rounded-lg pl-10 pr-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-colors duration-150 hover:border-border-default focus:border-border-accent focus:outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Grid */}
+          {sorted === null ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+              {Array.from({ length: 9 }).map((_, i) => (
+                <div key={i} className="rounded-xl border border-border-subtle bg-bg-surface p-4 animate-pulse">
+                  <div className="aspect-[16/10] bg-bg-elevated rounded-lg mb-4" />
+                  <div className="h-3 w-16 bg-bg-elevated rounded mb-2" />
+                  <div className="h-4 w-32 bg-bg-elevated rounded mb-3" />
+                  <div className="flex gap-1.5">
+                    <div className="h-5 w-14 bg-bg-elevated rounded" />
+                    <div className="h-5 w-14 bg-bg-elevated rounded" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : sorted.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="text-text-muted text-sm">No keyboards match your filters.</p>
+              <p className="text-text-muted/60 text-xs mt-1">Try adjusting your criteria.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+              {sorted.map((kb: any) => (
+                <KeyboardCard key={kb._id} keyboard={kb} />
+              ))}
+            </div>
+          )}
+        </main>
       </div>
+
+      {/* Floating compare bar */}
+      {compareMode && selectedIds.size > 0 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3 px-5 py-3 rounded-xl bg-bg-floating border border-border-accent shadow-floating">
+          <span className="text-sm text-text-secondary">
+            {selectedIds.size} of 3 selected
+          </span>
+          <div className="w-px h-5 bg-border-subtle" />
+          <Button variant="ghost" size="sm" onClick={() => setSelectedIds(new Set())}>
+            Clear
+          </Button>
+          {selectedIds.size >= 2 && (
+            <Button size="sm" onClick={() => router.push(`/keyboards/compare?ids=${Array.from(selectedIds).join(",")}`)}>
+              Compare
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
 
 function KeyboardsLoading() {
   return (
-    <div className="p-6 lg:p-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center gap-3 mb-8">
-          <div className="h-8 w-52 bg-bg-elevated rounded animate-pulse" />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="rounded-xl border border-border-subtle bg-bg-surface p-4 h-56 animate-pulse" />
-          ))}
-        </div>
+    <div className="min-h-screen px-4 lg:px-8 py-6">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="h-8 w-52 bg-bg-elevated rounded animate-pulse" />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+        {Array.from({ length: 9 }).map((_, i) => (
+          <div key={i} className="rounded-xl border border-border-subtle bg-bg-surface p-4 animate-pulse">
+            <div className="aspect-[16/10] bg-bg-elevated rounded-lg mb-4" />
+            <div className="h-3 w-16 bg-bg-elevated rounded mb-2" />
+            <div className="h-4 w-32 bg-bg-elevated rounded" />
+          </div>
+        ))}
       </div>
     </div>
   );

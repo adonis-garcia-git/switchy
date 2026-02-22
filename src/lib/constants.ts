@@ -35,6 +35,27 @@ export const PLACEHOLDER_QUERIES = [
   "What's a good tactile switch that isn't mushy? I type a lot of code",
 ];
 
+export const ACCESSORY_SUBCATEGORIES = [
+  { value: "stabilizer", label: "Stabilizers" },
+  { value: "spring", label: "Springs" },
+  { value: "lube", label: "Lubricants" },
+  { value: "film", label: "Switch Films" },
+  { value: "foam", label: "Foam & Dampening" },
+  { value: "tool", label: "Tools" },
+  { value: "cable", label: "Cables" },
+  { value: "deskmat", label: "Desk Mats" },
+  { value: "wrist-rest", label: "Wrist Rests" },
+  { value: "cover", label: "Covers & Cases" },
+] as const;
+
+export const KEYCAP_PROFILES = [
+  "Cherry", "SA", "MT3", "DSA", "OEM", "KAT", "XDA", "ASA",
+] as const;
+
+export const KEYCAP_MATERIALS = [
+  "PBT", "ABS", "POM",
+] as const;
+
 // App-wide numeric constants
 export const MAX_COMPARE_SWITCHES = 3;
 export const SHARE_SLUG_LENGTH = 12;

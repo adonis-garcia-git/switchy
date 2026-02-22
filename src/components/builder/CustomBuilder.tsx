@@ -9,6 +9,7 @@ import { SwitchPicker } from "./pickers/SwitchPicker";
 import { KeycapPicker } from "./pickers/KeycapPicker";
 import { StabilizerPicker } from "./pickers/StabilizerPicker";
 import { ModPicker } from "./pickers/ModPicker";
+import { KeyboardCustomizer } from "./KeyboardCustomizer";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import type {
@@ -18,6 +19,7 @@ import type {
   KeyboardData,
   SwitchData,
 } from "@/lib/types";
+import type { PerKeyOverrides } from "@/lib/keyCustomization";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
 
 const INITIAL_STATE: CustomBuilderState = {
@@ -28,6 +30,7 @@ const INITIAL_STATE: CustomBuilderState = {
     keycaps: { profile: null, material: null, setName: "", price: 0 },
     stabilizer: null,
     mods: [],
+    perKeyOverrides: {},
   },
 };
 
@@ -90,6 +93,37 @@ function reducer(state: CustomBuilderState, action: CustomBuilderAction): Custom
         },
       };
     }
+    case "SET_KEY_OVERRIDE":
+      return {
+        ...state,
+        selections: {
+          ...state.selections,
+          perKeyOverrides: {
+            ...state.selections.perKeyOverrides,
+            [action.keyId]: { ...state.selections.perKeyOverrides[action.keyId], ...action.override },
+          },
+        },
+      };
+    case "SET_KEYS_OVERRIDE": {
+      const next = { ...state.selections.perKeyOverrides };
+      action.keyIds.forEach((id) => {
+        next[id] = { ...next[id], ...action.override };
+      });
+      return { ...state, selections: { ...state.selections, perKeyOverrides: next } };
+    }
+    case "CLEAR_KEY_OVERRIDES": {
+      if (!action.keyIds) {
+        return { ...state, selections: { ...state.selections, perKeyOverrides: {} } };
+      }
+      const cleared = { ...state.selections.perKeyOverrides };
+      action.keyIds.forEach((id) => delete cleared[id]);
+      return { ...state, selections: { ...state.selections, perKeyOverrides: cleared } };
+    }
+    case "SET_PER_KEY_OVERRIDES":
+      return {
+        ...state,
+        selections: { ...state.selections, perKeyOverrides: action.overrides },
+      };
     case "RESET":
       return INITIAL_STATE;
     default:
@@ -103,6 +137,7 @@ const STEP_ORDER: CustomBuilderStep[] = [
   "keycaps",
   "stabilizers",
   "mods",
+  "customize",
   "review",
 ];
 
@@ -127,6 +162,10 @@ const STEP_TITLES: Record<CustomBuilderStep, { title: string; subtitle: string }
     title: "Add Modifications",
     subtitle: "Fine-tune your sound and feel with optional mods.",
   },
+  customize: {
+    title: "Customize Keycaps",
+    subtitle: "Click individual keys to change colors, add artisans, and personalize your layout.",
+  },
   review: {
     title: "Review Your Build",
     subtitle: "Check everything looks good, then save or share.",
@@ -135,9 +174,10 @@ const STEP_TITLES: Record<CustomBuilderStep, { title: string; subtitle: string }
 
 interface CustomBuilderProps {
   onViewerUpdate?: (config: Partial<KeyboardViewerConfig>) => void;
+  viewerConfig?: KeyboardViewerConfig;
 }
 
-export function CustomBuilder({ onViewerUpdate }: CustomBuilderProps) {
+export function CustomBuilder({ onViewerUpdate, viewerConfig }: CustomBuilderProps) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
   const { step, selections } = state;
 
@@ -199,6 +239,17 @@ export function CustomBuilder({ onViewerUpdate }: CustomBuilderProps) {
   );
 
   // Can advance?
+  // Handle per-key overrides from customizer
+  const handleOverridesChange = useCallback(
+    (overrides: PerKeyOverrides) => {
+      dispatch({ type: "SET_PER_KEY_OVERRIDES", overrides });
+      if (onViewerUpdate) {
+        onViewerUpdate({ perKeyOverrides: overrides });
+      }
+    },
+    [onViewerUpdate]
+  );
+
   const canAdvance = useMemo(() => {
     switch (step) {
       case "keyboard": return !!selections.keyboard;
@@ -206,6 +257,7 @@ export function CustomBuilder({ onViewerUpdate }: CustomBuilderProps) {
       case "keycaps": return !!selections.keycaps.profile && !!selections.keycaps.material;
       case "stabilizers": return !!selections.stabilizer;
       case "mods": return true;
+      case "customize": return true;
       case "review": return false;
     }
   }, [step, selections]);
@@ -301,6 +353,14 @@ export function CustomBuilder({ onViewerUpdate }: CustomBuilderProps) {
                 onToggle={(m) => dispatch({ type: "TOGGLE_MOD", mod: m })}
               />
             )}
+            {step === "customize" && viewerConfig && (
+              <div className="min-h-[500px]">
+                <KeyboardCustomizer
+                  viewerConfig={viewerConfig}
+                  onOverridesChange={handleOverridesChange}
+                />
+              </div>
+            )}
             {step === "review" && (
               <CustomBuildReview
                 selections={selections}
@@ -337,9 +397,9 @@ export function CustomBuilder({ onViewerUpdate }: CustomBuilderProps) {
                 <Button
                   size="sm"
                   onClick={goNext}
-                  disabled={!canAdvance && step !== "mods"}
+                  disabled={!canAdvance && step !== "mods" && step !== "customize"}
                 >
-                  {step === "mods" ? "Review" : "Next"}
+                  {step === "mods" ? "Customize" : step === "customize" ? "Review" : "Next"}
                   <svg className="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -363,8 +423,8 @@ export function CustomBuilder({ onViewerUpdate }: CustomBuilderProps) {
               </Button>
             )}
           </div>
-          <Button onClick={goNext} disabled={!canAdvance && step !== "mods"}>
-            {step === "mods" ? "Review Build" : "Continue"}
+          <Button onClick={goNext} disabled={!canAdvance && step !== "mods" && step !== "customize"}>
+            {step === "mods" ? "Customize Keycaps" : step === "customize" ? "Review Build" : "Continue"}
             <svg className="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>

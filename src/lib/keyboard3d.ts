@@ -1,4 +1,5 @@
 import type { BuildData, KeyboardData } from "./types";
+import type { PerKeyOverrides, SelectionMode } from "./keyCustomization";
 import type { RGBMode } from "@/components/3d/RGBController";
 import type { MountingStyle } from "@/components/3d/CaseGeometry";
 import type { EnvironmentPresetName, CameraPresetName } from "@/components/3d/SceneEnvironment";
@@ -15,7 +16,7 @@ export interface KeyboardViewerConfig {
   size: "60" | "65" | "75" | "tkl" | "full";
   hasRGB: boolean;
   rgbColor: string;
-  keycapProfile: "cherry" | "sa" | "dsa" | "mt3";
+  keycapProfile: "cherry" | "sa" | "dsa" | "mt3" | "oem" | "kat" | "xda";
   showLegends: boolean;
   userColors?: {
     case?: string;
@@ -39,6 +40,11 @@ export interface KeyboardViewerConfig {
   cameraPreset?: CameraPresetName;
   // ─── Phase 8: Interactive ──
   interactive?: boolean;
+  // ─── Phase 9: Per-key customization ──
+  perKeyOverrides?: PerKeyOverrides;
+  selectionMode?: SelectionMode;
+  selectedKeys?: Set<string>;
+  paintMode?: boolean;
 }
 
 const MATERIAL_KEYWORDS: Record<string, KeyboardViewerConfig["caseMaterial"]> = {

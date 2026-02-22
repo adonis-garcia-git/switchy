@@ -4,12 +4,16 @@ import { useMemo, useRef, useState, useCallback } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
+import { makeKeyId } from "@/lib/keyCustomization";
+import type { PerKeyOverride, SelectionMode } from "@/lib/keyCustomization";
 import { CASE_MATERIALS, KEYCAP_MATERIALS, KEYCAP_PROFILE_MULTIPLIERS } from "./materialPresets";
 import { createSculptedKeycap } from "./keycapGeometry";
 import { CaseGeometry } from "./CaseGeometry";
 import { RGBLayer } from "./RGBController";
 import { getNormalMap } from "./proceduralTextures";
 import { COLORWAYS, getKeycapColor, getLegendColor } from "./colorways";
+import { createArtisanGeometry, getArtisanMaterial } from "./artisanKeycaps";
+import type { ArtisanStyle } from "./artisanKeycaps";
 
 // Standard MX spacing: 19.05mm = 0.01905m, we work in cm-scale
 const UNIT = 1.905;
@@ -19,6 +23,14 @@ const GAP = UNIT - KEYCAP_SIZE;
 
 // Row profiles - slight height variation per row
 const ROW_HEIGHTS = [0.9, 0.85, 0.8, 0.78, 0.75];
+
+// ─── Legend Texture Cache ───────────────────────────────────────────
+
+const legendTextureCache = new Map<string, THREE.CanvasTexture | null>();
+
+function legendCacheKey(legend: string, keycapColor: string, legendColor?: string): string {
+  return `${legend}|${keycapColor}|${legendColor || "auto"}`;
+}
 
 // ─── QWERTY Legends ────────────────────────────────────────────────
 
@@ -84,6 +96,11 @@ function getLegendForKey(keyIndex: number, rowIndex: number, size: KeyboardViewe
 function createLegendTexture(legend: string, keycapColor: string, legendColorOverride?: string): THREE.CanvasTexture | null {
   if (!legend || legend === " ") return null;
 
+  // Check cache first
+  const key = legendCacheKey(legend, keycapColor, legendColorOverride);
+  const cached = legendTextureCache.get(key);
+  if (cached !== undefined) return cached;
+
   const size = 128;
   const canvas = document.createElement("canvas");
   canvas.width = size;
@@ -114,6 +131,8 @@ function createLegendTexture(legend: string, keycapColor: string, legendColorOve
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.needsUpdate = true;
+
+  legendTextureCache.set(key, texture);
   return texture;
 }
 
@@ -125,6 +144,8 @@ interface KeyDef {
   w: number;
   row: number;
   isModifier: boolean;
+  keyId: string;
+  legend: string;
 }
 
 function generateLayout(size: KeyboardViewerConfig["size"]): KeyDef[] {
@@ -219,19 +240,44 @@ function generateLayout(size: KeyboardViewerConfig["size"]): KeyDef[] {
 
   rows.forEach((row, rowIdx) => {
     let xPos = 0;
+    let keyInRow = 0;
     row.forEach(([w, isMod]) => {
+      const legend = getLegendForKey(keyInRow, rowIdx, size);
       keys.push({
         x: xPos + (w * UNIT) / 2,
         y: rowIdx,
         w,
         row: Math.min(rowIdx, ROW_HEIGHTS.length - 1),
         isModifier: isMod,
+        keyId: makeKeyId(rowIdx, keyInRow),
+        legend,
       });
+      keyInRow++;
       xPos += w * UNIT;
     });
   });
 
   return keys;
+}
+
+// ─── Selection Ring ─────────────────────────────────────────────────
+
+function SelectionRing({ width, depth, height }: { width: number; depth: number; height: number }) {
+  const ringRef = useRef<THREE.Mesh>(null);
+
+  useFrame(({ clock }) => {
+    if (!ringRef.current) return;
+    const mat = ringRef.current.material as THREE.MeshBasicMaterial;
+    // Breathing opacity animation
+    mat.opacity = 0.25 + Math.sin(clock.getElapsedTime() * 3) * 0.12;
+  });
+
+  return (
+    <mesh ref={ringRef} position={[0, height / 2 + 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <ringGeometry args={[Math.max(width, depth) * 0.48, Math.max(width, depth) * 0.54, 32]} />
+      <meshBasicMaterial color="#E8590C" transparent opacity={0.3} depthWrite={false} side={THREE.DoubleSide} />
+    </mesh>
+  );
 }
 
 // ─── Interactive Keycap ─────────────────────────────────────────────
@@ -252,6 +298,12 @@ function Keycap({
   onPress,
   onRelease,
   index,
+  keyId,
+  selected,
+  onSelect,
+  onPaint,
+  paintMode,
+  artisan,
 }: {
   position: [number, number, number];
   width: number;
@@ -268,18 +320,41 @@ function Keycap({
   onPress?: (index: number, legend: string) => void;
   onRelease?: (index: number) => void;
   index: number;
+  keyId: string;
+  selected?: boolean;
+  onSelect?: (keyId: string) => void;
+  onPaint?: (keyId: string) => void;
+  paintMode?: boolean;
+  artisan?: string;
 }) {
   const preset = KEYCAP_MATERIALS[material] || KEYCAP_MATERIALS.pbt;
   const groupRef = useRef<THREE.Group>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   const pressOffset = useRef(0);
   const targetOffset = useRef(0);
+  const flashIntensity = useRef(0);
+  const prevColor = useRef(color);
 
-  // Sculpted geometry
-  const geometry = useMemo(
-    () => createSculptedKeycap(profile, row, widthU, KEYCAP_SIZE, height),
-    [profile, row, widthU, height],
-  );
+  // Detect color change for flash effect
+  if (prevColor.current !== color) {
+    flashIntensity.current = 0.4;
+    prevColor.current = color;
+  }
+
+  // Artisan geometry or sculpted
+  const geometry = useMemo(() => {
+    if (artisan) {
+      return createArtisanGeometry(artisan as ArtisanStyle, KEYCAP_SIZE, height);
+    }
+    return createSculptedKeycap(profile, row, widthU, KEYCAP_SIZE, height);
+  }, [profile, row, widthU, height, artisan]);
+
+  // Artisan material
+  const artisanMat = useMemo(() => {
+    if (!artisan) return null;
+    return getArtisanMaterial(artisan as ArtisanStyle, color);
+  }, [artisan, color]);
 
   // Normal map for keycap material
   const normalMap = useMemo(
@@ -291,17 +366,18 @@ function Keycap({
     [preset.normalScale],
   );
 
-  // Legend texture
+  // Legend texture (skip for artisans)
   const texture = useMemo(() => {
+    if (artisan) return null;
     if (!showLegend || !legend) return null;
     return createLegendTexture(legend, color, legendColor);
-  }, [showLegend, legend, color, legendColor]);
+  }, [showLegend, legend, color, legendColor, artisan]);
 
   // Color lerp for smooth transitions
   const currentColor = useRef(new THREE.Color(color));
   const targetColor = useMemo(() => new THREE.Color(color), [color]);
 
-  // Spring animation for key press + color lerp
+  // Spring animation for key press + color lerp + flash decay
   useFrame(() => {
     if (!groupRef.current) return;
 
@@ -309,22 +385,81 @@ function Keycap({
     pressOffset.current += (targetOffset.current - pressOffset.current) * 0.2;
     groupRef.current.position.y = position[1] + pressOffset.current;
 
-    // Color lerp
-    currentColor.current.lerp(targetColor, 0.08);
+    // Color lerp — snappier for customization
+    currentColor.current.lerp(targetColor, 0.12);
+
+    // Flash effect decay
+    if (flashIntensity.current > 0.01 && meshRef.current) {
+      flashIntensity.current *= 0.88; // 200ms-ish decay
+      const mat = meshRef.current.material as THREE.MeshPhysicalMaterial;
+      mat.emissiveIntensity = flashIntensity.current;
+    }
   });
 
   const handlePointerDown = useCallback((e: THREE.Event) => {
-    if (!interactive) return;
     (e as { stopPropagation?: () => void }).stopPropagation?.();
-    targetOffset.current = -0.08; // 1.5mm press depth
+
+    // Selection mode takes priority
+    if (onSelect) {
+      onSelect(keyId);
+      return;
+    }
+
+    if (!interactive) return;
+    targetOffset.current = -0.08;
     onPress?.(index, legend || "");
-  }, [interactive, onPress, index, legend]);
+  }, [interactive, onPress, onSelect, index, legend, keyId]);
 
   const handlePointerUp = useCallback(() => {
-    if (!interactive) return;
+    if (!interactive || onSelect) return;
     targetOffset.current = 0;
     onRelease?.(index);
-  }, [interactive, onRelease, index]);
+  }, [interactive, onRelease, index, onSelect]);
+
+  const handlePointerEnter = useCallback(() => {
+    if (paintMode && onPaint) {
+      onPaint(keyId);
+    }
+    if (interactive || onSelect) {
+      setHovered(true);
+      document.body.style.cursor = "pointer";
+    }
+  }, [interactive, onSelect, paintMode, onPaint, keyId]);
+
+  const handlePointerLeave = useCallback(() => {
+    if (interactive) {
+      targetOffset.current = 0;
+    }
+    if (interactive || onSelect) {
+      setHovered(false);
+      document.body.style.cursor = "auto";
+    }
+  }, [interactive, onSelect]);
+
+  // Material props — artisan or standard
+  const matProps = artisanMat
+    ? {
+        color: artisanMat.color,
+        metalness: artisanMat.metalness,
+        roughness: artisanMat.roughness,
+        clearcoat: artisanMat.clearcoat,
+        clearcoatRoughness: artisanMat.clearcoatRoughness,
+        emissive: artisanMat.emissive || "#000000",
+        emissiveIntensity: artisanMat.emissiveIntensity || 0,
+        envMapIntensity: 0.7,
+      }
+    : {
+        color,
+        metalness: preset.metalness,
+        roughness: preset.roughness,
+        clearcoat: preset.clearcoat || 0,
+        clearcoatRoughness: preset.clearcoatRoughness || 0,
+        envMapIntensity: 0.5,
+        normalMap,
+        normalScale,
+        emissive: color,
+        emissiveIntensity: 0,
+      };
 
   return (
     <group
@@ -332,35 +467,18 @@ function Keycap({
       position={position}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
-      onPointerLeave={() => {
-        if (interactive) {
-          targetOffset.current = 0;
-          setHovered(false);
-          document.body.style.cursor = "auto";
-        }
-      }}
-      onPointerEnter={() => {
-        if (interactive) {
-          setHovered(true);
-          document.body.style.cursor = "pointer";
-        }
-      }}
+      onPointerLeave={handlePointerLeave}
+      onPointerEnter={handlePointerEnter}
     >
-      <mesh geometry={geometry}>
-        <meshPhysicalMaterial
-          color={color}
-          metalness={preset.metalness}
-          roughness={preset.roughness}
-          clearcoat={preset.clearcoat || 0}
-          clearcoatRoughness={preset.clearcoatRoughness || 0}
-          envMapIntensity={0.5}
-          normalMap={normalMap}
-          normalScale={normalScale}
-        />
+      <mesh ref={meshRef} geometry={geometry}>
+        <meshPhysicalMaterial {...matProps} />
       </mesh>
 
+      {/* Selection ring */}
+      {selected && <SelectionRing width={width} depth={KEYCAP_SIZE} height={height} />}
+
       {/* Hover highlight overlay */}
-      {hovered && interactive && (
+      {hovered && (interactive || onSelect) && (
         <mesh position={[0, height / 2 + 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[width * 0.95, KEYCAP_SIZE * 0.95]} />
           <meshBasicMaterial color="#ffffff" transparent opacity={0.08} depthWrite={false} />
@@ -380,13 +498,25 @@ function Keycap({
 
 // ─── Main Model ─────────────────────────────────────────────────────
 
-interface KeyboardModelProps {
+export interface KeyboardModelProps {
   config: KeyboardViewerConfig;
   interactive?: boolean;
   onKeyPress?: (legend: string) => void;
+  selectionMode?: SelectionMode;
+  selectedKeys?: Set<string>;
+  onKeySelect?: (keyId: string) => void;
+  onKeyPaint?: (keyId: string) => void;
 }
 
-export function KeyboardModel({ config, interactive = false, onKeyPress }: KeyboardModelProps) {
+export function KeyboardModel({
+  config,
+  interactive = false,
+  onKeyPress,
+  selectionMode,
+  selectedKeys,
+  onKeySelect,
+  onKeyPaint,
+}: KeyboardModelProps) {
   const groupRef = useRef<THREE.Group>(null);
   const [pressedKeys, setPressedKeys] = useState<Set<number>>(new Set());
 
@@ -417,18 +547,6 @@ export function KeyboardModel({ config, interactive = false, onKeyPress }: Keybo
   const caseHeight = 1.5;
   const plateThickness = 0.15;
 
-  // Pre-compute per-row key indices for legend lookup
-  const keyIndicesPerRow = useMemo(() => {
-    const map = new Map<number, number>();
-    const rowCounts = new Map<number, number>();
-    layout.forEach((key, i) => {
-      const count = rowCounts.get(key.y) || 0;
-      map.set(i, count);
-      rowCounts.set(key.y, count + 1);
-    });
-    return map;
-  }, [layout]);
-
   const profileMultipliers = KEYCAP_PROFILE_MULTIPLIERS[config.keycapProfile || "cherry"] || KEYCAP_PROFILE_MULTIPLIERS.cherry;
 
   // RGB key position data
@@ -456,6 +574,9 @@ export function KeyboardModel({ config, interactive = false, onKeyPress }: Keybo
 
   // Determine legend color from colorway
   const legendColorFromColorway = colorway ? getLegendColor(colorway) : undefined;
+
+  const isCustomizing = !!selectionMode;
+  const paintMode = config.paintMode || false;
 
   return (
     <group ref={groupRef} position={[-caseWidth / 2, 0, -caseDepth / 2]} rotation={[0.15, 0, 0]}>
@@ -492,7 +613,7 @@ export function KeyboardModel({ config, interactive = false, onKeyPress }: Keybo
         </group>
       )}
 
-      {/* ── Keycaps (Phase 2 sculpted + Phase 6 colorways + Phase 8 interactive) ── */}
+      {/* ── Keycaps (sculpted + colorways + interactive + customization) ── */}
       {layout.map((key, i) => {
         const keyWidth = key.w * UNIT - GAP;
         const baseRowHeight = ROW_HEIGHTS[key.row] || 0.75;
@@ -500,35 +621,54 @@ export function KeyboardModel({ config, interactive = false, onKeyPress }: Keybo
         const rowHeight = baseRowHeight * profileMult;
         const yPos = plateThickness / 2 + rowHeight / 2;
         const zPos = key.y * UNIT + UNIT / 2 + UNIT * 0.15;
-        const keyInRow = keyIndicesPerRow.get(i) || 0;
-        const legend = getLegendForKey(keyInRow, key.y, config.size);
 
-        // Colorway-based color or fallback to simple accent logic
+        // Per-key override lookup
+        const override: PerKeyOverride | undefined = config.perKeyOverrides?.[key.keyId];
+
+        // Resolve keycap color: override > colorway > accent logic
         let keycapColor: string;
-        if (colorway) {
-          keycapColor = getKeycapColor(colorway, legend, key.isModifier);
+        if (override?.color) {
+          keycapColor = override.color;
+        } else if (colorway) {
+          keycapColor = getKeycapColor(colorway, key.legend, key.isModifier);
         } else {
           keycapColor = key.isModifier ? config.keycapAccentColor : config.keycapColor;
         }
 
+        // Resolve legend text and color
+        const legendText = override?.legendText ?? key.legend;
+        const legendColor = override?.legendColor ?? legendColorFromColorway;
+
+        // Resolve profile per key
+        const keyProfile = (override?.profile || config.keycapProfile || "cherry") as KeyboardViewerConfig["keycapProfile"];
+
+        // Selection state
+        const isSelected = selectedKeys?.has(key.keyId) || false;
+
         return (
           <Keycap
-            key={i}
+            key={key.keyId}
             index={i}
+            keyId={key.keyId}
             position={[key.x + UNIT * 0.2, yPos, zPos]}
             width={keyWidth}
             height={rowHeight}
             color={keycapColor}
             material={config.keycapMaterial}
-            legend={legend}
+            legend={legendText}
             showLegend={config.showLegends !== false}
-            legendColor={legendColorFromColorway}
-            profile={config.keycapProfile || "cherry"}
+            legendColor={legendColor}
+            profile={keyProfile}
             row={key.row}
             widthU={key.w}
-            interactive={interactive}
-            onPress={handleKeyPress}
-            onRelease={handleKeyRelease}
+            interactive={interactive || isCustomizing}
+            onPress={isCustomizing ? undefined : handleKeyPress}
+            onRelease={isCustomizing ? undefined : handleKeyRelease}
+            selected={isSelected}
+            onSelect={isCustomizing ? onKeySelect : undefined}
+            onPaint={isCustomizing && paintMode ? onKeyPaint : undefined}
+            paintMode={isCustomizing && paintMode}
+            artisan={override?.artisan}
           />
         );
       })}

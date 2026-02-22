@@ -1,0 +1,562 @@
+[
+  {
+    "brand": "Durock",
+    "name": "Durock V2 Stabilizers",
+    "subcategory": "stabilizer",
+    "priceUsd": 22,
+    "inStock": true,
+    "notes": "Gold-plated screw-in stabilizers. Community favorite for smooth, rattle-free performance.",
+    "specs": { "type": "screw-in", "material": "polycarbonate", "wireType": "gold-plated" },
+    "tags": ["premium", "popular"]
+  },
+  {
+    "brand": "C3 Equalz",
+    "name": "C3 Equalz V3 Stabilizers",
+    "subcategory": "stabilizer",
+    "priceUsd": 25,
+    "inStock": true,
+    "notes": "Tight housing tolerances with minimal wire rattle out of the box. Available in multiple colorways.",
+    "specs": { "type": "screw-in", "material": "polycarbonate", "wireType": "gold-plated" },
+    "tags": ["premium", "popular"]
+  },
+  {
+    "brand": "TX Keyboards",
+    "name": "TX Stabilizers Rev 3",
+    "subcategory": "stabilizer",
+    "priceUsd": 20,
+    "inStock": true,
+    "notes": "Revised design with tighter stem-to-housing fit. Excellent wire balance and minimal tick.",
+    "specs": { "type": "screw-in", "material": "polycarbonate", "wireType": "stainless steel" },
+    "tags": ["enthusiast"]
+  },
+  {
+    "brand": "Cherry",
+    "name": "Cherry Clip-In Stabilizers",
+    "subcategory": "stabilizer",
+    "priceUsd": 8,
+    "inStock": true,
+    "notes": "OEM Cherry plate-mount clip-in stabilizers. Budget-friendly and widely compatible with most tray-mount boards.",
+    "specs": { "type": "clip-in", "material": "polycarbonate", "wireType": "standard" },
+    "tags": ["budget", "beginner"]
+  },
+  {
+    "brand": "Gateron",
+    "name": "Gateron Ink V2 Stabilizers",
+    "subcategory": "stabilizer",
+    "priceUsd": 18,
+    "inStock": true,
+    "notes": "Smoky translucent housing with tight tolerances. Great stock performance with minimal modding needed.",
+    "specs": { "type": "screw-in", "material": "ink housing", "wireType": "gold-plated" },
+    "tags": ["popular"]
+  },
+  {
+    "brand": "Owlab",
+    "name": "Owlab Stabilizers",
+    "subcategory": "stabilizer",
+    "priceUsd": 28,
+    "inStock": false,
+    "notes": "Premium stabilizers from the Spring and Jelly Epoch designer. Exceptionally tight tolerances and balanced wires.",
+    "specs": { "type": "screw-in", "material": "polycarbonate", "wireType": "stainless steel" },
+    "tags": ["premium", "limited"]
+  },
+  {
+    "brand": "Staebies",
+    "name": "Staebies V2 Stabilizers",
+    "subcategory": "stabilizer",
+    "priceUsd": 24,
+    "inStock": true,
+    "notes": "Unique split-stem design eliminates wire pop-out. No-mod-needed approach for hassle-free builds.",
+    "specs": { "type": "screw-in", "material": "polycarbonate", "wireType": "stainless steel" },
+    "tags": ["innovative", "popular"]
+  },
+  {
+    "brand": "WS",
+    "name": "WS Morandi Stabilizers",
+    "subcategory": "stabilizer",
+    "priceUsd": 16,
+    "inStock": true,
+    "notes": "Solid budget-to-mid-range stabilizers with consistent quality. Available in muted Morandi colorways.",
+    "specs": { "type": "screw-in", "material": "polycarbonate", "wireType": "gold-plated" },
+    "tags": ["value"]
+  },
+  {
+    "brand": "TX Keyboards",
+    "name": "TX Long Springs 63.5g",
+    "subcategory": "spring",
+    "priceUsd": 8,
+    "inStock": true,
+    "notes": "110-count long springs for a smoother force curve. 63.5g bottom-out weight, great for linears.",
+    "specs": { "weight": "63.5g", "length": "long (two-stage)", "material": "stainless steel", "count": 110 },
+    "tags": ["popular"]
+  },
+  {
+    "brand": "TX Keyboards",
+    "name": "TX Long Springs 55g",
+    "subcategory": "spring",
+    "priceUsd": 8,
+    "inStock": true,
+    "notes": "110-count long springs at a lighter 55g bottom-out. Ideal for those who prefer a featherweight typing feel.",
+    "specs": { "weight": "55g", "length": "long (two-stage)", "material": "stainless steel", "count": 110 },
+    "tags": ["light"]
+  },
+  {
+    "brand": "SPRiT",
+    "name": "SPRiT Slow Extreme Springs 68g",
+    "subcategory": "spring",
+    "priceUsd": 12,
+    "inStock": true,
+    "notes": "Progressive slow-curve springs that start light and ramp up gradually. Reduces finger fatigue over long sessions.",
+    "specs": { "weight": "68g", "length": "slow curve", "material": "stainless steel", "count": 110 },
+    "tags": ["enthusiast", "progressive"]
+  },
+  {
+    "brand": "Thic Thock",
+    "name": "Thic Thock DL Series Springs 62g",
+    "subcategory": "spring",
+    "priceUsd": 10,
+    "inStock": false,
+    "notes": "Dual-stage long springs with a distinctive two-phase force curve. Smooth bottom-out feel.",
+    "specs": { "weight": "62g", "length": "dual-stage long", "material": "stainless steel", "count": 110 },
+    "tags": ["premium"]
+  },
+  {
+    "brand": "Geon",
+    "name": "Geon Raptor Springs 65g",
+    "subcategory": "spring",
+    "priceUsd": 9,
+    "inStock": true,
+    "notes": "High-quality Korean-made springs. Consistent weight across the pack with minimal spring ping.",
+    "specs": { "weight": "65g", "length": "standard", "material": "stainless steel", "count": 110 },
+    "tags": ["value"]
+  },
+  {
+    "brand": "Durock",
+    "name": "Durock Gold-Plated Springs 67g",
+    "subcategory": "spring",
+    "priceUsd": 7,
+    "inStock": true,
+    "notes": "Budget gold-plated springs that resist corrosion. Decent consistency for the price point.",
+    "specs": { "weight": "67g", "length": "standard", "material": "gold-plated stainless steel", "count": 110 },
+    "tags": ["budget", "value"]
+  },
+  {
+    "brand": "Chemours",
+    "name": "Krytox 205g0",
+    "subcategory": "lube",
+    "priceUsd": 12,
+    "inStock": true,
+    "notes": "The gold standard lube for linear switches. Thick enough to dampen scratchiness without making switches sluggish. 5ml vial.",
+    "specs": { "type": "grease", "viscosity": "Grade 0", "volume": "5ml", "bestFor": "linears" },
+    "tags": ["essential", "popular"]
+  },
+  {
+    "brand": "Chemours",
+    "name": "Krytox 105 Oil",
+    "subcategory": "lube",
+    "priceUsd": 10,
+    "inStock": true,
+    "notes": "Thin oil ideal for springs to eliminate ping. Also used to thin 205g0 for tactile switches. 5ml vial.",
+    "specs": { "type": "oil", "viscosity": "thin", "volume": "5ml", "bestFor": "springs" },
+    "tags": ["essential", "popular"]
+  },
+  {
+    "brand": "Miller-Stephenson",
+    "name": "Tribosys 3203",
+    "subcategory": "lube",
+    "priceUsd": 11,
+    "inStock": true,
+    "notes": "Thin semi-fluid grease. The go-to for tactile switches since it preserves the bump while reducing scratch. 5ml vial.",
+    "specs": { "type": "semi-fluid grease", "viscosity": "thin", "volume": "5ml", "bestFor": "tactiles" },
+    "tags": ["popular"]
+  },
+  {
+    "brand": "Miller-Stephenson",
+    "name": "Tribosys 3204",
+    "subcategory": "lube",
+    "priceUsd": 11,
+    "inStock": true,
+    "notes": "Medium-viscosity grease sitting between 3203 and 205g0. Versatile for both linear and tactile applications. 5ml vial.",
+    "specs": { "type": "semi-fluid grease", "viscosity": "medium", "volume": "5ml", "bestFor": "versatile" },
+    "tags": ["versatile"]
+  },
+  {
+    "brand": "Kelowna",
+    "name": "Kelowna Lube Station Kit",
+    "subcategory": "lube",
+    "priceUsd": 35,
+    "inStock": true,
+    "notes": "All-in-one lube kit with 5ml Krytox 205g0, brush set, stem holder, and 30-switch lube station tray.",
+    "specs": { "type": "kit", "includes": "lube + brushes + station", "volume": "5ml 205g0 included" },
+    "tags": ["beginner", "kit"]
+  },
+  {
+    "brand": "Chemours",
+    "name": "GPL 106",
+    "subcategory": "lube",
+    "priceUsd": 10,
+    "inStock": true,
+    "notes": "Thicker PFPE oil alternative to Krytox 105. Excellent for bag-lubing springs to eliminate ping. 5ml vial.",
+    "specs": { "type": "oil", "viscosity": "medium-thin", "volume": "5ml", "bestFor": "springs" },
+    "tags": ["enthusiast"]
+  },
+  {
+    "brand": "Deskeys",
+    "name": "Deskeys Switch Films",
+    "subcategory": "film",
+    "priceUsd": 7,
+    "inStock": true,
+    "notes": "Gasket-style films made from a rubbery material. Reduce housing wobble and deepen switch sound. 120-pack.",
+    "specs": { "material": "elastomer", "thickness": "0.3mm", "count": 120 },
+    "tags": ["popular"]
+  },
+  {
+    "brand": "TX Keyboards",
+    "name": "TX Switch Films",
+    "subcategory": "film",
+    "priceUsd": 6,
+    "inStock": true,
+    "notes": "Thin polycarbonate films that tighten housing fit. Available in multiple thicknesses. 110-pack.",
+    "specs": { "material": "polycarbonate", "thickness": "0.15mm", "count": 110 },
+    "tags": ["popular", "value"]
+  },
+  {
+    "brand": "Kelowna",
+    "name": "Kelowna Switch Films",
+    "subcategory": "film",
+    "priceUsd": 5,
+    "inStock": true,
+    "notes": "Budget-friendly HTV films with good thickness tolerance. Available in 0.125mm and 0.3mm. 120-pack.",
+    "specs": { "material": "HTV", "thickness": "0.125mm", "count": 120 },
+    "tags": ["budget"]
+  },
+  {
+    "brand": "Durock",
+    "name": "Durock Switch Films",
+    "subcategory": "film",
+    "priceUsd": 6,
+    "inStock": true,
+    "notes": "Soft poron-like switch films. Good dampening effect and reduces housing rattle. 110-pack.",
+    "specs": { "material": "poron", "thickness": "0.3mm", "count": 110 },
+    "tags": ["value"]
+  },
+  {
+    "brand": "KBDfans",
+    "name": "KBDfans Switch Films",
+    "subcategory": "film",
+    "priceUsd": 5,
+    "inStock": true,
+    "notes": "Basic polycarbonate switch films. Affordable way to tighten up loose housings. 120-pack.",
+    "specs": { "material": "polycarbonate", "thickness": "0.15mm", "count": 120 },
+    "tags": ["budget", "beginner"]
+  },
+  {
+    "brand": "Stupidfish",
+    "name": "Stupidfish Case Foam",
+    "subcategory": "foam",
+    "priceUsd": 16,
+    "inStock": true,
+    "notes": "Custom-cut case foam for popular keyboard kits. Reduces case ping and hollowness. Board-specific cuts available.",
+    "specs": { "material": "poron", "thickness": "3mm", "type": "case foam" },
+    "tags": ["popular", "custom-fit"]
+  },
+  {
+    "brand": "KBDfans",
+    "name": "KBDfans PE Foam Sheet",
+    "subcategory": "foam",
+    "priceUsd": 4,
+    "inStock": true,
+    "notes": "Thin PE foam sheet placed between PCB and switches for a poppy, creamy sound signature. Cut to fit.",
+    "specs": { "material": "PE (polyethylene)", "thickness": "0.5mm", "type": "PCB foam" },
+    "tags": ["popular", "mod"]
+  },
+  {
+    "brand": "Generic",
+    "name": "Plate Foam Cut (Universal)",
+    "subcategory": "foam",
+    "priceUsd": 8,
+    "inStock": true,
+    "notes": "EVA plate foam placed between the plate and PCB. Dampens vibrations and fills the gap for a quieter build.",
+    "specs": { "material": "EVA", "thickness": "2mm", "type": "plate foam" },
+    "tags": ["value", "mod"]
+  },
+  {
+    "brand": "Generic",
+    "name": "PORON Case Foam Sheet",
+    "subcategory": "foam",
+    "priceUsd": 12,
+    "inStock": true,
+    "notes": "High-quality PORON foam sheet. Cut to size for any keyboard case. Superior density and vibration absorption.",
+    "specs": { "material": "poron", "thickness": "3.5mm", "type": "case foam" },
+    "tags": ["diy"]
+  },
+  {
+    "brand": "Generic",
+    "name": "Silicone Pour Dampener Kit",
+    "subcategory": "foam",
+    "priceUsd": 20,
+    "inStock": true,
+    "notes": "Two-part silicone poured directly into the case cavity. Cures to a dense pad that eliminates all case resonance.",
+    "specs": { "material": "silicone", "type": "pour-in dampener", "volume": "200ml kit" },
+    "tags": ["advanced", "mod"]
+  },
+  {
+    "brand": "KiiBoss",
+    "name": "KiiBoss Switch Opener",
+    "subcategory": "tool",
+    "priceUsd": 15,
+    "inStock": true,
+    "notes": "CNC aluminum switch opener compatible with Cherry MX and Kailh-style switches. One-hand operation.",
+    "specs": { "material": "aluminum", "compatibility": "MX + Kailh", "type": "switch opener" },
+    "tags": ["essential", "popular"]
+  },
+  {
+    "brand": "Generic",
+    "name": "Wire Keycap Puller",
+    "subcategory": "tool",
+    "priceUsd": 4,
+    "inStock": true,
+    "notes": "Stainless steel wire keycap puller. Safer for keycaps than plastic ring-style pullers. Essential for any build.",
+    "specs": { "material": "stainless steel", "type": "keycap puller" },
+    "tags": ["essential", "budget"]
+  },
+  {
+    "brand": "Kailh",
+    "name": "Kailh Switch Puller",
+    "subcategory": "tool",
+    "priceUsd": 6,
+    "inStock": true,
+    "notes": "Plastic switch puller designed for hot-swap sockets. Compresses the clips on both sides for safe switch removal.",
+    "specs": { "material": "plastic", "type": "switch puller", "compatibility": "hot-swap PCBs" },
+    "tags": ["essential", "beginner"]
+  },
+  {
+    "brand": "Generic",
+    "name": "Lube Station 30-Switch",
+    "subcategory": "tool",
+    "priceUsd": 12,
+    "inStock": true,
+    "notes": "Acrylic lube station holding 30 switch stems upright. Makes the lubing process organized and efficient.",
+    "specs": { "material": "acrylic", "capacity": 30, "type": "lube station" },
+    "tags": ["popular"]
+  },
+  {
+    "brand": "Generic",
+    "name": "Stem Holder",
+    "subcategory": "tool",
+    "priceUsd": 8,
+    "inStock": true,
+    "notes": "4-prong stem holder for applying lube to switch stems precisely. Keeps fingers clean and speeds up the process.",
+    "specs": { "material": "aluminum", "type": "stem holder" },
+    "tags": ["popular"]
+  },
+  {
+    "brand": "Generic",
+    "name": "Precision Tweezers Set",
+    "subcategory": "tool",
+    "priceUsd": 10,
+    "inStock": true,
+    "notes": "6-piece ESD-safe precision tweezer set. Useful for placing switch films, handling small screws, and general build work.",
+    "specs": { "material": "stainless steel", "type": "tweezers", "count": 6 },
+    "tags": ["essential"]
+  },
+  {
+    "brand": "Pinecil",
+    "name": "Pinecil V2 Soldering Iron Kit",
+    "subcategory": "tool",
+    "priceUsd": 42,
+    "inStock": true,
+    "notes": "Compact USB-C powered soldering iron. Heats up in seconds, supports multiple tips. Perfect for soldering switches and LEDs.",
+    "specs": { "type": "soldering iron", "power": "USB-C / DC barrel", "tempRange": "100-420C" },
+    "tags": ["soldering", "popular"]
+  },
+  {
+    "brand": "KBDfans",
+    "name": "72-Switch Tester",
+    "subcategory": "tool",
+    "priceUsd": 45,
+    "inStock": true,
+    "notes": "72-switch sample board with keycaps included. Try Cherry, Gateron, Kailh, and more before committing to a full set.",
+    "specs": { "type": "switch tester", "capacity": 72, "keycapsIncluded": true },
+    "tags": ["beginner", "popular"]
+  },
+  {
+    "brand": "Mechcables",
+    "name": "Mechcables Coiled Aviator USB-C Cable",
+    "subcategory": "cable",
+    "priceUsd": 65,
+    "inStock": true,
+    "notes": "Custom coiled cable with GX16 aviator connector and USB-C device end. Hand-coiled and reverse-coiled for tight memory.",
+    "specs": { "connector": "USB-C to USB-A", "detachable": "GX16 aviator", "length": "6ft total", "coilLength": "6in" },
+    "tags": ["premium", "popular"]
+  },
+  {
+    "brand": "CableMod",
+    "name": "CableMod Pro Coiled Keyboard Cable",
+    "subcategory": "cable",
+    "priceUsd": 50,
+    "inStock": true,
+    "notes": "Pro-grade coiled cable with tight coil memory. Available in dozens of color options. Aviator or LEMO-style connector.",
+    "specs": { "connector": "USB-C to USB-A", "detachable": "aviator", "length": "5ft total", "coilLength": "5in" },
+    "tags": ["popular"]
+  },
+  {
+    "brand": "Space Cables",
+    "name": "Space Cables Lemo-Style Coiled Cable",
+    "subcategory": "cable",
+    "priceUsd": 80,
+    "inStock": false,
+    "notes": "Premium coiled cable featuring a push-pull LEMO-style connector. Clean aesthetic and reliable detach mechanism.",
+    "specs": { "connector": "USB-C to USB-A", "detachable": "LEMO-style", "length": "6ft total", "coilLength": "7in" },
+    "tags": ["premium", "limited"]
+  },
+  {
+    "brand": "Zap Cables",
+    "name": "Zap Cables Custom Coiled Cable",
+    "subcategory": "cable",
+    "priceUsd": 70,
+    "inStock": true,
+    "notes": "Fully custom coiled cable with color-matched paracord and techflex. YC8 or aviator connector options.",
+    "specs": { "connector": "USB-C to USB-A", "detachable": "YC8 / aviator", "length": "5ft total", "coilLength": "6in" },
+    "tags": ["custom"]
+  },
+  {
+    "brand": "Generic",
+    "name": "Straight USB-C Braided Cable",
+    "subcategory": "cable",
+    "priceUsd": 12,
+    "inStock": true,
+    "notes": "No-frills braided nylon USB-C cable. Reliable data and power delivery without the coiled cable premium.",
+    "specs": { "connector": "USB-C to USB-A", "detachable": "none", "length": "6ft", "material": "braided nylon" },
+    "tags": ["budget", "beginner"]
+  },
+  {
+    "brand": "Randomfrankp",
+    "name": "Randomfrankp x NovelKeys Desk Mat",
+    "subcategory": "desk-mat",
+    "priceUsd": 30,
+    "inStock": true,
+    "notes": "Minimalist dark desk mat collab between Randomfrankp and NovelKeys. Stitched edges, smooth cloth surface.",
+    "specs": { "size": "900x400mm", "thickness": "4mm", "material": "cloth + rubber base", "stitchedEdge": true },
+    "tags": ["popular", "collab"]
+  },
+  {
+    "brand": "NovelKeys",
+    "name": "NovelKeys Desk Mat",
+    "subcategory": "desk-mat",
+    "priceUsd": 25,
+    "inStock": true,
+    "notes": "Large-format desk mat available in a rotating selection of community-designed colorways. Dye-sublimated print.",
+    "specs": { "size": "900x400mm", "thickness": "4mm", "material": "cloth + rubber base", "stitchedEdge": true },
+    "tags": ["popular", "value"]
+  },
+  {
+    "brand": "CannonKeys",
+    "name": "CannonKeys Winter Landscape Desk Mat",
+    "subcategory": "desk-mat",
+    "priceUsd": 28,
+    "inStock": false,
+    "notes": "Scenic winter landscape art printed on a full-size desk mat. Part of CannonKeys seasonal artist series.",
+    "specs": { "size": "900x400mm", "thickness": "4mm", "material": "cloth + rubber base", "stitchedEdge": true },
+    "tags": ["art", "limited"]
+  },
+  {
+    "brand": "Omnitype",
+    "name": "Omnitype Great Wave Desk Mat",
+    "subcategory": "desk-mat",
+    "priceUsd": 35,
+    "inStock": true,
+    "notes": "Hokusai Great Wave reinterpretation desk mat. Premium dye-sub print with vibrant colors and non-slip rubber base.",
+    "specs": { "size": "900x400mm", "thickness": "4mm", "material": "cloth + rubber base", "stitchedEdge": true },
+    "tags": ["art", "popular"]
+  },
+  {
+    "brand": "Grovemade",
+    "name": "Grovemade Matte Desk Pad",
+    "subcategory": "desk-mat",
+    "priceUsd": 120,
+    "inStock": true,
+    "notes": "Premium vegetable-tanned leather desk pad with a matte finish. Ages beautifully with a unique patina over time.",
+    "specs": { "size": "725x308mm", "thickness": "3mm", "material": "vegetable-tanned leather" },
+    "tags": ["premium", "luxury"]
+  },
+  {
+    "brand": "Glorious",
+    "name": "Glorious Wooden Wrist Rest TKL",
+    "subcategory": "wrist-rest",
+    "priceUsd": 30,
+    "inStock": true,
+    "notes": "Solid onyx-stained hardwood wrist rest sized for TKL keyboards. Smooth lacquer finish with rubber feet.",
+    "specs": { "size": "TKL", "material": "hardwood", "finish": "onyx stain + lacquer" },
+    "tags": ["popular", "value"]
+  },
+  {
+    "brand": "Royal Glam",
+    "name": "Royal Glam Wood Wrist Rest 60%",
+    "subcategory": "wrist-rest",
+    "priceUsd": 40,
+    "inStock": true,
+    "notes": "Handcrafted walnut wood wrist rest for 60% boards. Ergonomic angle and oil-finished surface.",
+    "specs": { "size": "60%", "material": "walnut", "finish": "oil" },
+    "tags": ["premium"]
+  },
+  {
+    "brand": "Grovemade",
+    "name": "Grovemade Leather Wrist Rest",
+    "subcategory": "wrist-rest",
+    "priceUsd": 80,
+    "inStock": true,
+    "notes": "Full-grain leather over a contoured hardwood base. Develops a rich patina over months of use.",
+    "specs": { "size": "TKL", "material": "full-grain leather + hardwood", "finish": "natural" },
+    "tags": ["premium", "luxury"]
+  },
+  {
+    "brand": "Razer",
+    "name": "Razer Ergonomic Wrist Rest",
+    "subcategory": "wrist-rest",
+    "priceUsd": 20,
+    "inStock": true,
+    "notes": "Memory foam wrist rest with cooling gel layer and anti-slip rubber base. Full-size length.",
+    "specs": { "size": "full-size", "material": "memory foam + cooling gel", "finish": "leatherette" },
+    "tags": ["budget", "ergonomic"]
+  },
+  {
+    "brand": "KBDfans",
+    "name": "KBDfans Keyboard Carrying Case 60%",
+    "subcategory": "cover-case",
+    "priceUsd": 28,
+    "inStock": true,
+    "notes": "Hard-shell carrying case with custom foam insert for 60% keyboards. Protects during travel and storage.",
+    "specs": { "size": "60%", "material": "hard shell + foam insert", "type": "carrying case" },
+    "tags": ["popular"]
+  },
+  {
+    "brand": "KBDfans",
+    "name": "KBDfans Keyboard Carrying Case 65%",
+    "subcategory": "cover-case",
+    "priceUsd": 30,
+    "inStock": true,
+    "notes": "Hard-shell travel case sized for 65% layouts including boards like the Tofu65 and KBD67 Lite.",
+    "specs": { "size": "65%", "material": "hard shell + foam insert", "type": "carrying case" },
+    "tags": ["popular"]
+  },
+  {
+    "brand": "Keychron",
+    "name": "Keychron Keyboard Travel Pouch",
+    "subcategory": "cover-case",
+    "priceUsd": 22,
+    "inStock": true,
+    "notes": "Soft padded travel pouch fits most 65%-75% keyboards. Water-resistant exterior with plush interior lining.",
+    "specs": { "size": "65%-75%", "material": "water-resistant nylon + plush lining", "type": "travel pouch" },
+    "tags": ["value"]
+  },
+  {
+    "brand": "Generic",
+    "name": "Acrylic Keyboard Dust Cover (TKL)",
+    "subcategory": "cover-case",
+    "priceUsd": 18,
+    "inStock": true,
+    "notes": "Clear acrylic dust cover for TKL keyboards. Keeps dust and debris off your board when not in use.",
+    "specs": { "size": "TKL", "material": "clear acrylic", "type": "dust cover" },
+    "tags": ["budget"]
+  }
+]
