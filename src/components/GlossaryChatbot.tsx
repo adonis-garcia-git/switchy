@@ -108,7 +108,7 @@ export const GlossaryChatbot = forwardRef<GlossaryChatbotHandle>(
     };
 
     return (
-      <div className="rounded-xl border border-border-subtle bg-bg-surface flex flex-col h-full min-h-[280px] overflow-hidden">
+      <div className="rounded-xl border border-border-subtle bg-bg-surface flex flex-col h-full min-h-[360px] overflow-hidden">
         {/* Header */}
         <div className="px-4 py-3 border-b border-border-subtle/50 shrink-0">
           <div className="flex items-center gap-2.5">

@@ -23,7 +23,7 @@ export function QuestionCard({ question, onAnswer, isActive }: QuestionCardProps
   const handleSingleSelect = (id: string) => {
     setSelectedSingle(id);
     // Auto-advance after a brief delay for visual feedback
-    setTimeout(() => onAnswer(id), 600);
+    setTimeout(() => onAnswer(id), 300);
   };
 
   const handleMultiToggle = (id: string) => {
@@ -66,7 +66,7 @@ export function QuestionCard({ question, onAnswer, isActive }: QuestionCardProps
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
                 "active:scale-[0.97]",
                 selectedSingle === option.id
-                  ? "border-accent bg-accent-dim animate-[confirmPulse_400ms_ease-out]"
+                  ? "border-accent bg-accent-dim scale-[0.98]"
                   : "border-border-subtle bg-bg-surface hover:border-border-accent hover:bg-bg-elevated/50"
               )}
             >

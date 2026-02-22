@@ -22,6 +22,7 @@ import {
   keyboardFiltersToParams,
 } from "@/lib/filterParams";
 import { SponsoredCarousel } from "@/components/SponsoredCarousel";
+import { DealBanner } from "@/components/DealBanner";
 import { usePromotedInsert } from "@/hooks/usePromotedInsert";
 import { PromotedProductCard } from "@/components/PromotedProductCard";
 
@@ -117,7 +118,6 @@ function KeyboardsContent() {
 
   const sorted = displayKeyboards
     ? [...displayKeyboards].sort((a: any, b: any) => {
-        if (filters.sortBy === "recommended") return 0;
         if (filters.sortBy === "price-low") return a.priceUsd - b.priceUsd;
         if (filters.sortBy === "price-high") return b.priceUsd - a.priceUsd;
         if (filters.sortBy === "brand") return a.brand.localeCompare(b.brand);
@@ -229,6 +229,9 @@ function KeyboardsContent() {
             </div>
           </div>
 
+          {/* Deal banner */}
+          <DealBanner productType="keyboard" />
+
           {/* Active filter badges */}
           <ActiveFilterBadges filters={filters} setFilters={setFilters} />
 
@@ -274,43 +277,34 @@ function KeyboardsContent() {
           ) : (
             <>
               <div className={gridClassName}>
-                {(() => {
-                  let featuredShown = false;
-                  return mergedItems!.map((item: any) => {
-                    if (item.isPromoted) {
-                      return (
-                        <PromotedProductCard
-                          key={item._id}
-                          sponsorshipId={item._id.replace("promoted-", "")}
-                          vendorName={item.vendorName}
-                          productName={item.productName}
-                          productUrl={item.productUrl}
-                          imageUrl={item.imageUrl}
-                          priceUsd={item.priceUsd}
-                        />
-                      );
-                    }
-                    const isFeatured = !featuredShown;
-                    if (isFeatured) featuredShown = true;
-                    return (
-                      <KeyboardCard
-                        key={item._id}
-                        keyboard={item}
-                        compareMode={compareMode}
-                        isSelected={selectedIds.has(item._id)}
-                        onCompareToggle={(id) => {
-                          setSelectedIds((prev) => {
-                            const next = new Set(prev);
-                            if (next.has(id)) next.delete(id);
-                            else if (next.size < 3) next.add(id);
-                            return next;
-                          });
-                        }}
-                        featured={isFeatured}
-                      />
-                    );
-                  });
-                })()}
+                {mergedItems!.map((item: any) =>
+                  item.isPromoted ? (
+                    <PromotedProductCard
+                      key={item._id}
+                      sponsorshipId={item._id.replace("promoted-", "")}
+                      vendorName={item.vendorName}
+                      productName={item.productName}
+                      productUrl={item.productUrl}
+                      imageUrl={item.imageUrl}
+                      priceUsd={item.priceUsd}
+                    />
+                  ) : (
+                    <KeyboardCard
+                      key={item._id}
+                      keyboard={item}
+                      compareMode={compareMode}
+                      isSelected={selectedIds.has(item._id)}
+                      onCompareToggle={(id) => {
+                        setSelectedIds((prev) => {
+                          const next = new Set(prev);
+                          if (next.has(id)) next.delete(id);
+                          else if (next.size < 3) next.add(id);
+                          return next;
+                        });
+                      }}
+                    />
+                  )
+                )}
               </div>
               <Pagination
                 page={page}

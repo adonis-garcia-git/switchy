@@ -12,13 +12,12 @@ import { BuildResult } from "@/components/builder/BuildResult";
 import { CustomBuilder } from "@/components/builder/CustomBuilder";
 import { KeyboardViewer3D } from "@/components/3d/KeyboardViewer3D";
 import { Tabs } from "@/components/ui/Tabs";
-import { ToastContainer } from "@/components/ui/Toast";
 import { DEFAULT_VIEWER_CONFIG } from "@/lib/keyboard3d";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
 import type { BuilderPhase, BuilderQuestion, BuilderAnswer, BuildData } from "@/lib/types";
+import type { CustomizerInteractiveProps } from "@/components/builder/KeyboardCustomizer";
 import { cn } from "@/lib/utils";
 import { useSubscription } from "@/hooks/useSubscription";
-import { useToast } from "@/hooks/useToast";
 import { PaywallModal } from "@/components/PaywallModal";
 import { UsageCounter } from "@/components/UsageCounter";
 
@@ -68,6 +67,14 @@ function BuilderPageInner() {
     ...DEFAULT_VIEWER_CONFIG,
   });
 
+  // Customizer interactive props (from KeyboardCustomizer when on customize step)
+  const [customizerProps, setCustomizerProps] = useState<CustomizerInteractiveProps | null>(null);
+
+  // Auto-rotate when not actively interacting
+  const autoRotateViewer = mode === "ai"
+    ? (phase === "landing" || phase === "generating")
+    : !customizerProps;
+
   // Convex actions
   const generateQuestions = useAction(api.buildAdvisor.generateQuestions);
   const generateBuildFromAnswers = useAction(api.buildAdvisor.generateBuildFromAnswers);
@@ -76,9 +83,6 @@ function BuilderPageInner() {
 
   // Sign-in prompt state for unauthenticated users
   const [showSignIn, setShowSignIn] = useState(false);
-
-  // Toast notifications
-  const { toasts, showToast, dismissToast } = useToast();
 
   // Phase 1: Handle initial prompt
   const handleInitialSubmit = useCallback(async (prompt: string) => {
@@ -116,7 +120,6 @@ function BuilderPageInner() {
           setShowPaywall(true);
           setPhase("landing");
         } else {
-          showToast({ message: "Something went wrong generating your build. Please try again.", variant: "error", action: { label: "Try again", onClick: () => handleInitialSubmit(prompt) } });
           setPhase("landing");
         }
       }
@@ -174,8 +177,6 @@ function BuilderPageInner() {
           } catch (fallbackErr: unknown) {
             if (fallbackErr instanceof Error && fallbackErr.message.includes("FREE_TIER_LIMIT_REACHED")) {
               setShowPaywall(true);
-            } else {
-              showToast({ message: "Failed to generate build. Please try again.", variant: "error" });
             }
             setPhase("landing");
           }
@@ -185,20 +186,6 @@ function BuilderPageInner() {
       }
     }
   }, [answers, currentQuestionIndex, questions.length, generateBuildFromAnswers, generateBuild, initialPrompt]);
-
-  // Handle going back in question flow
-  const handleQuestionBack = useCallback((targetIndex: number) => {
-    // Trim answers back to the target index
-    setAnswers((prev) => prev.slice(0, targetIndex));
-    setCurrentQuestionIndex(targetIndex);
-  }, []);
-
-  // Handle aborting the generating phase
-  const handleGeneratingAbort = useCallback(() => {
-    setGenerating(false);
-    setPhase("landing");
-    showToast({ message: "Build generation cancelled.", variant: "info" });
-  }, [showToast]);
 
   // Handle viewer config updates from questions
   const handleViewerUpdate = useCallback((update: Partial<KeyboardViewerConfig>) => {
@@ -224,11 +211,10 @@ function BuilderPageInner() {
       setSaved(true);
     } catch (err) {
       console.error("Failed to save build:", err);
-      showToast({ message: "Failed to save build. Please try again.", variant: "error" });
     } finally {
       setSaving(false);
     }
-  }, [buildResult, isSignedIn, saveBuild, initialPrompt, showToast]);
+  }, [buildResult, isSignedIn, saveBuild, initialPrompt]);
 
   // Handle tweak
   const handleTweak = useCallback(async (tweakText: string) => {
@@ -246,12 +232,11 @@ function BuilderPageInner() {
         setShowPaywall(true);
       } else {
         console.error("Failed to tweak build:", err);
-        showToast({ message: "Failed to refine build. Please try again.", variant: "error" });
       }
     } finally {
       setTweaking(false);
     }
-  }, [buildResult, generateBuild, initialPrompt, showToast]);
+  }, [buildResult, generateBuild, initialPrompt]);
 
   // Reset
   const handleReset = useCallback(() => {
@@ -268,25 +253,60 @@ function BuilderPageInner() {
   // Show mode tabs only when AI mode is at landing, or always in custom mode
   const showModeTabs = mode === "custom" || phase === "landing";
 
+  // Compute the viewer config for the right panel
+  // If customizer has interactive props, use its merged config; otherwise use base viewerConfig
+  const rightPanelConfig = customizerProps?.config ?? viewerConfig;
+
   return (
-    <div className="relative min-h-[calc(100vh-4rem)]">
-      {/* Background: 3D viewer fills entire area */}
-      <div className="absolute inset-0 z-0">
-        <KeyboardViewer3D config={viewerConfig} height="100%" autoRotate className="rounded-none border-0 bg-transparent" />
-        {/* Readability gradient — heavier for custom mode since it has more content */}
-        <div className={cn(
-          "absolute inset-0 bg-gradient-to-b from-bg-primary/40 via-bg-primary/60 to-bg-primary/80",
-          mode === "ai" && phase === "landing" && "from-bg-primary/20 via-bg-primary/40 to-bg-primary/70",
-          mode === "ai" && phase === "result" && "from-bg-primary/50 via-bg-primary/70 to-bg-primary/90",
-          mode === "custom" && "from-bg-primary/60 via-bg-primary/80 to-bg-primary/95"
-        )} />
+    <div className="relative h-[calc(100vh-4rem)] overflow-hidden">
+      {/* ── Mobile: compact 3D viewer at top ── */}
+      <div className="lg:hidden shrink-0">
+        <KeyboardViewer3D
+          config={rightPanelConfig}
+          height="280px"
+          autoRotate={autoRotateViewer}
+          className="rounded-none border-0"
+          {...(customizerProps ? {
+            interactive: true,
+            selectionMode: customizerProps.selectionMode,
+            selectedKeys: customizerProps.selectedKeys,
+            onKeySelect: customizerProps.onKeySelect,
+            onKeyPaint: customizerProps.onKeyPaint,
+          } : {})}
+        />
       </div>
 
-      {/* Content overlay */}
+      {/* ── Desktop: 3D viewer as seamless full-page background ── */}
+      <div className="hidden lg:block absolute inset-0">
+        <KeyboardViewer3D
+          config={rightPanelConfig}
+          height="100%"
+          autoRotate={autoRotateViewer}
+          className="rounded-none border-0"
+          {...(customizerProps ? {
+            interactive: true,
+            selectionMode: customizerProps.selectionMode,
+            selectedKeys: customizerProps.selectedKeys,
+            onKeySelect: customizerProps.onKeySelect,
+            onKeyPaint: customizerProps.onKeyPaint,
+          } : {})}
+        />
+      </div>
+
+      {/* ── Desktop: soft radial vignette behind text zone (no hard edges) ── */}
+      <div
+        className="hidden lg:block absolute inset-0 pointer-events-none"
+        style={{
+          background: `radial-gradient(ellipse 55% 70% at 25% 50%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 50%, transparent 100%)`,
+        }}
+      />
+
+      {/* ── Content panel (floats above the 3D scene) ── */}
       <div className={cn(
-        "relative z-10 min-h-[calc(100vh-4rem)]",
-        mode === "ai" && "flex flex-col items-center justify-center px-4 sm:px-6 pb-12",
-        mode === "custom" && "px-4 sm:px-6 pt-6 pb-12"
+        "relative z-10 h-full overflow-y-auto lg:w-[50%] lg:min-w-[480px]",
+        mode === "ai" && (phase === "landing" || phase === "generating" || (phase === "questions" && questions.length === 0))
+          ? "flex flex-col items-center justify-center px-4 sm:px-6 lg:px-10 pb-12"
+          : "px-4 sm:px-6 lg:px-10 pt-6 pb-12"
       )}>
         {/* Mode tabs */}
         {showModeTabs && (
@@ -304,8 +324,9 @@ function BuilderPageInner() {
               onChange={(v) => {
                 setMode(v as BuilderMode);
                 if (v === "ai") handleReset();
+                setCustomizerProps(null);
               }}
-              className="backdrop-blur-md bg-bg-surface/60"
+              className="bg-black/20 border-white/[0.08]"
             />
           </div>
         )}
@@ -332,7 +353,6 @@ function BuilderPageInner() {
                 currentIndex={currentQuestionIndex}
                 answers={answers}
                 onAnswer={handleAnswer}
-                onBack={handleQuestionBack}
                 onViewerUpdate={handleViewerUpdate}
               />
             )}
@@ -346,7 +366,7 @@ function BuilderPageInner() {
             )}
 
             {/* Phase 3: Generating */}
-            {phase === "generating" && <GeneratingState onAbort={handleGeneratingAbort} />}
+            {phase === "generating" && <GeneratingState />}
 
             {/* Phase 4: Build Result */}
             {phase === "result" && buildResult && (
@@ -365,12 +385,13 @@ function BuilderPageInner() {
 
         {/* Custom Build mode */}
         {mode === "custom" && (
-          <CustomBuilder onViewerUpdate={handleViewerUpdate} viewerConfig={viewerConfig} />
+          <CustomBuilder
+            onViewerUpdate={handleViewerUpdate}
+            viewerConfig={viewerConfig}
+            onCustomizerPropsChange={setCustomizerProps}
+          />
         )}
       </div>
-
-      {/* Toast notifications */}
-      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
 
       {/* Paywall modal */}
       <PaywallModal isOpen={showPaywall} onClose={() => setShowPaywall(false)} />

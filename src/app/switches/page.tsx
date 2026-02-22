@@ -21,6 +21,7 @@ import {
   switchFiltersToParams,
 } from "@/lib/filterParams";
 import { SponsoredCarousel } from "@/components/SponsoredCarousel";
+import { DealBanner } from "@/components/DealBanner";
 import { usePromotedInsert } from "@/hooks/usePromotedInsert";
 import { PromotedProductCard } from "@/components/PromotedProductCard";
 
@@ -180,6 +181,9 @@ function SwitchesContent() {
             </div>
           </div>
 
+          {/* Deal banner */}
+          <DealBanner productType="switch" />
+
           {/* Search bar */}
           <div className="mb-6">
             <div className="relative">
@@ -245,36 +249,27 @@ function SwitchesContent() {
           ) : (
             <>
               <div className={gridClassName}>
-                {(() => {
-                  let featuredShown = false;
-                  return mergedItems!.map((item: any) => {
-                    if (item.isPromoted) {
-                      return (
-                        <PromotedProductCard
-                          key={item._id}
-                          sponsorshipId={item._id.replace("promoted-", "")}
-                          vendorName={item.vendorName}
-                          productName={item.productName}
-                          productUrl={item.productUrl}
-                          imageUrl={item.imageUrl}
-                          priceUsd={item.priceUsd}
-                        />
-                      );
-                    }
-                    const isFeatured = !featuredShown;
-                    if (isFeatured) featuredShown = true;
-                    return (
-                      <SwitchCard
-                        key={item._id}
-                        sw={item}
-                        compareMode={compareMode}
-                        isSelected={selectedIds.has(item._id)}
-                        onCompareToggle={handleCompareToggle}
-                        featured={isFeatured}
-                      />
-                    );
-                  });
-                })()}
+                {mergedItems!.map((item: any) =>
+                  item.isPromoted ? (
+                    <PromotedProductCard
+                      key={item._id}
+                      sponsorshipId={item._id.replace("promoted-", "")}
+                      vendorName={item.vendorName}
+                      productName={item.productName}
+                      productUrl={item.productUrl}
+                      imageUrl={item.imageUrl}
+                      priceUsd={item.priceUsd}
+                    />
+                  ) : (
+                    <SwitchCard
+                      key={item._id}
+                      sw={item}
+                      compareMode={compareMode}
+                      isSelected={selectedIds.has(item._id)}
+                      onCompareToggle={handleCompareToggle}
+                    />
+                  )
+                )}
               </div>
               <Pagination
                 page={page}
