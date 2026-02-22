@@ -92,7 +92,7 @@ const ENV_TUNING: Record<EnvironmentPresetName, EnvironmentTuning> = {
 
 // ─── Camera Presets ─────────────────────────────────────────────────
 
-export type CameraPresetName = "default" | "top-down" | "hero" | "side" | "closeup";
+export type CameraPresetName = "default" | "top-down" | "hero" | "side" | "closeup" | "freeform";
 
 interface CameraPreset {
   position: [number, number, number];
@@ -188,16 +188,18 @@ function CameraController({ preset }: { preset: CameraPresetName }) {
   const prevPreset = useRef(preset);
   const transitioning = useRef(false);
 
-  // Detect preset changes
+  // Detect preset changes — freeform never triggers a transition
   if (prevPreset.current !== preset) {
     prevPreset.current = preset;
-    transitioning.current = true;
+    transitioning.current = preset !== "freeform";
   }
 
   useFrame(() => {
     if (!transitioning.current) return;
 
     const target = CAMERA_PRESETS[preset];
+    if (!target) return; // freeform has no entry
+
     const targetPos = new THREE.Vector3(...target.position);
 
     camera.position.lerp(targetPos, 0.06);

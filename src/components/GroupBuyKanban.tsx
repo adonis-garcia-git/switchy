@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { cn, formatPriceWhole, daysUntil } from "@/lib/utils";
 import { Id } from "../../convex/_generated/dataModel";
 
@@ -29,9 +30,14 @@ const COLUMNS: { status: GroupBuyStatus; label: string; color: string }[] = [
 interface GroupBuyKanbanProps {
   entries: GroupBuyData[];
   onUpdateStatus: (id: Id<"groupBuys">, status: GroupBuyStatus) => void;
+  onExitSelection?: () => void;
 }
 
-export function GroupBuyKanban({ entries, onUpdateStatus }: GroupBuyKanbanProps) {
+export function GroupBuyKanban({ entries, onUpdateStatus, onExitSelection }: GroupBuyKanbanProps) {
+  // Exit selection mode when switching to kanban
+  useEffect(() => {
+    onExitSelection?.();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {COLUMNS.map((col) => {

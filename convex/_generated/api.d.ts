@@ -19,6 +19,7 @@ import type * as components_ from "../components.js";
 import type * as conversations from "../conversations.js";
 import type * as glossary from "../glossary.js";
 import type * as glossaryChat from "../glossaryChat.js";
+import type * as groupBuyBudgets from "../groupBuyBudgets.js";
 import type * as groupBuyListings from "../groupBuyListings.js";
 import type * as groupBuyPartnerships from "../groupBuyPartnerships.js";
 import type * as groupBuys from "../groupBuys.js";
@@ -59,6 +60,7 @@ declare const fullApi: ApiFromModules<{
   conversations: typeof conversations;
   glossary: typeof glossary;
   glossaryChat: typeof glossaryChat;
+  groupBuyBudgets: typeof groupBuyBudgets;
   groupBuyListings: typeof groupBuyListings;
   groupBuyPartnerships: typeof groupBuyPartnerships;
   groupBuys: typeof groupBuys;

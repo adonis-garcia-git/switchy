@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useCallback, Suspense } from "react";
 import { useQuery } from "convex/react";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { api } from "../../../convex/_generated/api";
 import { Tabs } from "@/components/ui/Tabs";
 import { GroupBuyDiscover } from "@/components/GroupBuyDiscover";
 import { GroupBuyTracker, TrackerPrefillData } from "@/components/GroupBuyTracker";
+import { GroupBuyRecommendedSidebar } from "@/components/GroupBuyRecommendedSidebar";
 import { Button } from "@/components/ui/Button";
 
 type ProductType = "keyboard" | "switches" | "keycaps" | "accessories";
@@ -20,6 +21,8 @@ function GroupBuysContent() {
   const { isSignedIn } = useUser();
   const [activeTab, setActiveTab] = useState("discover");
   const [prefillData, setPrefillData] = useState<TrackerPrefillData | null>(null);
+  const [trackedProductTypes, setTrackedProductTypes] = useState<string[]>([]);
+  const [trackedProductNames, setTrackedProductNames] = useState<string[]>([]);
 
   const trackedListingIds = useQuery(
     api.groupBuys.getTrackedListingIds,
@@ -28,11 +31,9 @@ function GroupBuysContent() {
 
   const handleTrackThis = (listing: any) => {
     if (!isSignedIn) {
-      // Clerk will handle the auth modal via SignInButton wrapper
       return;
     }
 
-    // Map listing status to a reasonable tracker productType
     const productType = listing.productType as ProductType;
 
     setPrefillData({
@@ -51,6 +52,11 @@ function GroupBuysContent() {
   const handleClearPrefill = () => {
     setPrefillData(null);
   };
+
+  const handleTrackedDataChange = useCallback((types: string[], names: string[]) => {
+    setTrackedProductTypes(types);
+    setTrackedProductNames(names);
+  }, []);
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)]">
@@ -86,13 +92,26 @@ function GroupBuysContent() {
         )}
 
         {activeTab === "tracker" && (
-          <div className="h-full overflow-y-auto">
-            <div className="max-w-5xl mx-auto px-4 lg:px-8 py-6">
+          <div className="flex h-full">
+            <main className="flex-1 min-w-0 overflow-y-auto px-4 lg:px-8 py-6">
               {isSignedIn ? (
-                <GroupBuyTracker
-                  prefillData={prefillData}
-                  onClearPrefill={handleClearPrefill}
-                />
+                <>
+                  <GroupBuyTracker
+                    prefillData={prefillData}
+                    onClearPrefill={handleClearPrefill}
+                    onSwitchToDiscover={() => setActiveTab("discover")}
+                    onTrackedDataChange={handleTrackedDataChange}
+                  />
+                  {/* Mobile recommendations strip */}
+                  <div className="lg:hidden">
+                    <GroupBuyRecommendedSidebar
+                      mode="mobile"
+                      onTrackThis={handleTrackThis}
+                      trackedProductTypes={trackedProductTypes}
+                      trackedProductNames={trackedProductNames}
+                    />
+                  </div>
+                </>
               ) : (
                 <div className="text-center py-24">
                   <div className="max-w-sm mx-auto">
@@ -113,7 +132,18 @@ function GroupBuysContent() {
                   </div>
                 </div>
               )}
-            </div>
+            </main>
+            {/* Desktop sidebar */}
+            {isSignedIn && (
+              <aside className="hidden lg:block w-80 flex-shrink-0 border-l border-border-subtle overflow-y-auto p-5">
+                <GroupBuyRecommendedSidebar
+                  mode="desktop"
+                  onTrackThis={handleTrackThis}
+                  trackedProductTypes={trackedProductTypes}
+                  trackedProductNames={trackedProductNames}
+                />
+              </aside>
+            )}
           </div>
         )}
       </div>

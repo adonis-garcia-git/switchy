@@ -253,6 +253,91 @@ export const createFromListing = mutation({
   },
 });
 
+export const getActivityLog = query({
+  args: {},
+  returns: v.any(),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return [];
+    const entries = await ctx.db
+      .query("groupBuys")
+      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .collect();
+
+    const events: Array<{
+      type: "created" | "status_change" | "delivered";
+      productName: string;
+      productType: string;
+      timestamp: number;
+      from?: string;
+      to?: string;
+    }> = [];
+
+    for (const entry of entries) {
+      // Creation event
+      events.push({
+        type: "created",
+        productName: entry.productName,
+        productType: entry.productType,
+        timestamp: entry._creationTime,
+      });
+
+      // Status change events from history
+      const history = entry.statusHistory as Array<{ from: string; to: string; changedAt: number }> | undefined;
+      if (history) {
+        for (const h of history) {
+          events.push({
+            type: h.to === "delivered" ? "delivered" : "status_change",
+            productName: entry.productName,
+            productType: entry.productType,
+            timestamp: h.changedAt,
+            from: h.from,
+            to: h.to,
+          });
+        }
+      }
+    }
+
+    // Sort by most recent first, limit to 20
+    events.sort((a, b) => b.timestamp - a.timestamp);
+    return events.slice(0, 20);
+  },
+});
+
+export const bulkUpdateStatus = mutation({
+  args: {
+    ids: v.array(v.id("groupBuys")),
+    status: v.union(
+      v.literal("ordered"),
+      v.literal("in_production"),
+      v.literal("shipped"),
+      v.literal("delivered")
+    ),
+  },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    for (const id of args.ids) {
+      const existing = await ctx.db.get(id);
+      if (!existing || existing.userId !== identity.subject) continue;
+      if (existing.status === args.status) continue;
+
+      const history = (existing.statusHistory as Array<{ from: string; to: string; changedAt: number }>) || [];
+      await ctx.db.patch(id, {
+        status: args.status,
+        statusHistory: [...history, {
+          from: existing.status,
+          to: args.status,
+          changedAt: Date.now(),
+        }],
+      });
+    }
+    return null;
+  },
+});
+
 export const getTrackedListingIds = query({
   args: {},
   returns: v.array(v.string()),

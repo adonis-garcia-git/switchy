@@ -478,6 +478,7 @@ export function StudioControls({ config, onUpdate }: StudioControlsProps) {
             { value: "hero", label: "Hero" },
             { value: "side", label: "Side" },
             { value: "closeup", label: "Closeup" },
+            { value: "freeform", label: "Freeform" },
           ]}
           onChange={(v) => update("cameraPreset", v as KeyboardViewerConfig["cameraPreset"])}
         />

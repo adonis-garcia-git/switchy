@@ -138,6 +138,66 @@ export const getEndingSoon = query({
   },
 });
 
+export const getRecommendations = query({
+  args: {
+    productTypes: v.optional(
+      v.array(
+        v.union(
+          v.literal("keyboard"),
+          v.literal("switches"),
+          v.literal("keycaps"),
+          v.literal("accessories")
+        )
+      )
+    ),
+    excludeNames: v.optional(v.array(v.string())),
+    limit: v.optional(v.number()),
+  },
+  returns: v.array(v.any()),
+  handler: async (ctx, args) => {
+    const limit = args.limit ?? 10;
+    const excludeSet = new Set(
+      (args.excludeNames ?? []).map((n) => n.toLowerCase())
+    );
+
+    // Fetch live listings
+    const live = await ctx.db
+      .query("groupBuyListings")
+      .withIndex("by_status", (q) => q.eq("status", "live"))
+      .collect();
+
+    // Fetch upcoming listings
+    const upcoming = await ctx.db
+      .query("groupBuyListings")
+      .withIndex("by_status", (q) => q.eq("status", "upcoming"))
+      .collect();
+
+    let candidates = [...live, ...upcoming].filter(
+      (l) => !excludeSet.has(l.name.toLowerCase())
+    );
+
+    const trackedTypes = new Set(args.productTypes ?? []);
+
+    if (trackedTypes.size > 0) {
+      // Separate into matching and non-matching, then combine
+      const matching = candidates.filter((l) =>
+        trackedTypes.has(l.productType as any)
+      );
+      const other = candidates.filter(
+        (l) => !trackedTypes.has(l.productType as any)
+      );
+      // Sort each group by popularity
+      matching.sort((a, b) => b.trackingCount - a.trackingCount);
+      other.sort((a, b) => b.trackingCount - a.trackingCount);
+      candidates = [...matching, ...other];
+    } else {
+      candidates.sort((a, b) => b.trackingCount - a.trackingCount);
+    }
+
+    return candidates.slice(0, limit);
+  },
+});
+
 export const incrementTrackingCount = mutation({
   args: { id: v.id("groupBuyListings") },
   returns: v.null(),

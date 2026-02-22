@@ -24,6 +24,9 @@ interface GroupBuyEntryProps {
   onUpdateStatus: (id: Id<"groupBuys">, status: GroupBuyData["status"]) => void;
   onUpdate: (id: Id<"groupBuys">, fields: Record<string, unknown>) => void;
   onDelete: (id: Id<"groupBuys">) => void;
+  selectable?: boolean;
+  selected?: boolean;
+  onToggleSelect?: (id: Id<"groupBuys">) => void;
 }
 
 const STATUS_STYLES: Record<string, string> = {
@@ -52,6 +55,9 @@ export function GroupBuyEntry({
   onUpdateStatus,
   onUpdate,
   onDelete,
+  selectable,
+  selected,
+  onToggleSelect,
 }: GroupBuyEntryProps) {
   const [editing, setEditing] = useState(false);
   const [editData, setEditData] = useState({
@@ -129,9 +135,29 @@ export function GroupBuyEntry({
   return (
     <div className={cn(
       "rounded-xl border bg-bg-surface p-4 shadow-surface hover:border-border-accent hover:glow-accent transition-[border-color,box-shadow] duration-200",
-      isOverdue ? "border-red-500/30" : "border-border-subtle"
+      isOverdue ? "border-red-500/30" : "border-border-subtle",
+      selected && "ring-1 ring-accent/30 border-accent/40"
     )}>
       <div className="flex items-start justify-between gap-3">
+        {selectable && (
+          <button
+            onClick={() => onToggleSelect?.(entry._id)}
+            className={cn(
+              "mt-1 shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors duration-150",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+              selected
+                ? "bg-accent border-accent"
+                : "border-border-default hover:border-accent/50"
+            )}
+            aria-label={selected ? "Deselect" : "Select"}
+          >
+            {selected && (
+              <svg className="w-3 h-3 text-bg-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+          </button>
+        )}
         {entry.imageUrl && (
           <img
             src={entry.imageUrl}

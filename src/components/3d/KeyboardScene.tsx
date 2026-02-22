@@ -58,6 +58,17 @@ function AutoFitCamera({ modelWidth = 28, refDistance = 43 }: { modelWidth?: num
   return null;
 }
 
+// ── Viewport Offset ──────────────────────────────────────────────────
+// Shifts the keyboard's apparent screen position without moving its
+// rotation center. Uses PerspectiveCamera.filmOffset (mm on 35mm gate).
+//
+//   Negative  → keyboard slides RIGHT on screen
+//   Positive  → keyboard slides LEFT  on screen
+//   0         → dead center (default)
+//
+// Each unit ≈ 3% of viewport width.  -3 ≈ shifts right ~9%.
+const KEYBOARD_FILM_OFFSET = -3;
+
 // Camera positions
 const INTRO_POSITION = new THREE.Vector3(0, 14, 24);   // starts zoomed in
 const DEFAULT_TARGET = new THREE.Vector3(0, 0, 0);
@@ -69,6 +80,26 @@ const CUSTOMIZE_POSITION = new THREE.Vector3(5, 22, 42);
  * Intro dolly: starts camera zoomed-in and eases out to the default resting
  * position. Fires once on mount, cancels if the user touches the canvas.
  */
+/**
+ * Applies a horizontal film offset to the camera, sliding the rendered
+ * image left or right without altering the orbit/rotation centre.
+ */
+function FilmOffset({ offset = KEYBOARD_FILM_OFFSET }: { offset?: number }) {
+  const { camera } = useThree();
+
+  useEffect(() => {
+    if (!(camera instanceof THREE.PerspectiveCamera)) return;
+    camera.filmOffset = offset;
+    camera.updateProjectionMatrix();
+    return () => {
+      (camera as THREE.PerspectiveCamera).filmOffset = 0;
+      (camera as THREE.PerspectiveCamera).updateProjectionMatrix();
+    };
+  }, [camera, offset]);
+
+  return null;
+}
+
 function IntroAnimation({
   controlsRef,
 }: {
@@ -198,6 +229,7 @@ export function KeyboardScene({
   // Always animate — idle floating, RGB, interactions all need continuous rendering
   const frameloop = "always" as const;
   const controlsRef = useRef<any>(null);
+  const isFreeform = config.cameraPreset === "freeform";
 
   return (
     <Canvas
@@ -259,6 +291,9 @@ export function KeyboardScene({
       {/* Auto-fit FOV to container aspect ratio */}
       <AutoFitCamera />
 
+      {/* Shift keyboard right on screen (adjust KEYBOARD_FILM_OFFSET above) */}
+      <FilmOffset />
+
       {/* Intro dolly: zoomed-in → default on mount */}
       <IntroAnimation controlsRef={controlsRef} />
 
@@ -267,14 +302,14 @@ export function KeyboardScene({
 
       <OrbitControls
         ref={controlsRef}
-        autoRotate={autoRotate}
+        autoRotate={isFreeform ? false : autoRotate}
         autoRotateSpeed={0.3}
-        enablePan={false}
+        enablePan={isFreeform}
         target={[0, 0, 0]}
-        minPolarAngle={Math.PI * 0.15}
-        maxPolarAngle={Math.PI * 0.48}
-        minDistance={12}
-        maxDistance={45}
+        minPolarAngle={isFreeform ? Math.PI * 0.01 : Math.PI * 0.15}
+        maxPolarAngle={isFreeform ? Math.PI * 0.95 : Math.PI * 0.48}
+        minDistance={isFreeform ? 4 : 12}
+        maxDistance={isFreeform ? 80 : 45}
         enableDamping
         dampingFactor={0.05}
       />

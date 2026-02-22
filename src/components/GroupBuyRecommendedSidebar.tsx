@@ -7,6 +7,9 @@ import { cn } from "@/lib/utils";
 
 interface GroupBuyRecommendedSidebarProps {
   onTrackThis: (listing: any) => void;
+  trackedProductTypes?: string[];
+  trackedProductNames?: string[];
+  mode: "desktop" | "mobile";
 }
 
 function RecommendationCard({
@@ -101,91 +104,92 @@ function SkeletonCard({ compact }: { compact?: boolean }) {
   );
 }
 
-export function GroupBuyRecommendedSidebar({ onTrackThis }: GroupBuyRecommendedSidebarProps) {
+export function GroupBuyRecommendedSidebar({
+  onTrackThis,
+  trackedProductTypes,
+  trackedProductNames,
+  mode,
+}: GroupBuyRecommendedSidebarProps) {
   const [showAll, setShowAll] = useState(false);
-  const recommendations = useQuery(api.groupBuyListings.getRecommendations, { limit: 10 });
+  const recommendations = useQuery(api.groupBuyListings.getRecommendations, {
+    productTypes: trackedProductTypes as any,
+    excludeNames: trackedProductNames,
+    limit: 10,
+  });
 
-  // Loading state
   const isLoading = recommendations === undefined;
 
-  // No listings at all — don't render
   if (!isLoading && recommendations.length === 0) return null;
 
   const displayCount = showAll ? 10 : 6;
   const visibleItems = isLoading ? [] : recommendations.slice(0, displayCount);
   const hasMore = !isLoading && recommendations.length > 6;
 
-  const headerText = "Recommended for You";
+  const headerEl = (
+    <div className="flex items-center gap-2 mb-3">
+      <svg className="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
+      </svg>
+      <h3 className="text-sm font-semibold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight">
+        Recommended for You
+      </h3>
+    </div>
+  );
 
-  return (
-    <>
-      {/* Desktop sidebar */}
-      <aside className="hidden lg:block w-80 flex-shrink-0">
-        <div className="sticky top-6">
-          <div className="flex items-center gap-2 mb-3">
-            <svg className="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
-            </svg>
-            <h3 className="text-sm font-semibold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight">
-              {headerText}
-            </h3>
-          </div>
+  if (mode === "desktop") {
+    return (
+      <div className="sticky top-6">
+        {headerEl}
 
-          <div className="space-y-2.5 max-h-[calc(100vh-160px)] overflow-y-auto scrollbar-none pr-0.5">
-            {isLoading ? (
-              Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
-            ) : (
-              visibleItems.map((listing: any) => (
-                <RecommendationCard
-                  key={listing._id}
-                  listing={listing}
-                  onTrack={onTrackThis}
-                />
-              ))
-            )}
-          </div>
-
-          {hasMore && (
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className={cn(
-                "w-full mt-2.5 text-xs font-semibold text-text-muted py-2 rounded-lg",
-                "hover:text-accent hover:bg-accent-dim/50",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
-                "transition-[color,background-color] duration-150"
-              )}
-            >
-              {showAll ? "Show less" : `Show ${recommendations.length - 6} more`}
-            </button>
-          )}
-        </div>
-      </aside>
-
-      {/* Mobile horizontal scroll */}
-      <div className="block lg:hidden mt-6">
-        <div className="flex items-center gap-2 mb-3">
-          <svg className="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
-          </svg>
-          <h3 className="text-sm font-semibold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight">
-            {headerText}
-          </h3>
-        </div>
-        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none -mx-1 px-1">
+        <div className="space-y-2.5 max-h-[calc(100vh-160px)] overflow-y-auto scrollbar-none pr-0.5">
           {isLoading ? (
-            Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} compact />)
+            Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
           ) : (
             visibleItems.map((listing: any) => (
               <RecommendationCard
                 key={listing._id}
                 listing={listing}
                 onTrack={onTrackThis}
-                compact
               />
             ))
           )}
         </div>
+
+        {hasMore && (
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className={cn(
+              "w-full mt-2.5 text-xs font-semibold text-text-muted py-2 rounded-lg",
+              "hover:text-accent hover:bg-accent-dim/50",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+              "transition-[color,background-color] duration-150"
+            )}
+          >
+            {showAll ? "Show less" : `Show ${recommendations!.length - 6} more`}
+          </button>
+        )}
       </div>
-    </>
+    );
+  }
+
+  // mode === "mobile"
+  return (
+    <div className="mt-6">
+      {headerEl}
+      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none -mx-1 px-1">
+        {isLoading ? (
+          Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} compact />)
+        ) : (
+          visibleItems.map((listing: any) => (
+            <RecommendationCard
+              key={listing._id}
+              listing={listing}
+              onTrack={onTrackThis}
+              compact
+            />
+          ))
+        )}
+      </div>
+    </div>
   );
 }

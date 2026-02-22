@@ -49,8 +49,8 @@ function StudioPageInner() {
     setConfig((prev) => ({ ...prev, ...update }));
   }, []);
 
-  // Determine auto-rotate: rotate in scene mode when not customizing
-  const autoRotate = studioMode === "scene" && !customizerProps;
+  // Determine auto-rotate: rotate in scene mode when not customizing or in freeform
+  const autoRotate = studioMode === "scene" && !customizerProps && config.cameraPreset !== "freeform";
 
   // Active viewer config: use customizer's merged config when in per-key mode
   const viewerConfig = customizerProps?.config ?? config;
