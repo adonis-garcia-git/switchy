@@ -10,6 +10,15 @@
 </p>
 
 <p align="center">
+  <a href="https://switchy-five.vercel.app"><strong>Try the Live App</strong></a> &nbsp;·&nbsp;
+  <a href="https://www.youtube.com/watch?v=TKr1wFuRSFM"><strong>Watch the Demo</strong></a>
+</p>
+
+<p align="center">
+  <em>The video was rushed and doesn't do the app justice — we'd highly recommend trying it yourself. No sign-in required — all features are fully unlocked.</em>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" alt="Next.js" />
   <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white" alt="React" />
   <img src="https://img.shields.io/badge/Convex-Backend-FF6B35?logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiPjwvc3ZnPg==&logoColor=white" alt="Convex" />
@@ -114,6 +123,17 @@ The AI isn't a chatbot bolted on. It's the core product loop:
 2. **Compatibility matching** — Generated builds use real products from our database, ensuring parts actually work together
 3. **Conversation memory** — Multi-turn chat preserves context, so users refine builds iteratively ("make it quieter" / "swap the keycaps for something cheaper")
 4. **Usage-metered** — Free tier gets limited generations; Pro unlocks unlimited AI builds + priority generation
+
+### Nia AI — The Knowledge Layer
+
+Nia is the connective tissue between our local product database and the real-time community knowledge that makes Switchy's recommendations trustworthy rather than generic. It's integrated across four critical surfaces:
+
+1. **Build intelligence** — Before Claude generates a build, Nia enriches the AI context with community reviews, Reddit sentiment, and real vendor pricing via universal search. When Switchy says "Gateron Oil Kings are creamy," that's community consensus surfaced through Nia — not a hallucination.
+2. **Product validation & fallback** — When the AI recommends a product outside our local DB, Nia's search API acts as the verification layer: confirming the product exists, finding a vendor URL, and extracting live pricing. This is how we guarantee zero hallucinated products in build recommendations.
+3. **Cross-catalog search** — The `/search` page runs Nia universal search across all indexed sources simultaneously — local products and external community intel returned in a single query, with 24-hour caching and query deduplication for performance.
+4. **Automated weekly intelligence** — Nia Oracle runs as a scheduled cron job that researches new product releases across major vendors, trending community picks from Reddit and YouTube, and group buy status updates. This feeds directly into our weekly digest — the platform gets smarter every week without manual curation.
+
+Without Nia, Switchy would be limited to its static product database. With Nia, it has access to the living, breathing knowledge of the entire mechanical keyboard community — and that's what makes the difference between a recommendation engine and a genuine advisor.
 
 ## Monetization
 
