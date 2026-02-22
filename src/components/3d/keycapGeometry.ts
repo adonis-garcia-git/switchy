@@ -213,6 +213,87 @@ export function createSculptedKeycap(
   return geo;
 }
 
+// ─── Circular Keycap Geometry ────────────────────────────────────────
+
+export function createCircularKeycap(
+  row: number,
+  widthU: number,
+  keycapSize: number,
+  keycapHeight: number,
+): THREE.BufferGeometry {
+  const key = `circular-${row}-${widthU.toFixed(2)}`;
+  const cached = geometryCache.get(key);
+  if (cached) return cached;
+
+  const h = keycapHeight;
+  const baseRadius = keycapSize / 2;
+  const topRadius = baseRadius * 0.88; // slight draft angle
+  const radialSegs = 24;
+  const heightSegs = 6;
+
+  if (widthU <= 1.25) {
+    // Standard circular key — cylinder with spherical dish
+    const geo = new THREE.CylinderGeometry(topRadius, baseRadius, h, radialSegs, heightSegs);
+    const pos = geo.attributes.position as THREE.BufferAttribute;
+    const posArray = pos.array as Float32Array;
+    const halfH = h / 2;
+
+    // Apply spherical dish to top face
+    for (let i = 0; i < pos.count; i++) {
+      const x = posArray[i * 3];
+      const y = posArray[i * 3 + 1];
+      const z = posArray[i * 3 + 2];
+      const t = (y + halfH) / h;
+
+      if (t > 0.85) {
+        const dishT = (t - 0.85) / 0.15;
+        const dist2 = (x * x + z * z) / (topRadius * topRadius);
+        const depression = 0.06 * Math.max(0, 1 - dist2) * dishT;
+        posArray[i * 3 + 1] = y - depression;
+      }
+    }
+
+    pos.needsUpdate = true;
+    geo.computeVertexNormals();
+    geometryCache.set(key, geo);
+    return geo;
+  } else {
+    // Wide key — stadium/oval shape (stretched cylinder)
+    const w = widthU * 1.905 - 0.205;
+    const d = keycapSize;
+    const stretch = w / d;
+
+    const geo = new THREE.CylinderGeometry(topRadius, baseRadius, h, radialSegs, heightSegs);
+    const pos = geo.attributes.position as THREE.BufferAttribute;
+    const posArray = pos.array as Float32Array;
+    const halfH = h / 2;
+
+    for (let i = 0; i < pos.count; i++) {
+      // Stretch x-axis for stadium shape
+      posArray[i * 3] *= stretch;
+
+      const x = posArray[i * 3];
+      const y = posArray[i * 3 + 1];
+      const z = posArray[i * 3 + 2];
+      const t = (y + halfH) / h;
+
+      if (t > 0.85) {
+        const dishT = (t - 0.85) / 0.15;
+        const nx = x / (topRadius * stretch);
+        const nz = z / topRadius;
+        const dist2 = nx * nx + nz * nz;
+        const depression = 0.04 * Math.max(0, 1 - dist2) * dishT;
+        posArray[i * 3 + 1] = y - depression;
+      }
+    }
+
+    pos.needsUpdate = true;
+    geo.computeVertexNormals();
+    geometryCache.set(key, geo);
+    return geo;
+  }
+}
+
 // ─── Helpers ────────────────────────────────────────────────────────
 
 function smoothstep(edge0: number, edge1: number, x: number): number {

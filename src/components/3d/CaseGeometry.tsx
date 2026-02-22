@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import * as THREE from "three";
 import { RoundedBox } from "@react-three/drei";
 import type { MaterialPreset, CaseFinishModifier } from "./materialPresets";
-import { CASE_FINISHES } from "./materialPresets";
+import { CASE_FINISHES, PLATE_MATERIALS } from "./materialPresets";
 import type { NormalMapType } from "./proceduralTextures";
 import { getNormalMap } from "./proceduralTextures";
 import { CableGeometry, WirelessSwitch, BluetoothLED } from "./CableGeometry";
@@ -25,6 +25,7 @@ interface CaseGeometryProps {
   caseFinish?: "glossy" | "matte" | "satin";
   connectionType?: "wired" | "wireless" | "bluetooth";
   cableColor?: string;
+  plateMaterial?: "aluminum" | "brass" | "polycarbonate" | "fr4" | "pom";
 }
 
 export function CaseGeometry({
@@ -41,6 +42,7 @@ export function CaseGeometry({
   caseFinish = "glossy",
   connectionType,
   cableColor,
+  plateMaterial = "aluminum",
 }: CaseGeometryProps) {
   const normalMap = useMemo(() => getNormalMap(normalMapType), [normalMapType]);
 
@@ -126,19 +128,26 @@ export function CaseGeometry({
       </RoundedBox>
 
       {/* ── Plate ── */}
-      <RoundedBox
-        args={[width - 0.6, plateThickness, depth - 0.4]}
-        radius={0.05}
-        smoothness={2}
-        position={[0, 0, 0]}
-      >
-        <meshPhysicalMaterial
-          color={plateColor}
-          metalness={0.85}
-          roughness={0.2}
-          envMapIntensity={0.6}
-        />
-      </RoundedBox>
+      {(() => {
+        const plateMat = PLATE_MATERIALS[plateMaterial] || PLATE_MATERIALS.aluminum;
+        return (
+          <RoundedBox
+            args={[width - 0.6, plateThickness, depth - 0.4]}
+            radius={0.05}
+            smoothness={2}
+            position={[0, 0, 0]}
+          >
+            <meshPhysicalMaterial
+              color={plateColor}
+              metalness={plateMat.metalness}
+              roughness={plateMat.roughness}
+              clearcoat={plateMat.clearcoat || 0}
+              clearcoatRoughness={plateMat.clearcoatRoughness || 0}
+              envMapIntensity={0.6}
+            />
+          </RoundedBox>
+        );
+      })()}
 
       {/* ── Enhanced USB-C Port ── */}
       <EnhancedUSBCPort height={height} depth={depth} />

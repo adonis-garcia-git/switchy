@@ -7,7 +7,7 @@ import { StudioSidebar } from "@/components/studio/StudioSidebar";
 import { StudioActionBar } from "@/components/studio/StudioActionBar";
 import { StudioMobileDrawer } from "@/components/studio/StudioMobileDrawer";
 import { StudioControls } from "@/components/studio/StudioControls";
-import { StudioPresetGallery } from "@/components/studio/StudioPresetGallery";
+import { StudioPresetGalleryFull } from "@/components/studio/StudioPresetGallery";
 import { ToastContainer } from "@/components/ui/Toast";
 import { Tabs } from "@/components/ui/Tabs";
 import { useToast } from "@/hooks/useToast";
@@ -17,8 +17,7 @@ import { KeyboardCustomizer } from "@/components/builder/KeyboardCustomizer";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
 import type { CustomizerInteractiveProps } from "@/components/builder/KeyboardCustomizer";
 import type { PerKeyOverrides } from "@/lib/keyCustomization";
-
-type StudioMode = "scene" | "customize";
+import type { StudioMode } from "@/components/studio/StudioSidebar";
 
 export default function StudioPage() {
   return (
@@ -42,23 +41,23 @@ function StudioPageInner() {
     return { ...DEFAULT_VIEWER_CONFIG };
   });
 
-  const [studioMode, setStudioMode] = useState<StudioMode>("scene");
+  const [studioMode, setStudioMode] = useState<StudioMode>("design");
   const [customizerProps, setCustmizerProps] = useState<CustomizerInteractiveProps | null>(null);
 
   const handleConfigUpdate = useCallback((update: Partial<KeyboardViewerConfig>) => {
     setConfig((prev) => ({ ...prev, ...update }));
   }, []);
 
-  // Determine auto-rotate: rotate in scene mode when not customizing or in freeform
-  const autoRotate = studioMode === "scene" && !customizerProps && config.cameraPreset !== "freeform";
+  // Determine auto-rotate: rotate when not in per-key mode and not in freeform
+  const autoRotate = studioMode !== "perkey" && !customizerProps && config.cameraPreset !== "freeform";
 
   // Active viewer config: use customizer's merged config when in per-key mode
   const viewerConfig = customizerProps?.config ?? config;
 
-  // Handle mode change — clear customizer props when switching to scene
+  // Handle mode change — clear customizer props when switching away from per-key
   const handleModeChange = useCallback((mode: StudioMode) => {
     setStudioMode(mode);
-    if (mode === "scene") {
+    if (mode !== "perkey") {
       setCustmizerProps(null);
     }
   }, []);
@@ -77,7 +76,7 @@ function StudioPageInner() {
           height="100%"
           autoRotate={autoRotate}
           className="rounded-none border-0"
-          customizeMode={studioMode === "customize"}
+          customizeMode={studioMode === "perkey"}
           {...(customizerProps ? {
             interactive: true,
             selectionMode: customizerProps.selectionMode,
@@ -95,7 +94,7 @@ function StudioPageInner() {
           height="100%"
           autoRotate={autoRotate}
           className="rounded-none border-0"
-          customizeMode={studioMode === "customize"}
+          customizeMode={studioMode === "perkey"}
           {...(customizerProps ? {
             interactive: true,
             selectionMode: customizerProps.selectionMode,
@@ -151,8 +150,9 @@ function StudioPageInner() {
           <div className="mb-4">
             <Tabs
               tabs={[
-                { label: "Design", value: "scene" },
-                { label: "Per-Key", value: "customize" },
+                { label: "Design", value: "design" },
+                { label: "Presets", value: "presets" },
+                { label: "Per-Key", value: "perkey" },
               ]}
               activeTab={studioMode}
               onChange={(v) => handleModeChange(v as StudioMode)}
@@ -160,17 +160,16 @@ function StudioPageInner() {
             />
           </div>
 
-          {studioMode === "scene" ? (
-            <div className="space-y-4">
-              <StudioControls config={config} onUpdate={handleConfigUpdate} />
-              <div className="border-t border-white/[0.06] pt-4">
-                <StudioPresetGallery
-                  activeColorway={config.colorway}
-                  onApply={handleConfigUpdate}
-                />
-              </div>
-            </div>
-          ) : (
+          {studioMode === "design" && (
+            <StudioControls config={config} onUpdate={handleConfigUpdate} />
+          )}
+          {studioMode === "presets" && (
+            <StudioPresetGalleryFull
+              activeColorway={config.colorway}
+              onApply={handleConfigUpdate}
+            />
+          )}
+          {studioMode === "perkey" && (
             <KeyboardCustomizer
               viewerConfig={config}
               onOverridesChange={handleMobileOverridesChange}

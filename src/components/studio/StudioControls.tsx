@@ -256,6 +256,14 @@ const IconScene = () => (
   </svg>
 );
 
+const IconSound = () => (
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-full h-full">
+    <path d="M3 6v4h2.5l3.5 3V3L5.5 6H3z" />
+    <path d="M11 5.5a3 3 0 010 5" />
+    <path d="M12.5 3.5a5.5 5.5 0 010 9" />
+  </svg>
+);
+
 const IconConnect = () => (
   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-full h-full">
     <path d="M3 8h4" />
@@ -321,6 +329,16 @@ export function StudioControls({ config, onUpdate }: StudioControlsProps) {
           ]}
           onChange={(v) => update("caseFinish", v as KeyboardViewerConfig["caseFinish"])}
         />
+        <StudioPillGroup
+          label="Mounting Style"
+          value={config.mountingStyle || "gasket"}
+          options={[
+            { value: "gasket", label: "Gasket" },
+            { value: "top-mount", label: "Top Mount" },
+            { value: "tray-mount", label: "Tray Mount" },
+          ]}
+          onChange={(v) => update("mountingStyle", v as KeyboardViewerConfig["mountingStyle"])}
+        />
         <StudioColorPicker
           label="Color"
           value={config.caseColor}
@@ -343,6 +361,15 @@ export function StudioControls({ config, onUpdate }: StudioControlsProps) {
             { value: "xda", label: "XDA" },
           ]}
           onChange={(v) => update("keycapProfile", v as KeyboardViewerConfig["keycapProfile"])}
+        />
+        <StudioPillGroup
+          label="Shape"
+          value={config.keycapShape || "standard"}
+          options={[
+            { value: "standard", label: "Standard" },
+            { value: "circular", label: "Circular" },
+          ]}
+          onChange={(v) => update("keycapShape", v as KeyboardViewerConfig["keycapShape"])}
         />
         <StudioSelect
           label="Material"
@@ -482,16 +509,62 @@ export function StudioControls({ config, onUpdate }: StudioControlsProps) {
           ]}
           onChange={(v) => update("cameraPreset", v as KeyboardViewerConfig["cameraPreset"])}
         />
+        <StudioSlider
+          label="Typing Angle"
+          value={config.typingAngle ?? 6}
+          min={0}
+          max={12}
+          step={1}
+          onChange={(v) => update("typingAngle", v)}
+          formatValue={(v) => `${v}°`}
+        />
         <StudioToggle
           label="Show Desk"
           value={config.showDesk ?? false}
           onChange={(v) => update("showDesk", v)}
         />
         {config.showDesk && (
-          <StudioColorPicker
-            label="Desk Color"
-            value={config.deskColor || "#3d3d3d"}
-            onChange={(v) => update("deskColor", v)}
+          <div className="space-y-3 mt-1">
+            <StudioColorPicker
+              label="Desk Color"
+              value={config.deskColor || "#3d3d3d"}
+              onChange={(v) => update("deskColor", v)}
+            />
+            <StudioPillGroup
+              label="Desk Material"
+              value={config.deskMaterial || "wood"}
+              options={[
+                { value: "wood", label: "Wood" },
+                { value: "marble", label: "Marble" },
+                { value: "leather", label: "Leather" },
+                { value: "concrete", label: "Concrete" },
+                { value: "fabric", label: "Fabric" },
+                { value: "metal", label: "Metal" },
+              ]}
+              onChange={(v) => update("deskMaterial", v as KeyboardViewerConfig["deskMaterial"])}
+            />
+          </div>
+        )}
+      </StudioAccordion>
+
+      {/* Sound */}
+      <StudioAccordion title="Sound" icon={<IconSound />}>
+        <StudioToggle
+          label="Enable Key Sounds"
+          value={config.soundEnabled ?? false}
+          onChange={(v) => update("soundEnabled", v)}
+        />
+        {config.soundEnabled && (
+          <StudioPillGroup
+            label="Profile"
+            value={config.soundProfile || "linear"}
+            options={[
+              { value: "linear", label: "Linear" },
+              { value: "tactile", label: "Tactile" },
+              { value: "clicky", label: "Clicky" },
+              { value: "silent", label: "Silent" },
+            ]}
+            onChange={(v) => update("soundProfile", v as KeyboardViewerConfig["soundProfile"])}
           />
         )}
       </StudioAccordion>

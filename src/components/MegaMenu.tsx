@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { buildSwitchUrl, buildKeyboardUrl, buildKeycapUrl, buildAccessoryUrl } from "@/lib/filterParams";
 
+// ── Types ──
+
 interface MegaMenuLink {
   label: string;
   href: string;
@@ -15,6 +17,8 @@ interface MegaMenuColumnData {
   heading: string;
   links: MegaMenuLink[];
 }
+
+// ── Column Data ──
 
 export const SWITCHES_COLUMNS: MegaMenuColumnData[] = [
   {
@@ -176,6 +180,8 @@ export const ACCESSORIES_COLUMNS: MegaMenuColumnData[] = [
   },
 ];
 
+// ── MegaMenuTrigger ──
+
 interface MegaMenuTriggerProps {
   label: string;
   href: string;
@@ -187,6 +193,8 @@ export function MegaMenuTrigger({ label, href, columns, isActive }: MegaMenuTrig
   const [open, setOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const openTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const triggerRef = useRef<HTMLAnchorElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   // Close on route change
@@ -201,6 +209,19 @@ export function MegaMenuTrigger({ label, href, columns, isActive }: MegaMenuTrig
       if (openTimer.current) clearTimeout(openTimer.current);
     };
   }, []);
+
+  // Escape key closes menu and returns focus to trigger
+  useEffect(() => {
+    if (!open) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [open]);
 
   const handleEnter = useCallback(() => {
     if (closeTimer.current) {
@@ -219,21 +240,25 @@ export function MegaMenuTrigger({ label, href, columns, isActive }: MegaMenuTrig
   }, []);
 
   return (
-    <div onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+    <div ref={containerRef} className="relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       <Link
+        ref={triggerRef}
         href={href}
+        aria-haspopup="true"
+        aria-expanded={open}
         className={cn(
-          "px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color,transform] duration-150 flex items-center gap-1.5",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
-          isActive
-            ? "bg-accent-dim border border-accent/20 text-accent"
-            : "bg-bg-tint text-text-secondary hover:bg-bg-tint-strong hover:text-text-primary active:scale-[0.97]"
+          "relative px-1 py-2 text-sm font-medium flex items-center gap-1",
+          "transition-colors duration-150",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:rounded",
+          isActive || open
+            ? "text-text-primary"
+            : "text-text-secondary hover:text-text-primary"
         )}
       >
         {label}
         <svg
           className={cn(
-            "w-3.5 h-3.5 transition-transform duration-150",
+            "w-3 h-3 transition-transform duration-150",
             open && "rotate-180"
           )}
           fill="none"
@@ -242,49 +267,61 @@ export function MegaMenuTrigger({ label, href, columns, isActive }: MegaMenuTrig
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
+        {/* Active underline indicator */}
+        {isActive && (
+          <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent rounded-full" />
+        )}
       </Link>
 
-      {/* Mega menu panel — full width, anchored below nav */}
-      {open && (
-        <div
-          className="fixed left-0 right-0 top-16 z-40 hidden lg:block"
-          style={{ animation: "mega-menu-in 150ms ease-out" }}
-        >
-          <div className="bg-bg-surface border-b border-border-subtle shadow-elevated">
-            <div className="max-w-[1440px] mx-auto px-6 py-8">
-              <div className="grid grid-cols-4 gap-8">
-                {columns.map((col) => (
-                  <MegaMenuColumn key={col.heading} heading={col.heading} links={col.links} />
-                ))}
-              </div>
-              <div className="mt-6 pt-4 border-t border-border-subtle">
-                <Link
-                  href={href}
-                  className="text-sm text-accent hover:text-accent-hover transition-colors duration-150 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded"
-                >
-                  View all {label.toLowerCase()} &rarr;
-                </Link>
-              </div>
-            </div>
+      {/* Compact dropdown panel — anchored below trigger */}
+      <div
+        role="menu"
+        aria-label={`${label} navigation`}
+        className={cn(
+          "absolute left-0 top-full pt-2 z-50 hidden lg:block",
+          "transition-[opacity,transform] duration-150",
+          open
+            ? "opacity-100 translate-y-0 pointer-events-auto"
+            : "opacity-0 -translate-y-1 pointer-events-none"
+        )}
+        style={{ visibility: open ? "visible" : "hidden" }}
+      >
+        <div className="min-w-[480px] max-w-[600px] rounded-xl border border-border-subtle bg-bg-surface shadow-floating p-6">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+            {columns.map((col) => (
+              <MegaMenuColumn key={col.heading} heading={col.heading} links={col.links} />
+            ))}
+          </div>
+          <div className="mt-5 pt-4 border-t border-border-subtle">
+            <Link
+              href={href}
+              role="menuitem"
+              className="text-sm text-accent hover:text-accent-hover transition-colors duration-150 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded"
+            >
+              View all {label.toLowerCase()} &rarr;
+            </Link>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
 
+// ── Column ──
+
 function MegaMenuColumn({ heading, links }: { heading: string; links: MegaMenuLink[] }) {
   return (
-    <div>
-      <p className="text-[11px] font-semibold uppercase tracking-wider text-text-muted mb-3 font-[family-name:var(--font-outfit)]">
+    <div role="group" aria-label={heading}>
+      <p className="text-[11px] font-semibold uppercase tracking-wider text-text-muted mb-2.5 font-[family-name:var(--font-outfit)]">
         {heading}
       </p>
       <div className="space-y-0.5">
         {links.map((link) => (
           <Link
-            key={link.href}
+            key={link.href + link.label}
             href={link.href}
-            className="block py-1.5 text-sm text-text-secondary hover:text-text-primary transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded px-1 -mx-1"
+            role="menuitem"
+            className="block py-1.5 text-sm text-text-secondary hover:text-text-primary transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded px-1.5 -mx-1.5 hover:bg-bg-tint"
           >
             {link.label}
           </Link>

@@ -50,6 +50,12 @@ export interface KeyboardViewerConfig {
   connectionType?: "wired" | "wireless" | "bluetooth";
   cableColor?: string;
   switchStemColor?: string;
+  // ─── Phase 11: Massive upgrade ──
+  keycapShape?: "standard" | "circular";
+  typingAngle?: number;      // 0-12 degrees, default 6
+  deskMaterial?: "wood" | "marble" | "leather" | "concrete" | "fabric" | "metal";
+  soundEnabled?: boolean;
+  soundProfile?: "linear" | "tactile" | "clicky" | "silent";
 }
 
 export const MATERIAL_KEYWORDS: Record<string, KeyboardViewerConfig["caseMaterial"]> = {

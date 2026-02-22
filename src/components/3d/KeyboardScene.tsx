@@ -256,6 +256,7 @@ export function KeyboardScene({
           environment={config.environment || "studio"}
           showDesk={config.showDesk}
           deskColor={config.deskColor}
+          deskMaterial={config.deskMaterial}
           cameraPreset={config.cameraPreset || "default"}
         />
       </Suspense>

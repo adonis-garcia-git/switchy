@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import * as THREE from "three";
+import { getNormalMap } from "./proceduralTextures";
 
 // ─── Environment Presets ────────────────────────────────────────────
 
@@ -105,14 +106,18 @@ const CAMERA_PRESETS: Record<CameraPresetName, CameraPreset> = {
   hero: { position: [8, 6, 10], fov: 32 },
   side: { position: [16, 4, 0], fov: 28 },
   closeup: { position: [3, 4, 6], fov: 35 },
+  freeform: { position: [0, 20, 38], fov: 30 },
 };
 
 // ─── Scene Environment Component ────────────────────────────────────
+
+export type DeskMaterialName = "wood" | "marble" | "leather" | "concrete" | "fabric" | "metal";
 
 interface SceneEnvironmentProps {
   environment?: EnvironmentPresetName;
   showDesk?: boolean;
   deskColor?: string;
+  deskMaterial?: DeskMaterialName;
   cameraPreset?: CameraPresetName;
 }
 
@@ -120,6 +125,7 @@ export function SceneEnvironment({
   environment = "studio",
   showDesk = false,
   deskColor = "#2a2520",
+  deskMaterial = "wood",
   cameraPreset = "default",
 }: SceneEnvironmentProps) {
   const tuning = ENV_TUNING[environment];
@@ -152,9 +158,8 @@ export function SceneEnvironment({
         environmentIntensity={tuning.environmentIntensity}
       />
 
-
       {/* Desk Surface */}
-      {showDesk && <DeskSurface color={deskColor} />}
+      {showDesk && <DeskSurface color={deskColor} material={deskMaterial} />}
 
       {/* Camera Transition Controller */}
       <CameraController preset={cameraPreset} />
@@ -162,17 +167,52 @@ export function SceneEnvironment({
   );
 }
 
+// ─── Desk Material Properties ─────────────────────────────────────────
+
+interface DeskMaterialProps {
+  roughness: number;
+  metalness: number;
+  envMapIntensity: number;
+  clearcoat?: number;
+  clearcoatRoughness?: number;
+  normalMapType?: "wood-grain" | "brushed-aluminum" | "pbt-grain" | null;
+  normalScale?: number;
+}
+
+const DESK_MATERIAL_MAP: Record<DeskMaterialName, DeskMaterialProps> = {
+  wood: { roughness: 0.7, metalness: 0, envMapIntensity: 0.2, normalMapType: "wood-grain", normalScale: 0.4 },
+  marble: { roughness: 0.15, metalness: 0.05, envMapIntensity: 0.5, clearcoat: 0.6, clearcoatRoughness: 0.1, normalMapType: null },
+  leather: { roughness: 0.85, metalness: 0, envMapIntensity: 0.1, normalMapType: "pbt-grain", normalScale: 0.5 },
+  concrete: { roughness: 0.9, metalness: 0, envMapIntensity: 0.05, normalMapType: "pbt-grain", normalScale: 0.35 },
+  fabric: { roughness: 0.95, metalness: 0, envMapIntensity: 0.03, normalMapType: "pbt-grain", normalScale: 0.6 },
+  metal: { roughness: 0.25, metalness: 0.85, envMapIntensity: 0.6, normalMapType: "brushed-aluminum", normalScale: 0.3 },
+};
+
 // ─── Desk Surface ───────────────────────────────────────────────────
 
-function DeskSurface({ color }: { color: string }) {
+function DeskSurface({ color, material = "wood" }: { color: string; material?: DeskMaterialName }) {
+  const deskProps = DESK_MATERIAL_MAP[material] || DESK_MATERIAL_MAP.wood;
+  const normalMap = useMemo(() => {
+    if (!deskProps.normalMapType) return null;
+    return getNormalMap(deskProps.normalMapType);
+  }, [deskProps.normalMapType]);
+  const normalScale = useMemo(
+    () => new THREE.Vector2(deskProps.normalScale || 0, deskProps.normalScale || 0),
+    [deskProps.normalScale],
+  );
+
   return (
     <mesh position={[0, -1.25, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
       <planeGeometry args={[40, 40]} />
       <meshPhysicalMaterial
         color={color}
-        roughness={0.7}
-        metalness={0}
-        envMapIntensity={0.2}
+        roughness={deskProps.roughness}
+        metalness={deskProps.metalness}
+        envMapIntensity={deskProps.envMapIntensity}
+        clearcoat={deskProps.clearcoat || 0}
+        clearcoatRoughness={deskProps.clearcoatRoughness || 0}
+        normalMap={normalMap}
+        normalScale={normalScale}
       />
     </mesh>
   );

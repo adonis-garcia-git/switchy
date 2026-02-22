@@ -135,7 +135,7 @@ function GroupBuysContent() {
             </main>
             {/* Desktop sidebar */}
             {isSignedIn && (
-              <aside className="hidden lg:block w-80 flex-shrink-0 border-l border-border-subtle overflow-y-auto p-5">
+              <aside className="hidden lg:block w-[340px] flex-shrink-0 border-l border-border-subtle overflow-y-auto p-5">
                 <GroupBuyRecommendedSidebar
                   mode="desktop"
                   onTrackThis={handleTrackThis}

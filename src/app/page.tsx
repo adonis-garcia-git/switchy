@@ -183,7 +183,7 @@ export default function Home() {
                         <svg
                           key={star}
                           className={`w-4 h-4 ${
-                            star <= Math.round(featuredSwitch.communityRating)
+                            star <= Math.round(featuredSwitch.communityRating ?? 0)
                               ? "text-accent"
                               : "text-text-muted/30"
                           }`}
@@ -199,7 +199,7 @@ export default function Home() {
                     </span>
                   </div>
                 )}
-                {featuredSwitch.description && (
+                {"description" in featuredSwitch && typeof featuredSwitch.description === "string" && (
                   <p className="text-sm text-text-secondary leading-[1.7] mb-8 line-clamp-3">
                     {featuredSwitch.description}
                   </p>

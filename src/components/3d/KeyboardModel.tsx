@@ -7,19 +7,25 @@ import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
 import { makeKeyId } from "@/lib/keyCustomization";
 import type { PerKeyOverride, SelectionMode } from "@/lib/keyCustomization";
 import { CASE_MATERIALS, KEYCAP_MATERIALS, KEYCAP_PROFILE_MULTIPLIERS } from "./materialPresets";
-import { createSculptedKeycap } from "./keycapGeometry";
+import { createSculptedKeycap, createCircularKeycap } from "./keycapGeometry";
 import { CaseGeometry } from "./CaseGeometry";
 import { RGBLayer } from "./RGBController";
 import { getNormalMap } from "./proceduralTextures";
 import { COLORWAYS, getKeycapColor, getLegendColor } from "./colorways";
 import { createArtisanGeometry, getArtisanMaterial } from "./artisanKeycaps";
 import type { ArtisanStyle } from "./artisanKeycaps";
+import { playKeyDown, playKeyUp } from "./keyboardSounds";
 
 // Standard MX spacing: 19.05mm = 0.01905m, we work in cm-scale
 const UNIT = 1.905;
 const KEYCAP_SIZE = 1.7;
 const KEYCAP_HEIGHT = 0.8;
 const GAP = UNIT - KEYCAP_SIZE;
+
+// Physical gaps between key clusters (real keyboards have visible separation)
+const FROW_GROUP_GAP = UNIT * 0.5;   // gap between Esc/F4/F8/F12 groups
+const CLUSTER_GAP = UNIT * 0.75;     // gap between main block and nav cluster
+const NUMPAD_GAP = UNIT * 0.5;       // gap between nav cluster and numpad
 
 // Row profiles - slight height variation per row
 const ROW_HEIGHTS = [0.9, 0.85, 0.8, 0.78, 0.75];
@@ -72,9 +78,8 @@ const LEGENDS_NUMPAD_R2 = ["4", "5", "6"];
 const LEGENDS_NUMPAD_R3 = ["1", "2", "3", "\u23CE"];
 const LEGENDS_NUMPAD_R4 = ["0", "."];
 
-// Suppress unused variable warnings — these arrays are used via the layout-specific row selection
-void LEGENDS_NAV; void LEGENDS_NUMPAD_R0; void LEGENDS_NUMPAD_R1;
-void LEGENDS_NUMPAD_R2; void LEGENDS_NUMPAD_R3; void LEGENDS_NUMPAD_R4;
+// Split-shift row legend (shared by 65%, 75%, TKL, Full)
+const LEGENDS_ROW3_SPLIT = [...LEGENDS_ROW3.slice(0, -1), "\u21E7", "\u2191"];
 
 function getLegendForKey(keyIndex: number, rowIndex: number, size: KeyboardViewerConfig["size"]): string {
   let rows: string[][];
@@ -98,14 +103,24 @@ function getLegendForKey(keyIndex: number, rowIndex: number, size: KeyboardViewe
       [...LEGENDS_ROW3.slice(0, -1), "\u21E7", "\u2191"],
       LEGENDS_65_ROW4,
     ];
-  } else {
+  } else if (size === "tkl") {
     rows = [
       LEGENDS_FROW,
-      LEGENDS_ROW0,
-      LEGENDS_ROW1,
-      LEGENDS_ROW2,
-      LEGENDS_ROW3,
-      LEGENDS_ROW4,
+      [...LEGENDS_ROW0, "Del", ...LEGENDS_NAV.slice(0, 3)],
+      [...LEGENDS_ROW1, ...LEGENDS_NAV.slice(3, 6)],
+      [...LEGENDS_ROW2, ...LEGENDS_NAV.slice(6, 9)],
+      [...LEGENDS_ROW3_SPLIT, ...LEGENDS_NAV.slice(9, 12)],
+      LEGENDS_65_ROW4,
+    ];
+  } else {
+    // Full
+    rows = [
+      [...LEGENDS_FROW, ...LEGENDS_NUMPAD_R0],
+      [...LEGENDS_ROW0, "Del", ...LEGENDS_NAV.slice(0, 3), ...LEGENDS_NUMPAD_R1],
+      [...LEGENDS_ROW1, ...LEGENDS_NAV.slice(3, 6), ...LEGENDS_NUMPAD_R2],
+      [...LEGENDS_ROW2, ...LEGENDS_NAV.slice(6, 9), ...LEGENDS_NUMPAD_R3],
+      [...LEGENDS_ROW3_SPLIT, ...LEGENDS_NAV.slice(9, 12), ...LEGENDS_NUMPAD_R4],
+      LEGENDS_65_ROW4,
     ];
   }
 
@@ -250,6 +265,10 @@ function generateLayout(size: KeyboardViewerConfig["size"]): KeyDef[] {
 
   const rows = [row0, row1, row2, row3, row4_60];
 
+  // Track cluster boundary indices per row for gap injection
+  // navStart: index where nav cluster begins, numpadStart: index where numpad begins
+  const rowBoundaries: { isFRow?: boolean; navStart?: number; numpadStart?: number }[] = [];
+
   if (size === "65" || size === "75" || size === "tkl" || size === "full") {
     rows[3] = [
       [2.25, true], [1, false], [1, false], [1, false], [1, false], [1, false],
@@ -282,8 +301,15 @@ function generateLayout(size: KeyboardViewerConfig["size"]): KeyDef[] {
       [1, true], [1, true], [1, true], [1, true],
     ];
     rows.unshift(fRow);
+    // Track base row lengths before adding nav keys
+    const baseLengths = [rows[0].length, rows[1].length, rows[2].length, rows[3].length, rows[4].length, rows[5]?.length ?? 0];
     for (let r = 1; r <= 4; r++) {
       rows[r] = [...rows[r], [1, true], [1, true], [1, true]];
+    }
+    // Set boundaries: fRow + nav cluster on rows 1-4
+    rowBoundaries[0] = { isFRow: true };
+    for (let r = 1; r <= 4; r++) {
+      rowBoundaries[r] = { navStart: baseLengths[r] };
     }
   }
 
@@ -294,9 +320,13 @@ function generateLayout(size: KeyboardViewerConfig["size"]): KeyDef[] {
       [1, true], [1, true], [1, true], [1, true],
     ];
     rows.unshift(fRow);
+    // Track base row lengths before nav
+    const baseLengths = [rows[0].length, rows[1].length, rows[2].length, rows[3].length, rows[4].length, rows[5]?.length ?? 0];
     for (let r = 1; r <= 4; r++) {
       rows[r] = [...rows[r], [1, true], [1, true], [1, true]];
     }
+    // Track nav end lengths before numpad
+    const navEndLengths = [rows[0].length, rows[1].length, rows[2].length, rows[3].length, rows[4].length];
     const numpadAdditions = [
       [[1, true], [1, true], [1, true], [1, true]],
       [[1, false], [1, false], [1, false], [1, true]],
@@ -307,12 +337,32 @@ function generateLayout(size: KeyboardViewerConfig["size"]): KeyDef[] {
     for (let r = 0; r < numpadAdditions.length && r < rows.length; r++) {
       rows[r] = [...rows[r], ...numpadAdditions[r] as [number, boolean][]];
     }
+    // Set boundaries: fRow has numpad, rows 1-4 have nav + numpad
+    rowBoundaries[0] = { isFRow: true, numpadStart: baseLengths[0] };
+    for (let r = 1; r <= 4; r++) {
+      rowBoundaries[r] = { navStart: baseLengths[r], numpadStart: navEndLengths[r] };
+    }
   }
 
   rows.forEach((row, rowIdx) => {
     let xPos = 0;
     let keyInRow = 0;
+    const bounds = rowBoundaries[rowIdx];
     row.forEach(([w, isMod]) => {
+      // Inject physical gaps at cluster boundaries
+      if (bounds?.isFRow) {
+        // F-row group gaps: after Esc (idx 0), after F4 (idx 4), after F8 (idx 8)
+        if (keyInRow === 1 || keyInRow === 5 || keyInRow === 9) {
+          xPos += FROW_GROUP_GAP;
+        }
+      }
+      if (bounds?.navStart !== undefined && keyInRow === bounds.navStart) {
+        xPos += CLUSTER_GAP;
+      }
+      if (bounds?.numpadStart !== undefined && keyInRow === bounds.numpadStart) {
+        xPos += NUMPAD_GAP;
+      }
+
       const legend = getLegendForKey(keyInRow, rowIdx, size);
       keys.push({
         x: xPos + (w * UNIT) / 2,
@@ -492,6 +542,7 @@ function Keycap({
   rippleColor,
   switchStemColor,
   plateY,
+  keycapShape,
 }: {
   position: [number, number, number];
   width: number;
@@ -518,6 +569,7 @@ function Keycap({
   rippleColor?: string;
   switchStemColor?: string;
   plateY?: number;
+  keycapShape?: "standard" | "circular";
 }) {
   const preset = KEYCAP_MATERIALS[material] || KEYCAP_MATERIALS.pbt;
   const groupRef = useRef<THREE.Group>(null);
@@ -534,13 +586,16 @@ function Keycap({
     prevColor.current = color;
   }
 
-  // Artisan geometry or sculpted
+  // Artisan geometry, circular, or sculpted
   const geometry = useMemo(() => {
     if (artisan) {
       return createArtisanGeometry(artisan as ArtisanStyle, KEYCAP_SIZE, height);
     }
+    if (keycapShape === "circular") {
+      return createCircularKeycap(row, widthU, KEYCAP_SIZE, height);
+    }
     return createSculptedKeycap(profile, row, widthU, KEYCAP_SIZE, height);
-  }, [profile, row, widthU, height, artisan]);
+  }, [profile, row, widthU, height, artisan, keycapShape]);
 
   // Artisan material
   const artisanMat = useMemo(() => {
@@ -677,13 +732,16 @@ function Keycap({
         </mesh>
       )}
 
-      {/* Legend overlay — aspect-matched to canvas texture */}
-      {texture && (
-        <mesh position={[0, height / 2 + 0.005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[width * 0.88, KEYCAP_SIZE * 0.88]} />
-          <meshBasicMaterial map={texture} transparent depthWrite={false} polygonOffset polygonOffsetFactor={-1} />
-        </mesh>
-      )}
+      {/* Legend overlay — aspect-matched to canvas texture, reduced for circular */}
+      {texture && (() => {
+        const legendScale = keycapShape === "circular" ? 0.72 : 0.88;
+        return (
+          <mesh position={[0, height / 2 + 0.005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[width * legendScale, KEYCAP_SIZE * legendScale]} />
+            <meshBasicMaterial map={texture} transparent depthWrite={false} polygonOffset polygonOffsetFactor={-1} />
+          </mesh>
+        );
+      })()}
 
       {/* Stabilizer wire for wide keys (2u+) */}
       {widthU >= 2 && plateY !== undefined && (
@@ -760,8 +818,9 @@ export function KeyboardModel({
       idleFloat.current.tilt *= 0.9;
     }
 
+    const typingAngleRad = ((config.typingAngle ?? 6) * Math.PI) / 180;
     groupRef.current.position.y = idleFloat.current.y;
-    groupRef.current.rotation.x = 0.15 + idleFloat.current.tilt;
+    groupRef.current.rotation.x = typingAngleRad + idleFloat.current.tilt;
   });
 
   const layout = useMemo(() => generateLayout(config.size), [config.size]);
@@ -805,8 +864,11 @@ export function KeyboardModel({
 
   const handleKeyPress = useCallback((index: number, legend: string) => {
     setPressedKeys((prev) => new Set(prev).add(index));
+    if (config.soundEnabled) {
+      playKeyDown(config.soundProfile || "linear");
+    }
     onKeyPress?.(legend);
-  }, [onKeyPress]);
+  }, [onKeyPress, config.soundEnabled, config.soundProfile]);
 
   const handleKeyRelease = useCallback((index: number) => {
     setPressedKeys((prev) => {
@@ -814,6 +876,9 @@ export function KeyboardModel({
       next.delete(index);
       return next;
     });
+    if (config.soundEnabled) {
+      playKeyUp(config.soundProfile || "linear");
+    }
   }, []);
 
   // Determine legend color from colorway
@@ -832,7 +897,7 @@ export function KeyboardModel({
     <group
       ref={groupRef}
       position={[-caseWidth / 2, 0, -caseDepth / 2]}
-      rotation={[0.15, 0, 0]}
+      rotation={[((config.typingAngle ?? 6) * Math.PI) / 180, 0, 0]}
       onPointerDown={markInteraction}
       onPointerMove={markInteraction}
     >
@@ -852,6 +917,7 @@ export function KeyboardModel({
           caseFinish={config.caseFinish}
           connectionType={config.connectionType}
           cableColor={config.cableColor}
+          plateMaterial={config.plateMaterial}
         />
       </group>
 
@@ -932,6 +998,7 @@ export function KeyboardModel({
             rippleColor={rippleColor}
             switchStemColor={switchStemColor}
             plateY={plateThickness / 2}
+            keycapShape={config.keycapShape}
           />
         );
       })}

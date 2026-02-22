@@ -3,13 +3,13 @@
 import { useCallback } from "react";
 import { Tabs } from "@/components/ui/Tabs";
 import { StudioControls } from "./StudioControls";
-import { StudioPresetGallery } from "./StudioPresetGallery";
+import { StudioPresetGalleryFull } from "./StudioPresetGallery";
 import { KeyboardCustomizer } from "@/components/builder/KeyboardCustomizer";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
 import type { CustomizerInteractiveProps } from "@/components/builder/KeyboardCustomizer";
 import type { PerKeyOverrides } from "@/lib/keyCustomization";
 
-type StudioMode = "scene" | "customize";
+export type StudioMode = "design" | "presets" | "perkey";
 
 interface StudioSidebarProps {
   config: KeyboardViewerConfig;
@@ -39,8 +39,9 @@ export function StudioSidebar({
         </h1>
         <Tabs
           tabs={[
-            { label: "Design", value: "scene" },
-            { label: "Per-Key", value: "customize" },
+            { label: "Design", value: "design" },
+            { label: "Presets", value: "presets" },
+            { label: "Per-Key", value: "perkey" },
           ]}
           activeTab={studioMode}
           onChange={(v) => onModeChange(v as StudioMode)}
@@ -50,17 +51,16 @@ export function StudioSidebar({
 
       {/* Mode content */}
       <div className="flex-1 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {studioMode === "scene" ? (
-          <div className="space-y-4">
-            <StudioControls config={config} onUpdate={onConfigUpdate} />
-            <div className="border-t border-white/[0.06] pt-4">
-              <StudioPresetGallery
-                activeColorway={config.colorway}
-                onApply={onConfigUpdate}
-              />
-            </div>
-          </div>
-        ) : (
+        {studioMode === "design" && (
+          <StudioControls config={config} onUpdate={onConfigUpdate} />
+        )}
+        {studioMode === "presets" && (
+          <StudioPresetGalleryFull
+            activeColorway={config.colorway}
+            onApply={onConfigUpdate}
+          />
+        )}
+        {studioMode === "perkey" && (
           <KeyboardCustomizer
             viewerConfig={config}
             onOverridesChange={handleOverridesChange}
