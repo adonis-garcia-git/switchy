@@ -27,8 +27,36 @@ export const save = mutation({
     query: v.string(),
     buildName: v.string(),
     summary: v.string(),
-    components: v.any(),
-    recommendedMods: v.any(),
+    components: v.object({
+      keyboardKit: v.object({
+        name: v.string(),
+        price: v.number(),
+        reason: v.string(),
+      }),
+      switches: v.object({
+        name: v.string(),
+        price: v.optional(v.number()),
+        reason: v.string(),
+        quantity: v.number(),
+        priceEach: v.number(),
+      }),
+      keycaps: v.object({
+        name: v.string(),
+        price: v.number(),
+        reason: v.string(),
+      }),
+      stabilizers: v.object({
+        name: v.string(),
+        price: v.number(),
+        reason: v.string(),
+      }),
+    }),
+    recommendedMods: v.array(v.object({
+      mod: v.string(),
+      cost: v.number(),
+      effect: v.string(),
+      difficulty: v.union(v.literal("easy"), v.literal("medium"), v.literal("hard")),
+    })),
     estimatedTotal: v.number(),
     soundProfileExpected: v.string(),
     buildDifficulty: v.string(),
@@ -58,7 +86,7 @@ export const togglePublic = mutation({
     }
     const isPublic = !build.isPublic;
     const shareSlug = isPublic && !build.shareSlug
-      ? Math.random().toString(36).substring(2, 10)
+      ? crypto.randomUUID().replace(/-/g, '').substring(0, 12)
       : build.shareSlug;
     await ctx.db.patch(args.id, { isPublic, shareSlug });
     return { isPublic, shareSlug };

@@ -13,6 +13,9 @@ export const seedAll = mutation({
     keyboardsAdded: v.number(),
   }),
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     // Check if data already exists (idempotent)
     const existingSwitches = await ctx.db.query("switches").first();
     const existingComponents = await ctx.db.query("components").first();
@@ -55,6 +58,9 @@ export const clearAll = mutation({
   args: {},
   returns: v.null(),
   handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     const tables = [
       "switches",
       "components",
@@ -76,6 +82,9 @@ export const clearTable = mutation({
   args: { table: v.string() },
   returns: v.number(),
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     const tableName = args.table as "switches" | "keyboards" | "products" | "vendorLinks";
     const docs = await ctx.db.query(tableName).take(2000);
     for (const doc of docs) {
@@ -92,6 +101,9 @@ export const seedSwitchesBatch = mutation({
   },
   returns: v.number(),
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     let count = 0;
     for (const sw of args.switches) {
       const cleaned: Record<string, unknown> = {};
@@ -112,6 +124,9 @@ export const seedKeyboardsBatch = mutation({
   },
   returns: v.number(),
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     let count = 0;
     for (const kb of args.keyboards) {
       await ctx.db.insert("keyboards", kb);
@@ -128,6 +143,9 @@ export const seedProductsBatch = mutation({
   },
   returns: v.number(),
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     let count = 0;
     for (const product of args.products) {
       await ctx.db.insert("products", product);
@@ -146,6 +164,9 @@ export const cleanAndReseedSwitches = mutation({
     added: v.number(),
   }),
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     // Delete all existing switches
     const existing = await ctx.db.query("switches").collect();
     let deleted = 0;
@@ -178,6 +199,9 @@ export const seedVendorLinksBatch = mutation({
   },
   returns: v.number(),
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     let count = 0;
     for (const link of args.links) {
       await ctx.db.insert("vendorLinks", link);

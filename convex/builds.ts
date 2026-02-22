@@ -55,6 +55,9 @@ export const generateBuild = action({
   },
   returns: v.any(),
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     const switches = await ctx.runQuery(
       internal.internalFunctions.getAllSwitches
     );
@@ -152,18 +155,29 @@ ${JSON.stringify(components, null, 0)}
     }
 
     try {
-      return JSON.parse(responseText);
+      const parsed = JSON.parse(responseText);
+      // Validate required fields
+      if (!parsed.buildName || !parsed.components || typeof parsed.estimatedTotal !== 'number') {
+        throw new Error("Invalid build response structure");
+      }
+      return parsed;
     } catch {
+      // Return error indicator instead of silently broken build
       return {
-        buildName: "Build Recommendation",
-        summary: "AI-generated recommendation (raw response)",
-        rawResponse: responseText,
-        estimatedTotal: 0,
-        soundProfileExpected: "",
-        buildDifficulty: "intermediate",
-        notes: responseText,
-        components: {},
+        buildName: "Parse Error",
+        summary: "The AI response could not be parsed. Please try again.",
+        components: {
+          keyboardKit: { name: "N/A", price: 0, reason: "Parse error" },
+          switches: { name: "N/A", price: 0, reason: "Parse error", quantity: 0, priceEach: 0 },
+          keycaps: { name: "N/A", price: 0, reason: "Parse error" },
+          stabilizers: { name: "N/A", price: 0, reason: "Parse error" },
+        },
         recommendedMods: [],
+        estimatedTotal: 0,
+        soundProfileExpected: "Unable to determine",
+        buildDifficulty: "intermediate",
+        notes: "The AI response could not be parsed as valid JSON. This usually means the AI returned an unexpected format. Please try rephrasing your request.",
+        _parseError: true,
       };
     }
   },
@@ -185,6 +199,7 @@ export const generateBuildConversational = action({
 
     // Get user preferences if available
     const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
     let preferences = null;
     if (identity) {
       preferences = await ctx.runQuery(
@@ -326,7 +341,12 @@ ${preferenceContext}`;
     // Try to parse as JSON (build recommendation)
     try {
       const buildData = JSON.parse(responseText);
-      return { type: "build", data: buildData, rawText: responseText };
+      // Validate it's actually a build recommendation, not just any JSON
+      if (buildData.buildName && buildData.components && typeof buildData.estimatedTotal === 'number') {
+        return { type: "build", data: buildData, rawText: responseText };
+      }
+      // Parsed as JSON but doesn't look like a build - treat as message
+      return { type: "message", data: null, rawText: responseText };
     } catch {
       // It's a conversational response
       return { type: "message", data: null, rawText: responseText };

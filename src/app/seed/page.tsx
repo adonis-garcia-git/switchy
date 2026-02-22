@@ -127,6 +127,9 @@ export default function SeedPage() {
   return (
     <div className="min-h-screen">
       <main className="max-w-xl mx-auto px-4 py-16 text-center">
+        <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-4 py-3 mb-6 text-sm font-semibold">
+          Development Only — This page should not be accessible in production.
+        </div>
         <h1 className="text-2xl font-bold font-[family-name:var(--font-outfit)] tracking-tight mb-6">
           Database Seed
         </h1>

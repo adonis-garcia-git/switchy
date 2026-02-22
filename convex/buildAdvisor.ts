@@ -41,7 +41,10 @@ export const generateQuestions = action({
     initialPrompt: v.string(),
   },
   returns: v.any(),
-  handler: async (_ctx, args) => {
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     const client = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY!,
     });
@@ -183,6 +186,9 @@ export const generateBuildFromAnswers = action({
   },
   returns: v.any(),
   handler: async (ctx, args): Promise<Record<string, unknown>> => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
     const switches: Record<string, unknown>[] = await ctx.runQuery(
       internal.internalFunctions.getAllSwitches
     );
@@ -303,18 +309,27 @@ Use ONLY products from the provided database when possible.`;
     }
 
     try {
-      return JSON.parse(responseText);
+      const parsed = JSON.parse(responseText);
+      if (!parsed.buildName || !parsed.components || typeof parsed.estimatedTotal !== 'number') {
+        throw new Error("Invalid build response structure");
+      }
+      return parsed;
     } catch {
       return {
-        buildName: "Build Recommendation",
-        summary: "AI-generated recommendation",
-        rawResponse: responseText,
-        estimatedTotal: 0,
-        soundProfileExpected: "",
-        buildDifficulty: "intermediate",
-        notes: responseText,
-        components: {},
+        buildName: "Parse Error",
+        summary: "The AI response could not be parsed. Please try again.",
+        components: {
+          keyboardKit: { name: "N/A", price: 0, reason: "Parse error" },
+          switches: { name: "N/A", price: 0, reason: "Parse error", quantity: 0, priceEach: 0 },
+          keycaps: { name: "N/A", price: 0, reason: "Parse error" },
+          stabilizers: { name: "N/A", price: 0, reason: "Parse error" },
+        },
         recommendedMods: [],
+        estimatedTotal: 0,
+        soundProfileExpected: "Unable to determine",
+        buildDifficulty: "intermediate",
+        notes: "The AI response could not be parsed as valid JSON. Please try rephrasing your request.",
+        _parseError: true,
       };
     }
   },

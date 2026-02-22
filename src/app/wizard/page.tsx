@@ -1,3 +1,4 @@
+// Legacy redirect: /wizard was replaced by /builder in v3
 "use client";
 
 import { useEffect } from "react";

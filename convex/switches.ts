@@ -25,14 +25,14 @@ export const list = query({
       switches = await ctx.db
         .query("switches")
         .withIndex("by_type", (q) => q.eq("type", args.type!))
-        .collect();
+        .take(200);
     } else if (args.brand) {
       switches = await ctx.db
         .query("switches")
         .withIndex("by_brand", (q) => q.eq("brand", args.brand!))
-        .collect();
+        .take(200);
     } else {
-      switches = await ctx.db.query("switches").collect();
+      switches = await ctx.db.query("switches").take(200);
     }
 
     // Apply client-side filters
@@ -97,12 +97,12 @@ export const search = query({
   returns: v.array(v.any()),
   handler: async (ctx, args) => {
     if (!args.query.trim()) {
-      return await ctx.db.query("switches").collect();
+      return await ctx.db.query("switches").take(200);
     }
     return await ctx.db
       .query("switches")
       .withSearchIndex("search_name", (q) => q.search("name", args.query))
-      .collect();
+      .take(200);
   },
 });
 

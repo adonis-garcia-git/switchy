@@ -39,6 +39,10 @@ export const save = mutation({
       return existing._id;
     }
 
+    // Convex serializes mutations that read/write overlapping documents, so a
+    // read-then-write race (two concurrent inserts for the same userId) is
+    // extremely unlikely in practice. A unique index on userId would provide a
+    // hard guarantee but is managed in schema.ts.
     return await ctx.db.insert("userPreferences", {
       userId: identity.subject,
       hasCompletedOnboarding: true,

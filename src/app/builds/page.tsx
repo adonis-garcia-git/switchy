@@ -77,8 +77,15 @@ export default function BuildsPage() {
         </div>
 
         {builds === undefined ? (
-          <div className="flex items-center justify-center py-24">
-            <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="rounded-xl border border-border-subtle bg-bg-surface p-5 animate-pulse">
+                <div className="h-5 bg-bg-elevated rounded w-3/4 mb-3" />
+                <div className="h-4 bg-bg-elevated rounded w-full mb-2" />
+                <div className="h-4 bg-bg-elevated rounded w-2/3 mb-4" />
+                <div className="h-5 bg-bg-elevated rounded w-1/4" />
+              </div>
+            ))}
           </div>
         ) : builds.length === 0 ? (
           <div className="text-center py-20 rounded-xl border border-border-subtle bg-bg-surface/50">

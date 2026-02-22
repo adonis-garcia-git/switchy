@@ -18,14 +18,14 @@ export const list = query({
       keyboards = await ctx.db
         .query("keyboards")
         .withIndex("by_size", (q) => q.eq("size", args.size!))
-        .collect();
+        .take(200);
     } else if (args.brand) {
       keyboards = await ctx.db
         .query("keyboards")
         .withIndex("by_brand", (q) => q.eq("brand", args.brand!))
-        .collect();
+        .take(200);
     } else {
-      keyboards = await ctx.db.query("keyboards").collect();
+      keyboards = await ctx.db.query("keyboards").take(200);
     }
 
     if (args.minPrice !== undefined) {
@@ -58,11 +58,11 @@ export const search = query({
   returns: v.array(v.any()),
   handler: async (ctx, args) => {
     if (!args.query.trim()) {
-      return await ctx.db.query("keyboards").collect();
+      return await ctx.db.query("keyboards").take(200);
     }
     return await ctx.db
       .query("keyboards")
       .withSearchIndex("search_name", (q) => q.search("name", args.query))
-      .collect();
+      .take(200);
   },
 });

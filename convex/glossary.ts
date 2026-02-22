@@ -10,9 +10,9 @@ export const list = query({
       return await ctx.db
         .query("glossaryTerms")
         .withIndex("by_category", (q) => q.eq("category", args.category!))
-        .collect();
+        .take(200);
     }
-    return await ctx.db.query("glossaryTerms").collect();
+    return await ctx.db.query("glossaryTerms").take(200);
   },
 });
 

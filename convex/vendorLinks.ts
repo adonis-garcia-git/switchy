@@ -30,14 +30,27 @@ export const list = query({
   args: {},
   returns: v.array(v.any()),
   handler: async (ctx) => {
-    return await ctx.db.query("vendorLinks").collect();
+    return await ctx.db.query("vendorLinks").take(500);
   },
 });
 
 // seed() - Bulk insert vendor links
 export const seed = mutation({
   args: { links: v.array(v.object({
-    productType: v.union(v.literal("switch"), v.literal("keyboard"), v.literal("keycaps"), v.literal("stabilizer"), v.literal("accessory")),
+    productType: v.union(
+      v.literal("switch"),
+      v.literal("keyboard"),
+      v.literal("keycaps"),
+      v.literal("stabilizer"),
+      v.literal("accessory"),
+      v.literal("mouse"),
+      v.literal("deskmat"),
+      v.literal("cable"),
+      v.literal("pcb"),
+      v.literal("lubricant"),
+      v.literal("artisan"),
+      v.literal("wrist-rest")
+    ),
     productName: v.string(),
     vendor: v.string(),
     url: v.string(),

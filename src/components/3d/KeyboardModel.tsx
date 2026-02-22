@@ -1,44 +1,46 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState, useCallback } from "react";
 import * as THREE from "three";
-import { RoundedBox } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
-import { CASE_MATERIALS, PLATE_MATERIALS, KEYCAP_MATERIALS, KEYCAP_PROFILE_MULTIPLIERS } from "./materialPresets";
+import { CASE_MATERIALS, KEYCAP_MATERIALS, KEYCAP_PROFILE_MULTIPLIERS } from "./materialPresets";
+import { createSculptedKeycap } from "./keycapGeometry";
+import { CaseGeometry } from "./CaseGeometry";
+import { RGBLayer } from "./RGBController";
+import { getNormalMap } from "./proceduralTextures";
+import { COLORWAYS, getKeycapColor, getLegendColor } from "./colorways";
 
-// Standard MX spacing: 19.05mm = 0.01905m, we work in cm-scale (1 unit = ~1cm)
-const UNIT = 1.905; // 1u in our coordinate system
-const KEYCAP_SIZE = 1.7; // slightly smaller than 1u for gap
+// Standard MX spacing: 19.05mm = 0.01905m, we work in cm-scale
+const UNIT = 1.905;
+const KEYCAP_SIZE = 1.7;
 const KEYCAP_HEIGHT = 0.8;
 const GAP = UNIT - KEYCAP_SIZE;
 
-// Row profiles - slight height variation per row for realism
+// Row profiles - slight height variation per row
 const ROW_HEIGHTS = [0.9, 0.85, 0.8, 0.78, 0.75];
 
-// QWERTY legends per row (standard ANSI layout)
+// ─── QWERTY Legends ────────────────────────────────────────────────
+
 const LEGENDS_ROW0 = ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "\u232B"];
 const LEGENDS_ROW1 = ["\u21E5", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\"];
 const LEGENDS_ROW2 = ["\u21EA", "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'", "\u23CE"];
 const LEGENDS_ROW3 = ["\u21E7", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "\u21E7"];
 const LEGENDS_ROW4 = ["Ctrl", "\u2318", "Alt", " ", "Alt", "\u2318", "Fn", "Ctrl"];
-
-// F-row legends (for 75%, TKL, full)
 const LEGENDS_FROW = ["Esc", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"];
-
-// Additional right-side keys for 65% and larger
 const LEGENDS_65_EXTRA_ROW0 = ["Del"];
 const LEGENDS_65_EXTRA_ROW3 = ["\u2191"];
 const LEGENDS_65_ROW4 = ["Ctrl", "\u2318", "Alt", " ", "Alt", "\u2318", "\u2190", "\u2193", "\u2192"];
-
-// Nav cluster legends (TKL, full)
 const LEGENDS_NAV = ["Ins", "Hm", "PU", "Del", "End", "PD", "", "\u2191", "", "\u2190", "\u2193", "\u2192"];
-
-// Numpad legends (full-size)
 const LEGENDS_NUMPAD_R0 = ["NL", "/", "*", "-"];
 const LEGENDS_NUMPAD_R1 = ["7", "8", "9", "+"];
 const LEGENDS_NUMPAD_R2 = ["4", "5", "6"];
 const LEGENDS_NUMPAD_R3 = ["1", "2", "3", "\u23CE"];
 const LEGENDS_NUMPAD_R4 = ["0", "."];
+
+// Suppress unused variable warnings — these arrays are used via the layout-specific row selection
+void LEGENDS_NAV; void LEGENDS_NUMPAD_R0; void LEGENDS_NUMPAD_R1;
+void LEGENDS_NUMPAD_R2; void LEGENDS_NUMPAD_R3; void LEGENDS_NUMPAD_R4;
 
 function getLegendForKey(keyIndex: number, rowIndex: number, size: KeyboardViewerConfig["size"]): string {
   let rows: string[][];
@@ -63,7 +65,6 @@ function getLegendForKey(keyIndex: number, rowIndex: number, size: KeyboardViewe
       LEGENDS_65_ROW4,
     ];
   } else {
-    // TKL and full use same base rows
     rows = [
       LEGENDS_FROW,
       LEGENDS_ROW0,
@@ -80,7 +81,7 @@ function getLegendForKey(keyIndex: number, rowIndex: number, size: KeyboardViewe
   return "";
 }
 
-function createLegendTexture(legend: string, keycapColor: string): THREE.CanvasTexture | null {
+function createLegendTexture(legend: string, keycapColor: string, legendColorOverride?: string): THREE.CanvasTexture | null {
   if (!legend || legend === " ") return null;
 
   const size = 128;
@@ -90,22 +91,23 @@ function createLegendTexture(legend: string, keycapColor: string): THREE.CanvasT
   const ctx = canvas.getContext("2d");
   if (!ctx) return null;
 
-  // Transparent background - legend will be overlaid on top face only
   ctx.clearRect(0, 0, size, size);
 
-  // Auto-detect text color based on luminance
-  const r = parseInt(keycapColor.slice(1, 3), 16) || 128;
-  const g = parseInt(keycapColor.slice(3, 5), 16) || 128;
-  const b = parseInt(keycapColor.slice(5, 7), 16) || 128;
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  const textColor = luminance > 0.5 ? "rgba(0,0,0,0.7)" : "rgba(255,255,255,0.75)";
+  let textColor: string;
+  if (legendColorOverride) {
+    textColor = legendColorOverride;
+  } else {
+    const r = parseInt(keycapColor.slice(1, 3), 16) || 128;
+    const g = parseInt(keycapColor.slice(3, 5), 16) || 128;
+    const b = parseInt(keycapColor.slice(5, 7), 16) || 128;
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    textColor = luminance > 0.5 ? "rgba(0,0,0,0.7)" : "rgba(255,255,255,0.75)";
+  }
 
-  // Draw legend
   ctx.fillStyle = textColor;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
-  // Adjust font size based on legend length
   const fontSize = legend.length === 1 ? 48 : legend.length <= 3 ? 32 : 22;
   ctx.font = `600 ${fontSize}px system-ui, -apple-system, sans-serif`;
   ctx.fillText(legend, size / 2, size / 2);
@@ -115,10 +117,12 @@ function createLegendTexture(legend: string, keycapColor: string): THREE.CanvasT
   return texture;
 }
 
+// ─── Key Definition ─────────────────────────────────────────────────
+
 interface KeyDef {
   x: number;
   y: number;
-  w: number; // width in units
+  w: number;
   row: number;
   isModifier: boolean;
 }
@@ -126,128 +130,93 @@ interface KeyDef {
 function generateLayout(size: KeyboardViewerConfig["size"]): KeyDef[] {
   const keys: KeyDef[] = [];
 
-  // Row 0: Number row (Esc, 1-=, Backspace)
   const row0: [number, boolean][] = [
-    [1, false], // Esc/`
-    [1, false], [1, false], [1, false], [1, false], [1, false],
-    [1, false], [1, false], [1, false], [1, false], [1, false],
-    [1, false], [1, false],
-    [2, true], // Backspace
+    [1, false], [1, false], [1, false], [1, false], [1, false], [1, false],
+    [1, false], [1, false], [1, false], [1, false], [1, false], [1, false], [1, false],
+    [2, true],
   ];
-
-  // Row 1: Tab row
   const row1: [number, boolean][] = [
-    [1.5, true], // Tab
-    [1, false], [1, false], [1, false], [1, false], [1, false],
-    [1, false], [1, false], [1, false], [1, false], [1, false],
-    [1, false], [1, false],
-    [1.5, true], // Backslash
+    [1.5, true], [1, false], [1, false], [1, false], [1, false], [1, false],
+    [1, false], [1, false], [1, false], [1, false], [1, false], [1, false], [1, false],
+    [1.5, true],
   ];
-
-  // Row 2: Caps row
   const row2: [number, boolean][] = [
-    [1.75, true], // Caps
-    [1, false], [1, false], [1, false], [1, false], [1, false],
-    [1, false], [1, false], [1, false], [1, false], [1, false],
-    [1, false],
-    [2.25, true], // Enter
+    [1.75, true], [1, false], [1, false], [1, false], [1, false], [1, false],
+    [1, false], [1, false], [1, false], [1, false], [1, false], [1, false],
+    [2.25, true],
   ];
-
-  // Row 3: Shift row
   const row3: [number, boolean][] = [
-    [2.25, true], // LShift
+    [2.25, true], [1, false], [1, false], [1, false], [1, false], [1, false],
     [1, false], [1, false], [1, false], [1, false], [1, false],
-    [1, false], [1, false], [1, false], [1, false], [1, false],
-    [2.75, true], // RShift (narrower on 65%)
+    [2.75, true],
   ];
-
-  // Row 4: Bottom row
   const row4_60: [number, boolean][] = [
-    [1.25, true], [1.25, true], [1.25, true], // Ctrl, Win, Alt
-    [6.25, true], // Space
-    [1.25, true], [1.25, true], [1.25, true], [1.25, true], // Alt, Win, Menu, Ctrl
+    [1.25, true], [1.25, true], [1.25, true],
+    [6.25, true],
+    [1.25, true], [1.25, true], [1.25, true], [1.25, true],
   ];
 
   const rows = [row0, row1, row2, row3, row4_60];
 
-  // Adjust for 65%: add extra column on right side
   if (size === "65" || size === "75" || size === "tkl" || size === "full") {
-    // Row 3 shift shrinks, add arrow-like key
     rows[3] = [
-      [2.25, true],
+      [2.25, true], [1, false], [1, false], [1, false], [1, false], [1, false],
       [1, false], [1, false], [1, false], [1, false], [1, false],
-      [1, false], [1, false], [1, false], [1, false], [1, false],
-      [1.75, true], // Narrower RShift
-      [1, true], // Extra key (arrow up area)
+      [1.75, true], [1, true],
     ];
-    // Bottom row for 65%
     rows[4] = [
       [1.25, true], [1.25, true], [1.25, true],
       [6.25, true],
       [1.25, true], [1.25, true],
-      [1, true], [1, true], [1, true], // Arrow cluster
+      [1, true], [1, true], [1, true],
     ];
-    // Add extra key to row 0
-    rows[0] = [...row0, [1, true]]; // Delete
+    rows[0] = [...row0, [1, true]];
   }
 
   if (size === "75") {
-    // F-row on top
     const fRow: [number, boolean][] = [
-      [1, true], // Esc
-      [1, true], [1, true], [1, true], [1, true], // F1-F4
-      [1, true], [1, true], [1, true], [1, true], // F5-F8
-      [1, true], [1, true], [1, true], [1, true], // F9-F12
-      [1, true], // Delete/Print
+      [1, true], [1, true], [1, true], [1, true], [1, true],
+      [1, true], [1, true], [1, true], [1, true],
+      [1, true], [1, true], [1, true], [1, true],
+      [1, true],
     ];
     rows.unshift(fRow);
   }
 
   if (size === "tkl") {
-    // F-row
     const fRow: [number, boolean][] = [
-      [1, true],
-      [1, true], [1, true], [1, true], [1, true],
+      [1, true], [1, true], [1, true], [1, true], [1, true],
       [1, true], [1, true], [1, true], [1, true],
       [1, true], [1, true], [1, true], [1, true],
     ];
     rows.unshift(fRow);
-
-    // Add nav cluster (3 keys) to rows 1-4
     for (let r = 1; r <= 4; r++) {
       rows[r] = [...rows[r], [1, true], [1, true], [1, true]];
     }
   }
 
   if (size === "full") {
-    // F-row
     const fRow: [number, boolean][] = [
-      [1, true],
-      [1, true], [1, true], [1, true], [1, true],
+      [1, true], [1, true], [1, true], [1, true], [1, true],
       [1, true], [1, true], [1, true], [1, true],
       [1, true], [1, true], [1, true], [1, true],
     ];
     rows.unshift(fRow);
-
-    // Nav cluster + numpad on rows
     for (let r = 1; r <= 4; r++) {
       rows[r] = [...rows[r], [1, true], [1, true], [1, true]];
     }
-
-    // Add numpad (4 keys wide) to right side of rows 1-5
     const numpadAdditions = [
-      [[1, true], [1, true], [1, true], [1, true]], // Num, /, *, -
-      [[1, false], [1, false], [1, false], [1, true]], // 7,8,9,+
-      [[1, false], [1, false], [1, false]], // 4,5,6
-      [[1, false], [1, false], [1, false], [1, true]], // 1,2,3,Enter
-      [[2, false], [1, false]], // 0, .
+      [[1, true], [1, true], [1, true], [1, true]],
+      [[1, false], [1, false], [1, false], [1, true]],
+      [[1, false], [1, false], [1, false]],
+      [[1, false], [1, false], [1, false], [1, true]],
+      [[2, false], [1, false]],
     ];
     for (let r = 0; r < numpadAdditions.length && r < rows.length; r++) {
       rows[r] = [...rows[r], ...numpadAdditions[r] as [number, boolean][]];
     }
   }
 
-  // Convert to KeyDef array
   rows.forEach((row, rowIdx) => {
     let xPos = 0;
     row.forEach(([w, isMod]) => {
@@ -265,6 +234,8 @@ function generateLayout(size: KeyboardViewerConfig["size"]): KeyDef[] {
   return keys;
 }
 
+// ─── Interactive Keycap ─────────────────────────────────────────────
+
 function Keycap({
   position,
   width,
@@ -273,6 +244,14 @@ function Keycap({
   material,
   legend,
   showLegend,
+  legendColor,
+  profile,
+  row,
+  widthU,
+  interactive,
+  onPress,
+  onRelease,
+  index,
 }: {
   position: [number, number, number];
   width: number;
@@ -281,21 +260,93 @@ function Keycap({
   material: KeyboardViewerConfig["keycapMaterial"];
   legend?: string;
   showLegend?: boolean;
+  legendColor?: string;
+  profile: KeyboardViewerConfig["keycapProfile"];
+  row: number;
+  widthU: number;
+  interactive?: boolean;
+  onPress?: (index: number, legend: string) => void;
+  onRelease?: (index: number) => void;
+  index: number;
 }) {
   const preset = KEYCAP_MATERIALS[material] || KEYCAP_MATERIALS.pbt;
+  const groupRef = useRef<THREE.Group>(null);
+  const [hovered, setHovered] = useState(false);
+  const pressOffset = useRef(0);
+  const targetOffset = useRef(0);
 
+  // Sculpted geometry
+  const geometry = useMemo(
+    () => createSculptedKeycap(profile, row, widthU, KEYCAP_SIZE, height),
+    [profile, row, widthU, height],
+  );
+
+  // Normal map for keycap material
+  const normalMap = useMemo(
+    () => (preset.normalMapType ? getNormalMap(preset.normalMapType) : null),
+    [preset.normalMapType],
+  );
+  const normalScale = useMemo(
+    () => new THREE.Vector2(preset.normalScale || 0, preset.normalScale || 0),
+    [preset.normalScale],
+  );
+
+  // Legend texture
   const texture = useMemo(() => {
     if (!showLegend || !legend) return null;
-    return createLegendTexture(legend, color);
-  }, [showLegend, legend, color]);
+    return createLegendTexture(legend, color, legendColor);
+  }, [showLegend, legend, color, legendColor]);
+
+  // Color lerp for smooth transitions
+  const currentColor = useRef(new THREE.Color(color));
+  const targetColor = useMemo(() => new THREE.Color(color), [color]);
+
+  // Spring animation for key press + color lerp
+  useFrame(() => {
+    if (!groupRef.current) return;
+
+    // Smooth press animation
+    pressOffset.current += (targetOffset.current - pressOffset.current) * 0.2;
+    groupRef.current.position.y = position[1] + pressOffset.current;
+
+    // Color lerp
+    currentColor.current.lerp(targetColor, 0.08);
+  });
+
+  const handlePointerDown = useCallback((e: THREE.Event) => {
+    if (!interactive) return;
+    (e as { stopPropagation?: () => void }).stopPropagation?.();
+    targetOffset.current = -0.08; // 1.5mm press depth
+    onPress?.(index, legend || "");
+  }, [interactive, onPress, index, legend]);
+
+  const handlePointerUp = useCallback(() => {
+    if (!interactive) return;
+    targetOffset.current = 0;
+    onRelease?.(index);
+  }, [interactive, onRelease, index]);
 
   return (
-    <group position={position}>
-      <RoundedBox
-        args={[width, height, KEYCAP_SIZE]}
-        radius={0.12}
-        smoothness={4}
-      >
+    <group
+      ref={groupRef}
+      position={position}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={() => {
+        if (interactive) {
+          targetOffset.current = 0;
+          setHovered(false);
+          document.body.style.cursor = "auto";
+        }
+      }}
+      onPointerEnter={() => {
+        if (interactive) {
+          setHovered(true);
+          document.body.style.cursor = "pointer";
+        }
+      }}
+    >
+      <mesh geometry={geometry}>
         <meshPhysicalMaterial
           color={color}
           metalness={preset.metalness}
@@ -303,8 +354,20 @@ function Keycap({
           clearcoat={preset.clearcoat || 0}
           clearcoatRoughness={preset.clearcoatRoughness || 0}
           envMapIntensity={0.5}
+          normalMap={normalMap}
+          normalScale={normalScale}
         />
-      </RoundedBox>
+      </mesh>
+
+      {/* Hover highlight overlay */}
+      {hovered && interactive && (
+        <mesh position={[0, height / 2 + 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[width * 0.95, KEYCAP_SIZE * 0.95]} />
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.08} depthWrite={false} />
+        </mesh>
+      )}
+
+      {/* Legend overlay */}
       {texture && (
         <mesh position={[0, height / 2 + 0.005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[width * 0.85, KEYCAP_SIZE * 0.85]} />
@@ -315,16 +378,27 @@ function Keycap({
   );
 }
 
+// ─── Main Model ─────────────────────────────────────────────────────
+
 interface KeyboardModelProps {
   config: KeyboardViewerConfig;
+  interactive?: boolean;
+  onKeyPress?: (legend: string) => void;
 }
 
-export function KeyboardModel({ config }: KeyboardModelProps) {
+export function KeyboardModel({ config, interactive = false, onKeyPress }: KeyboardModelProps) {
   const groupRef = useRef<THREE.Group>(null);
+  const [pressedKeys, setPressedKeys] = useState<Set<number>>(new Set());
 
   const layout = useMemo(() => generateLayout(config.size), [config.size]);
 
-  // Calculate bounds for centering
+  // Resolve colorway
+  const colorway = useMemo(() => {
+    if (config.customColorway) return config.customColorway;
+    if (config.colorway && COLORWAYS[config.colorway]) return COLORWAYS[config.colorway];
+    return null;
+  }, [config.colorway, config.customColorway]);
+
   const bounds = useMemo(() => {
     let maxX = 0;
     let maxY = 0;
@@ -337,100 +411,127 @@ export function KeyboardModel({ config }: KeyboardModelProps) {
   }, [layout]);
 
   const casePreset = CASE_MATERIALS[config.caseMaterial] || CASE_MATERIALS.aluminum;
-  const platePreset = PLATE_MATERIALS[config.plateMaterial] || PLATE_MATERIALS.aluminum;
 
   const caseWidth = bounds.width + UNIT * 0.6;
   const caseDepth = bounds.depth + UNIT * 0.5;
   const caseHeight = 1.5;
   const plateThickness = 0.15;
 
+  // Pre-compute per-row key indices for legend lookup
+  const keyIndicesPerRow = useMemo(() => {
+    const map = new Map<number, number>();
+    const rowCounts = new Map<number, number>();
+    layout.forEach((key, i) => {
+      const count = rowCounts.get(key.y) || 0;
+      map.set(i, count);
+      rowCounts.set(key.y, count + 1);
+    });
+    return map;
+  }, [layout]);
+
+  const profileMultipliers = KEYCAP_PROFILE_MULTIPLIERS[config.keycapProfile || "cherry"] || KEYCAP_PROFILE_MULTIPLIERS.cherry;
+
+  // RGB key position data
+  const rgbKeyData = useMemo(() => {
+    return layout.map((key, i) => ({
+      x: key.x + UNIT * 0.2,
+      z: key.y * UNIT + UNIT / 2 + UNIT * 0.15,
+      width: key.w * UNIT - GAP,
+      index: i,
+    }));
+  }, [layout]);
+
+  const handleKeyPress = useCallback((index: number, legend: string) => {
+    setPressedKeys((prev) => new Set(prev).add(index));
+    onKeyPress?.(legend);
+  }, [onKeyPress]);
+
+  const handleKeyRelease = useCallback((index: number) => {
+    setPressedKeys((prev) => {
+      const next = new Set(prev);
+      next.delete(index);
+      return next;
+    });
+  }, []);
+
+  // Determine legend color from colorway
+  const legendColorFromColorway = colorway ? getLegendColor(colorway) : undefined;
+
   return (
     <group ref={groupRef} position={[-caseWidth / 2, 0, -caseDepth / 2]} rotation={[0.15, 0, 0]}>
-      {/* Case body */}
-      <RoundedBox
-        args={[caseWidth, caseHeight, caseDepth]}
-        radius={0.3}
-        smoothness={4}
-        position={[caseWidth / 2, -caseHeight / 2, caseDepth / 2]}
-      >
-        <meshPhysicalMaterial
+      {/* ── Detailed Case (Phase 3) ── */}
+      <group position={[caseWidth / 2, 0, caseDepth / 2]}>
+        <CaseGeometry
+          width={caseWidth}
+          depth={caseDepth}
+          height={caseHeight}
           color={config.caseColor}
-          metalness={casePreset.metalness}
-          roughness={casePreset.roughness}
-          clearcoat={casePreset.clearcoat || 0}
-          clearcoatRoughness={casePreset.clearcoatRoughness || 0}
-          reflectivity={casePreset.reflectivity || 0.5}
-          envMapIntensity={0.8}
+          plateColor={config.plateColor}
+          materialPreset={casePreset}
+          normalMapType={casePreset.normalMapType}
+          mountingStyle={config.mountingStyle || "gasket"}
+          hasRGB={config.hasRGB}
+          rgbColor={config.rgbColor}
         />
-      </RoundedBox>
+      </group>
 
-      {/* Plate */}
-      <RoundedBox
-        args={[caseWidth - 0.6, plateThickness, caseDepth - 0.4]}
-        radius={0.05}
-        smoothness={2}
-        position={[caseWidth / 2, 0, caseDepth / 2]}
-      >
-        <meshPhysicalMaterial
-          color={config.plateColor}
-          metalness={platePreset.metalness}
-          roughness={platePreset.roughness}
-          clearcoat={platePreset.clearcoat || 0}
-          envMapIntensity={0.6}
-        />
-      </RoundedBox>
-
-      {/* RGB underglow */}
+      {/* ── Per-Key RGB LEDs (Phase 4) ── */}
       {config.hasRGB && (
-        <mesh position={[caseWidth / 2, -caseHeight + 0.05, caseDepth / 2]}>
-          <planeGeometry args={[caseWidth - 1, caseDepth - 1]} />
-          <meshBasicMaterial
+        <group position={[0, 0, 0]}>
+          <RGBLayer
+            keys={rgbKeyData}
+            plateY={plateThickness / 2}
+            mode={config.rgbMode || "static"}
             color={config.rgbColor}
-            transparent
-            opacity={0.3}
-            side={THREE.DoubleSide}
+            secondaryColor={config.rgbSecondaryColor}
+            speed={config.rgbSpeed ?? 1.0}
+            brightness={config.rgbBrightness ?? 2.5}
+            pressedKeys={pressedKeys}
+            totalWidth={bounds.width}
           />
-        </mesh>
+        </group>
       )}
 
-      {/* Keycaps */}
-      {(() => {
-        // Pre-compute per-row key indices
-        const keyIndicesPerRow: Map<number, number> = new Map();
-        const rowCounts: Map<number, number> = new Map();
-        layout.forEach((key, i) => {
-          const count = rowCounts.get(key.y) || 0;
-          keyIndicesPerRow.set(i, count);
-          rowCounts.set(key.y, count + 1);
-        });
+      {/* ── Keycaps (Phase 2 sculpted + Phase 6 colorways + Phase 8 interactive) ── */}
+      {layout.map((key, i) => {
+        const keyWidth = key.w * UNIT - GAP;
+        const baseRowHeight = ROW_HEIGHTS[key.row] || 0.75;
+        const profileMult = profileMultipliers[key.row] || 1.0;
+        const rowHeight = baseRowHeight * profileMult;
+        const yPos = plateThickness / 2 + rowHeight / 2;
+        const zPos = key.y * UNIT + UNIT / 2 + UNIT * 0.15;
+        const keyInRow = keyIndicesPerRow.get(i) || 0;
+        const legend = getLegendForKey(keyInRow, key.y, config.size);
 
-        const profileMultipliers = KEYCAP_PROFILE_MULTIPLIERS[config.keycapProfile || "cherry"] || KEYCAP_PROFILE_MULTIPLIERS.cherry;
+        // Colorway-based color or fallback to simple accent logic
+        let keycapColor: string;
+        if (colorway) {
+          keycapColor = getKeycapColor(colorway, legend, key.isModifier);
+        } else {
+          keycapColor = key.isModifier ? config.keycapAccentColor : config.keycapColor;
+        }
 
-        return layout.map((key, i) => {
-          const keyWidth = key.w * UNIT - GAP;
-          const baseRowHeight = ROW_HEIGHTS[key.row] || 0.75;
-          const profileMult = profileMultipliers[key.row] || 1.0;
-          const rowHeight = baseRowHeight * profileMult;
-          const yPos = plateThickness / 2 + rowHeight / 2;
-          const zPos = key.y * UNIT + UNIT / 2 + UNIT * 0.15;
-          const color = key.isModifier ? config.keycapAccentColor : config.keycapColor;
-          const keyInRow = keyIndicesPerRow.get(i) || 0;
-          const legend = getLegendForKey(keyInRow, key.y, config.size);
-
-          return (
-            <Keycap
-              key={i}
-              position={[key.x + UNIT * 0.2, yPos, zPos]}
-              width={keyWidth}
-              height={rowHeight}
-              color={color}
-              material={config.keycapMaterial}
-              legend={legend}
-              showLegend={config.showLegends !== false}
-            />
-          );
-        });
-      })()}
+        return (
+          <Keycap
+            key={i}
+            index={i}
+            position={[key.x + UNIT * 0.2, yPos, zPos]}
+            width={keyWidth}
+            height={rowHeight}
+            color={keycapColor}
+            material={config.keycapMaterial}
+            legend={legend}
+            showLegend={config.showLegends !== false}
+            legendColor={legendColorFromColorway}
+            profile={config.keycapProfile || "cherry"}
+            row={key.row}
+            widthU={key.w}
+            interactive={interactive}
+            onPress={handleKeyPress}
+            onRelease={handleKeyRelease}
+          />
+        );
+      })}
     </group>
   );
 }

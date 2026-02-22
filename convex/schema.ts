@@ -114,8 +114,36 @@ export default defineSchema({
     query: v.string(),
     buildName: v.string(),
     summary: v.string(),
-    components: v.any(),
-    recommendedMods: v.any(),
+    components: v.object({
+      keyboardKit: v.object({
+        name: v.string(),
+        price: v.number(),
+        reason: v.string(),
+      }),
+      switches: v.object({
+        name: v.string(),
+        price: v.optional(v.number()),
+        reason: v.string(),
+        quantity: v.number(),
+        priceEach: v.number(),
+      }),
+      keycaps: v.object({
+        name: v.string(),
+        price: v.number(),
+        reason: v.string(),
+      }),
+      stabilizers: v.object({
+        name: v.string(),
+        price: v.number(),
+        reason: v.string(),
+      }),
+    }),
+    recommendedMods: v.array(v.object({
+      mod: v.string(),
+      cost: v.number(),
+      effect: v.string(),
+      difficulty: v.union(v.literal("easy"), v.literal("medium"), v.literal("hard")),
+    })),
     estimatedTotal: v.number(),
     soundProfileExpected: v.string(),
     buildDifficulty: v.string(),
@@ -147,20 +175,6 @@ export default defineSchema({
       v.literal("keycaps"),
       v.literal("accessories")
     ),
-    notes: v.string(),
-  }).index("by_userId", ["userId"]),
-
-  collection: defineTable({
-    userId: v.string(),
-    name: v.string(),
-    type: v.union(
-      v.literal("build"),
-      v.literal("switches"),
-      v.literal("keycaps"),
-      v.literal("accessory")
-    ),
-    components: v.optional(v.any()),
-    totalCost: v.optional(v.number()),
     notes: v.string(),
   }).index("by_userId", ["userId"]),
 

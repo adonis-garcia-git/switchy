@@ -19,7 +19,11 @@ export const getById = query({
   args: { id: v.id("conversations") },
   returns: v.any(),
   handler: async (ctx, args) => {
-    return await ctx.db.get(args.id);
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+    const conversation = await ctx.db.get(args.id);
+    if (!conversation || conversation.userId !== identity.subject) return null;
+    return conversation;
   },
 });
 
@@ -37,6 +41,8 @@ export const create = mutation({
   },
 });
 
+// Note: Convex serializes mutations that read/write the same document,
+// so concurrent addMessage calls on the same conversation are safe.
 export const addMessage = mutation({
   args: {
     conversationId: v.id("conversations"),
@@ -45,8 +51,11 @@ export const addMessage = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
     const conversation = await ctx.db.get(args.conversationId);
     if (!conversation) throw new Error("Conversation not found");
+    if (conversation.userId !== identity.subject) throw new Error("Not authorized");
     const messages = [
       ...conversation.messages,
       {
@@ -67,6 +76,11 @@ export const setActiveBuild = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+    const conversation = await ctx.db.get(args.conversationId);
+    if (!conversation) throw new Error("Conversation not found");
+    if (conversation.userId !== identity.subject) throw new Error("Not authorized");
     await ctx.db.patch(args.conversationId, {
       activeBuildResult: args.buildResult,
     });

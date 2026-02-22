@@ -57,6 +57,8 @@ interface KeyboardViewer3DProps {
   autoRotate?: boolean;
   fallback?: ReactNode;
   className?: string;
+  interactive?: boolean;
+  onKeyPress?: (legend: string) => void;
 }
 
 export function KeyboardViewer3D({
@@ -65,12 +67,18 @@ export function KeyboardViewer3D({
   autoRotate = true,
   fallback,
   className = "",
+  interactive = false,
+  onKeyPress,
 }: KeyboardViewer3DProps) {
   const [webglSupported, setWebglSupported] = useState<boolean | null>(null);
 
   useEffect(() => {
     setWebglSupported(checkWebGLSupport());
   }, []);
+
+  // Compact mode for modals/small containers (skip heavy AO)
+  const numericHeight = parseInt(height, 10);
+  const compactMode = !isNaN(numericHeight) && numericHeight < 500;
 
   // Still checking
   if (webglSupported === null) {
@@ -102,11 +110,17 @@ export function KeyboardViewer3D({
         )}
         style={{ height }}
       >
-        <KeyboardScene config={config} autoRotate={autoRotate} />
+        <KeyboardScene
+          config={config}
+          autoRotate={autoRotate}
+          compactMode={compactMode}
+          interactive={interactive}
+          onKeyPress={onKeyPress}
+        />
 
         {/* Interaction hint */}
         <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 text-[10px] text-white/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-          Drag to rotate &middot; Scroll to zoom
+          {interactive ? "Click keys \u00b7 Drag to rotate \u00b7 Scroll to zoom" : "Drag to rotate \u00b7 Scroll to zoom"}
         </div>
       </div>
     </WebGLErrorBoundary>

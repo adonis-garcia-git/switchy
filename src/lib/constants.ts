@@ -34,3 +34,13 @@ export const PLACEHOLDER_QUERIES = [
   "I have a Keychron Q1 and want to make it sound more creamy",
   "What's a good tactile switch that isn't mushy? I type a lot of code",
 ];
+
+// App-wide numeric constants
+export const MAX_COMPARE_SWITCHES = 3;
+export const SHARE_SLUG_LENGTH = 12;
+export const IMAGE_POLL_INTERVAL_MS = 2000;
+export const IMAGE_POLL_MAX_ATTEMPTS = 30;
+export const SUGGESTION_ROTATION_MS = 4000;
+export const AI_MAX_TOKENS = 2000;
+export const DEFAULT_PAGE_LIMIT = 200;
+export const VENDOR_LINKS_PAGE_LIMIT = 500;

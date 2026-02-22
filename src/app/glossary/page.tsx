@@ -21,11 +21,11 @@ const CATEGORIES = [
 
 const CATEGORY_COLORS: Record<string, string> = {
   switches: "bg-linear/10 text-linear border-linear/20",
-  sound: "bg-purple-500/10 text-purple-400 border-purple-500/20",
-  keycaps: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-  cases: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-  mounting: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-  mods: "bg-pink-500/10 text-pink-400 border-pink-500/20",
+  sound: "bg-accent/10 text-accent border-accent/20",
+  keycaps: "bg-amber-600/10 text-amber-500 border-amber-600/20",
+  cases: "bg-orange-800/10 text-orange-300 border-orange-800/20",
+  mounting: "bg-emerald-600/10 text-emerald-400 border-emerald-600/20",
+  mods: "bg-rose-600/10 text-rose-400 border-rose-600/20",
   general: "bg-bg-elevated text-text-secondary border-border-default",
 };
 

@@ -1,17 +1,21 @@
+import type { NormalMapType } from "./proceduralTextures";
+
 export interface MaterialPreset {
   metalness: number;
   roughness: number;
   clearcoat?: number;
   clearcoatRoughness?: number;
   reflectivity?: number;
+  normalMapType?: NormalMapType;
+  normalScale?: number;
 }
 
 export const CASE_MATERIALS: Record<string, MaterialPreset> = {
-  aluminum: { metalness: 0.9, roughness: 0.15, reflectivity: 0.8 },
-  polycarbonate: { metalness: 0.0, roughness: 0.1, clearcoat: 0.8, clearcoatRoughness: 0.1 },
-  plastic: { metalness: 0.0, roughness: 0.4 },
-  wood: { metalness: 0.0, roughness: 0.7 },
-  brass: { metalness: 1.0, roughness: 0.1, reflectivity: 0.9 },
+  aluminum: { metalness: 0.9, roughness: 0.15, reflectivity: 0.8, normalMapType: "brushed-aluminum", normalScale: 0.3 },
+  polycarbonate: { metalness: 0.0, roughness: 0.1, clearcoat: 0.8, clearcoatRoughness: 0.1, normalMapType: "polycarbonate", normalScale: 0.15 },
+  plastic: { metalness: 0.0, roughness: 0.4, normalMapType: "none" },
+  wood: { metalness: 0.0, roughness: 0.7, normalMapType: "wood-grain", normalScale: 0.5 },
+  brass: { metalness: 1.0, roughness: 0.1, reflectivity: 0.9, normalMapType: "brass", normalScale: 0.25 },
 };
 
 export const PLATE_MATERIALS: Record<string, MaterialPreset> = {
@@ -23,14 +27,14 @@ export const PLATE_MATERIALS: Record<string, MaterialPreset> = {
 };
 
 export const KEYCAP_MATERIALS: Record<string, MaterialPreset> = {
-  pbt: { metalness: 0.0, roughness: 0.7 },
-  abs: { metalness: 0.0, roughness: 0.3 },
-  pom: { metalness: 0.0, roughness: 0.2, clearcoat: 0.4, clearcoatRoughness: 0.2 },
+  pbt: { metalness: 0.0, roughness: 0.7, normalMapType: "pbt-grain", normalScale: 0.2 },
+  abs: { metalness: 0.0, roughness: 0.3, normalMapType: "polycarbonate", normalScale: 0.08 },
+  pom: { metalness: 0.0, roughness: 0.2, clearcoat: 0.4, clearcoatRoughness: 0.2, normalMapType: "polycarbonate", normalScale: 0.05 },
 };
 
 export const KEYCAP_PROFILE_MULTIPLIERS: Record<string, number[]> = {
-  cherry: [1.0, 1.0, 1.0, 1.0, 1.0],  // current sculpted heights
-  sa: [1.3, 1.25, 1.2, 1.2, 1.15],     // taller keycaps
-  dsa: [0.9, 0.9, 0.9, 0.9, 0.9],      // uniform height
-  mt3: [1.4, 1.35, 1.3, 1.25, 1.2],    // tall + deeply sculpted
+  cherry: [1.0, 1.0, 1.0, 1.0, 1.0],
+  sa: [1.3, 1.25, 1.2, 1.2, 1.15],
+  dsa: [0.9, 0.9, 0.9, 0.9, 0.9],
+  mt3: [1.4, 1.35, 1.3, 1.25, 1.2],
 };

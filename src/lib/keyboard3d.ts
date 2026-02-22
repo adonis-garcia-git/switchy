@@ -1,4 +1,8 @@
 import type { BuildData, KeyboardData } from "./types";
+import type { RGBMode } from "@/components/3d/RGBController";
+import type { MountingStyle } from "@/components/3d/CaseGeometry";
+import type { EnvironmentPresetName, CameraPresetName } from "@/components/3d/SceneEnvironment";
+import type { KeycapColorway } from "@/components/3d/colorways";
 
 export interface KeyboardViewerConfig {
   caseColor: string;
@@ -18,6 +22,23 @@ export interface KeyboardViewerConfig {
     keycap?: string;
     accent?: string;
   };
+  // ─── Phase 3: Case details ──
+  mountingStyle?: MountingStyle;
+  // ─── Phase 4: Per-key RGB ──
+  rgbMode?: RGBMode;
+  rgbSecondaryColor?: string;
+  rgbSpeed?: number;
+  rgbBrightness?: number;
+  // ─── Phase 6: Colorways ──
+  colorway?: string;
+  customColorway?: KeycapColorway;
+  // ─── Phase 7: Scene/Environment ──
+  environment?: EnvironmentPresetName;
+  showDesk?: boolean;
+  deskColor?: string;
+  cameraPreset?: CameraPresetName;
+  // ─── Phase 8: Interactive ──
+  interactive?: boolean;
 }
 
 const MATERIAL_KEYWORDS: Record<string, KeyboardViewerConfig["caseMaterial"]> = {
@@ -102,6 +123,19 @@ const SIZE_KEYWORDS: Record<string, KeyboardViewerConfig["size"]> = {
   fullsize: "full",
 };
 
+const MOUNTING_KEYWORDS: Record<string, MountingStyle> = {
+  gasket: "gasket",
+  "gasket-mount": "gasket",
+  "top-mount": "top-mount",
+  "top mount": "top-mount",
+  topmount: "top-mount",
+  "tray-mount": "tray-mount",
+  "tray mount": "tray-mount",
+  traymount: "tray-mount",
+  "plate-mount": "plate-mount",
+  "plate mount": "plate-mount",
+};
+
 function parseKeyword<T>(text: string, keywords: Record<string, T>): T | undefined {
   const lower = text.toLowerCase();
   for (const [keyword, value] of Object.entries(keywords)) {
@@ -143,6 +177,11 @@ export function buildDataToViewerConfig(build: BuildData, keyboard?: KeyboardDat
     config.size = parseKeyword(keyboard.size, SIZE_KEYWORDS) || config.size;
     config.hasRGB = keyboard.rgb;
     config.caseColor = parseColor(keyboard.caseMaterial) || config.caseColor;
+
+    // Parse mounting style if available
+    if (keyboard.mountingStyle) {
+      config.mountingStyle = parseKeyword(keyboard.mountingStyle, MOUNTING_KEYWORDS);
+    }
   }
 
   // Parse from build components
@@ -166,6 +205,9 @@ export function buildDataToViewerConfig(build: BuildData, keyboard?: KeyboardDat
     if (accentColor && accentColor !== config.keycapColor) {
       config.keycapAccentColor = accentColor;
     }
+
+    // Mounting style from kit name
+    config.mountingStyle = parseKeyword(kitName, MOUNTING_KEYWORDS) || config.mountingStyle;
   }
 
   return config;

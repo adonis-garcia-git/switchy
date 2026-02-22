@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono, Outfit } from "next/font/google";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ThemeProvider } from "./ThemeProvider";
 import { Navigation } from "@/components/Navigation";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { GlossaryProvider } from "@/components/GlossaryProvider";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import "./globals.css";
@@ -44,9 +45,11 @@ export default function RootLayout({
             <GlossaryProvider>
               <Navigation />
               <OnboardingModal />
-              <main className="pt-16 min-h-screen">
-                {children}
-              </main>
+              <ErrorBoundary>
+                <main className="pt-16 min-h-screen">
+                  {children}
+                </main>
+              </ErrorBoundary>
             </GlossaryProvider>
           </ConvexClientProvider>
         </ThemeProvider>

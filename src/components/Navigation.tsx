@@ -44,7 +44,7 @@ export function Navigation() {
           {/* Left: Logo + Nav Links */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center shrink-0">
-              <img src="/logo.png" alt="Switchy" className="h-40 w-auto" />
+              <img src="/logo.png" alt="Switchy" className="h-8 w-auto" />
             </Link>
 
             {/* Desktop Nav Links */}
@@ -84,6 +84,9 @@ export function Navigation() {
               >
                 <button
                   onClick={() => setAccessoriesOpen(!accessoriesOpen)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') setAccessoriesOpen(false);
+                  }}
                   className={cn(
                     "px-5 py-2.5 rounded-2xl text-sm font-medium transition-[background-color,color,transform] duration-150 flex items-center gap-1.5",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
@@ -168,6 +171,7 @@ export function Navigation() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
               className="lg:hidden p-2 text-white/60 hover:text-white rounded-md hover:bg-white/10 transition-[background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

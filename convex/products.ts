@@ -18,14 +18,14 @@ export const list = query({
       products = await ctx.db
         .query("products")
         .withIndex("by_category", (q) => q.eq("category", args.category!))
-        .collect();
+        .take(200);
     } else if (args.brand) {
       products = await ctx.db
         .query("products")
         .withIndex("by_brand", (q) => q.eq("brand", args.brand!))
-        .collect();
+        .take(200);
     } else {
-      products = await ctx.db.query("products").collect();
+      products = await ctx.db.query("products").take(200);
     }
 
     if (args.brand && args.category) {
@@ -68,12 +68,12 @@ export const search = query({
   returns: v.array(v.any()),
   handler: async (ctx, args) => {
     if (!args.query.trim()) {
-      return await ctx.db.query("products").collect();
+      return await ctx.db.query("products").take(200);
     }
     return await ctx.db
       .query("products")
       .withSearchIndex("search_name", (q) => q.search("name", args.query))
-      .collect();
+      .take(200);
   },
 });
 
