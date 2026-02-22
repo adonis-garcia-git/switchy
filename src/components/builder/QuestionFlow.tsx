@@ -1,6 +1,6 @@
 "use client";
 
-import { QuestionCard } from "./QuestionCard";
+import { QuestionCard, BUDGET_TIERS } from "./QuestionCard";
 import type { BuilderQuestion, BuilderAnswer } from "@/lib/types";
 import type { KeyboardViewerConfig } from "@/lib/keyboard3d";
 
@@ -175,7 +175,9 @@ export function QuestionFlow({
               const displayValue = Array.isArray(answer.value)
                 ? answer.value.map(v => q?.options?.find(o => o.id === v)?.label || v).join(", ")
                 : typeof answer.value === "number"
-                  ? `${q?.sliderConfig?.unit || "$"}${answer.value}`
+                  ? answer.questionId === "budget"
+                    ? BUDGET_TIERS.find(t => t.value === answer.value)?.label ?? `$${answer.value}`
+                    : `${q?.sliderConfig?.unit || "$"}${answer.value}`
                   : q?.options?.find(o => o.id === answer.value)?.label || String(answer.value);
 
               return (

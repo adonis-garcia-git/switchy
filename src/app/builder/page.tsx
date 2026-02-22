@@ -26,6 +26,29 @@ import { UsageCounter } from "@/components/UsageCounter";
 
 type BuilderMode = "ai" | "custom";
 
+const BUILDER_SESSION_KEY = "switchy:builder-session";
+
+interface BuilderSession {
+  phase: BuilderPhase;
+  buildResult: BuildData;
+  initialPrompt: string;
+  viewerConfig: KeyboardViewerConfig;
+}
+
+function getStoredSession(): BuilderSession | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(BUILDER_SESSION_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as BuilderSession;
+    // Only restore completed builds
+    if (parsed.phase === "result" && parsed.buildResult) return parsed;
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 export default function BuilderPage() {
   return (
     <Suspense fallback={<div className="min-h-[calc(100vh-4rem)]" />}>
@@ -41,13 +64,16 @@ function BuilderPageInner() {
   // Toast notifications
   const { toasts, showToast, dismissToast } = useToast();
 
+  // Restore previous build session (survives navigation to product detail pages)
+  const [restoredSession] = useState(getStoredSession);
+
   // Mode toggle
   const initialMode = searchParams.get("mode") === "custom" ? "custom" : "ai";
   const [mode, setMode] = useState<BuilderMode>(initialMode);
 
   // Phase state
-  const [phase, setPhase] = useState<BuilderPhase>("landing");
-  const [initialPrompt, setInitialPrompt] = useState("");
+  const [phase, setPhase] = useState<BuilderPhase>(restoredSession?.phase ?? "landing");
+  const [initialPrompt, setInitialPrompt] = useState(restoredSession?.initialPrompt ?? "");
 
   // Question state
   const [questions, setQuestions] = useState<BuilderQuestion[]>([]);
@@ -55,7 +81,7 @@ function BuilderPageInner() {
   const [answers, setAnswers] = useState<BuilderAnswer[]>([]);
 
   // Build result state
-  const [buildResult, setBuildResult] = useState<BuildData | null>(null);
+  const [buildResult, setBuildResult] = useState<BuildData | null>(restoredSession?.buildResult ?? null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -68,8 +94,9 @@ function BuilderPageInner() {
   const [showPaywall, setShowPaywall] = useState(false);
   const { isPro, isAtLimit, buildsUsed, buildsLimit } = useSubscription();
 
-  // 3D viewer config — seed from ?studio= param if present
+  // 3D viewer config — seed from restored session, ?studio= param, or defaults
   const [viewerConfig, setViewerConfig] = useState<KeyboardViewerConfig>(() => {
+    if (restoredSession?.viewerConfig) return restoredSession.viewerConfig;
     const studioParam = searchParams.get("studio");
     if (studioParam) {
       const decoded = decodeStudioConfig(studioParam);
@@ -77,6 +104,20 @@ function BuilderPageInner() {
     }
     return { ...DEFAULT_VIEWER_CONFIG };
   });
+
+  // Persist build result to sessionStorage for back-button restoration
+  useEffect(() => {
+    if (phase === "result" && buildResult) {
+      try {
+        sessionStorage.setItem(BUILDER_SESSION_KEY, JSON.stringify({
+          phase,
+          buildResult,
+          initialPrompt,
+          viewerConfig,
+        } satisfies BuilderSession));
+      } catch { /* quota exceeded — non-critical */ }
+    }
+  }, [phase, buildResult, initialPrompt, viewerConfig]);
 
   // Customizer interactive props (from KeyboardCustomizer when on customize step)
   const [customizerProps, setCustomizerProps] = useState<CustomizerInteractiveProps | null>(null);
@@ -327,6 +368,7 @@ function BuilderPageInner() {
 
   // Reset
   const handleReset = useCallback(() => {
+    try { sessionStorage.removeItem(BUILDER_SESSION_KEY); } catch { /* noop */ }
     setPhase("landing");
     setInitialPrompt("");
     setQuestions([]);
@@ -391,7 +433,10 @@ function BuilderPageInner() {
 
       {/* ── Content panel (floats above the 3D scene) ── */}
       <div className={cn(
-        "relative z-10 h-full overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:w-[50%] lg:min-w-[480px]",
+        "relative z-10 h-full [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:w-[50%] lg:min-w-[480px]",
+        mode === "ai" && phase === "result"
+          ? "overflow-y-auto lg:overflow-hidden"
+          : "overflow-y-auto",
         mode === "ai" && (phase === "landing" || phase === "generating" || (phase === "questions" && questions.length === 0))
           ? "flex flex-col items-center justify-center px-4 sm:px-6 lg:px-10 pb-12"
           : "px-4 sm:px-6 lg:px-10 pt-6 pb-12"
@@ -411,7 +456,6 @@ function BuilderPageInner() {
               activeTab={mode}
               onChange={(v) => {
                 setMode(v as BuilderMode);
-                if (v === "ai") handleReset();
                 setCustomizerProps(null);
               }}
               className="bg-black/20 border-white/[0.08]"

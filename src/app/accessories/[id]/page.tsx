@@ -14,6 +14,7 @@ import { VendorPartnerSection } from "@/components/VendorPartnerSection";
 import { Breadcrumb } from "@/components/detail/Breadcrumb";
 import { BuildAdvisorCTA } from "@/components/detail/BuildAdvisorCTA";
 import { SimilarProducts, SimilarProductItem } from "@/components/detail/SimilarProducts";
+import { ProductDetailLayout } from "@/components/detail/ProductDetailLayout";
 import { StockBadge } from "@/components/detail/StockBadge";
 import { AccessoryCard } from "@/components/AccessoryCard";
 
@@ -48,9 +49,16 @@ export default function AccessoryDetailPage() {
 
   if (accessory === undefined) {
     return (
-      <div className="p-6 lg:p-8">
-        <div className="max-w-4xl mx-auto">
-          <Skeleton variant="card" className="h-96" />
+      <div className="min-h-screen">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+          <Skeleton variant="text" className="w-48 h-4 mb-6" />
+          <div className="grid grid-cols-1 xl:grid-cols-[1fr_380px] 2xl:grid-cols-[1fr_420px] gap-8 xl:gap-10">
+            <Skeleton variant="card" className="h-96" />
+            <div className="hidden xl:block space-y-6">
+              <Skeleton variant="card" className="h-48" />
+              <Skeleton variant="card" className="h-32" />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -58,8 +66,8 @@ export default function AccessoryDetailPage() {
 
   if (!accessory) {
     return (
-      <div className="p-6 lg:p-8">
-        <div className="max-w-4xl mx-auto text-center py-20">
+      <div className="min-h-screen">
+        <div className="max-w-3xl mx-auto px-4 py-20 text-center">
           <p className="text-text-muted">Accessory not found.</p>
           <Link href="/accessories" className="text-accent hover:text-accent-hover text-sm mt-2 inline-block transition-colors duration-150">
             &larr; Back to accessories
@@ -77,8 +85,8 @@ export default function AccessoryDetailPage() {
     .slice(0, 6);
 
   return (
-    <div className="p-6 lg:p-8">
-      <div className="max-w-4xl mx-auto">
+    <ProductDetailLayout
+      breadcrumb={
         <Breadcrumb
           items={[
             { label: "Home", href: "/" },
@@ -86,110 +94,28 @@ export default function AccessoryDetailPage() {
             { label: accessory.name },
           ]}
         />
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Image */}
-          <div className="aspect-[4/3] rounded-xl overflow-hidden bg-bg-elevated relative">
-            <img
-              src={accessory.imageUrl}
-              alt={accessory.name}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-          </div>
-
-          {/* Details */}
-          <div>
-            <p className="text-xs uppercase tracking-wider text-text-muted mb-1">{accessory.brand}</p>
-            <h1 className="text-2xl sm:text-3xl font-bold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight mb-4">
-              {accessory.name}
-            </h1>
-
-            <div className="flex items-center gap-2 mb-3">
-              <Badge variant="info" size="md">
-                {SUBCATEGORY_LABEL[accessory.subcategory] || accessory.subcategory}
-              </Badge>
-            </div>
-
-            {contextBlurb && (
-              <div className="flex items-start gap-2 mb-6">
-                <svg
-                  className="w-3.5 h-3.5 text-text-muted/60 mt-0.5 shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <p className="text-xs text-text-muted leading-relaxed">{contextBlurb}</p>
-              </div>
-            )}
-
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl font-bold font-[family-name:var(--font-mono)] text-accent">
-                {formatPriceWhole(accessory.priceUsd)}
-              </span>
-              <StockBadge inStock={accessory.inStock} />
-            </div>
-
-            {/* Specs grid (flexible) */}
-            {specs && Object.keys(specs).length > 0 && (
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                {Object.entries(specs).map(([key, value]) => (
-                  <div key={key} className="rounded-lg bg-bg-elevated border border-border-subtle p-3">
-                    <p className="text-[10px] uppercase tracking-wider text-text-muted mb-0.5">
-                      {key.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase())}
-                    </p>
-                    <p className="text-sm font-semibold text-text-primary">{String(value)}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {accessory.notes && (
-              <p className="text-sm text-text-secondary leading-relaxed mb-6">
-                {accessory.notes}
-              </p>
-            )}
-
-            {accessory.tags && accessory.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mb-6">
-                {accessory.tags.map((tag: string) => (
-                  <span key={tag} className="text-xs px-2 py-0.5 rounded bg-bg-elevated text-text-muted border border-border-subtle">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            <button
-              onClick={() =>
-                window.open(accessory.productUrl || generatePurchaseUrl(accessory.brand, accessory.name, "keyboard"), "_blank", "noopener,noreferrer")
-              }
-              className={cn(
-                "inline-flex items-center gap-2 text-sm font-bold px-6 py-3 rounded-xl w-full justify-center",
-                "bg-accent text-bg-primary shadow-accent-sm",
-                "hover:bg-accent-hover",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
-                "active:scale-[0.97]",
-                "transition-[background-color,transform] duration-150",
-                "font-[family-name:var(--font-outfit)]"
-              )}
-            >
-              Buy Now
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {/* Similar Products */}
+      }
+      sidebar={
+        <>
+          <CompleteYourBuild
+            currentType="accessory"
+            currentName={accessory.name}
+            currentPrice={accessory.priceUsd}
+            compact
+          />
+          <BuildAdvisorCTA
+            brand={accessory.brand}
+            name={accessory.name}
+            productType="accessory"
+          />
+          <VendorPartnerSection
+            productName={`${accessory.brand} ${accessory.name}`}
+            referrerPage={`/accessories/${params.id}`}
+            compact
+          />
+        </>
+      }
+      bottomSection={
         <SimilarProducts
           title={`More ${SUBCATEGORY_LABEL[accessory.subcategory] || accessory.subcategory}`}
           viewAllHref={`/accessories?subcategory=${accessory.subcategory}`}
@@ -201,27 +127,109 @@ export default function AccessoryDetailPage() {
             </SimilarProductItem>
           ))}
         </SimilarProducts>
+      }
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Image */}
+        <div className="aspect-[4/3] rounded-xl overflow-hidden bg-bg-elevated relative">
+          <img
+            src={accessory.imageUrl}
+            alt={accessory.name}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        </div>
 
-        {/* Complete Your Build cross-sell */}
-        <CompleteYourBuild
-          currentType="accessory"
-          currentName={accessory.name}
-          currentPrice={accessory.priceUsd}
-        />
+        {/* Details */}
+        <div>
+          <p className="text-xs uppercase tracking-wider text-text-muted mb-1">{accessory.brand}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-text-primary font-[family-name:var(--font-outfit)] tracking-tight mb-4">
+            {accessory.name}
+          </h1>
 
-        {/* Build Advisor CTA */}
-        <BuildAdvisorCTA
-          brand={accessory.brand}
-          name={accessory.name}
-          productType="accessory"
-        />
+          <div className="flex items-center gap-2 mb-3">
+            <Badge variant="info" size="md">
+              {SUBCATEGORY_LABEL[accessory.subcategory] || accessory.subcategory}
+            </Badge>
+          </div>
 
-        {/* Enhanced vendor section */}
-        <VendorPartnerSection
-          productName={`${accessory.brand} ${accessory.name}`}
-          referrerPage={`/accessories/${params.id}`}
-        />
+          {contextBlurb && (
+            <div className="flex items-start gap-2 mb-6">
+              <svg
+                className="w-3.5 h-3.5 text-text-muted/60 mt-0.5 shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <p className="text-xs text-text-muted leading-relaxed">{contextBlurb}</p>
+            </div>
+          )}
+
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-3xl font-bold font-[family-name:var(--font-mono)] text-accent">
+              {formatPriceWhole(accessory.priceUsd)}
+            </span>
+            <StockBadge inStock={accessory.inStock} />
+          </div>
+
+          {/* Specs grid (flexible) */}
+          {specs && Object.keys(specs).length > 0 && (
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              {Object.entries(specs).map(([key, value]) => (
+                <div key={key} className="rounded-lg bg-bg-elevated border border-border-subtle p-3">
+                  <p className="text-[10px] uppercase tracking-wider text-text-muted mb-0.5">
+                    {key.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase())}
+                  </p>
+                  <p className="text-sm font-semibold text-text-primary">{String(value)}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {accessory.notes && (
+            <p className="text-sm text-text-secondary leading-relaxed mb-6">
+              {accessory.notes}
+            </p>
+          )}
+
+          {accessory.tags && accessory.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-6">
+              {accessory.tags.map((tag: string) => (
+                <span key={tag} className="text-xs px-2 py-0.5 rounded bg-bg-elevated text-text-muted border border-border-subtle">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <button
+            onClick={() =>
+              window.open(accessory.productUrl || generatePurchaseUrl(accessory.brand, accessory.name, "keyboard"), "_blank", "noopener,noreferrer")
+            }
+            className={cn(
+              "inline-flex items-center gap-2 text-sm font-bold px-6 py-3 rounded-xl w-full justify-center",
+              "bg-accent text-bg-primary shadow-accent-sm",
+              "hover:bg-accent-hover",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+              "active:scale-[0.97]",
+              "transition-[background-color,transform] duration-150",
+              "font-[family-name:var(--font-outfit)]"
+            )}
+          >
+            Buy Now
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
+          </button>
+        </div>
       </div>
-    </div>
+    </ProductDetailLayout>
   );
 }

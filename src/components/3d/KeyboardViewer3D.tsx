@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Component, type ReactNode } from "react";
+import { useState, useEffect, memo, Component, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { ViewerLoadingState } from "./ViewerLoadingState";
 import { cn } from "@/lib/utils";
@@ -67,7 +67,7 @@ interface KeyboardViewer3DProps {
   customizeMode?: boolean;
 }
 
-export function KeyboardViewer3D({
+export const KeyboardViewer3D = memo(function KeyboardViewer3D({
   config,
   height = "300px",
   autoRotate = true,
@@ -141,4 +141,26 @@ export function KeyboardViewer3D({
       </div>
     </WebGLErrorBoundary>
   );
-}
+}, (prev, next) => {
+  // Custom comparator: shallow-compare config fields + other props
+  if (prev.height !== next.height) return false;
+  if (prev.autoRotate !== next.autoRotate) return false;
+  if (prev.className !== next.className) return false;
+  if (prev.interactive !== next.interactive) return false;
+  if (prev.customizeMode !== next.customizeMode) return false;
+  if (prev.selectionMode !== next.selectionMode) return false;
+  if (prev.selectedKeys !== next.selectedKeys) return false;
+  if (prev.onKeyPress !== next.onKeyPress) return false;
+  if (prev.onKeySelect !== next.onKeySelect) return false;
+  if (prev.onKeyPaint !== next.onKeyPaint) return false;
+  if (prev.fallback !== next.fallback) return false;
+
+  // Shallow-compare config object fields
+  const pc = prev.config as unknown as Record<string, unknown>;
+  const nc = next.config as unknown as Record<string, unknown>;
+  const keys = new Set([...Object.keys(pc), ...Object.keys(nc)]);
+  for (const k of keys) {
+    if (pc[k] !== nc[k]) return false;
+  }
+  return true;
+});

@@ -8,9 +8,12 @@ import { cn } from "@/lib/utils";
 interface VendorPartnerSectionProps {
   productName: string;
   referrerPage?: string;
+  /** When true, uses single-column grid (for sidebar rendering) */
+  compact?: boolean;
+  className?: string;
 }
 
-export function VendorPartnerSection({ productName, referrerPage }: VendorPartnerSectionProps) {
+export function VendorPartnerSection({ productName, referrerPage, compact, className }: VendorPartnerSectionProps) {
   const links = useQuery(api.vendorLinks.getByProduct, { productName });
   const { handleAffiliateClick } = useAffiliateClick();
 
@@ -38,7 +41,7 @@ export function VendorPartnerSection({ productName, referrerPage }: VendorPartne
   const hasAnyAffiliate = sorted.some((l: any) => l.affiliateUrl);
 
   return (
-    <section className="mt-8">
+    <section className={cn("", className)}>
       <h3 className="font-[family-name:var(--font-outfit)] font-semibold text-text-primary tracking-tight mb-4 flex items-center gap-2">
         <svg className="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -46,7 +49,7 @@ export function VendorPartnerSection({ productName, referrerPage }: VendorPartne
         Where to Buy
       </h3>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div className={cn("grid gap-3", compact ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3")}>
         {sorted.map((link: any, i: number) => {
           const isBestPrice = link.price != null && link.price === cheapestPrice;
           return (

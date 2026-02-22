@@ -14,6 +14,7 @@ import { VendorPartnerSection } from "@/components/VendorPartnerSection";
 import { Breadcrumb } from "@/components/detail/Breadcrumb";
 import { BuildAdvisorCTA } from "@/components/detail/BuildAdvisorCTA";
 import { SimilarProducts, SimilarProductItem } from "@/components/detail/SimilarProducts";
+import { ProductDetailLayout } from "@/components/detail/ProductDetailLayout";
 import { StockBadge } from "@/components/detail/StockBadge";
 import { QuickSpecBar } from "@/components/detail/QuickSpecBar";
 import { KeyboardCard } from "@/components/KeyboardCard";
@@ -39,26 +40,34 @@ export default function KeyboardDetailPage() {
   if (keyboard === undefined) {
     return (
       <div className="min-h-screen">
-        <div className="max-w-5xl mx-auto px-4 lg:px-8 py-8">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
           <Skeleton variant="text" className="w-48 h-4 mb-6" />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <Skeleton variant="card" className="aspect-[16/10]" />
-            <div className="space-y-3">
-              <Skeleton variant="text" className="w-24 h-3" />
-              <Skeleton variant="text" className="w-64 h-8" />
-              <Skeleton variant="text" className="w-32 h-7" />
-              <Skeleton variant="text" className="w-40 h-10" />
+          <div className="grid grid-cols-1 xl:grid-cols-[1fr_380px] 2xl:grid-cols-[1fr_420px] gap-8 xl:gap-10">
+            <div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <Skeleton variant="card" className="aspect-[16/10]" />
+                <div className="space-y-3">
+                  <Skeleton variant="text" className="w-24 h-3" />
+                  <Skeleton variant="text" className="w-64 h-8" />
+                  <Skeleton variant="text" className="w-32 h-7" />
+                  <Skeleton variant="text" className="w-40 h-10" />
+                </div>
+              </div>
+              <div className="flex gap-2 mb-8">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <Skeleton key={i} variant="text" className="w-28 h-10 rounded-xl" />
+                ))}
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-px">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <Skeleton key={i} variant="text" className="h-12" />
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="flex gap-2 mb-8">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={i} variant="text" className="w-28 h-10 rounded-xl" />
-            ))}
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton key={i} variant="text" className="h-12" />
-            ))}
+            <div className="hidden xl:block space-y-6">
+              <Skeleton variant="card" className="h-48" />
+              <Skeleton variant="card" className="h-32" />
+            </div>
           </div>
         </div>
       </div>
@@ -147,9 +156,8 @@ export default function KeyboardDetailPage() {
   ];
 
   return (
-    <div className="min-h-screen">
-      <main className="max-w-5xl mx-auto px-4 lg:px-8 py-8">
-        {/* Breadcrumb */}
+    <ProductDetailLayout
+      breadcrumb={
         <Breadcrumb
           items={[
             { label: "Home", href: "/" },
@@ -157,112 +165,28 @@ export default function KeyboardDetailPage() {
             { label: keyboard.name },
           ]}
         />
-
-        {/* Two-column hero */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Image left */}
-          {keyboard.imageUrl && (
-            <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-bg-elevated relative">
-              <img
-                src={keyboard.imageUrl}
-                alt={`${keyboard.brand} ${keyboard.name}`}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-            </div>
-          )}
-
-          {/* Info right */}
-          <div className="flex flex-col justify-center">
-            <p className="text-xs uppercase tracking-wider text-text-muted font-medium mb-1">
-              {keyboard.brand}
-            </p>
-            <h1 className="font-[family-name:var(--font-outfit)] text-3xl lg:text-4xl font-bold text-text-primary tracking-tight mb-3">
-              {keyboard.name}
-            </h1>
-            <div className="flex items-center gap-3 mb-4">
-              <p className="text-3xl font-bold font-[family-name:var(--font-mono)] text-accent">
-                {formatPriceWhole(keyboard.priceUsd)}
-              </p>
-              <StockBadge inStock={keyboard.inStock} />
-            </div>
-            <div className="flex items-center gap-3">
-              <PurchaseButton
-                brand={keyboard.brand}
-                name={keyboard.name}
-                productUrl={keyboard.productUrl}
-                type="keyboard"
-                size="md"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* QuickSpecBar */}
-        <QuickSpecBar specs={quickSpecs} />
-
-        {/* Full specs grid */}
-        <div className="rounded-xl border border-border-default bg-bg-surface p-5 mb-6">
-          <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">
-            Specifications
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border-subtle rounded-lg overflow-hidden">
-            {specs.map((spec, idx) => (
-              <div
-                key={spec.label}
-                className="flex justify-between items-center py-3 px-4 bg-bg-primary/30"
-              >
-                <span className="text-xs text-text-muted uppercase tracking-wider">
-                  {spec.label}
-                </span>
-                <span className="text-sm font-mono text-text-primary font-medium">
-                  {spec.value}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Feature badges (6 total) */}
-        <div className="rounded-xl border border-border-default bg-bg-surface p-5 mb-6">
-          <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-            Features
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            <Badge variant={keyboard.hotSwap ? "success" : "default"} size="md">
-              {keyboard.hotSwap ? "Hot-swap" : "Soldered"}
-            </Badge>
-            <Badge variant={keyboard.wireless ? "info" : "default"} size="md">
-              {keyboard.wireless ? "Wireless" : "Wired Only"}
-            </Badge>
-            <Badge variant={keyboard.rgb ? "info" : "default"} size="md">
-              {keyboard.rgb ? "RGB" : "No RGB"}
-            </Badge>
-            <Badge variant={keyboard.knob ? "success" : "default"} size="md">
-              {keyboard.knob ? "Rotary Knob" : "No Knob"}
-            </Badge>
-            <Badge variant={keyboard.qmkVia ? "success" : "default"} size="md">
-              {keyboard.qmkVia ? "QMK/VIA" : "No QMK/VIA"}
-            </Badge>
-            <Badge variant={keyboard.hallEffect ? "success" : "default"} size="md">
-              {keyboard.hallEffect ? "Hall Effect" : "Mechanical"}
-            </Badge>
-          </div>
-        </div>
-
-        {/* Notes */}
-        {keyboard.notes && (
-          <div className="rounded-xl border border-border-default bg-bg-surface p-5 mb-6">
-            <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-              Notes
-            </h2>
-            <p className="text-sm text-text-secondary leading-relaxed">
-              {keyboard.notes}
-            </p>
-          </div>
-        )}
-
-        {/* Similar Products */}
+      }
+      sidebar={
+        <>
+          <CompleteYourBuild
+            currentType="keyboard"
+            currentName={keyboard.name}
+            currentPrice={keyboard.priceUsd}
+            compact
+          />
+          <BuildAdvisorCTA
+            brand={keyboard.brand}
+            name={keyboard.name}
+            productType="keyboard"
+          />
+          <VendorPartnerSection
+            productName={`${keyboard.brand} ${keyboard.name}`}
+            referrerPage={`/keyboards/${params.id}`}
+            compact
+          />
+        </>
+      }
+      bottomSection={
         <SimilarProducts
           title={`More ${keyboard.size} Keyboards`}
           viewAllHref={`/keyboards?size=${encodeURIComponent(keyboard.size)}`}
@@ -274,27 +198,111 @@ export default function KeyboardDetailPage() {
             </SimilarProductItem>
           ))}
         </SimilarProducts>
+      }
+    >
+      {/* Two-column hero */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        {/* Image left */}
+        {keyboard.imageUrl && (
+          <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-bg-elevated relative">
+            <img
+              src={keyboard.imageUrl}
+              alt={`${keyboard.brand} ${keyboard.name}`}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          </div>
+        )}
 
-        {/* Complete Your Build cross-sell */}
-        <CompleteYourBuild
-          currentType="keyboard"
-          currentName={keyboard.name}
-          currentPrice={keyboard.priceUsd}
-        />
+        {/* Info right */}
+        <div className="flex flex-col justify-center">
+          <p className="text-xs uppercase tracking-wider text-text-muted font-medium mb-1">
+            {keyboard.brand}
+          </p>
+          <h1 className="font-[family-name:var(--font-outfit)] text-3xl lg:text-4xl font-bold text-text-primary tracking-tight mb-3">
+            {keyboard.name}
+          </h1>
+          <div className="flex items-center gap-3 mb-4">
+            <p className="text-3xl font-bold font-[family-name:var(--font-mono)] text-accent">
+              {formatPriceWhole(keyboard.priceUsd)}
+            </p>
+            <StockBadge inStock={keyboard.inStock} />
+          </div>
+          <div className="flex items-center gap-3">
+            <PurchaseButton
+              brand={keyboard.brand}
+              name={keyboard.name}
+              productUrl={keyboard.productUrl}
+              type="keyboard"
+              size="md"
+            />
+          </div>
+        </div>
+      </div>
 
-        {/* Build Advisor CTA */}
-        <BuildAdvisorCTA
-          brand={keyboard.brand}
-          name={keyboard.name}
-          productType="keyboard"
-        />
+      {/* QuickSpecBar */}
+      <QuickSpecBar specs={quickSpecs} />
 
-        {/* Enhanced vendor section */}
-        <VendorPartnerSection
-          productName={`${keyboard.brand} ${keyboard.name}`}
-          referrerPage={`/keyboards/${params.id}`}
-        />
-      </main>
-    </div>
+      {/* Full specs grid */}
+      <div className="rounded-xl border border-border-default bg-bg-surface p-5 mb-6">
+        <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">
+          Specifications
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border-subtle rounded-lg overflow-hidden">
+          {specs.map((spec, idx) => (
+            <div
+              key={spec.label}
+              className="flex justify-between items-center py-3 px-4 bg-bg-primary/30"
+            >
+              <span className="text-xs text-text-muted uppercase tracking-wider">
+                {spec.label}
+              </span>
+              <span className="text-sm font-mono text-text-primary font-medium">
+                {spec.value}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Feature badges (6 total) */}
+      <div className="rounded-xl border border-border-default bg-bg-surface p-5 mb-6">
+        <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
+          Features
+        </h2>
+        <div className="flex flex-wrap gap-2">
+          <Badge variant={keyboard.hotSwap ? "success" : "default"} size="md">
+            {keyboard.hotSwap ? "Hot-swap" : "Soldered"}
+          </Badge>
+          <Badge variant={keyboard.wireless ? "info" : "default"} size="md">
+            {keyboard.wireless ? "Wireless" : "Wired Only"}
+          </Badge>
+          <Badge variant={keyboard.rgb ? "info" : "default"} size="md">
+            {keyboard.rgb ? "RGB" : "No RGB"}
+          </Badge>
+          <Badge variant={keyboard.knob ? "success" : "default"} size="md">
+            {keyboard.knob ? "Rotary Knob" : "No Knob"}
+          </Badge>
+          <Badge variant={keyboard.qmkVia ? "success" : "default"} size="md">
+            {keyboard.qmkVia ? "QMK/VIA" : "No QMK/VIA"}
+          </Badge>
+          <Badge variant={keyboard.hallEffect ? "success" : "default"} size="md">
+            {keyboard.hallEffect ? "Hall Effect" : "Mechanical"}
+          </Badge>
+        </div>
+      </div>
+
+      {/* Notes */}
+      {keyboard.notes && (
+        <div className="rounded-xl border border-border-default bg-bg-surface p-5">
+          <h2 className="font-[family-name:var(--font-outfit)] text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
+            Notes
+          </h2>
+          <p className="text-sm text-text-secondary leading-relaxed">
+            {keyboard.notes}
+          </p>
+        </div>
+      )}
+    </ProductDetailLayout>
   );
 }

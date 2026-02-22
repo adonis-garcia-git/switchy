@@ -13,6 +13,7 @@ interface ComponentCardProps {
   imageUrl?: string;
   productUrl?: string;
   detailUrl?: string;
+  compact?: boolean;
 }
 
 const TYPE_LABELS: Record<string, string> = {
@@ -46,18 +47,23 @@ export function ComponentCard({
   imageUrl,
   productUrl,
   detailUrl,
+  compact = false,
 }: ComponentCardProps) {
   const displayImg = imageUrl;
 
   return (
     <div className={cn(
-      "rounded-xl border border-border-subtle bg-bg-surface p-4 group hover:border-border-accent hover:glow-accent transition-[border-color,box-shadow] duration-200 border-l-2",
+      "rounded-xl border border-border-subtle bg-bg-surface group hover:border-border-accent hover:glow-accent transition-[border-color,box-shadow] duration-200 border-l-2",
+      compact ? "p-3" : "p-4",
       TYPE_COLORS[type]?.border || "border-l-text-muted"
     )}>
-      <div className="flex gap-4">
+      <div className={cn("flex", compact ? "gap-3" : "gap-4")}>
         {/* Image */}
         {displayImg ? (
-          <div className="w-20 h-20 rounded-lg bg-bg-elevated border border-border-subtle overflow-hidden shrink-0 relative">
+          <div className={cn(
+            "rounded-lg bg-bg-elevated border border-border-subtle overflow-hidden shrink-0 relative",
+            compact ? "w-14 h-14" : "w-20 h-20"
+          )}>
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10" />
             <img
               src={displayImg}
@@ -66,8 +72,11 @@ export function ComponentCard({
             />
           </div>
         ) : (
-          <div className="w-20 h-20 rounded-lg bg-bg-elevated border border-border-subtle overflow-hidden shrink-0 flex items-center justify-center">
-            <svg className="w-8 h-8 text-text-muted/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className={cn(
+            "rounded-lg bg-bg-elevated border border-border-subtle overflow-hidden shrink-0 flex items-center justify-center",
+            compact ? "w-14 h-14" : "w-20 h-20"
+          )}>
+            <svg className={cn(compact ? "w-5 h-5" : "w-8 h-8", "text-text-muted/30")} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={TYPE_ICONS[type] || TYPE_ICONS.stabilizers} />
             </svg>
           </div>
@@ -107,14 +116,17 @@ export function ComponentCard({
               )}
             </div>
           </div>
-          <p className="text-xs text-text-secondary leading-relaxed line-clamp-2 mt-1">
+          <p className={cn(
+            "text-xs text-text-secondary leading-relaxed mt-1",
+            compact ? "line-clamp-1" : "line-clamp-2"
+          )}>
             {reason}
           </p>
         </div>
       </div>
 
-      {/* Buy button */}
-      {productUrl ? (
+      {/* Buy button — hidden in compact mode */}
+      {!compact && (productUrl ? (
         <a
           href={productUrl}
           target="_blank"
@@ -154,7 +166,7 @@ export function ComponentCard({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
           </svg>
         </a>
-      )}
+      ))}
     </div>
   );
 }

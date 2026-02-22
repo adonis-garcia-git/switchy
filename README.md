@@ -36,7 +36,7 @@ Switchy is a full-stack consumer platform where users discover, design, and cust
 |------|-------------|--------------|
 | **AI Advisor** | Anyone — just describe what you want | Multi-turn chat with Claude. Say "I want something thocky under $200" and get a full parts list with pricing. |
 | **Guided Wizard** | Beginners who need structure | 6-step flow: use case → sound preference → budget → size → priorities → AI-generated build |
-| **Custom Builder** | Enthusiasts who know what they want | Manual component picker with real-time 3D preview and per-key customization |
+| **Custom Builder** | Enthusiasts who know what they want | Manual component picker with real-time 3D preview, per-key customization, and undo/redo |
 
 ### Interactive 3D Studio
 
@@ -44,11 +44,15 @@ A full Three.js-powered design studio where users visualize their keyboard in re
 
 ### Product Discovery
 
-Browse **120+ switches**, **40+ keyboards**, **30+ keycap sets**, and **60+ accessories** with advanced filtering by type, sound profile, brand, and price. Side-by-side comparison mode for switches. Every product links to real vendor pages with real pricing.
+Browse **85+ switches**, **105+ keyboards**, **46+ keycap sets**, and **82+ accessories** with advanced filtering by type, sound profile, brand, and price. Side-by-side comparison mode for switches. Every product links to real vendor pages with real pricing.
+
+### Unified Search
+
+A cross-catalog search powered by Nia AI — query across switches, keyboards, keycaps, and external sources simultaneously.
 
 ### Group Buy Tracker
 
-The keyboard community runs on group buys — limited-run products that take months to fulfill. Switchy tracks **30+ active group buys** with status timelines, budget management, and a newcomer guide to demystify the process.
+The keyboard community runs on group buys — limited-run products that take months to fulfill. Switchy tracks **46+ active group buys** with status timelines, budget management, and a newcomer guide to demystify the process.
 
 ### Built-In Education
 
@@ -58,11 +62,12 @@ A searchable **glossary of 80+ terms** with difficulty levels, cross-references,
 
 ```
 src/
-├── app/                    # 15 routes (Next.js App Router)
+├── app/                    # 22 routes (Next.js App Router)
 │   ├── advisor/            # AI multi-turn chat
 │   ├── wizard/             # 6-step guided builder
-│   ├── builder/            # Manual custom builder
+│   ├── builder/            # AI + custom build modes with 3D preview
 │   ├── studio/             # 3D keyboard designer
+│   ├── search/             # Unified cross-catalog search (Nia AI)
 │   ├── switches/           # Explorer + detail + compare
 │   ├── keyboards/          # Explorer + detail
 │   ├── keycaps/            # Explorer + detail
@@ -72,19 +77,24 @@ src/
 │   ├── builds/             # Saved builds + public sharing
 │   ├── pricing/            # Subscription tiers
 │   └── account/            # User profile
-├── components/             # 110+ components
+├── components/             # 114 components
 │   ├── ui/                 # Design system (Card, Badge, Modal, Tabs, Toast...)
-│   ├── 3d/                 # Three.js scene, materials, keycap geometry
+│   ├── 3d/                 # Three.js scene, keyboard model, keycap geometry
+│   ├── detail/             # Shared product detail (layout, breadcrumb, specs)
 │   ├── studio/             # Studio controls, overlays, presets
-│   └── builder/            # Custom build workflow
+│   └── builder/            # Build workflow (questions, customizer, pickers)
+├── hooks/                  # 10 custom hooks (filters, undo/redo, subscriptions...)
 ├── lib/                    # Shared types, utilities, constants
-└── data/                   # Seed data (120 switches, 40 keyboards, 80+ terms...)
+└── data/                   # Seed data (85 switches, 105 keyboards, 80+ terms...)
 
-convex/                     # 38 backend files
+convex/                     # 45 backend files
 ├── builds.ts               # AI build generation (Claude API)
+├── buildAdvisor.ts         # Interactive build advisor
 ├── stripe.ts               # Payment processing
 ├── affiliateLinks.ts       # Revenue tracking
 ├── groupBuyListings.ts     # Group buy management
+├── niaSearch.ts            # Nia AI-powered search
+├── weeklyDigest.ts         # Automated digest emails
 └── ...                     # Auth, CRUD, seeding, webhooks
 ```
 
@@ -130,7 +140,7 @@ Switchy is designed to feel premium — matching the craft that keyboard enthusi
 
 - **Custom design system** with semantic color tokens, layered shadows, and dark/light mode
 - **Anti-generic guardrails** — no default Tailwind palette, no flat shadows, paired display + sans fonts, spring-easing animations
-- **Mobile-first responsive** across all 15 routes
+- **Mobile-first responsive** across all 22 routes
 - **Real product images only** — zero placeholders, ever
 - **3D interaction** as a first-class feature, not a gimmick
 
@@ -166,4 +176,5 @@ npm run dev
 | AI | Anthropic Claude Sonnet |
 | 3D | Three.js, React Three Fiber, Drei, Postprocessing |
 | Payments | Stripe |
+| Search | Nia AI (cross-catalog + external) |
 | Image Gen | Replicate |

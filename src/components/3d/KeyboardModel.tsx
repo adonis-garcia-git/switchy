@@ -804,8 +804,9 @@ function Keycap({
     onRelease?.(index);
   }, [interactive, onRelease, index, onSelect]);
 
-  const handlePointerEnter = useCallback(() => {
-    if (paintMode && onPaint) {
+  const handlePointerEnter = useCallback((e: THREE.Event) => {
+    // Paint only while dragging (mouse button held down)
+    if (paintMode && onPaint && (e as unknown as PointerEvent)?.buttons > 0) {
       onPaint(keyId);
     }
     if (interactive || onSelect) {

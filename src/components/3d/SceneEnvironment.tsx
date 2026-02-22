@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import * as THREE from "three";
@@ -228,11 +228,14 @@ function CameraController({ preset }: { preset: CameraPresetName }) {
   const prevPreset = useRef(preset);
   const transitioning = useRef(false);
 
-  // Detect preset changes — freeform never triggers a transition
-  if (prevPreset.current !== preset) {
-    prevPreset.current = preset;
-    transitioning.current = preset !== "freeform";
-  }
+  // Detect preset changes — runs only when preset prop actually changes,
+  // not on every parent re-render (fixes stutter during generating phase)
+  useEffect(() => {
+    if (prevPreset.current !== preset) {
+      prevPreset.current = preset;
+      transitioning.current = preset !== "freeform";
+    }
+  }, [preset]);
 
   useFrame(() => {
     if (!transitioning.current) return;

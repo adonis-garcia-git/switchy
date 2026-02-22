@@ -5,6 +5,13 @@ import { cn } from "@/lib/utils";
 import { ColorPicker } from "./ColorPicker";
 import type { BuilderQuestion } from "@/lib/types";
 
+export const BUDGET_TIERS = [
+  { id: "entry", label: "Entry", range: "$50–$150", value: 100, description: "Great first build without breaking the bank" },
+  { id: "sweet-spot", label: "Sweet Spot", range: "$150–$250", value: 200, description: "Best value-to-quality ratio" },
+  { id: "premium", label: "Premium", range: "$250–$400", value: 350, description: "Enthusiast-grade parts and finish" },
+  { id: "endgame", label: "Endgame", range: "$400–$600", value: 500, description: "No compromises, top-shelf everything" },
+] as const;
+
 interface QuestionCardProps {
   question: BuilderQuestion;
   onAnswer: (value: string | string[] | number) => void;
@@ -17,8 +24,16 @@ export function QuestionCard({ question, onAnswer, isActive }: QuestionCardProps
   const [sliderValue, setSliderValue] = useState<number>(
     question.sliderConfig ? Math.round((question.sliderConfig.min + question.sliderConfig.max) / 2) : 0
   );
+  const [selectedBudgetTier, setSelectedBudgetTier] = useState<string | null>(null);
 
   if (!isActive) return null;
+
+  const isBudgetSlider = question.type === "slider" && question.id === "budget";
+
+  const handleBudgetTierSelect = (tierId: string, value: number) => {
+    setSelectedBudgetTier(tierId);
+    setTimeout(() => onAnswer(value), 600);
+  };
 
   const handleSingleSelect = (id: string) => {
     setSelectedSingle(id);
@@ -159,8 +174,50 @@ export function QuestionCard({ question, onAnswer, isActive }: QuestionCardProps
         />
       )}
 
-      {/* Slider */}
-      {question.type === "slider" && question.sliderConfig && (() => {
+      {/* Budget tier buttons (replaces slider for budget question) */}
+      {isBudgetSlider && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {BUDGET_TIERS.map((tier) => (
+            <button
+              key={tier.id}
+              onClick={() => handleBudgetTierSelect(tier.id, tier.value)}
+              className={cn(
+                "p-5 rounded-xl border text-left transition-[border-color,background-color,transform] duration-200",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                "active:scale-[0.97]",
+                selectedBudgetTier === tier.id
+                  ? "border-accent bg-accent-dim scale-[0.98]"
+                  : "border-border-subtle bg-bg-surface hover:border-border-accent hover:bg-bg-elevated/50"
+              )}
+            >
+              <div className="flex items-center gap-3 mb-1.5">
+                <div className={cn(
+                  "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-[border-color] duration-200",
+                  selectedBudgetTier === tier.id ? "border-accent" : "border-text-muted/30"
+                )}>
+                  {selectedBudgetTier === tier.id && (
+                    <div className="w-2.5 h-2.5 rounded-full bg-accent" />
+                  )}
+                </div>
+                <div>
+                  <p className="font-semibold text-text-primary text-sm font-[family-name:var(--font-outfit)]">
+                    {tier.label}
+                  </p>
+                  <p className="text-xs text-accent font-[family-name:var(--font-mono)] font-medium">
+                    {tier.range}
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs text-text-muted ml-8 leading-relaxed">
+                {tier.description}
+              </p>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Generic slider (non-budget) */}
+      {question.type === "slider" && !isBudgetSlider && question.sliderConfig && (() => {
         const { min, max, step, unit, labels } = question.sliderConfig;
         const range = max - min;
         const fillPercent = ((sliderValue - min) / range) * 100;

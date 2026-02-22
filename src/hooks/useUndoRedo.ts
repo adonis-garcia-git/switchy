@@ -5,8 +5,8 @@ const MAX_HISTORY = 20;
 export interface UndoRedoControls<T> {
   state: T;
   setState: (next: T) => void;
-  undo: () => void;
-  redo: () => void;
+  undo: () => T | undefined;
+  redo: () => T | undefined;
   canUndo: boolean;
   canRedo: boolean;
   reset: (initial: T) => void;
@@ -30,18 +30,24 @@ export function useUndoRedo<T>(initial: T): UndoRedoControls<T> {
     setStateInternal(next);
   }, []);
 
-  const undo = useCallback(() => {
+  const undo = useCallback((): T | undefined => {
     if (pointer.current > 0) {
       pointer.current -= 1;
-      setStateInternal(history.current[pointer.current]);
+      const newState = history.current[pointer.current];
+      setStateInternal(newState);
+      return newState;
     }
+    return undefined;
   }, []);
 
-  const redo = useCallback(() => {
+  const redo = useCallback((): T | undefined => {
     if (pointer.current < history.current.length - 1) {
       pointer.current += 1;
-      setStateInternal(history.current[pointer.current]);
+      const newState = history.current[pointer.current];
+      setStateInternal(newState);
+      return newState;
     }
+    return undefined;
   }, []);
 
   const reset = useCallback((initial: T) => {

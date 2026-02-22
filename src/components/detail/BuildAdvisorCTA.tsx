@@ -4,13 +4,14 @@ interface BuildAdvisorCTAProps {
   brand: string;
   name: string;
   productType: string;
+  className?: string;
 }
 
-export function BuildAdvisorCTA({ brand, name, productType }: BuildAdvisorCTAProps) {
+export function BuildAdvisorCTA({ brand, name, productType, className }: BuildAdvisorCTAProps) {
   const query = encodeURIComponent(`Tell me about the ${brand} ${name} ${productType}`);
 
   return (
-    <section className="mt-8">
+    <section className={className}>
       <Link
         href={`/builder?q=${query}`}
         className="group block rounded-2xl border border-border-accent/30 bg-gradient-to-br from-accent-dim/20 via-bg-surface to-accent-dim/10 p-6 sm:p-8 hover:border-border-accent/60 transition-[border-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"

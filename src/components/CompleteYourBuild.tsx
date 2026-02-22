@@ -3,12 +3,15 @@
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import Link from "next/link";
-import { formatPriceWhole } from "@/lib/utils";
+import { cn, formatPriceWhole } from "@/lib/utils";
 
 interface CompleteYourBuildProps {
   currentType: "switch" | "keyboard" | "keycaps" | "accessory";
   currentName: string;
   currentPrice: number;
+  /** When true, uses single-column grid (for sidebar rendering) */
+  compact?: boolean;
+  className?: string;
 }
 
 interface RecommendedProduct {
@@ -41,7 +44,7 @@ const CROSS_SELL_CONFIG: Record<string, { table: string; category: string; limit
   ],
 };
 
-export function CompleteYourBuild({ currentType, currentName, currentPrice }: CompleteYourBuildProps) {
+export function CompleteYourBuild({ currentType, currentName, currentPrice, compact, className }: CompleteYourBuildProps) {
   const config = CROSS_SELL_CONFIG[currentType] || [];
 
   const needsSwitches = config.some((c) => c.table === "switches");
@@ -117,7 +120,7 @@ export function CompleteYourBuild({ currentType, currentName, currentPrice }: Co
   const runningTotal = currentPrice + recommendations.reduce((sum, r) => sum + r.price, 0);
 
   return (
-    <section className="mt-10 rounded-2xl border border-border-subtle bg-bg-surface/50 p-5 sm:p-6">
+    <section className={cn("rounded-2xl border border-border-subtle bg-bg-surface/50 p-5 sm:p-6", className)}>
       <div className="flex items-center gap-2.5 mb-5">
         <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
           <svg className="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -130,7 +133,7 @@ export function CompleteYourBuild({ currentType, currentName, currentPrice }: Co
         </h3>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div className={cn("grid gap-3", compact ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3")}>
         {recommendations.map((rec) => (
           <Link
             key={rec._id}

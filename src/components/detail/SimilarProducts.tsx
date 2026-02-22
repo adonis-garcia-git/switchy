@@ -8,9 +8,10 @@ interface SimilarProductsProps {
   viewAllHref: string;
   children: ReactNode;
   isEmpty?: boolean;
+  className?: string;
 }
 
-export function SimilarProducts({ title, viewAllHref, children, isEmpty }: SimilarProductsProps) {
+export function SimilarProducts({ title, viewAllHref, children, isEmpty, className }: SimilarProductsProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   if (isEmpty) return null;
@@ -25,7 +26,7 @@ export function SimilarProducts({ title, viewAllHref, children, isEmpty }: Simil
   };
 
   return (
-    <section className="mt-10">
+    <section className={className || "mt-10"}>
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-[family-name:var(--font-outfit)] font-semibold text-text-primary tracking-tight text-lg">
           {title}

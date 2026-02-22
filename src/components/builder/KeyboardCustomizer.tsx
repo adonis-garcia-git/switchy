@@ -39,28 +39,133 @@ const ROW_COUNTS: Record<string, number[]> = {
   "full": [17, 22, 20, 20, 18, 9],
 };
 
-// Legend arrays for zone lookup
-const LEGEND_ROWS_60 = [
-  ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "\u232B"],
-  ["\u21E5", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\"],
-  ["\u21EA", "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'", "\u23CE"],
-  ["\u21E7", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "\u21E7"],
-  ["Ctrl", "\u2318", "Alt", " ", "Alt", "\u2318", "Fn", "Ctrl"],
-];
-const MOD_FLAGS_60 = [
-  [false,false,false,false,false,false,false,false,false,false,false,false,false,true],
-  [true,false,false,false,false,false,false,false,false,false,false,false,false,true],
-  [true,false,false,false,false,false,false,false,false,false,false,false,true],
-  [true,false,false,false,false,false,false,false,false,false,false,true],
-  [true,true,true,true,true,true,true,true],
-];
+// ─── Per-layout legend + modifier data for zone lookup ───────────────
+// Must match the legends assigned by getLegendForKey() in KeyboardModel.tsx
+
+const FROW = ["Esc", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"];
+const FROW_MODS = [true, true, true, true, true, true, true, true, true, true, true, true, true];
+
+const ROW0 = ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "\u232B"];
+const ROW0_MODS = [false,false,false,false,false,false,false,false,false,false,false,false,false,true];
+
+const ROW1 = ["\u21E5", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\"];
+const ROW1_MODS = [true,false,false,false,false,false,false,false,false,false,false,false,false,true];
+
+const ROW2 = ["\u21EA", "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'", "\u23CE"];
+const ROW2_MODS = [true,false,false,false,false,false,false,false,false,false,false,false,true];
+
+const ROW3 = ["\u21E7", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "\u21E7"];
+const ROW3_MODS = [true,false,false,false,false,false,false,false,false,false,false,true];
+
+const ROW3_SPLIT = ["\u21E7", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "\u21E7", "\u2191"];
+const ROW3_SPLIT_MODS = [true,false,false,false,false,false,false,false,false,false,false,true,true];
+
+const ROW4_60 = ["Ctrl", "\u2318", "Alt", " ", "Alt", "\u2318", "Fn", "Ctrl"];
+const ROW4_60_MODS = [true,true,true,true,true,true,true,true];
+
+const ROW4_65 = ["Ctrl", "\u2318", "Alt", " ", "Alt", "\u2318", "\u2190", "\u2193", "\u2192"];
+const ROW4_65_MODS = [true,true,true,true,true,true,true,true,true];
+
+const NAV = ["Ins", "Hm", "PU", "Del", "End", "PD", "", "\u2191", "", "\u2190", "\u2193", "\u2192"];
+const NAV_MODS = [true,true,true,true,true,true,true,true,true,true,true,true];
+
+const NUMPAD_R0 = ["NL", "/", "*", "-"];
+const NUMPAD_R1 = ["7", "8", "9", "+"];
+const NUMPAD_R2 = ["4", "5", "6"];
+const NUMPAD_R3 = ["1", "2", "3", "\u23CE"];
+const NUMPAD_R4 = ["0", "."];
+
+function getLayoutLegends(size: string): { legends: string[][]; mods: boolean[][] } {
+  if (size === "60") {
+    return {
+      legends: [ROW0, ROW1, ROW2, ROW3, ROW4_60],
+      mods: [ROW0_MODS, ROW1_MODS, ROW2_MODS, ROW3_MODS, ROW4_60_MODS],
+    };
+  }
+  if (size === "65") {
+    return {
+      legends: [
+        [...ROW0, "Del"],
+        ROW1,
+        ROW2,
+        ROW3_SPLIT,
+        ROW4_65,
+      ],
+      mods: [
+        [...ROW0_MODS, true],
+        ROW1_MODS,
+        ROW2_MODS,
+        ROW3_SPLIT_MODS,
+        ROW4_65_MODS,
+      ],
+    };
+  }
+  if (size === "75") {
+    return {
+      legends: [
+        [...FROW, "Del"],
+        [...ROW0, "Del"],
+        ROW1,
+        ROW2,
+        ROW3_SPLIT,
+        ROW4_65,
+      ],
+      mods: [
+        [...FROW_MODS, true],
+        [...ROW0_MODS, true],
+        ROW1_MODS,
+        ROW2_MODS,
+        ROW3_SPLIT_MODS,
+        ROW4_65_MODS,
+      ],
+    };
+  }
+  if (size === "tkl") {
+    return {
+      legends: [
+        FROW,
+        [...ROW0, "Del", ...NAV.slice(0, 3)],
+        [...ROW1, ...NAV.slice(3, 6)],
+        [...ROW2, ...NAV.slice(6, 9)],
+        [...ROW3_SPLIT, ...NAV.slice(9, 12)],
+        ROW4_65,
+      ],
+      mods: [
+        FROW_MODS,
+        [...ROW0_MODS, true, ...NAV_MODS.slice(0, 3)],
+        [...ROW1_MODS, ...NAV_MODS.slice(3, 6)],
+        [...ROW2_MODS, ...NAV_MODS.slice(6, 9)],
+        [...ROW3_SPLIT_MODS, ...NAV_MODS.slice(9, 12)],
+        ROW4_65_MODS,
+      ],
+    };
+  }
+  // full
+  return {
+    legends: [
+      [...FROW, ...NUMPAD_R0],
+      [...ROW0, "Del", ...NAV.slice(0, 3), ...NUMPAD_R1],
+      [...ROW1, ...NAV.slice(3, 6), ...NUMPAD_R2],
+      [...ROW2, ...NAV.slice(6, 9), ...NUMPAD_R3],
+      [...ROW3_SPLIT, ...NAV.slice(9, 12), ...NUMPAD_R4],
+      ROW4_65,
+    ],
+    mods: [
+      [...FROW_MODS, true, true, true, true],
+      [...ROW0_MODS, true, ...NAV_MODS.slice(0, 3), false, false, false, true],
+      [...ROW1_MODS, ...NAV_MODS.slice(3, 6), false, false, false],
+      [...ROW2_MODS, ...NAV_MODS.slice(6, 9), false, false, false, true],
+      [...ROW3_SPLIT_MODS, ...NAV_MODS.slice(9, 12), false, false],
+      ROW4_65_MODS,
+    ],
+  };
+}
 
 function getKeysForZone(zone: string, size: string): string[] {
   const keys: string[] = [];
-  const rows = LEGEND_ROWS_60; // simplified — use 60% legends for zone lookup
-  const mods = MOD_FLAGS_60;
+  const { legends, mods } = getLayoutLegends(size);
 
-  rows.forEach((row, rowIdx) => {
+  legends.forEach((row, rowIdx) => {
     row.forEach((legend, keyIdx) => {
       const isMod = mods[rowIdx]?.[keyIdx] ?? false;
       const keyZone = getKeycapZone(legend, isMod);
@@ -109,7 +214,7 @@ export function KeyboardCustomizer({
     canUndo,
     canRedo,
     reset: resetOverrides,
-  } = useUndoRedo<PerKeyOverrides>({});
+  } = useUndoRedo<PerKeyOverrides>(viewerConfig.perKeyOverrides ?? {});
 
   // Push overrides up whenever they change
   const updateOverrides = useCallback((next: PerKeyOverrides) => {
@@ -119,19 +224,14 @@ export function KeyboardCustomizer({
 
   // Undo/redo wrappers that also push changes up
   const handleUndo = useCallback(() => {
-    undo();
-    // We need to read the state after undo — use a timeout to get the updated state
-    setTimeout(() => {
-      onOverridesChange(overrides);
-    }, 0);
-  }, [undo, onOverridesChange, overrides]);
+    const prev = undo();
+    if (prev !== undefined) onOverridesChange(prev);
+  }, [undo, onOverridesChange]);
 
   const handleRedo = useCallback(() => {
-    redo();
-    setTimeout(() => {
-      onOverridesChange(overrides);
-    }, 0);
-  }, [redo, onOverridesChange, overrides]);
+    const next = redo();
+    if (next !== undefined) onOverridesChange(next);
+  }, [redo, onOverridesChange]);
 
   // Handle key selection from 3D model
   const handleKeySelect = useCallback((keyId: string) => {
@@ -157,12 +257,11 @@ export function KeyboardCustomizer({
       setSelectedKeys(rowKeys);
     } else if (selectionMode === "zone") {
       // Select zone based on key legend
-      const rows = LEGEND_ROWS_60;
-      const mods = MOD_FLAGS_60;
+      const { legends, mods } = getLayoutLegends(viewerConfig.size);
       const [rStr, kStr] = keyId.split("-");
       const r = parseInt(rStr, 10);
       const k = parseInt(kStr, 10);
-      const legend = rows[r]?.[k] ?? "";
+      const legend = legends[r]?.[k] ?? "";
       const isMod = mods[r]?.[k] ?? false;
       const zone = getKeycapZone(legend, isMod);
       const zoneKeys = getKeysForZone(zone, viewerConfig.size);
